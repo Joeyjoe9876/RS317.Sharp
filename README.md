@@ -1,12 +1,7 @@
-317refactor
-===========
+# RS317.NET
 
-An educational refactoring of the Runescape #317 Client
+A fork of [317Refactor](https://github.com/Jameskmonger/317refactor) that is ported to C#/.NET.
 
-# Notice
+## License
 
-This project has been developed from the RuneScape client revision 317, which was publicly released on the 13th of June 2005 and is the intellectual property of Jagex Ltd.
-
-It has been refactored in order to restore readability to the codebase for educational purposes, primarility to those with an interest in game development.
-
-It may be a criminal offence to run this project.
+Applicable licensing referenced in [317Refactor](https://github.com/Jameskmonger/317refactor) and additional work/changes done licensed under a modified AGPL license.
