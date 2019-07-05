@@ -1,4 +1,6 @@
 
+using System;
+
 sealed class Skills
 {
 	public static int skillsCount = 25;
