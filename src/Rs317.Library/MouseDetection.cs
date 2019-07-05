@@ -1,9 +1,12 @@
 
-sealed class MouseDetection : Runnable
+using System;
+using System.Threading;
+
+sealed class MouseDetection : IRunnable
 {
 	private Client clientInstance;
 
-	public Object syncObject;
+	private readonly object syncObj = new object();
 
 	public int[] coordsY;
 	public bool running;
@@ -12,18 +15,18 @@ sealed class MouseDetection : Runnable
 
 	public MouseDetection(Client client1)
 	{
-		syncObject = new Object();
 		coordsY = new int[500];
 		running = true;
 		coordsX = new int[500];
 		clientInstance = client1;
 	}
 
-	public override void run()
+	public void run()
 	{
 		while(running)
 		{
-			synchronized(syncObject) {
+			lock(syncObj)
+			{
 				if(coordsIndex < 500)
 				{
 					coordsX[coordsIndex] = clientInstance.mouseX;
@@ -33,7 +36,7 @@ sealed class MouseDetection : Runnable
 			}
 			try
 			{
-				Thread.sleep(50L);
+				Thread.Sleep(50);
 			}
 			catch(Exception _ex)
 			{
