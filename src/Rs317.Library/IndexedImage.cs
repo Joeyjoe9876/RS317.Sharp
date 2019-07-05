@@ -1,7 +1,9 @@
 
+using System;
+
 public sealed class IndexedImage : DrawingArea
 {
-	public byte pixels[];
+	public byte[] pixels;
 
 	public int[] palette;
 
@@ -115,17 +117,17 @@ public sealed class IndexedImage : DrawingArea
 		resizeWidth /= 2;
 		resizeHeight /= 2;
 
-		byte pixels[] = new byte[resizeWidth * resizeHeight];
+		byte[] tempPixels = new byte[resizeWidth * resizeHeight];
 		int i = 0;
 		for(int x = 0; x < height; x++)
 		{
 			for(int y = 0; y < width; y++)
 			{
-				pixels[(y + drawOffsetX >> 1) + (x + drawOffsetY >> 1) * resizeWidth] = pixels[i++];
+				tempPixels[(y + drawOffsetX >> 1) + (x + drawOffsetY >> 1) * resizeWidth] = tempPixels[i++];
 			}
 		}
 
-		this.pixels = pixels;
+		this.pixels = tempPixels;
 		width = resizeWidth;
 		height = resizeHeight;
 		drawOffsetX = 0;
@@ -137,17 +139,17 @@ public sealed class IndexedImage : DrawingArea
 		if(width == resizeWidth && height == resizeHeight)
 			return;
 
-		byte pixels[] = new byte[resizeWidth * resizeHeight];
+		byte[] tempPixels = new byte[resizeWidth * resizeHeight];
 		int i = 0;
 		for(int y = 0; y < height; y++)
 		{
 			for(int x = 0; x < width; x++)
 			{
-				pixels[x + drawOffsetX + (y + drawOffsetY) * resizeWidth] = pixels[i++];
+				tempPixels[x + drawOffsetX + (y + drawOffsetY) * resizeWidth] = tempPixels[i++];
 			}
 		}
 
-		this.pixels = pixels;
+		this.pixels = tempPixels;
 		width = resizeWidth;
 		height = resizeHeight;
 		drawOffsetX = 0;
@@ -156,7 +158,7 @@ public sealed class IndexedImage : DrawingArea
 
 	public void flipHorizontally()
 	{
-		byte pixels[] = new byte[width * height];
+		byte[] pixels = new byte[width * height];
 		int i = 0;
 		for(int y = 0; y < height; y++)
 		{
@@ -172,21 +174,22 @@ public sealed class IndexedImage : DrawingArea
 
 	public void flipVertically()
 	{
-		byte pixels[] = new byte[width * height];
+		//TODO: Might be able to save an allocation here.
+		byte[] tempPixels = new byte[width * height];
 		int i = 0;
 		for(int y = height - 1; y >= 0; y--)
 		{
 			for(int x = 0; x < width; x++)
 			{
-				pixels[i++] = pixels[x + y * width];
+				tempPixels[i++] = tempPixels[x + y * width];
 			}
 		}
 
-		this.pixels = pixels;
+		this.pixels = tempPixels;
 		drawOffsetY = resizeHeight - height - drawOffsetY;
 	}
 
-	private void draw(int i, int pixels[], byte image[], int j, int k, int l, int i1, int palette[], int j1)
+	private void draw(int i, int[] pixelsToDraw, byte[] image, int j, int k, int l, int i1, int[] paletteToDraw, int j1)
 	{
 		int k1 = -(l >> 2);
 		l = -(l & 3);
@@ -196,22 +199,22 @@ public sealed class IndexedImage : DrawingArea
 			{
 				byte pixel = image[i1++];
 				if(pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
+					pixelsToDraw[k++] = paletteToDraw[pixel & 0xff];
 				else
 					k++;
 				pixel = image[i1++];
 				if(pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
+					pixelsToDraw[k++] = paletteToDraw[pixel & 0xff];
 				else
 					k++;
 				pixel = image[i1++];
 				if(pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
+					pixelsToDraw[k++] = paletteToDraw[pixel & 0xff];
 				else
 					k++;
 				pixel = image[i1++];
 				if(pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
+					pixelsToDraw[k++] = paletteToDraw[pixel & 0xff];
 				else
 					k++;
 			}
@@ -220,7 +223,7 @@ public sealed class IndexedImage : DrawingArea
 			{
 				byte pixel = image[i1++];
 				if(pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
+					pixelsToDraw[k++] = paletteToDraw[pixel & 0xff];
 				else
 					k++;
 			}
@@ -233,7 +236,7 @@ public sealed class IndexedImage : DrawingArea
 
 	public void mixPalette(int red, int green, int blue)
 	{
-		for(int i = 0; i < palette.length; i++)
+		for(int i = 0; i < palette.Length; i++)
 		{
 			int r = palette[i] >> 16 & 0xff;
 			r += red;
