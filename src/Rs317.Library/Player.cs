@@ -9,7 +9,7 @@ public sealed class Player : Entity
 
 	boolean preventRotation;
 
-	sealed int[] bodyPartColour;
+	final int[] bodyPartColour;
 
 	public int team;
 
@@ -27,7 +27,7 @@ public sealed class Player : Entity
 	int drawHeight;
 	int anInt1713;
 	Model playerModel;
-	public sealed int[] appearance;
+	public final int[] appearance;
 	private long appearanceOffset;
 	int localX;
 	int localY;

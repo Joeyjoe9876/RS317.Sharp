@@ -7,7 +7,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 
 	int minDelay;
 
-	private sealed long[] otims;
+	private final long[] otims;
 
 	int fps;
 
@@ -51,9 +51,9 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 
 	long clickTime;
 
-	sealed int[] keyStatus;
+	final int[] keyStatus;
 
-	private sealed int[] inputBuffer;
+	private final int[] inputBuffer;
 
 	private int readIndex;
 
@@ -75,7 +75,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	{
 	}
 
-	sealed void createClientFrame(int width, int height)
+	final void createClientFrame(int width, int height)
 	{
 		this.width = width;
 		this.height = height;
@@ -86,7 +86,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void destroy()
+	public final void destroy()
 	{
 		gameState = -1;
 		try
@@ -166,7 +166,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void focusGained(FocusEvent focusevent)
+	public final void focusGained(FocusEvent focusevent)
 	{
 		awtFocus = true;
 		clearScreen = true;
@@ -174,7 +174,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void focusLost(FocusEvent focusevent)
+	public final void focusLost(FocusEvent focusevent)
 	{
 		awtFocus = false;
 		for(int key = 0; key < 128; key++)
@@ -190,7 +190,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 			return this;
 	}
 
-	sealed void initClientFrame(int width, int height)
+	final void initClientFrame(int width, int height)
 	{
 		this.width = width;
 		this.height = height;
@@ -200,7 +200,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void keyPressed(KeyEvent keyevent)
+	public final void keyPressed(KeyEvent keyevent)
 	{
 		idleTime = 0;
 		int keyCode = keyevent.getKeyCode();
@@ -246,7 +246,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void keyReleased(KeyEvent keyevent)
+	public final void keyReleased(KeyEvent keyevent)
 	{
 		idleTime = 0;
 		int keyCode = keyevent.getKeyCode();
@@ -276,17 +276,17 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void keyTyped(KeyEvent keyevent)
+	public final void keyTyped(KeyEvent keyevent)
 	{
 	}
 
 	@Override
-	public sealed void mouseClicked(MouseEvent mouseevent)
+	public final void mouseClicked(MouseEvent mouseevent)
 	{
 	}
 
 	@Override
-	public sealed void mouseDragged(MouseEvent mouseevent)
+	public final void mouseDragged(MouseEvent mouseevent)
 	{
 		int x = mouseevent.getX();
 		int y = mouseevent.getY();
@@ -301,12 +301,12 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void mouseEntered(MouseEvent mouseevent)
+	public final void mouseEntered(MouseEvent mouseevent)
 	{
 	}
 
 	@Override
-	public sealed void mouseExited(MouseEvent mouseevent)
+	public final void mouseExited(MouseEvent mouseevent)
 	{
 		idleTime = 0;
 		mouseX = -1;
@@ -314,7 +314,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void mouseMoved(MouseEvent mouseevent)
+	public final void mouseMoved(MouseEvent mouseevent)
 	{
 		int x = mouseevent.getX();
 		int y = mouseevent.getY();
@@ -329,7 +329,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void mousePressed(MouseEvent mouseEvent)
+	public final void mousePressed(MouseEvent mouseEvent)
 	{
 		int x = mouseEvent.getX();
 		int y = mouseEvent.getY();
@@ -355,14 +355,14 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void mouseReleased(MouseEvent mouseevent)
+	public final void mouseReleased(MouseEvent mouseevent)
 	{
 		idleTime = 0;
 		mouseButton = 0;
 	}
 
 	@Override
-	public sealed void paint(Graphics g)
+	public final void paint(Graphics g)
 	{
 		if(gameGraphics == null)
 			gameGraphics = g;
@@ -378,7 +378,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	{
 	}
 
-	sealed int readCharacter()
+	final int readCharacter()
 	{
 		int character = -1;
 		if(writeIndex != readIndex)
@@ -498,13 +498,13 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 			exit();
 	}
 
-	sealed void setFrameRate(int frameRate)
+	final void setFrameRate(int frameRate)
 	{
 		delayTime = 1000 / frameRate;
 	}
 
 	@Override
-	public sealed void start()
+	public final void start()
 	{
 		if(gameState >= 0)
 			gameState = 0;
@@ -522,14 +522,14 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void stop()
+	public final void stop()
 	{
 		if(gameState >= 0)
 			gameState = 4000 / delayTime;
 	}
 
 	@Override
-	public sealed void update(Graphics g)
+	public final void update(Graphics g)
 	{
 		if(gameGraphics == null)
 			gameGraphics = g;
@@ -538,38 +538,38 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	}
 
 	@Override
-	public sealed void windowActivated(WindowEvent windowevent)
+	public final void windowActivated(WindowEvent windowevent)
 	{
 	}
 
 	@Override
-	public sealed void windowClosed(WindowEvent windowevent)
+	public final void windowClosed(WindowEvent windowevent)
 	{
 	}
 
 	@Override
-	public sealed void windowClosing(WindowEvent windowevent)
+	public final void windowClosing(WindowEvent windowevent)
 	{
 		destroy();
 	}
 
 	@Override
-	public sealed void windowDeactivated(WindowEvent windowevent)
+	public final void windowDeactivated(WindowEvent windowevent)
 	{
 	}
 
 	@Override
-	public sealed void windowDeiconified(WindowEvent windowevent)
+	public final void windowDeiconified(WindowEvent windowevent)
 	{
 	}
 
 	@Override
-	public sealed void windowIconified(WindowEvent windowevent)
+	public final void windowIconified(WindowEvent windowevent)
 	{
 	}
 
 	@Override
-	public sealed void windowOpened(WindowEvent windowevent)
+	public final void windowOpened(WindowEvent windowevent)
 	{
 	}
 }

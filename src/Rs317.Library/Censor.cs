@@ -13,10 +13,10 @@ public class Censor
 	private static char tlds[][];
 	private static int tldTypes[];
 
-	private static sealed String WHITELISTED_WORDS[] = { "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
-	private static sealed char[] SPELLED_AT_SYMBOL = { '(', 'a', ')' };
-	private static sealed char[] SPELLED_DOT = { 'd', 'o', 't' };
-	private static sealed char[] SPELLED_SLASH = { 's', 'l', 'a', 's', 'h' };
+	private static final String WHITELISTED_WORDS[] = { "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
+	private static final char[] SPELLED_AT_SYMBOL = { '(', 'a', ')' };
+	private static final char[] SPELLED_DOT = { 'd', 'o', 't' };
+	private static final char[] SPELLED_SLASH = { 's', 'l', 'a', 's', 'h' };
 
 	public static void load(Archive archive)
 	{
@@ -614,7 +614,7 @@ private static void filterTld(char chars[], char tld[], int type, char filteredD
 					}
 				}
 
-				// sealedly! censor that shit!
+				// finally! censor that shit!
 				for(int i = first; i <= last; i++)
 				{
 					chars[i] = '*';

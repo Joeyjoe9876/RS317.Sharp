@@ -4,7 +4,7 @@ public class Cacheable : Linkable
 	public Cacheable nextCacheable;
 	public Cacheable previousCacheable;
 
-	public sealed void unlinkCacheable()
+	public final void unlinkCacheable()
 	{
 		if(previousCacheable == null)
 		{

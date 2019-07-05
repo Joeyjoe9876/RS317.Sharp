@@ -15,17 +15,17 @@ public class BZip2DecompressionState
 	// Class32
 
 	/* Constants */
-	sealed int bzMaxAlphaSize = 258;
-	sealed int bzMaxCodeLen = 23;
-	sealed int bzRunB = 1;
-	sealed int bzNGroups = 6;
-	sealed int bzGSize = 50;
-	sealed int bzNIters = 4;
-	sealed int bzMaxSelectors = 18002; // (2 + (900000 / BZ_G_SIZE))
+	final int bzMaxAlphaSize = 258;
+	final int bzMaxCodeLen = 23;
+	final int bzRunB = 1;
+	final int bzNGroups = 6;
+	final int bzGSize = 50;
+	final int bzNIters = 4;
+	final int bzMaxSelectors = 18002; // (2 + (900000 / BZ_G_SIZE))
 
 	/*-- Constants for the fast MTF decoder. --*/
-	sealed int mtfaSize = 4096;
-	sealed int mtflSize = 16;
+	final int mtfaSize = 4096;
+	final int mtflSize = 16;
 
 	/* for undoing the Burrows-Wheeler transform (FAST) */
 	public static int[] tt;
@@ -39,7 +39,7 @@ public class BZip2DecompressionState
 	byte[] stream;
 	byte[] buf; // out
 
-	/* for doing the sealed run-length decoding */
+	/* for doing the final run-length decoding */
 	int stateOutLen;
 	boolean blockRandomised;
 	byte stateOutCh;

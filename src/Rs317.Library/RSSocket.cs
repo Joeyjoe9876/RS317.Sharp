@@ -5,11 +5,11 @@ sealed class RSSocket : Runnable
 
 	private OutputStream outputStream;
 
-	private sealed Socket socket;
+	private final Socket socket;
 
 	private boolean closed;
 
-	private sealed RSApplet rsApplet;
+	private final RSApplet rsApplet;
 
 	private byte[] buffer;
 

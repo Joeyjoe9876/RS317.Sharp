@@ -5,11 +5,11 @@ public class Entity : Animable
 
 	public int entScreenY;
 
-	public sealed int index = -1;
+	public final int index = -1;
 
-	public sealed int[] waypointX;
+	public final int[] waypointX;
 
-	public sealed int[] waypointY;
+	public final int[] waypointY;
 	public int interactingEntity;
 	int stepsDelayed;
 
@@ -23,9 +23,9 @@ public class Entity : Animable
 	int standAnimationId;
 	int standTurnAnimationId;
 	int chatColour;
-	sealed int[] hitArray;
-	sealed int[] hitMarkTypes;
-	sealed int[] hitsLoopCycle;
+	final int[] hitArray;
+	final int[] hitMarkTypes;
+	final int[] hitsLoopCycle;
 	int queuedAnimationId;
 	int queuedAnimationFrame;
 	int queuedAnimationDuration;
@@ -61,7 +61,7 @@ public class Entity : Animable
 	public int x;
 	public int y;
 	int currentRotation;
-	sealed boolean[] waypointRan;
+	final boolean[] waypointRan;
 	int walkAnimationId;
 	int turnAboutAnimationId;
 	int turnRightAnimationId;
@@ -99,7 +99,7 @@ public class Entity : Animable
 		return false;
 	}
 
-	public sealed void move(boolean flag, int direction)
+	public final void move(boolean flag, int direction)
 	{
 		int x = waypointX[0];
 		int y = waypointY[0];
@@ -146,13 +146,13 @@ public class Entity : Animable
 		waypointRan[0] = flag;
 	}
 
-	public sealed void resetPath()
+	public final void resetPath()
 	{
 		waypointCount = 0;
 		stepsRemaining = 0;
 	}
 
-	public sealed void setPos(int x, int y, boolean teleported)
+	public final void setPos(int x, int y, boolean teleported)
 	{
 		if(animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
 			animation = -1;
@@ -186,7 +186,7 @@ public class Entity : Animable
 		this.y = waypointY[0] * 128 + boundaryDimension * 64;
 	}
 
-	public sealed void updateHitData(int type, int damage, int currentTime)
+	public final void updateHitData(int type, int damage, int currentTime)
 	{
 		for(int hit = 0; hit < 4; hit++)
 			if(hitsLoopCycle[hit] <= currentTime)

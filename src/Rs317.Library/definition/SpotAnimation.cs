@@ -25,8 +25,8 @@ public sealed class SpotAnimation
 
 	private int animationId;
 	public AnimationSequence sequences;
-	private sealed int[] originalModelColours;
-	private sealed int[] modifiedModelColours;
+	private final int[] originalModelColours;
+	private final int[] modifiedModelColours;
 	public int scaleXY;
 	public int scaleZ;
 	public int rotation;

@@ -7,17 +7,17 @@
 /// </summary>
 sealed class SoundFilter
 {
-	sealed int[] pairCount;
+	final int[] pairCount;
 
-	private sealed int[][][] pairPhase;
+	private final int[][][] pairPhase;
 
-	private sealed int[][][] pairMagnitude;
+	private final int[][][] pairMagnitude;
 
-	private sealed int[] unity;
+	private final int[] unity;
 
-	private static sealed float[][] _coefficient = new float[2][8];
+	private static final float[][] _coefficient = new float[2][8];
 
-	static sealed int[][] coefficient = new int[2][8];
+	static final int[][] coefficient = new int[2][8];
 
 	private static float _invUnity;
 	static int invUnity;

@@ -53,7 +53,7 @@ public sealed class GameObjectDefinition
 
 	private int scaleZ;
 
-	private static sealed Model[] models = new Model[4];
+	private static final Model[] models = new Model[4];
 
 	private byte diffuse;
 

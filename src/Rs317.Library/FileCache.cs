@@ -4,10 +4,10 @@
 /// </summary>
 sealed class FileCache
 {
-	private static sealed byte[] buffer = new byte[520];
-	private sealed RandomAccessFile dataFile;
-	private sealed RandomAccessFile indexFile;
-	private sealed int storeId;
+	private static final byte[] buffer = new byte[520];
+	private final RandomAccessFile dataFile;
+	private final RandomAccessFile indexFile;
+	private final int storeId;
 
 	public FileCache(RandomAccessFile data, RandomAccessFile index, int storeId)
 	{

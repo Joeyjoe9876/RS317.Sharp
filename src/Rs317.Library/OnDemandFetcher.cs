@@ -3,7 +3,7 @@ public sealed class OnDemandFetcher : Runnable
 {
 	private int totalFiles;
 
-	private sealed DoubleEndedQueue requested;
+	private final DoubleEndedQueue requested;
 
 	private int highestPriority;
 
@@ -15,17 +15,17 @@ public sealed class OnDemandFetcher : Runnable
 
 	private int[] mapIndices3;
 
-	private sealed CRC32 crc32;
+	private final CRC32 crc32;
 
-	private sealed byte[] payload;
+	private final byte[] payload;
 
 	public int onDemandCycle;
 
-	private sealed byte[][] filePriorities;
+	private final byte[][] filePriorities;
 
 	private Client clientInstance;
 
-	private sealed DoubleEndedQueue passiveRequests;
+	private final DoubleEndedQueue passiveRequests;
 
 	private int completedSize;
 
@@ -47,20 +47,20 @@ public sealed class OnDemandFetcher : Runnable
 
 	private boolean waiting;
 
-	private sealed DoubleEndedQueue complete;
+	private final DoubleEndedQueue complete;
 
-	private sealed byte[] gzipInputBuffer;
+	private final byte[] gzipInputBuffer;
 	private int[] frames;
-	private sealed CacheableQueue nodeSubList;
+	private final CacheableQueue nodeSubList;
 	private InputStream inputStream;
 	private Socket socket;
-	private sealed int[][] versions;
-	private sealed int[][] crcs;
+	private final int[][] versions;
+	private final int[][] crcs;
 	private int uncompletedCount;
 	private int completedCount;
-	private sealed DoubleEndedQueue unrequested;
+	private final DoubleEndedQueue unrequested;
 	private OnDemandData current;
-	private sealed DoubleEndedQueue mandatoryRequests;
+	private final DoubleEndedQueue mandatoryRequests;
 	private int[] mapIndices1;
 	private byte[] modelIndices;
 	private int loopCycle;

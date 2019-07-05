@@ -5,7 +5,7 @@ public class Linkable
 	public Linkable next;
 	public Linkable previous;
 
-	public sealed void unlink()
+	public final void unlink()
 	{
 		if(previous == null)
 		{

@@ -157,7 +157,7 @@ public sealed class Model : Animable
 		modelHeaders[model] = null;
 	}
 
-	public static sealed Model aModel_1621 = new Model();
+	public static final Model aModel_1621 = new Model();
 
 	private static int[] anIntArray1622 = new int[2000];
 
@@ -243,9 +243,9 @@ public sealed class Model : Animable
 	private static int[] anIntArray1675 = new int[2000];
 	private static int[] anIntArray1676 = new int[2000];
 	private static int[] anIntArray1677 = new int[12];
-	private static sealed int[] xPosition = new int[10];
-	private static sealed int[] yPosition = new int[10];
-	private static sealed int[] zPosition = new int[10];
+	private static final int[] xPosition = new int[10];
+	private static final int[] yPosition = new int[10];
+	private static final int[] zPosition = new int[10];
 	private static int vertexModifierX;
 	private static int vertexModifierY;
 	private static int vertexModifierZ;
@@ -253,7 +253,7 @@ public sealed class Model : Animable
 	public static int cursorX;
 	public static int cursorY;
 	public static int resourceCount;
-	public static sealed int[] resourceId = new int[1000];
+	public static final int[] resourceId = new int[1000];
 	public static int SINE[];
 	public static int COSINE[];
 	private static int[] HSLtoRGB;

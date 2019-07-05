@@ -1,32 +1,32 @@
 
 public sealed class ShapedTile
 {
-	public sealed int[] originalVertexX;
+	public final int[] originalVertexX;
 
-	public sealed int[] originalVertexY;
-	public sealed int[] originalVertexZ;
-	public sealed int[] triangleHSLA;
-	public sealed int[] triangleHSLB;
-	public sealed int[] triangleHSLC;
-	public sealed int[] triangleA;
-	public sealed int[] triangleB;
-	public sealed int[] triangleC;
+	public final int[] originalVertexY;
+	public final int[] originalVertexZ;
+	public final int[] triangleHSLA;
+	public final int[] triangleHSLB;
+	public final int[] triangleHSLC;
+	public final int[] triangleA;
+	public final int[] triangleB;
+	public final int[] triangleC;
 	public int triangleTexture[];
-	public sealed boolean flat;
-	public sealed int shape;
-	public sealed int rotation;
-	public sealed int underlayRGB;
-	public sealed int overlayRGB;
-	public static sealed int[] screenX = new int[6];
-	public static sealed int[] screenY = new int[6];
-	public static sealed int[] viewspaceX = new int[6];
-	public static sealed int[] viewspaceY = new int[6];
-	public static sealed int[] viewspaceZ = new int[6];
-	private static sealed int[][] shapedTilePointData = { { 1, 3, 5, 7 }, { 1, 3, 5, 7 }, { 1, 3, 5, 7 },
+	public final boolean flat;
+	public final int shape;
+	public final int rotation;
+	public final int underlayRGB;
+	public final int overlayRGB;
+	public static final int[] screenX = new int[6];
+	public static final int[] screenY = new int[6];
+	public static final int[] viewspaceX = new int[6];
+	public static final int[] viewspaceY = new int[6];
+	public static final int[] viewspaceZ = new int[6];
+	private static final int[][] shapedTilePointData = { { 1, 3, 5, 7 }, { 1, 3, 5, 7 }, { 1, 3, 5, 7 },
 			{ 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 2, 6 },
 			{ 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 11, 12 }, { 1, 3, 5, 7, 11, 12 },
 			{ 1, 3, 5, 7, 13, 14 } };
-	private static sealed int[][] shapedTileElementData = { { 0, 1, 2, 3, 0, 0, 1, 3 }, { 1, 1, 2, 3, 1, 0, 1, 3 },
+	private static final int[][] shapedTileElementData = { { 0, 1, 2, 3, 0, 0, 1, 3 }, { 1, 1, 2, 3, 1, 0, 1, 3 },
 			{ 0, 1, 2, 3, 1, 0, 1, 3 }, { 0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3 }, { 0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4 },
 			{ 0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4 }, { 0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3 },
 			{ 0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3 }, { 0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5 },

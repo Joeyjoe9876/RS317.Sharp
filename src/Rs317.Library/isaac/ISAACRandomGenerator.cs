@@ -10,21 +10,21 @@ public sealed class ISAACRandomGenerator
 	/**
 	 * log of size of results[] and memory[]
 	 */
-	sealed static int SIZEL = 8;
+	final static int SIZEL = 8;
 
 	/**
 	 * size of results[] and memory[]
 	 */
-	sealed static int SIZE = 1 << SIZEL;
+	final static int SIZE = 1 << SIZEL;
 
 	/**
 	 * for pseudorandom lookup
 	 */
-	sealed static int MASK = (SIZE - 1) << 2;
+	final static int MASK = (SIZE - 1) << 2;
 
 	private int count;
-	private sealed int[] results;
-	private sealed int[] memory;
+	private final int[] results;
+	private final int[] memory;
 	private int accumulator;
 	private int lastResult;
 	private int counter;
@@ -172,7 +172,7 @@ public sealed class ISAACRandomGenerator
 	/**
 	 * Generate 256 random results.
 	 */
-	public sealed void isaac()
+	public final void isaac()
 	{
 		int a, b, x, y;
 

@@ -1,16 +1,16 @@
 
 sealed class StationaryGraphic : Animable
 {
-	public sealed int z;
+	public final int z;
 
-	public sealed int x;
+	public final int x;
 
-	public sealed int y;
+	public final int y;
 
-	public sealed int drawHeight;
-	public sealed int stationaryGraphicLoopCycle;
+	public final int drawHeight;
+	public final int stationaryGraphicLoopCycle;
 	public boolean transformationCompleted;
-	private sealed SpotAnimation animation;
+	private final SpotAnimation animation;
 	private int elapsedFrames;
 	private int duration;
 

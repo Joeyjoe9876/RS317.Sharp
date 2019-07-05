@@ -3,7 +3,7 @@ public sealed class IndexedImage : DrawingArea
 {
 	public byte pixels[];
 
-	public sealed int[] palette;
+	public final int[] palette;
 
 	public int width;
 

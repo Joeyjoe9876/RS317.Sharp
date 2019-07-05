@@ -13,7 +13,7 @@ sealed class Item : Animable
 	}
 
 	@Override
-	public sealed Model getRotatedModel()
+	public final Model getRotatedModel()
 	{
 		ItemDefinition itemDef = ItemDefinition.getDefinition(itemId);
 		return itemDef.getAmountModel(itemCount);

@@ -2181,7 +2181,7 @@ public sealed class Rasterizer : DrawingArea
 
 	}
 
-	public static sealed int anInt1459 = -477;
+	public static final int anInt1459 = -477;
 	public static boolean lowMemory = true;
 	public static boolean restrictEdges;
 	private static boolean opaque;
@@ -2190,7 +2190,7 @@ public sealed class Rasterizer : DrawingArea
 	public static int centreX;
 	public static int centreY;
 	private static int[] anIntArray1468;
-	public static sealed int[] anIntArray1469;
+	public static final int[] anIntArray1469;
 	public static int SINE[];
 	public static int COSINE[];
 	public static int lineOffsets[];

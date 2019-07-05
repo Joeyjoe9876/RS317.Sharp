@@ -156,7 +156,7 @@ public sealed class Client : RSApplet
 	private int cameraVerticalRotation;
 	private int cameraHorizontalRotation;
 	private int playerRights;
-	private sealed int[] skillExperience;
+	private final int[] skillExperience;
 	private IndexedImage redStone1_3;
 	private IndexedImage redStone2_3;
 	private IndexedImage redStone3_2;
@@ -165,9 +165,9 @@ public sealed class Client : RSApplet
 	private Sprite mapFlag;
 	private Sprite mapMarker;
 	private boolean aBoolean872;
-	private sealed int[] cameraJitter;
+	private final int[] cameraJitter;
 	private int currentTrackId;
-	private sealed boolean[] customCameraActive;
+	private final boolean[] customCameraActive;
 	private int playerWeight;
 	private MouseDetection mouseDetection;
 	private volatile boolean drawFlames;
@@ -176,8 +176,8 @@ public sealed class Client : RSApplet
 	private boolean menuOpen;
 	private int anInt886;
 	private String inputString;
-	private sealed int MAX_ENTITY_COUNT;
-	private sealed int LOCAL_PLAYER_ID;
+	private final int MAX_ENTITY_COUNT;
+	private final int LOCAL_PLAYER_ID;
 	private Player[] players;
 	private int localPlayerCount;
 	private int[] localPlayers;
@@ -189,7 +189,7 @@ public sealed class Client : RSApplet
 	private int friendsCount;
 	private int friendListStatus;
 	private int[][] wayPoints;
-	private sealed int SCROLLBAR_GRIP_HIGHLIGHT;
+	private final int SCROLLBAR_GRIP_HIGHLIGHT;
 	private RSImageProducer backLeftIP1;
 	private RSImageProducer backLeftIP2;
 	private RSImageProducer backRightIP1;
@@ -206,11 +206,11 @@ public sealed class Client : RSApplet
 	private int crossIndex;
 	private int crossType;
 	private int plane;
-	private sealed int[] skillLevel;
-	private sealed long[] ignoreListAsLongs;
+	private final int[] skillLevel;
+	private final long[] ignoreListAsLongs;
 	private boolean loadingError;
-	private sealed int SCROLLBAR_GRIP_LOWLIGHT;
-	private sealed int[] cameraFrequency;
+	private final int SCROLLBAR_GRIP_LOWLIGHT;
+	private final int[] cameraFrequency;
 	private int[][] tileRenderCount;
 	private Sprite characterEditButtonDefualt;
 	private Sprite characterEditButtonActive;
@@ -221,9 +221,9 @@ public sealed class Client : RSApplet
 	private int hintIconDrawTileX;
 	private int hintIconDrawTileY;
 	private static int anInt940;
-	private sealed int[] chatTypes;
-	private sealed String[] chatNames;
-	private sealed String[] chatMessages;
+	private final int[] chatTypes;
+	private final String[] chatNames;
+	private final String[] chatMessages;
 	private int animationTimePassed;
 	private WorldController worldController;
 	private IndexedImage[] sideIconImage;
@@ -243,29 +243,29 @@ public sealed class Client : RSApplet
 	private volatile boolean drawingFlames;
 	private int spriteDrawX;
 	private int spriteDrawY;
-	private sealed int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
+	private final int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
 	private IndexedImage titleBoxImage;
 	private IndexedImage titleButtonImage;
-	private sealed int[] compassHingeSize;
-	private sealed int[] anIntArray969;
-	sealed FileCache[] caches;
+	private final int[] compassHingeSize;
+	private final int[] anIntArray969;
+	final FileCache[] caches;
 	public int interfaceSettings[];
 	private boolean aBoolean972;
-	private sealed int overheadMessageCount;
-	private sealed int[] overheadTextDrawX;
-	private sealed int[] overheadTextDrawY;
-	private sealed int[] overheadTextHeight;
-	private sealed int[] overheadTextWidth;
-	private sealed int[] overheadTextColour;
-	private sealed int[] overheadTextEffect;
-	private sealed int[] overheadTextCycle;
-	private sealed String[] overheadTextMessage;
+	private final int overheadMessageCount;
+	private final int[] overheadTextDrawX;
+	private final int[] overheadTextDrawY;
+	private final int[] overheadTextHeight;
+	private final int[] overheadTextWidth;
+	private final int[] overheadTextColour;
+	private final int[] overheadTextEffect;
+	private final int[] overheadTextCycle;
+	private final String[] overheadTextMessage;
 	private int secondaryCameraVertical;
 	private int lastRegionId;
 	private Sprite[] hitMarkImage;
 	private int cameraRandomisationCounter;
 	private int lastItemDragTime;
-	private sealed int[] characterEditColours;
+	private final int[] characterEditColours;
 	private static boolean clientRunning;
 	private int anInt995;
 	private int anInt996;
@@ -274,8 +274,8 @@ public sealed class Client : RSApplet
 	private int anInt999;
 	private ISAACRandomGenerator encryption;
 	private Sprite minimapEdgeImage;
-	private sealed int SCROLLBAR_TRACK_COLOUR;
-	static sealed int[][] APPEARANCE_COLOURS = {
+	private final int SCROLLBAR_TRACK_COLOUR;
+	static final int[][] APPEARANCE_COLOURS = {
 			{ 6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983, 54193 },
 			{ 8741, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341, 16578, 35003, 25239 },
 			{ 25238, 8742, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341, 16578, 35003 },
@@ -293,7 +293,7 @@ public sealed class Client : RSApplet
 	private int cameraMovedWriteDelay;
 	private boolean cameraMovedWrite;
 	private int walkableInterfaceId;
-	private static sealed int[] EXPERIENCE_TABLE;
+	private static final int[] EXPERIENCE_TABLE;
 	private int minimapState;
 	private int sameClickPositionCounter;
 	private int loadingStage;
@@ -303,7 +303,7 @@ public sealed class Client : RSApplet
 	private IndexedImage backBase1Image;
 	private IndexedImage backBase2Image;
 	private IndexedImage backHmid1Image;
-	private sealed int[] unknownCameraVariable;
+	private final int[] unknownCameraVariable;
 	private boolean characterModelChanged;
 	private Sprite[] mapFunctionImage;
 	private int baseX;
@@ -315,26 +315,26 @@ public sealed class Client : RSApplet
 	private int anInt1040;
 	private int anInt1041;
 	private int dialogID;
-	private sealed int[] skillMaxLevel;
-	private sealed int[] defaultSettings;
+	private final int[] skillMaxLevel;
+	private final int[] defaultSettings;
 	private int membershipStatus;
 	private boolean characterEditChangeGender;
 	private int anInt1048;
 	private String loadingBarText;
 	private static int loadedRegions;
-	private sealed int[] minimapLeft;
+	private final int[] minimapLeft;
 	private Archive archiveTitle;
 	private int flashingSidebar;
 	private boolean multiCombatZone;
 	private DoubleEndedQueue stationaryGraphicQueue;
-	private sealed int[] compassWidthMap;
-	private sealed RSInterface chatboxInterface;
+	private final int[] compassWidthMap;
+	private final RSInterface chatboxInterface;
 	private IndexedImage[] mapSceneImage;
 	private static int drawCycle;
 	private int trackCount;
-	private sealed int SCROLLBAR_GRIP_FOREGROUND;
+	private final int SCROLLBAR_GRIP_FOREGROUND;
 	private int friendsListAction;
-	private sealed int[] characterEditIdentityKits;
+	private final int[] characterEditIdentityKits;
 	private int moveItemSlotEnd;
 	private int lastActiveInventoryInterface;
 	private OnDemandFetcher onDemandFetcher;
@@ -358,7 +358,7 @@ public sealed class Client : RSApplet
 	private int lastMouseX;
 	private int lastMouseY;
 	private int anInt1089;
-	private sealed int[] expectedCRCs;
+	private final int[] expectedCRCs;
 	private int[] menuActionData2;
 	private int[] menuActionData3;
 	private int[] menuActionId;
@@ -388,10 +388,10 @@ public sealed class Client : RSApplet
 	private RSImageProducer bottomSideIconImageProducer;
 	private RSImageProducer topSideIconImageProducer;
 	public static Player localPlayer;
-	private sealed String[] playerActionText;
-	private sealed boolean[] playerActionUnpinned;
-	private sealed int[][][] constructMapTiles;
-	private sealed int[] tabInterfaceIDs = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+	private final String[] playerActionText;
+	private final boolean[] playerActionUnpinned;
+	private final int[][][] constructMapTiles;
+	private final int[] tabInterfaceIDs = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 	private int cameraRandomisationV;
 	private int nextCameraRandomisationV;
 	private int menuActionRow;
@@ -419,7 +419,7 @@ public sealed class Client : RSApplet
 	private boolean loadGeneratedMap;
 	private boolean cutsceneActive;
 	static int tick;
-	private static sealed String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"\243$%^&*()-_=+[{]};:'@#~,<.>/?\\| ";
+	private static final String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"\243$%^&*()-_=+[{]};:'@#~,<.>/?\\| ";
 	private RSImageProducer tabImageProducer;
 	private RSImageProducer minimapImageProducer;
 	private RSImageProducer gameScreenImageProducer;
@@ -433,7 +433,7 @@ public sealed class Client : RSApplet
 	private String enteredUsername;
 	private String enteredPassword;
 	private boolean genericLoadingError;
-	private sealed int[] objectTypes = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
+	private final int[] objectTypes = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 	private int reportAbuseInterfaceID;
 	private DoubleEndedQueue spawnObjectList;
 	private int[] chatboxLineOffsets;
@@ -456,11 +456,11 @@ public sealed class Client : RSApplet
 	private String[] menuActionName;
 	private Sprite flameLeftBackground2;
 	private Sprite flameRightBackground2;
-	private sealed int[] cameraAmplitude;
-	static sealed int[] BEARD_COLOURS = { 9104, 10275, 7595, 3610, 7975, 8526, 918, 38802, 24466, 10145, 58654, 5027,
+	private final int[] cameraAmplitude;
+	static final int[] BEARD_COLOURS = { 9104, 10275, 7595, 3610, 7975, 8526, 918, 38802, 24466, 10145, 58654, 5027,
 			1457, 16565, 34991, 25486 };
 	private static boolean flagged;
-	private sealed int[] trackIds;
+	private final int[] trackIds;
 	private int flameCycle;
 	private int minimapRotation;
 	private int randomisationMinimapRotation;
@@ -470,7 +470,7 @@ public sealed class Client : RSApplet
 	private int[][][] intGroundArray;
 	private long serverSessionKey;
 	private int loginScreenFocus;
-	private sealed IndexedImage[] modIcons;
+	private final IndexedImage[] modIcons;
 	private long lastClickTime;
 	private int currentTabId;
 	private int hintIconNpcId;
@@ -478,7 +478,7 @@ public sealed class Client : RSApplet
 	private int inputDialogState;
 	private int nextSong;
 	private boolean songChanging;
-	private sealed int[] minimapLineWidth;
+	private final int[] minimapLineWidth;
 	private CollisionMap[] currentCollisionMap;
 	public static int BITFIELD_MAX_VALUE[];
 	private boolean updateChatSettings;
@@ -487,9 +487,9 @@ public sealed class Client : RSApplet
 	private int[] objectDataIds;
 	private int lastClickX;
 	private int lastClickY;
-	public sealed int anInt1239 = 100;
-	private sealed int[] privateMessages;
-	private sealed int[] trackLoop;
+	public final int anInt1239 = 100;
+	private final int[] privateMessages;
+	private final int[] trackLoop;
 	private boolean lastItemDragged;
 	private int atInventoryLoopCycle;
 	private int atInventoryInterface;
@@ -498,9 +498,9 @@ public sealed class Client : RSApplet
 	private byte[][] objectData;
 	private int tradeMode;
 	private int chatEffectsDisabled;
-	private sealed int[] trackDelay;
+	private final int[] trackDelay;
 	private int inTutorial;
-	private sealed boolean rsAlreadyLoaded;
+	private final boolean rsAlreadyLoaded;
 	private int oneMouseButton;
 	private int minimapRandomisationCounter;
 	private boolean welcomeScreenRaised;

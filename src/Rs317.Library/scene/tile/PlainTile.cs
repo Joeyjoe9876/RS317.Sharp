@@ -1,14 +1,14 @@
 
 public sealed class PlainTile
 {
-	public sealed int colourA;
+	public final int colourA;
 
-	public sealed int colourB;
-	public sealed int colourD;
-	public sealed int colourC;
-	public sealed int texture;
+	public final int colourB;
+	public final int colourD;
+	public final int colourC;
+	public final int texture;
 	public boolean flat;
-	public sealed int colourRGB;
+	public final int colourRGB;
 
 	public PlainTile(int colourA, int colourB, int colourC, int colourD, int colourRGB, int texture, boolean flat)
 	{

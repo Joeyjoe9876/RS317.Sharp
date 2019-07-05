@@ -193,15 +193,15 @@ public static synchronized boolean wavesave(byte abyte0[], int i)
 	}
 }
 
-public static sealed int clientversion = 317;
+public static final int clientversion = 317;
 
 public static int uid;
 
 public static int storeid = 32;
 public static RandomAccessFile cache_dat = null;
-public static sealed RandomAccessFile[] cache_idx = new RandomAccessFile[5];
+public static final RandomAccessFile[] cache_idx = new RandomAccessFile[5];
 	public static boolean sunjava;
-public static sealed Applet applet = null;
+public static final Applet applet = null;
 	private static boolean active;
 private static int threadliveid;
 private static InetAddress socketip;
