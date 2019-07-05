@@ -24,8 +24,7 @@ public sealed class NPC : Entity
 		return npcDefinition.getChildModel(-1, frameId2, null);
 	}
 
-	@Override
-	public Model getRotatedModel()
+	public override Model getRotatedModel()
 	{
 		if(npcDefinition == null)
 			return null;
@@ -59,8 +58,7 @@ public sealed class NPC : Entity
 		return rotatedModel;
 	}
 
-	@Override
-	public boolean isVisible()
+	public override boolean isVisible()
 	{
 		return npcDefinition != null;
 	}

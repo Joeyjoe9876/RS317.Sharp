@@ -43,8 +43,7 @@ sealed class StationaryGraphic : Animable
 
 	}
 
-	@Override
-	public Model getRotatedModel()
+	public override Model getRotatedModel()
 	{
 		Model model = animation.getModel();
 		if(model == null)

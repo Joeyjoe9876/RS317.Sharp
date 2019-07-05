@@ -9,7 +9,7 @@ public class Animable : Cacheable
 		modelHeight = 1000;
 	}
 
-	Model getRotatedModel()
+	public virtual Model getRotatedModel()
 	{
 		return null;
 	}

@@ -128,8 +128,7 @@ sealed class RSSocket : Runnable
 
 	}
 
-	@Override
-	public void run()
+	public override void run()
 	{
 		while(isWriter)
 		{

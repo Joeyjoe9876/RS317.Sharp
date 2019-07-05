@@ -29,8 +29,7 @@ sealed class RSImageProducer : ImageProducer, ImageObserver
 		initDrawingArea();
 	}
 
-	@Override
-	public synchronized void addConsumer(ImageConsumer imageConsumer)
+	public override synchronized void addConsumer(ImageConsumer imageConsumer)
 	{
 		this.imageConsumer = imageConsumer;
 		imageConsumer.setDimensions(width, height);
@@ -54,8 +53,7 @@ sealed class RSImageProducer : ImageProducer, ImageObserver
 		}
 	}
 
-	@Override
-	public boolean imageUpdate(Image image, int i, int j, int k, int l, int i1)
+	public override boolean imageUpdate(Image image, int i, int j, int k, int l, int i1)
 	{
 		return true;
 	}
@@ -65,27 +63,23 @@ sealed class RSImageProducer : ImageProducer, ImageObserver
 		DrawingArea.initDrawingArea(height, width, pixels);
 	}
 
-	@Override
-	public synchronized boolean isConsumer(ImageConsumer imageconsumer)
+	public override synchronized boolean isConsumer(ImageConsumer imageconsumer)
 	{
 		return imageConsumer == imageconsumer;
 	}
 
-	@Override
-	public synchronized void removeConsumer(ImageConsumer imageconsumer)
+	public override synchronized void removeConsumer(ImageConsumer imageconsumer)
 	{
 		if(imageConsumer == imageconsumer)
 			imageConsumer = null;
 	}
 
-	@Override
-	public void requestTopDownLeftRightResend(ImageConsumer imageconsumer)
+	public override void requestTopDownLeftRightResend(ImageConsumer imageconsumer)
 	{
 		System.out.println("TDLR");
 	}
 
-	@Override
-	public void startProduction(ImageConsumer imageconsumer)
+	public override void startProduction(ImageConsumer imageconsumer)
 	{
 		addConsumer(imageconsumer);
 	}

@@ -1961,8 +1961,7 @@ private void checkTutorialIsland()
 		inTutorial = 0;
 }
 
-@Override
-	public void cleanUpForQuit()
+public override void cleanUpForQuit()
 {
 	signlink.reporterror = false;
 	try
@@ -4688,8 +4687,7 @@ private void drawInterface(int j, int x, RSInterface rsInterface, int y)
 	DrawingArea.setDrawingArea(clipBottom, clipLeft, clipRight, clipTop);
 }
 
-@Override
-	void drawLoadingText(int percentage, String text)
+void override drawLoadingText(int percentage, String text)
 {
 	loadingBarPercentage = percentage;
 	loadingBarText = text;
@@ -5358,8 +5356,7 @@ private void dropClient()
 	}
 }
 
-@Override
-	public AppletContext getAppletContext()
+public override AppletContext getAppletContext()
 {
 	if(signlink.applet != null)
 		return signlink.applet.getAppletContext();
@@ -5377,8 +5374,7 @@ private int getCameraPlaneCutscene()
 		return 3;
 }
 
-@Override
-	public URL getCodeBase()
+public override URL getCodeBase()
 {
 	if(signlink.applet != null)
 		return signlink.applet.getCodeBase();
@@ -5422,8 +5418,7 @@ private int getFloorDrawHeight(int z, int y, int x)
 	return i2 * (128 - _y) + j2 * _y >> 7;
 }
 
-@Override
-Component getGameComponent()
+override Component getGameComponent()
 {
 	if(signlink.applet != null)
 		return signlink.applet;
@@ -5433,8 +5428,8 @@ Component getGameComponent()
 		return this;
 }
 
-@Override
-	public String getParameter(String s)
+
+public override String getParameter(String s)
 {
 	if(signlink.applet != null)
 		return signlink.applet.getParameter(s);
@@ -6943,8 +6938,7 @@ private void handleMusic()
 	}
 }
 
-@Override
-	public void init()
+public override void init()
 {
 	localWorldId = Integer.parseInt(getParameter("nodeid"));
 	portOffset = Integer.parseInt(getParameter("portoff"));
@@ -9099,8 +9093,7 @@ private void processChatModeClick()
 	}
 }
 
-@Override
-	public void processDrawing()
+public override void processDrawing()
 {
 	if(rsAlreadyLoaded || loadingError || genericLoadingError)
 	{
@@ -9115,8 +9108,7 @@ private void processChatModeClick()
 	anInt1213 = 0;
 }
 
-@Override
-	public void processGameLoop()
+public override void processGameLoop()
 {
 	if(rsAlreadyLoaded || loadingError || genericLoadingError)
 		return;
@@ -10010,8 +10002,7 @@ private void randomizeBackground(IndexedImage background)
 	}
 }
 
-@Override
-	public void redraw()
+public override void redraw()
 {
 	welcomeScreenRaised = true;
 }
@@ -10554,8 +10545,7 @@ private int rotateFlameColour(int r, int g, int b)
 			+ ((r & 0xFF00) * alpha + (g & 0xFF00) * b & 0xFF0000) >> 8;
 }
 
-@Override
-	public void run()
+public override void run()
 {
 	if(drawFlames)
 	{
@@ -10960,8 +10950,8 @@ private void spawnGroundItem(int x, int y)
 			((Animable)(item)), ((Animable)(secondItem)), ((Animable)(thirdItem)));
 }
 
-@Override
-	public void startRunnable(Runnable runnable, int priority)
+
+public override void startRunnable(Runnable runnable, int priority)
 {
 	if(priority > 10)
 		priority = 10;
@@ -10975,8 +10965,7 @@ private void spawnGroundItem(int x, int y)
 	}
 }
 
-@Override
-	void startUp()
+void override startUp()
 {
 	drawLoadingText(20, "Starting up");
 	if(signlink.sunjava)

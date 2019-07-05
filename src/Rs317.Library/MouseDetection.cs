@@ -19,8 +19,7 @@ sealed class MouseDetection : Runnable
 		clientInstance = client1;
 	}
 
-	@Override
-	public void run()
+	public override void run()
 	{
 		while(running)
 		{

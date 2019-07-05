@@ -518,8 +518,7 @@ public sealed class OnDemandFetcher : Runnable
 		}
 	}
 
-	@Override
-	public void run()
+	public override void run()
 	{
 		try
 		{

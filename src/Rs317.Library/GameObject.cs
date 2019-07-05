@@ -66,8 +66,7 @@ sealed class GameObject : Animable
 			return GameObjectDefinition.getDefinition(childrenIds[child]);
 	}
 
-	@Override
-	public Model getRotatedModel()
+	public override Model getRotatedModel()
 	{
 		int animationId = -1;
 		if(animation != null)

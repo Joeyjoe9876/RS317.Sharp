@@ -48,8 +48,7 @@ sealed class Projectile : Animable
 		this.moving = false;
 	}
 
-	@Override
-	public Model getRotatedModel()
+	public override Model getRotatedModel()
 	{
 		Model model = animation.getModel();
 		if(model == null)

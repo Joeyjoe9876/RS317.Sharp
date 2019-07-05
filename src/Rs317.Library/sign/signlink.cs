@@ -249,8 +249,7 @@ public sealed class signlink : Runnable
 	{
 	}
 
-	@Override
-	public void run()
+	public override void run()
 	{
 		active = true;
 		String s = findcachedir();

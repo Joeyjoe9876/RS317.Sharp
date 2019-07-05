@@ -208,8 +208,7 @@ public sealed class Player : Entity
 		return model;
 	}
 
-	@Override
-	public Model getRotatedModel()
+	public override Model getRotatedModel()
 	{
 		if(!visible)
 			return null;
@@ -283,8 +282,7 @@ public sealed class Player : Entity
 		return appearanceModel;
 	}
 
-	@Override
-	public boolean isVisible()
+	public sealed override boolean isVisible()
 	{
 		return visible;
 	}

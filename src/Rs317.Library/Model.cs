@@ -1663,9 +1663,8 @@ public void recolour(int targetColour, int replacementColour)
 
 }
 
-@Override
-	public void renderAtPoint(int i, int yCameraSine, int yCameraCosine, int xCameraSine, int xCameraCosine, int x,
-			int y, int z, int i2)
+public override void renderAtPoint(int i, int yCameraSine, int yCameraCosine, int xCameraSine, int xCameraCosine, int x,
+		int y, int z, int i2)
 {
 	int j2 = z * xCameraCosine - x * xCameraSine >> 16;
 	int k2 = y * yCameraSine + j2 * yCameraCosine >> 16;

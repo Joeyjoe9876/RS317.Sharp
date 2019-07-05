@@ -13,22 +13,19 @@ sealed class RSFrame : Frame
 		setSize(width + 8, height + 28);
 	}
 
-	@Override
-	public Graphics getGraphics()
+	public override Graphics getGraphics()
 	{
 		Graphics graphics = super.getGraphics();
 		graphics.translate(4, 24);
 		return graphics;
 	}
 
-	@Override
-	public void paint(Graphics graphics)
+	public override void paint(Graphics graphics)
 	{
 		applet.paint(graphics);
 	}
 
-	@Override
-	public void update(Graphics graphics)
+	public override void update(Graphics graphics)
 	{
 		applet.update(graphics);
 	}
