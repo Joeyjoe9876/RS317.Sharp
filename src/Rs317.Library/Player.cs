@@ -1,4 +1,6 @@
 
+using System;
+
 public sealed class Player : Entity
 {
 	public int rights;
@@ -107,7 +109,7 @@ public sealed class Player : Entity
 		}
 		if(model_1 == null)
 		{
-			Model models[] = new Model[12];
+			Model[] models = new Model[12];
 			int j2 = 0;
 			for(int l2 = 0; l2 < 12; l2++)
 			{
@@ -177,7 +179,7 @@ public sealed class Player : Entity
 
 		if(flag)
 			return null;
-		Model models[] = new Model[12];
+		Model[] models = new Model[12];
 		int k = 0;
 		for(int l = 0; l < 12; l++)
 		{
@@ -235,7 +237,7 @@ public sealed class Player : Entity
 					model.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
 				model.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30,
 						true);
-				Model models[] = { appearanceModel, model };
+				Model[] models = { appearanceModel, model };
 				appearanceModel = new Model(models);
 			}
 		}
@@ -260,7 +262,7 @@ public sealed class Player : Entity
 				}
 				else if(base.turnDirection == 1536)
 					model.rotate90Degrees();
-				Model models[] = { appearanceModel, model };
+				Model[] models = { appearanceModel, model };
 				appearanceModel = new Model(models);
 				if(base.turnDirection == 512)
 					model.rotate90Degrees();
@@ -320,7 +322,7 @@ public sealed class Player : Entity
 		for(int bodyPart = 0; bodyPart < 5; bodyPart++)
 		{
 			int colour = stream.getUnsignedByte();
-			if(colour < 0 || colour >= Client.APPEARANCE_COLOURS[bodyPart].length)
+			if(colour < 0 || colour >= Client.APPEARANCE_COLOURS[bodyPart].Length)
 				colour = 0;
 			bodyPartColour[bodyPart] = colour;
 		}

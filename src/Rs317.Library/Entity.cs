@@ -17,13 +17,13 @@ public class Entity : Animable
 
 	int degreesToTurn;
 
-	int runAnimationId;
+	protected int runAnimationId { get; set; }
 
 	public String overheadTextMessage;
 	public int height;
 	public int turnDirection;
-	protected int standAnimationId { get; private set; }
-	int standTurnAnimationId;
+	protected int standAnimationId { get; set; }
+	protected int standTurnAnimationId { get; set; }
 	int chatColour;
 	int[] hitArray;
 	int[] hitMarkTypes;
@@ -64,10 +64,10 @@ public class Entity : Animable
 	public int y;
 	int currentRotation;
 	bool[] waypointRan;
-	int walkAnimationId;
-	int turnAboutAnimationId;
-	int turnRightAnimationId;
-	int turnLeftAnimationId;
+	protected int walkAnimationId { get; set; }
+	protected int turnAboutAnimationId { get; set; }
+	protected int turnRightAnimationId { get; set; }
+	protected int turnLeftAnimationId { get; set; }
 
 	protected Entity()
 	{
