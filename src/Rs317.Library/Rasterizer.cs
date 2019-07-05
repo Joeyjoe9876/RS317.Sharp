@@ -138,6 +138,7 @@ public sealed class Rasterizer : DrawingArea
 
 	public static void clearTextureCache()
 	{
+		texelCacheMask.SetAll(false);
 		//TODO: Information online indicates clearing is faster than reallocation but we should measure.
 		Array.Clear(texelCache, 0, texelCache.Length);
 	}
@@ -1525,7 +1526,7 @@ public sealed class Rasterizer : DrawingArea
 		int red = 0;
 		int green = 0;
 		int blue = 0;
-		int colourCount = texturePalettes[textureId].Length;
+		int colourCount = texturePalettes[textureId].Length; //this call to Length is ok. Since it gets subarray
 		for(int k1 = 0; k1 < colourCount; k1++)
 		{
 			red += texturePalettes[textureId][k1] >> 16 & 0xff;
