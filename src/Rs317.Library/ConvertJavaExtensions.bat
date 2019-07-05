@@ -1,0 +1,1 @@
+FOR /R %%x IN (*.java) DO ren "%%x" *.cs
