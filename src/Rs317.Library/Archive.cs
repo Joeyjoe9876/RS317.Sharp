@@ -1,4 +1,6 @@
 
+using System;
+
 /// <summary>
 /// Represents a single archive within a cache.
 /// </summary>
@@ -14,7 +16,7 @@ public sealed class Archive
 	private int[] initialOffsets;
 	private bool decompressed;
 
-	public Archive(byte data[])
+	public Archive(byte[] data)
 	{
 		Buffer buffer = new Buffer(data);
 		int compressedLength = buffer.get3Bytes();
@@ -22,7 +24,7 @@ public sealed class Archive
 
 		if(decompressedLength != compressedLength)
 		{
-			byte output[] = new byte[compressedLength];
+			byte[] output = new byte[compressedLength];
 			Bzip2Decompressor.decompress(output, compressedLength, data, decompressedLength, 6);
 			outputData = output;
 			buffer = new Buffer(outputData);
@@ -54,9 +56,9 @@ public sealed class Archive
 	public byte[] decompressFile(String name)
 	{
 		int hash = 0;
-		name = name.toUpperCase();
-		for(int c = 0; c < name.length(); c++)
-			hash = (hash * 61 + name.charAt(c)) - 32;
+		name = name.ToUpper();
+		for(int c = 0; c < name.Length; c++)
+			hash = (hash * 61 + name[c]) - 32;
 
 		for(int file = 0; file < fileCount; file++)
 			if(hashes[file] == hash)
@@ -69,7 +71,7 @@ public sealed class Archive
 				}
 				else
 				{
-					System.arraycopy(outputData, initialOffsets[file], output, 0, decompressedSizes[file]);
+					System.Buffer.BlockCopy(outputData, initialOffsets[file], output, 0, decompressedSizes[file]);
 				}
 				return output;
 			}
