@@ -1,5 +1,6 @@
 
-sealed class StationaryGraphic : Animable {
+sealed class StationaryGraphic : Animable
+{
 
 	public final int z;
 
@@ -15,7 +16,8 @@ sealed class StationaryGraphic : Animable {
 	private int duration;
 
 	public StationaryGraphic(int x, int y, int z, int drawHeight, int animationIndex, int loopCycle,
-			int loopCycleOffset) {
+			int loopCycleOffset)
+	{
 		transformationCompleted = false;
 		animation = SpotAnimation.cache[animationIndex];
 		this.z = z;
@@ -26,12 +28,15 @@ sealed class StationaryGraphic : Animable {
 		transformationCompleted = false;
 	}
 
-	public void animationStep(int i) {
-		for (duration += i; duration > animation.sequences.getFrameLength(elapsedFrames);) {
+	public void animationStep(int i)
+	{
+		for(duration += i; duration > animation.sequences.getFrameLength(elapsedFrames);)
+		{
 			duration -= animation.sequences.getFrameLength(elapsedFrames) + 1;
 			elapsedFrames++;
-			if (elapsedFrames >= animation.sequences.frameCount
-					&& (elapsedFrames < 0 || elapsedFrames >= animation.sequences.frameCount)) {
+			if(elapsedFrames >= animation.sequences.frameCount
+					&& (elapsedFrames < 0 || elapsedFrames >= animation.sequences.frameCount))
+			{
 				elapsedFrames = 0;
 				transformationCompleted = true;
 			}
@@ -40,28 +45,33 @@ sealed class StationaryGraphic : Animable {
 	}
 
 	@Override
-	public Model getRotatedModel() {
+	public Model getRotatedModel()
+	{
 		Model model = animation.getModel();
-		if (model == null)
+		if(model == null)
 			return null;
 		int frame = animation.sequences.primaryFrames[elapsedFrames];
 		Model animatedModel = new Model(true, Animation.isNullFrame(frame), false, model);
-		if (!transformationCompleted) {
+		if(!transformationCompleted)
+		{
 			animatedModel.createBones();
 			animatedModel.applyTransformation(frame);
 			animatedModel.triangleSkin = null;
 			animatedModel.vertexSkin = null;
 		}
-		if (animation.scaleXY != 128 || animation.scaleZ != 128)
+		if(animation.scaleXY != 128 || animation.scaleZ != 128)
 			animatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
-		if (animation.rotation != 0) {
-			if (animation.rotation == 90)
+		if(animation.rotation != 0)
+		{
+			if(animation.rotation == 90)
 				animatedModel.rotate90Degrees();
-			if (animation.rotation == 180) {
+			if(animation.rotation == 180)
+			{
 				animatedModel.rotate90Degrees();
 				animatedModel.rotate90Degrees();
 			}
-			if (animation.rotation == 270) {
+			if(animation.rotation == 270)
+			{
 				animatedModel.rotate90Degrees();
 				animatedModel.rotate90Degrees();
 				animatedModel.rotate90Degrees();

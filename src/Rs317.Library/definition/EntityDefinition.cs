@@ -1,9 +1,11 @@
 
-public sealed class EntityDefinition {
+public sealed class EntityDefinition
+{
 
-	public static EntityDefinition getDefinition(int id) {
-		for (int c = 0; c < 20; c++)
-			if (EntityDefinition.cache[c].id == id)
+	public static EntityDefinition getDefinition(int id)
+	{
+		for(int c = 0; c < 20; c++)
+			if(EntityDefinition.cache[c].id == id)
 				return EntityDefinition.cache[c];
 
 		EntityDefinition.bufferIndex = (EntityDefinition.bufferIndex + 1) % 20;
@@ -14,24 +16,27 @@ public sealed class EntityDefinition {
 		return definition;
 	}
 
-	public static void load(Archive streamLoader) {
+	public static void load(Archive streamLoader)
+	{
 		EntityDefinition.stream = new Buffer(streamLoader.decompressFile("npc.dat"));
 		Buffer stream = new Buffer(streamLoader.decompressFile("npc.idx"));
 		int size = stream.getUnsignedLEShort();
 		EntityDefinition.streamOffsets = new int[size];
 		int offset = 2;
-		for (int n = 0; n < size; n++) {
+		for(int n = 0; n < size; n++)
+		{
 			EntityDefinition.streamOffsets[n] = offset;
 			offset += stream.getUnsignedLEShort();
 		}
 
 		EntityDefinition.cache = new EntityDefinition[20];
-		for (int c = 0; c < 20; c++)
+		for(int c = 0; c < 20; c++)
 			EntityDefinition.cache[c] = new EntityDefinition();
 
 	}
 
-	public static void nullLoader() {
+	public static void nullLoader()
+	{
 		modelCache = null;
 		streamOffsets = null;
 		cache = null;
@@ -77,7 +82,8 @@ public sealed class EntityDefinition {
 	private int[] modelIds;
 	public static Cache modelCache = new Cache(30);
 
-	private EntityDefinition() {
+	private EntityDefinition()
+	{
 		turnLeftAnimationId = -1;
 		varBitId = -1;
 		turnAboutAnimationId = -1;
@@ -97,50 +103,57 @@ public sealed class EntityDefinition {
 		visible = false;
 	}
 
-	public EntityDefinition getChildDefinition() {
+	public EntityDefinition getChildDefinition()
+	{
 		int childId = -1;
-		if (varBitId != -1) {
+		if(varBitId != -1)
+		{
 			VarBit varBit = VarBit.values[varBitId];
 			int configId = varBit.configId;
 			int lsb = varBit.leastSignificantBit;
 			int msb = varBit.mostSignificantBit;
 			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			childId = clientInstance.interfaceSettings[configId] >> lsb & bit;
-		} else if (settingId != -1)
+		}
+		else if(settingId != -1)
 			childId = clientInstance.interfaceSettings[settingId];
-		if (childId < 0 || childId >= childrenIDs.length || childrenIDs[childId] == -1)
+		if(childId < 0 || childId >= childrenIDs.length || childrenIDs[childId] == -1)
 			return null;
 		else
 			return getDefinition(childrenIDs[childId]);
 	}
 
-	public Model getChildModel(int frameId2, int frameId1, int framesFrom2[]) {
-		if (childrenIDs != null) {
+	public Model getChildModel(int frameId2, int frameId1, int framesFrom2[])
+	{
+		if(childrenIDs != null)
+		{
 			EntityDefinition childDefinition = getChildDefinition();
-			if (childDefinition == null)
+			if(childDefinition == null)
 				return null;
 			else
 				return childDefinition.getChildModel(frameId2, frameId1, framesFrom2);
 		}
-		Model model = (Model) modelCache.get(id);
-		if (model == null) {
+		Model model = (Model)modelCache.get(id);
+		if(model == null)
+		{
 			boolean notCached = false;
-			for (int m = 0; m < modelIds.length; m++)
-				if (!Model.isCached(modelIds[m]))
+			for(int m = 0; m < modelIds.length; m++)
+				if(!Model.isCached(modelIds[m]))
 					notCached = true;
 
-			if (notCached)
+			if(notCached)
 				return null;
 			Model childModels[] = new Model[modelIds.length];
-			for (int m = 0; m < modelIds.length; m++)
+			for(int m = 0; m < modelIds.length; m++)
 				childModels[m] = Model.getModel(modelIds[m]);
 
-			if (childModels.length == 1)
+			if(childModels.length == 1)
 				model = childModels[0];
 			else
 				model = new Model(childModels.length, childModels);
-			if (modifiedModelColours != null) {
-				for (int c = 0; c < modifiedModelColours.length; c++)
+			if(modifiedModelColours != null)
+			{
+				for(int c = 0; c < modifiedModelColours.length; c++)
 					model.recolour(modifiedModelColours[c], originalModelColours[c]);
 
 			}
@@ -150,143 +163,162 @@ public sealed class EntityDefinition {
 		}
 		Model childModel = Model.aModel_1621;
 		childModel.replaceWithModel(model, Animation.isNullFrame(frameId1) & Animation.isNullFrame(frameId2));
-		if (frameId1 != -1 && frameId2 != -1)
+		if(frameId1 != -1 && frameId2 != -1)
 			childModel.mixAnimationFrames(framesFrom2, frameId2, frameId1);
-		else if (frameId1 != -1)
+		else if(frameId1 != -1)
 			childModel.applyTransformation(frameId1);
-		if (scaleXY != 128 || scaleZ != 128)
+		if(scaleXY != 128 || scaleZ != 128)
 			childModel.scaleT(scaleXY, scaleXY, scaleZ);
 		childModel.calculateDiagonals();
 		childModel.triangleSkin = null;
 		childModel.vertexSkin = null;
-		if (boundaryDimension == 1)
+		if(boundaryDimension == 1)
 			childModel.singleTile = true;
 		return childModel;
 	}
 
-	public Model getHeadModel() {
-		if (childrenIDs != null) {
+	public Model getHeadModel()
+	{
+		if(childrenIDs != null)
+		{
 			EntityDefinition definition = getChildDefinition();
-			if (definition == null)
+			if(definition == null)
 				return null;
 			else
 				return definition.getHeadModel();
 		}
-		if (headModelIds == null)
+		if(headModelIds == null)
 			return null;
 		boolean someModelsNotCached = false;
-		for (int i = 0; i < headModelIds.length; i++)
-			if (!Model.isCached(headModelIds[i]))
+		for(int i = 0; i < headModelIds.length; i++)
+			if(!Model.isCached(headModelIds[i]))
 				someModelsNotCached = true;
 
-		if (someModelsNotCached)
+		if(someModelsNotCached)
 			return null;
 		Model headModels[] = new Model[headModelIds.length];
-		for (int j = 0; j < headModelIds.length; j++)
+		for(int j = 0; j < headModelIds.length; j++)
 			headModels[j] = Model.getModel(headModelIds[j]);
 
 		Model headModel;
-		if (headModels.length == 1)
+		if(headModels.length == 1)
 			headModel = headModels[0];
 		else
 			headModel = new Model(headModels.length, headModels);
-		if (modifiedModelColours != null) {
-			for (int c = 0; c < modifiedModelColours.length; c++)
+		if(modifiedModelColours != null)
+		{
+			for(int c = 0; c < modifiedModelColours.length; c++)
 				headModel.recolour(modifiedModelColours[c], originalModelColours[c]);
 
 		}
 		return headModel;
 	}
 
-	private void loadDefinition(Buffer stream) {
-		do {
+	private void loadDefinition(Buffer stream)
+	{
+		do
+		{
 			int opcode = stream.getUnsignedByte();
-			if (opcode == 0)
+			if(opcode == 0)
 				return;
-			if (opcode == 1) {
+			if(opcode == 1)
+			{
 				int modelCount = stream.getUnsignedByte();
 				modelIds = new int[modelCount];
-				for (int m = 0; m < modelCount; m++)
+				for(int m = 0; m < modelCount; m++)
 					modelIds[m] = stream.getUnsignedLEShort();
 
-			} else if (opcode == 2)
+			}
+			else if(opcode == 2)
 				name = stream.getString();
-			else if (opcode == 3)
+			else if(opcode == 3)
 				description = stream.readBytes();
-			else if (opcode == 12)
+			else if(opcode == 12)
 				boundaryDimension = stream.get();
-			else if (opcode == 13)
+			else if(opcode == 13)
 				standAnimationId = stream.getUnsignedLEShort();
-			else if (opcode == 14)
+			else if(opcode == 14)
 				walkAnimationId = stream.getUnsignedLEShort();
-			else if (opcode == 17) {
+			else if(opcode == 17)
+			{
 				walkAnimationId = stream.getUnsignedLEShort();
 				turnAboutAnimationId = stream.getUnsignedLEShort();
 				turnRightAnimationId = stream.getUnsignedLEShort();
 				turnLeftAnimationId = stream.getUnsignedLEShort();
-			} else if (opcode >= 30 && opcode < 40) {
-				if (actions == null)
+			}
+			else if(opcode >= 30 && opcode < 40)
+			{
+				if(actions == null)
 					actions = new String[5];
 				actions[opcode - 30] = stream.getString();
-				if (actions[opcode - 30].equalsIgnoreCase("hidden"))
+				if(actions[opcode - 30].equalsIgnoreCase("hidden"))
 					actions[opcode - 30] = null;
-			} else if (opcode == 40) {
+			}
+			else if(opcode == 40)
+			{
 				int colourCount = stream.getUnsignedByte();
 				modifiedModelColours = new int[colourCount];
 				originalModelColours = new int[colourCount];
-				for (int c = 0; c < colourCount; c++) {
+				for(int c = 0; c < colourCount; c++)
+				{
 					modifiedModelColours[c] = stream.getUnsignedLEShort();
 					originalModelColours[c] = stream.getUnsignedLEShort();
 				}
 
-			} else if (opcode == 60) {
+			}
+			else if(opcode == 60)
+			{
 				int additionalModelCount = stream.getUnsignedByte();
 				headModelIds = new int[additionalModelCount];
-				for (int m = 0; m < additionalModelCount; m++)
+				for(int m = 0; m < additionalModelCount; m++)
 					headModelIds[m] = stream.getUnsignedLEShort();
 
-			} else if (opcode == 90)
+			}
+			else if(opcode == 90)
 				stream.getUnsignedLEShort();
-			else if (opcode == 91)
+			else if(opcode == 91)
 				stream.getUnsignedLEShort();
-			else if (opcode == 92)
+			else if(opcode == 92)
 				stream.getUnsignedLEShort();
-			else if (opcode == 93)
+			else if(opcode == 93)
 				visibleMinimap = false;
-			else if (opcode == 95)
+			else if(opcode == 95)
 				combatLevel = stream.getUnsignedLEShort();
-			else if (opcode == 97)
+			else if(opcode == 97)
 				scaleXY = stream.getUnsignedLEShort();
-			else if (opcode == 98)
+			else if(opcode == 98)
 				scaleZ = stream.getUnsignedLEShort();
-			else if (opcode == 99)
+			else if(opcode == 99)
 				visible = true;
-			else if (opcode == 100)
+			else if(opcode == 100)
 				brightness = stream.get();
-			else if (opcode == 101)
+			else if(opcode == 101)
 				contrast = stream.get() * 5;
-			else if (opcode == 102)
+			else if(opcode == 102)
 				headIcon = stream.getUnsignedLEShort();
-			else if (opcode == 103)
+			else if(opcode == 103)
 				degreesToTurn = stream.getUnsignedLEShort();
-			else if (opcode == 106) {
+			else if(opcode == 106)
+			{
 				varBitId = stream.getUnsignedLEShort();
-				if (varBitId == 65535)
+				if(varBitId == 65535)
 					varBitId = -1;
 				settingId = stream.getUnsignedLEShort();
-				if (settingId == 65535)
+				if(settingId == 65535)
 					settingId = -1;
 				int childCount = stream.getUnsignedByte();
 				childrenIDs = new int[childCount + 1];
-				for (int c = 0; c <= childCount; c++) {
+				for(int c = 0; c <= childCount; c++)
+				{
 					childrenIDs[c] = stream.getUnsignedLEShort();
-					if (childrenIDs[c] == 65535)
+					if(childrenIDs[c] == 65535)
 						childrenIDs[c] = -1;
 				}
 
-			} else if (opcode == 107)
+			}
+			else if(opcode == 107)
 				clickable = false;
-		} while (true);
+		} while(true);
 	}
 
 }

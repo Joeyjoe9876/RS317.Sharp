@@ -1,5 +1,6 @@
 
-sealed class ModelHeader {
+sealed class ModelHeader
+{
 
 	public byte modelData[];
 
@@ -20,6 +21,7 @@ sealed class ModelHeader {
 	public int triangleSkinOffset;
 	public int texturedTriangleOffset;
 
-	public ModelHeader() {
+	public ModelHeader()
+	{
 	}
 }

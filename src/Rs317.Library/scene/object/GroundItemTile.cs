@@ -1,5 +1,6 @@
 
-public sealed class GroundItemTile {
+public sealed class GroundItemTile
+{
 
 	public int z;
 
@@ -11,6 +12,7 @@ public sealed class GroundItemTile {
 	public int uid;
 	public int anInt52;
 
-	public GroundItemTile() {
+	public GroundItemTile()
+	{
 	}
 }

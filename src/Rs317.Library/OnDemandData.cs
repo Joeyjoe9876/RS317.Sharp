@@ -1,5 +1,6 @@
 
-public sealed class OnDemandData : Cacheable {
+public sealed class OnDemandData : Cacheable
+{
 
 	int dataType;
 
@@ -8,7 +9,8 @@ public sealed class OnDemandData : Cacheable {
 	boolean incomplete;
 	int loopCycle;
 
-	public OnDemandData() {
+	public OnDemandData()
+	{
 		incomplete = true;
 	}
 }

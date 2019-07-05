@@ -10,7 +10,8 @@
 ///      ://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2
 ///      /bzlib_private.h
 /// </summary>
-public class BZip2DecompressionState {
+public class BZip2DecompressionState
+{
 
 	// Class32
 
@@ -82,7 +83,8 @@ public class BZip2DecompressionState {
 	int totalOutLo32;
 	int totalOutHigh32;
 
-	BZip2DecompressionState() {
+	BZip2DecompressionState()
+	{
 		unzftab = new int[256];
 		cftab = new int[257];
 		inUse = new boolean[256];

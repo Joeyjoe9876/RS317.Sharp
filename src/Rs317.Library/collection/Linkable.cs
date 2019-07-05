@@ -1,12 +1,15 @@
 
-public class Linkable {
+public class Linkable
+{
 
 	public long id;
 	public Linkable next;
 	public Linkable previous;
 
-	public final void unlink() {
-		if (previous == null) {
+	public final void unlink()
+	{
+		if(previous == null)
+		{
 			return;
 		}
 

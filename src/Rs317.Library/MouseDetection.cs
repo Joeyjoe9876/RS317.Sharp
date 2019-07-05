@@ -1,5 +1,6 @@
 
-sealed class MouseDetection : Runnable {
+sealed class MouseDetection : Runnable
+{
 
 	private Client clientInstance;
 
@@ -10,7 +11,8 @@ sealed class MouseDetection : Runnable {
 	public final int[] coordsX;
 	public int coordsIndex;
 
-	public MouseDetection(Client client1) {
+	public MouseDetection(Client client1)
+	{
 		syncObject = new Object();
 		coordsY = new int[500];
 		running = true;
@@ -19,18 +21,24 @@ sealed class MouseDetection : Runnable {
 	}
 
 	@Override
-	public void run() {
-		while (running) {
-			synchronized (syncObject) {
-				if (coordsIndex < 500) {
+	public void run()
+	{
+		while(running)
+		{
+			synchronized(syncObject) {
+				if(coordsIndex < 500)
+				{
 					coordsX[coordsIndex] = clientInstance.mouseX;
 					coordsY[coordsIndex] = clientInstance.mouseY;
 					coordsIndex++;
 				}
 			}
-			try {
+			try
+			{
 				Thread.sleep(50L);
-			} catch (Exception _ex) {
+			}
+			catch(Exception _ex)
+			{
 			}
 		}
 	}

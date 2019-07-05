@@ -1,5 +1,6 @@
 
-public sealed class InteractiveObject {
+public sealed class InteractiveObject
+{
 
 	public int z;
 
@@ -17,6 +18,7 @@ public sealed class InteractiveObject {
 	public int uid;
 	public byte objConf;
 
-	public InteractiveObject() {
+	public InteractiveObject()
+	{
 	}
 }

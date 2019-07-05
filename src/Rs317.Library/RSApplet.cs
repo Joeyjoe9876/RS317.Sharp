@@ -1,7 +1,6 @@
 
-public class RSApplet : Applet
-		implements Runnable, MouseListener, MouseMotionListener, KeyListener, FocusListener, WindowListener {
-
+public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, KeyListener, FocusListener, WindowListener
+{
 	private int gameState;
 
 	private int delayTime;
@@ -60,7 +59,8 @@ public class RSApplet : Applet
 
 	private int writeIndex;
 
-	RSApplet() {
+	RSApplet()
+	{
 		delayTime = 20;
 		minDelay = 1;
 		otims = new long[10];
@@ -71,10 +71,12 @@ public class RSApplet : Applet
 		inputBuffer = new int[128];
 	}
 
-	void cleanUpForQuit() {
+	void cleanUpForQuit()
+	{
 	}
 
-	final void createClientFrame(int width, int height) {
+	final void createClientFrame(int width, int height)
+	{
 		this.width = width;
 		this.height = height;
 		gameFrame = new RSFrame(this, this.width, this.height);
@@ -84,33 +86,46 @@ public class RSApplet : Applet
 	}
 
 	@Override
-	public final void destroy() {
+	public final void destroy()
+	{
 		gameState = -1;
-		try {
+		try
+		{
 			Thread.sleep(5000L);
-		} catch (Exception _ex) {
 		}
-		if (gameState == -1)
+		catch(Exception _ex)
+		{
+		}
+		if(gameState == -1)
 			exit();
 	}
 
-	void drawLoadingText(int percentage, String s) {
-		while (gameGraphics == null) {
+	void drawLoadingText(int percentage, String s)
+	{
+		while(gameGraphics == null)
+		{
 			gameGraphics = getGameComponent().getGraphics();
-			try {
+			try
+			{
 				getGameComponent().repaint();
-			} catch (Exception _ex) {
 			}
-			try {
+			catch(Exception _ex)
+			{
+			}
+			try
+			{
 				Thread.sleep(1000L);
-			} catch (Exception _ex) {
+			}
+			catch(Exception _ex)
+			{
 			}
 		}
 		Font helveticaBold = new Font("Helvetica", 1, 13);
 		FontMetrics fontmetrics = getGameComponent().getFontMetrics(helveticaBold);
 		Font helvetica = new Font("Helvetica", 0, 13);
 		getGameComponent().getFontMetrics(helvetica);
-		if (clearScreen) {
+		if(clearScreen)
+		{
 			gameGraphics.setColor(Color.black);
 			gameGraphics.fillRect(0, 0, width, height);
 			clearScreen = false;
@@ -127,44 +142,56 @@ public class RSApplet : Applet
 		gameGraphics.drawString(s, (width - fontmetrics.stringWidth(s)) / 2, centerHeight + 22);
 	}
 
-	private void exit() {
+	private void exit()
+	{
 		gameState = -2;
 		cleanUpForQuit();
-		if (gameFrame != null) {
-			try {
+		if(gameFrame != null)
+		{
+			try
+			{
 				Thread.sleep(1000L);
-			} catch (Exception _ex) {
 			}
-			try {
+			catch(Exception _ex)
+			{
+			}
+			try
+			{
 				System.exit(0);
-			} catch (Throwable _ex) {
+			}
+			catch(Throwable _ex)
+			{
 			}
 		}
 	}
 
 	@Override
-	public final void focusGained(FocusEvent focusevent) {
+	public final void focusGained(FocusEvent focusevent)
+	{
 		awtFocus = true;
 		clearScreen = true;
 		redraw();
 	}
 
 	@Override
-	public final void focusLost(FocusEvent focusevent) {
+	public final void focusLost(FocusEvent focusevent)
+	{
 		awtFocus = false;
-		for (int key = 0; key < 128; key++)
+		for(int key = 0; key < 128; key++)
 			keyStatus[key] = 0;
 
 	}
 
-	Component getGameComponent() {
-		if (gameFrame != null)
+	Component getGameComponent()
+	{
+		if(gameFrame != null)
 			return gameFrame;
 		else
 			return this;
 	}
 
-	final void initClientFrame(int width, int height) {
+	final void initClientFrame(int width, int height)
+	{
 		this.width = width;
 		this.height = height;
 		gameGraphics = getGameComponent().getGraphics();
@@ -173,91 +200,98 @@ public class RSApplet : Applet
 	}
 
 	@Override
-	public final void keyPressed(KeyEvent keyevent) {
+	public final void keyPressed(KeyEvent keyevent)
+	{
 		idleTime = 0;
 		int keyCode = keyevent.getKeyCode();
 		int keyChar = keyevent.getKeyChar();
 
-		if (keyChar < 30)
+		if(keyChar < 30)
 			keyChar = 0;
-		if (keyCode == 37) // Left
+		if(keyCode == 37) // Left
 			keyChar = 1;
-		if (keyCode == 39) // Right
+		if(keyCode == 39) // Right
 			keyChar = 2;
-		if (keyCode == 38) // Up
+		if(keyCode == 38) // Up
 			keyChar = 3;
-		if (keyCode == 40) // Down
+		if(keyCode == 40) // Down
 			keyChar = 4;
-		if (keyCode == 17) // CTRL
+		if(keyCode == 17) // CTRL
 			keyChar = 5;
-		if (keyCode == 8) // Backspace
+		if(keyCode == 8) // Backspace
 			keyChar = 8;
-		if (keyCode == 127) // Delete
+		if(keyCode == 127) // Delete
 			keyChar = 8;
-		if (keyCode == 9) // Meant to be tab but doesn't work
+		if(keyCode == 9) // Meant to be tab but doesn't work
 			keyChar = 9;
-		if (keyCode == 10) // Enter / return
+		if(keyCode == 10) // Enter / return
 			keyChar = 10;
-		if (keyCode >= 112 && keyCode <= 123) // F keys
+		if(keyCode >= 112 && keyCode <= 123) // F keys
 			keyChar = (1008 + keyCode) - 112;
-		if (keyCode == 36) // Home
+		if(keyCode == 36) // Home
 			keyChar = 1000;
-		if (keyCode == 35) // End
+		if(keyCode == 35) // End
 			keyChar = 1001;
-		if (keyCode == 33) // Page up
+		if(keyCode == 33) // Page up
 			keyChar = 1002;
-		if (keyCode == 34) // Page down
+		if(keyCode == 34) // Page down
 			keyChar = 1003;
-		if (keyChar > 0 && keyChar < 128)
+		if(keyChar > 0 && keyChar < 128)
 			keyStatus[keyChar] = 1;
-		if (keyChar > 4) {
+		if(keyChar > 4)
+		{
 			inputBuffer[writeIndex] = keyChar;
 			writeIndex = writeIndex + 1 & 0x7f;
 		}
 	}
 
 	@Override
-	public final void keyReleased(KeyEvent keyevent) {
+	public final void keyReleased(KeyEvent keyevent)
+	{
 		idleTime = 0;
 		int keyCode = keyevent.getKeyCode();
 		char keyChar = keyevent.getKeyChar();
-		if (keyChar < '\036')
+		if(keyChar < '\036')
 			keyChar = '\0';
-		if (keyCode == 37)
+		if(keyCode == 37)
 			keyChar = '\001';
-		if (keyCode == 39)
+		if(keyCode == 39)
 			keyChar = '\002';
-		if (keyCode == 38)
+		if(keyCode == 38)
 			keyChar = '\003';
-		if (keyCode == 40)
+		if(keyCode == 40)
 			keyChar = '\004';
-		if (keyCode == 17)
+		if(keyCode == 17)
 			keyChar = '\005';
-		if (keyCode == 8)
+		if(keyCode == 8)
 			keyChar = '\b';
-		if (keyCode == 127)
+		if(keyCode == 127)
 			keyChar = '\b';
-		if (keyCode == 9)
+		if(keyCode == 9)
 			keyChar = '\t';
-		if (keyCode == 10)
+		if(keyCode == 10)
 			keyChar = '\n';
-		if (keyChar > 0 && keyChar < '\200')
+		if(keyChar > 0 && keyChar < '\200')
 			keyStatus[keyChar] = 0;
 	}
 
 	@Override
-	public final void keyTyped(KeyEvent keyevent) {
+	public final void keyTyped(KeyEvent keyevent)
+	{
 	}
 
 	@Override
-	public final void mouseClicked(MouseEvent mouseevent) {
+	public final void mouseClicked(MouseEvent mouseevent)
+	{
 	}
 
 	@Override
-	public final void mouseDragged(MouseEvent mouseevent) {
+	public final void mouseDragged(MouseEvent mouseevent)
+	{
 		int x = mouseevent.getX();
 		int y = mouseevent.getY();
-		if (gameFrame != null) {
+		if(gameFrame != null)
+		{
 			x -= 4;
 			y -= 22;
 		}
@@ -267,21 +301,25 @@ public class RSApplet : Applet
 	}
 
 	@Override
-	public final void mouseEntered(MouseEvent mouseevent) {
+	public final void mouseEntered(MouseEvent mouseevent)
+	{
 	}
 
 	@Override
-	public final void mouseExited(MouseEvent mouseevent) {
+	public final void mouseExited(MouseEvent mouseevent)
+	{
 		idleTime = 0;
 		mouseX = -1;
 		mouseY = -1;
 	}
 
 	@Override
-	public final void mouseMoved(MouseEvent mouseevent) {
+	public final void mouseMoved(MouseEvent mouseevent)
+	{
 		int x = mouseevent.getX();
 		int y = mouseevent.getY();
-		if (gameFrame != null) {
+		if(gameFrame != null)
+		{
 			x -= 4;
 			y -= 22;
 		}
@@ -291,10 +329,12 @@ public class RSApplet : Applet
 	}
 
 	@Override
-	public final void mousePressed(MouseEvent mouseEvent) {
+	public final void mousePressed(MouseEvent mouseEvent)
+	{
 		int x = mouseEvent.getX();
 		int y = mouseEvent.getY();
-		if (gameFrame != null) {
+		if(gameFrame != null)
+		{
 			x -= 4;
 			y -= 22;
 		}
@@ -302,54 +342,65 @@ public class RSApplet : Applet
 		eventClickX = x;
 		eventClickY = y;
 		eventClickTime = System.currentTimeMillis();
-		if (mouseEvent.isMetaDown()) {
+		if(mouseEvent.isMetaDown())
+		{
 			eventMouseButton = 2;
 			mouseButton = 2;
-		} else {
+		}
+		else
+		{
 			eventMouseButton = 1;
 			mouseButton = 1;
 		}
 	}
 
 	@Override
-	public final void mouseReleased(MouseEvent mouseevent) {
+	public final void mouseReleased(MouseEvent mouseevent)
+	{
 		idleTime = 0;
 		mouseButton = 0;
 	}
 
 	@Override
-	public final void paint(Graphics g) {
-		if (gameGraphics == null)
+	public final void paint(Graphics g)
+	{
+		if(gameGraphics == null)
 			gameGraphics = g;
 		clearScreen = true;
 		redraw();
 	}
 
-	void processDrawing() {
+	void processDrawing()
+	{
 	}
 
-	void processGameLoop() {
+	void processGameLoop()
+	{
 	}
 
-	final int readCharacter() {
+	final int readCharacter()
+	{
 		int character = -1;
-		if (writeIndex != readIndex) {
+		if(writeIndex != readIndex)
+		{
 			character = inputBuffer[readIndex];
 			readIndex = readIndex + 1 & 0x7f;
 		}
 		return character;
 	}
 
-	void redraw() {
+	void redraw()
+	{
 	}
 
 	@Override
-	public void run() {
+	public void run()
+	{
 		getGameComponent().addMouseListener(this);
 		getGameComponent().addMouseMotionListener(this);
 		getGameComponent().addKeyListener(this);
 		getGameComponent().addFocusListener(this);
-		if (gameFrame != null)
+		if(gameFrame != null)
 			gameFrame.addWindowListener(this);
 		drawLoadingText(0, "Loading...");
 		startUp();
@@ -358,13 +409,16 @@ public class RSApplet : Applet
 		int delay = 1;
 		int count = 0;
 		int intex = 0;
-		for (int otim = 0; otim < 10; otim++)
+		for(int otim = 0; otim < 10; otim++)
 			otims[otim] = System.currentTimeMillis();
 
-		while (gameState >= 0) {
-			if (gameState > 0) {
+		while(gameState >= 0)
+		{
+			if(gameState > 0)
+			{
 				gameState--;
-				if (gameState == 0) {
+				if(gameState == 0)
+				{
 					exit();
 					return;
 				}
@@ -374,35 +428,43 @@ public class RSApplet : Applet
 			ratio = 300;
 			delay = 1;
 			long currentTime = System.currentTimeMillis();
-			if (otims[opos] == 0L) {
+			if(otims[opos] == 0L)
+			{
 				ratio = i2;
 				delay = j2;
-			} else if (currentTime > otims[opos])
-				ratio = (int) (2560 * delayTime / (currentTime - otims[opos]));
-			if (ratio < 25)
-				ratio = 25;
-			if (ratio > 256) {
-				ratio = 256;
-				delay = (int) (delayTime - (currentTime - otims[opos]) / 10L);
 			}
-			if (delay > delayTime)
+			else if(currentTime > otims[opos])
+				ratio = (int)(2560 * delayTime / (currentTime - otims[opos]));
+			if(ratio < 25)
+				ratio = 25;
+			if(ratio > 256)
+			{
+				ratio = 256;
+				delay = (int)(delayTime - (currentTime - otims[opos]) / 10L);
+			}
+			if(delay > delayTime)
 				delay = delayTime;
 			otims[opos] = currentTime;
 			opos = (opos + 1) % 10;
-			if (delay > 1) {
-				for (int otim = 0; otim < 10; otim++)
-					if (otims[otim] != 0L)
+			if(delay > 1)
+			{
+				for(int otim = 0; otim < 10; otim++)
+					if(otims[otim] != 0L)
 						otims[otim] += delay;
 
 			}
-			if (delay < minDelay)
+			if(delay < minDelay)
 				delay = minDelay;
-			try {
+			try
+			{
 				Thread.sleep(delay);
-			} catch (InterruptedException _ex) {
+			}
+			catch(InterruptedException _ex)
+			{
 				intex++;
 			}
-			for (; count < 256; count += ratio) {
+			for(; count < 256; count += ratio)
+			{
 				clickType = eventMouseButton;
 				clickX = eventClickX;
 				clickY = eventClickY;
@@ -413,12 +475,14 @@ public class RSApplet : Applet
 			}
 
 			count &= 0xff;
-			if (delayTime > 0)
+			if(delayTime > 0)
 				fps = (1000 * ratio) / (delayTime * 256);
 			processDrawing();
-			if (debugRequested) {
+			if(debugRequested)
+			{
 				System.out.println("ntime:" + currentTime);
-				for (int i = 0; i < 10; i++) {
+				for(int i = 0; i < 10; i++)
+				{
 					int otim = ((opos - i - 1) + 20) % 10;
 					System.out.println("otim" + otim + ":" + otims[otim]);
 				}
@@ -430,69 +494,82 @@ public class RSApplet : Applet
 				intex = 0;
 			}
 		}
-		if (gameState == -1)
+		if(gameState == -1)
 			exit();
 	}
 
-	final void setFrameRate(int frameRate) {
+	final void setFrameRate(int frameRate)
+	{
 		delayTime = 1000 / frameRate;
 	}
 
 	@Override
-	public final void start() {
-		if (gameState >= 0)
+	public final void start()
+	{
+		if(gameState >= 0)
 			gameState = 0;
 	}
 
-	public void startRunnable(Runnable runnable, int priority) {
+	public void startRunnable(Runnable runnable, int priority)
+	{
 		Thread thread = new Thread(runnable);
 		thread.start();
 		thread.setPriority(priority);
 	}
 
-	void startUp() {
+	void startUp()
+	{
 	}
 
 	@Override
-	public final void stop() {
-		if (gameState >= 0)
+	public final void stop()
+	{
+		if(gameState >= 0)
 			gameState = 4000 / delayTime;
 	}
 
 	@Override
-	public final void update(Graphics g) {
-		if (gameGraphics == null)
+	public final void update(Graphics g)
+	{
+		if(gameGraphics == null)
 			gameGraphics = g;
 		clearScreen = true;
 		redraw();
 	}
 
 	@Override
-	public final void windowActivated(WindowEvent windowevent) {
+	public final void windowActivated(WindowEvent windowevent)
+	{
 	}
 
 	@Override
-	public final void windowClosed(WindowEvent windowevent) {
+	public final void windowClosed(WindowEvent windowevent)
+	{
 	}
 
 	@Override
-	public final void windowClosing(WindowEvent windowevent) {
+	public final void windowClosing(WindowEvent windowevent)
+	{
 		destroy();
 	}
 
 	@Override
-	public final void windowDeactivated(WindowEvent windowevent) {
+	public final void windowDeactivated(WindowEvent windowevent)
+	{
 	}
 
 	@Override
-	public final void windowDeiconified(WindowEvent windowevent) {
+	public final void windowDeiconified(WindowEvent windowevent)
+	{
 	}
 
 	@Override
-	public final void windowIconified(WindowEvent windowevent) {
+	public final void windowIconified(WindowEvent windowevent)
+	{
 	}
 
 	@Override
-	public final void windowOpened(WindowEvent windowevent) {
+	public final void windowOpened(WindowEvent windowevent)
+	{
 	}
 }

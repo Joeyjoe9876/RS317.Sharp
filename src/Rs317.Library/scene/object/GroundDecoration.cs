@@ -1,5 +1,6 @@
 
-public sealed class GroundDecoration {
+public sealed class GroundDecoration
+{
 
 	public int z;
 
@@ -9,6 +10,7 @@ public sealed class GroundDecoration {
 	public int uid;
 	public byte objConf;
 
-	public GroundDecoration() {
+	public GroundDecoration()
+	{
 	}
 }

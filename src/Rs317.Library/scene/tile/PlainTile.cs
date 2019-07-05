@@ -1,5 +1,6 @@
 
-public sealed class PlainTile {
+public sealed class PlainTile
+{
 
 	public final int colourA;
 
@@ -10,7 +11,8 @@ public sealed class PlainTile {
 	public boolean flat;
 	public final int colourRGB;
 
-	public PlainTile(int colourA, int colourB, int colourC, int colourD, int colourRGB, int texture, boolean flat) {
+	public PlainTile(int colourA, int colourB, int colourC, int colourD, int colourRGB, int texture, boolean flat)
+	{
 		this.flat = true;
 		this.colourA = colourA;
 		this.colourB = colourB;

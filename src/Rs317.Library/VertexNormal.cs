@@ -1,5 +1,6 @@
 
-public sealed class VertexNormal {
+public sealed class VertexNormal
+{
 
 	public int x;
 
@@ -7,6 +8,7 @@ public sealed class VertexNormal {
 	public int z;
 	public int magnitude;
 
-	public VertexNormal() {
+	public VertexNormal()
+	{
 	}
 }

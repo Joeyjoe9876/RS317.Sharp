@@ -1,6 +1,7 @@
 
 //Some of this file was refactored by 'veer' of http://www.moparscape.org.
-sealed class Envelope {
+sealed class Envelope
+{
 
 	private int phaseCount;
 
@@ -18,26 +19,30 @@ sealed class Envelope {
 	private int step;
 	private int amplitude;
 	private int ticks;
-	
-	public void decode(Buffer stream) {
+
+	public void decode(Buffer stream)
+	{
 		form = stream.getUnsignedByte();
 		start = stream.getInt();
 		end = stream.getInt();
 		decodeShape(stream);
 	}
 
-	public void decodeShape(Buffer stream) {
+	public void decodeShape(Buffer stream)
+	{
 		phaseCount = stream.getUnsignedByte();
 		phaseDuration = new int[phaseCount];
 		phasePeak = new int[phaseCount];
-		for (int p = 0; p < phaseCount; p++) {
+		for(int p = 0; p < phaseCount; p++)
+		{
 			phaseDuration[p] = stream.getUnsignedLEShort();
 			phasePeak[p] = stream.getUnsignedLEShort();
 		}
 
 	}
 
-	void resetValues() {
+	void resetValues()
+	{
 		critical = 0;
 		phaseId = 0;
 		step = 0;
@@ -45,13 +50,15 @@ sealed class Envelope {
 		ticks = 0;
 	}
 
-	int step(int period) {
-		if (ticks >= critical) {
+	int step(int period)
+	{
+		if(ticks >= critical)
+		{
 			amplitude = phasePeak[phaseId++] << 15;
-			if (phaseId >= phaseCount)
+			if(phaseId >= phaseCount)
 				phaseId = phaseCount - 1;
-			critical = (int) ((phaseDuration[phaseId] / 65536D) * period);
-			if (critical > ticks)
+			critical = (int)((phaseDuration[phaseId] / 65536D) * period);
+			if(critical > ticks)
 				step = ((phasePeak[phaseId] << 15) - amplitude) / (critical - ticks);
 		}
 		amplitude += step;

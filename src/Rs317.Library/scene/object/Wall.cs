@@ -1,5 +1,6 @@
 
-public sealed class Wall {
+public sealed class Wall
+{
 
 	public int z;
 
@@ -12,6 +13,7 @@ public sealed class Wall {
 	public int uid;
 	public byte objConf;
 
-	public Wall() {
+	public Wall()
+	{
 	}
 }

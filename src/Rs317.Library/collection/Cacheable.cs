@@ -1,14 +1,17 @@
 
-public class Cacheable extends Linkable {
+public class Cacheable : Linkable
+{
 
 	public Cacheable nextCacheable;
 	public Cacheable previousCacheable;
 
-	public final void unlinkCacheable() {
-		if (previousCacheable == null) {
+	public final void unlinkCacheable()
+	{
+		if(previousCacheable == null)
+		{
 			return;
 		}
-		
+
 		previousCacheable.nextCacheable = nextCacheable;
 		nextCacheable.previousCacheable = previousCacheable;
 		nextCacheable = null;

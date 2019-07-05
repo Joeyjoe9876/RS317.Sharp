@@ -1,62 +1,76 @@
 
-public sealed class Varp {
+public sealed class Varp
+{
 
 	public static Varp values[];
 	public int type;
 
-	public static void load(Archive archive) {
+	public static void load(Archive archive)
+	{
 		Buffer stream = new Buffer(archive.decompressFile("varp.dat"));
 		int count = stream.getUnsignedLEShort();
 
-		if (values == null) {
+		if(values == null)
+		{
 			values = new Varp[count];
 		}
-			
-		for (int i = 0; i < count; i++) {
-			if (values[i] == null) {
+
+		for(int i = 0; i < count; i++)
+		{
+			if(values[i] == null)
+			{
 				values[i] = new Varp();
 			}
 
 			values[i].load(stream);
 		}
 
-		if (stream.position != stream.buffer.length) {
+		if(stream.position != stream.buffer.length)
+		{
 			System.out.println("varptype load mismatch");
 		}
 	}
 
-	private void load(Buffer buffer) {
-		do {
+	private void load(Buffer buffer)
+	{
+		do
+		{
 			int opcode = buffer.getUnsignedByte();
-			if (opcode == 0)
+			if(opcode == 0)
 				return;
-			if (opcode == 1)
+			if(opcode == 1)
 				buffer.getUnsignedByte();
-			else if (opcode == 2)
+			else if(opcode == 2)
 				buffer.getUnsignedByte();
-			else if (opcode == 3) {
+			else if(opcode == 3)
+			{
 			} // dummy
-			else if (opcode == 4) {
+			else if(opcode == 4)
+			{
 			} // dummy
-			else if (opcode == 5)
+			else if(opcode == 5)
 				type = buffer.getUnsignedLEShort();
-			else if (opcode == 6) {
+			else if(opcode == 6)
+			{
 			} // dummy
-			else if (opcode == 7)
+			else if(opcode == 7)
 				buffer.getInt();
-			else if (opcode == 8){
+			else if(opcode == 8)
+			{
 			} // dummy
-			else if (opcode == 10)
+			else if(opcode == 10)
 				buffer.getString();
-			else if (opcode == 11) {
+			else if(opcode == 11)
+			{
 			} // dummy
-			else if (opcode == 12)
+			else if(opcode == 12)
 				buffer.getInt();
-			else if (opcode == 13) {
+			else if(opcode == 13)
+			{
 			} // dummy
 			else
 				System.out.println("Error unrecognised config code: " + opcode);
-		} while (true);
+		} while(true);
 	}
 
 }

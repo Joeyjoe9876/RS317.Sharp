@@ -1,9 +1,11 @@
 
-public sealed class ItemDefinition {
+public sealed class ItemDefinition
+{
 
-	public static ItemDefinition getDefinition(int id) {
-		for (int i = 0; i < 10; i++)
-			if (cache[i].id == id)
+	public static ItemDefinition getDefinition(int id)
+	{
+		for(int i = 0; i < 10; i++)
+			if(cache[i].id == id)
 				return cache[i];
 
 		cacheIndex = (cacheIndex + 1) % 10;
@@ -12,9 +14,10 @@ public sealed class ItemDefinition {
 		definition.id = id;
 		definition.setDefaults();
 		definition.readValues(stream);
-		if (definition.noteTemplateId != -1)
+		if(definition.noteTemplateId != -1)
 			definition.toNote();
-		if (!membersWorld && definition.membersObject) {
+		if(!membersWorld && definition.membersObject)
+		{
 			definition.name = "Members Object";
 			definition.description = "Login to a members' server to use this object.".getBytes();
 			definition.groundActions = null;
@@ -24,35 +27,40 @@ public sealed class ItemDefinition {
 		return definition;
 	}
 
-	public static Sprite getSprite(int itemId, int itemAmount, int type) {
-		if (type == 0) {
-			Sprite sprite = (Sprite) spriteCache.get(itemId);
-			if (sprite != null && sprite.maxHeight != itemAmount && sprite.maxHeight != -1) {
+	public static Sprite getSprite(int itemId, int itemAmount, int type)
+	{
+		if(type == 0)
+		{
+			Sprite sprite = (Sprite)spriteCache.get(itemId);
+			if(sprite != null && sprite.maxHeight != itemAmount && sprite.maxHeight != -1)
+			{
 				sprite.unlink();
 				sprite = null;
 			}
-			if (sprite != null)
+			if(sprite != null)
 				return sprite;
 		}
 		ItemDefinition definition = getDefinition(itemId);
-		if (definition.stackableIds == null)
+		if(definition.stackableIds == null)
 			itemAmount = -1;
-		if (itemAmount > 1) {
+		if(itemAmount > 1)
+		{
 			int stackedId = -1;
-			for (int amount = 0; amount < 10; amount++)
-				if (itemAmount >= definition.stackableAmounts[amount] && definition.stackableAmounts[amount] != 0)
+			for(int amount = 0; amount < 10; amount++)
+				if(itemAmount >= definition.stackableAmounts[amount] && definition.stackableAmounts[amount] != 0)
 					stackedId = definition.stackableIds[amount];
 
-			if (stackedId != -1)
+			if(stackedId != -1)
 				definition = getDefinition(stackedId);
 		}
 		Model model = definition.getAmountModel(1);
-		if (model == null)
+		if(model == null)
 			return null;
 		Sprite noteSprite = null;
-		if (definition.noteTemplateId != -1) {
+		if(definition.noteTemplateId != -1)
+		{
 			noteSprite = getSprite(definition.noteId, 10, -1);
-			if (noteSprite == null)
+			if(noteSprite == null)
 				return null;
 		}
 		Sprite itemSprite = new Sprite(32, 32);
@@ -71,55 +79,62 @@ public sealed class ItemDefinition {
 		DrawingArea.drawFilledRectangle(0, 0, 32, 32, 0);
 		Rasterizer.setDefaultBounds();
 		int zoom = definition.modelZoom;
-		if (type == -1)
-			zoom = (int) (zoom * 1.5D);
-		if (type > 0)
-			zoom = (int) (zoom * 1.04D);
+		if(type == -1)
+			zoom = (int)(zoom * 1.5D);
+		if(type > 0)
+			zoom = (int)(zoom * 1.04D);
 		int l3 = Rasterizer.SINE[definition.modelRotationX] * zoom >> 16;
 		int i4 = Rasterizer.COSINE[definition.modelRotationX] * zoom >> 16;
 		model.renderSingle(definition.modelRotationY, definition.modelRotationZ, definition.modelRotationX,
 				definition.modelOffset1, l3 + model.modelHeight / 2 + definition.modelOffset2,
 				i4 + definition.modelOffset2);
-		for (int _x = 31; _x >= 0; _x--) {
-			for (int _y = 31; _y >= 0; _y--)
-				if (itemSprite.pixels[_x + _y * 32] == 0)
-					if (_x > 0 && itemSprite.pixels[(_x - 1) + _y * 32] > 1)
+		for(int _x = 31; _x >= 0; _x--)
+		{
+			for(int _y = 31; _y >= 0; _y--)
+				if(itemSprite.pixels[_x + _y * 32] == 0)
+					if(_x > 0 && itemSprite.pixels[(_x - 1) + _y * 32] > 1)
 						itemSprite.pixels[_x + _y * 32] = 1;
-					else if (_y > 0 && itemSprite.pixels[_x + (_y - 1) * 32] > 1)
+					else if(_y > 0 && itemSprite.pixels[_x + (_y - 1) * 32] > 1)
 						itemSprite.pixels[_x + _y * 32] = 1;
-					else if (_x < 31 && itemSprite.pixels[_x + 1 + _y * 32] > 1)
+					else if(_x < 31 && itemSprite.pixels[_x + 1 + _y * 32] > 1)
 						itemSprite.pixels[_x + _y * 32] = 1;
-					else if (_y < 31 && itemSprite.pixels[_x + (_y + 1) * 32] > 1)
+					else if(_y < 31 && itemSprite.pixels[_x + (_y + 1) * 32] > 1)
 						itemSprite.pixels[_x + _y * 32] = 1;
 
 		}
 
-		if (type > 0) {
-			for (int _x = 31; _x >= 0; _x--) {
-				for (int _y = 31; _y >= 0; _y--)
-					if (itemSprite.pixels[_x + _y * 32] == 0)
-						if (_x > 0 && itemSprite.pixels[(_x - 1) + _y * 32] == 1)
+		if(type > 0)
+		{
+			for(int _x = 31; _x >= 0; _x--)
+			{
+				for(int _y = 31; _y >= 0; _y--)
+					if(itemSprite.pixels[_x + _y * 32] == 0)
+						if(_x > 0 && itemSprite.pixels[(_x - 1) + _y * 32] == 1)
 							itemSprite.pixels[_x + _y * 32] = type;
-						else if (_y > 0 && itemSprite.pixels[_x + (_y - 1) * 32] == 1)
+						else if(_y > 0 && itemSprite.pixels[_x + (_y - 1) * 32] == 1)
 							itemSprite.pixels[_x + _y * 32] = type;
-						else if (_x < 31 && itemSprite.pixels[_x + 1 + _y * 32] == 1)
+						else if(_x < 31 && itemSprite.pixels[_x + 1 + _y * 32] == 1)
 							itemSprite.pixels[_x + _y * 32] = type;
-						else if (_y < 31 && itemSprite.pixels[_x + (_y + 1) * 32] == 1)
+						else if(_y < 31 && itemSprite.pixels[_x + (_y + 1) * 32] == 1)
 							itemSprite.pixels[_x + _y * 32] = type;
 
 			}
 
-		} else if (type == 0) {
-			for (int _x = 31; _x >= 0; _x--) {
-				for (int _y = 31; _y >= 0; _y--)
-					if (itemSprite.pixels[_x + _y * 32] == 0 && _x > 0 && _y > 0
+		}
+		else if(type == 0)
+		{
+			for(int _x = 31; _x >= 0; _x--)
+			{
+				for(int _y = 31; _y >= 0; _y--)
+					if(itemSprite.pixels[_x + _y * 32] == 0 && _x > 0 && _y > 0
 							&& itemSprite.pixels[(_x - 1) + (_y - 1) * 32] > 0)
 						itemSprite.pixels[_x + _y * 32] = 0x302020;
 
 			}
 
 		}
-		if (definition.noteTemplateId != -1) {
+		if(definition.noteTemplateId != -1)
+		{
 			int _maxWidth = noteSprite.maxWidth;
 			int _maxHeight = noteSprite.maxHeight;
 			noteSprite.maxWidth = 32;
@@ -128,7 +143,7 @@ public sealed class ItemDefinition {
 			noteSprite.maxWidth = _maxWidth;
 			noteSprite.maxHeight = _maxHeight;
 		}
-		if (type == 0)
+		if(type == 0)
 			spriteCache.put(itemSprite, itemId);
 		DrawingArea.initDrawingArea(height, width, pixels);
 		DrawingArea.setDrawingArea(bottomY, topX, bottomX, topY);
@@ -136,7 +151,7 @@ public sealed class ItemDefinition {
 		Rasterizer.centreY = textureCentreY;
 		Rasterizer.lineOffsets = lineOffsets;
 		Rasterizer.textured = true;
-		if (definition.stackable)
+		if(definition.stackable)
 			itemSprite.maxWidth = 33;
 		else
 			itemSprite.maxWidth = 32;
@@ -144,24 +159,27 @@ public sealed class ItemDefinition {
 		return itemSprite;
 	}
 
-	public static void load(Archive streamLoader) {
+	public static void load(Archive streamLoader)
+	{
 		stream = new Buffer(streamLoader.decompressFile("obj.dat"));
 		Buffer stream = new Buffer(streamLoader.decompressFile("obj.idx"));
 		itemCount = stream.getUnsignedLEShort();
 		streamOffsets = new int[itemCount];
 		int offset = 2;
-		for (int item = 0; item < itemCount; item++) {
+		for(int item = 0; item < itemCount; item++)
+		{
 			streamOffsets[item] = offset;
 			offset += stream.getUnsignedLEShort();
 		}
 
 		cache = new ItemDefinition[10];
-		for (int definition = 0; definition < 10; definition++)
+		for(int definition = 0; definition < 10; definition++)
 			cache[definition] = new ItemDefinition();
 
 	}
 
-	public static void nullLoader() {
+	public static void nullLoader()
+	{
 		modelCache = null;
 		spriteCache = null;
 		streamOffsets = null;
@@ -227,51 +245,57 @@ public sealed class ItemDefinition {
 	private int modelRotationZ;
 	private byte equipModelTranslationMale;
 
-	private ItemDefinition() {
+	private ItemDefinition()
+	{
 		id = -1;
 	}
 
-	public boolean equipModelCached(int gender) {
+	public boolean equipModelCached(int gender)
+	{
 		int equipModelIdPrimary = maleEquipModelIdPrimary;
 		int equipModelIdSecondary = maleEquipModelIdSecondary;
 		int equipModelIdEmblem = maleEquipModelIdEmblem;
-		if (gender == 1) {
+		if(gender == 1)
+		{
 			equipModelIdPrimary = femaleEquipModelIdPrimary;
 			equipModelIdSecondary = femaleEquipModelIdSecondary;
 			equipModelIdEmblem = femaleEquipModelIdEmblem;
 		}
-		if (equipModelIdPrimary == -1)
+		if(equipModelIdPrimary == -1)
 			return true;
 		boolean cached = true;
-		if (!Model.isCached(equipModelIdPrimary))
+		if(!Model.isCached(equipModelIdPrimary))
 			cached = false;
-		if (equipModelIdSecondary != -1 && !Model.isCached(equipModelIdSecondary))
+		if(equipModelIdSecondary != -1 && !Model.isCached(equipModelIdSecondary))
 			cached = false;
-		if (equipModelIdEmblem != -1 && !Model.isCached(equipModelIdEmblem))
+		if(equipModelIdEmblem != -1 && !Model.isCached(equipModelIdEmblem))
 			cached = false;
 		return cached;
 	}
 
-	public Model getAmountModel(int amount) {
-		if (stackableIds != null && amount > 1) {
+	public Model getAmountModel(int amount)
+	{
+		if(stackableIds != null && amount > 1)
+		{
 			int stackableId = -1;
-			for (int i = 0; i < 10; i++)
-				if (amount >= stackableAmounts[i] && stackableAmounts[i] != 0)
+			for(int i = 0; i < 10; i++)
+				if(amount >= stackableAmounts[i] && stackableAmounts[i] != 0)
 					stackableId = stackableIds[i];
 
-			if (stackableId != -1)
+			if(stackableId != -1)
 				return getDefinition(stackableId).getAmountModel(1);
 		}
-		Model stackedModel = (Model) modelCache.get(id);
-		if (stackedModel != null)
+		Model stackedModel = (Model)modelCache.get(id);
+		if(stackedModel != null)
 			return stackedModel;
 		stackedModel = Model.getModel(modelId);
-		if (stackedModel == null)
+		if(stackedModel == null)
 			return null;
-		if (modelScaleX != 128 || modelScaleY != 128 || modelScaleZ != 128)
+		if(modelScaleX != 128 || modelScaleY != 128 || modelScaleZ != 128)
 			stackedModel.scaleT(modelScaleX, modelScaleZ, modelScaleY);
-		if (modifiedModelColors != null) {
-			for (int l = 0; l < modifiedModelColors.length; l++)
+		if(modifiedModelColors != null)
+		{
+			for(int l = 0; l < modifiedModelColors.length; l++)
 				stackedModel.recolour(modifiedModelColors[l], originalModelColors[l]);
 
 		}
@@ -281,205 +305,241 @@ public sealed class ItemDefinition {
 		return stackedModel;
 	}
 
-	public Model getDialogueModel(int gender) {
+	public Model getDialogueModel(int gender)
+	{
 		int dialogueModelId = maleDialogueModelId;
 		int dialogueHatModelId = maleDialogueHatModelId;
-		if (gender == 1) {
+		if(gender == 1)
+		{
 			dialogueModelId = femaleDialogueModelId;
 			dialogueHatModelId = femaleDialogueHatModelId;
 		}
-		if (dialogueModelId == -1)
+		if(dialogueModelId == -1)
 			return null;
 		Model dialogueModel = Model.getModel(dialogueModelId);
-		if (dialogueHatModelId != -1) {
+		if(dialogueHatModelId != -1)
+		{
 			Model dialogueHatModel = Model.getModel(dialogueHatModelId);
 			Model dialogueModels[] = { dialogueModel, dialogueHatModel };
 			dialogueModel = new Model(2, dialogueModels);
 		}
-		if (modifiedModelColors != null) {
-			for (int c = 0; c < modifiedModelColors.length; c++)
+		if(modifiedModelColors != null)
+		{
+			for(int c = 0; c < modifiedModelColors.length; c++)
 				dialogueModel.recolour(modifiedModelColors[c], originalModelColors[c]);
 
 		}
 		return dialogueModel;
 	}
 
-	public Model getEquippedModel(int gender) {
+	public Model getEquippedModel(int gender)
+	{
 		int equipModelIdPrimary = maleEquipModelIdPrimary;
 		int equipModelIdSecondary = maleEquipModelIdSecondary;
 		int equipModelIdEmblem = maleEquipModelIdEmblem;
-		if (gender == 1) {
+		if(gender == 1)
+		{
 			equipModelIdPrimary = femaleEquipModelIdPrimary;
 			equipModelIdSecondary = femaleEquipModelIdSecondary;
 			equipModelIdEmblem = femaleEquipModelIdEmblem;
 		}
-		if (equipModelIdPrimary == -1)
+		if(equipModelIdPrimary == -1)
 			return null;
 		Model modelPrimary = Model.getModel(equipModelIdPrimary);
-		if (equipModelIdSecondary != -1)
-			if (equipModelIdEmblem != -1) {
+		if(equipModelIdSecondary != -1)
+			if(equipModelIdEmblem != -1)
+			{
 				Model modelSecondary = Model.getModel(equipModelIdSecondary);
 				Model modelEmblem = Model.getModel(equipModelIdEmblem);
 				Model models[] = { modelPrimary, modelSecondary, modelEmblem };
 				modelPrimary = new Model(3, models);
-			} else {
+			}
+			else
+			{
 				Model modelSecondary = Model.getModel(equipModelIdSecondary);
 				Model models[] = { modelPrimary, modelSecondary };
 				modelPrimary = new Model(2, models);
 			}
-		if (gender == 0 && equipModelTranslationMale != 0)
+		if(gender == 0 && equipModelTranslationMale != 0)
 			modelPrimary.translate(0, equipModelTranslationMale, 0);
-		if (gender == 1 && equipModelTranslationFemale != 0)
+		if(gender == 1 && equipModelTranslationFemale != 0)
 			modelPrimary.translate(0, equipModelTranslationFemale, 0);
-		if (modifiedModelColors != null) {
-			for (int c = 0; c < modifiedModelColors.length; c++)
+		if(modifiedModelColors != null)
+		{
+			for(int c = 0; c < modifiedModelColors.length; c++)
 				modelPrimary.recolour(modifiedModelColors[c], originalModelColors[c]);
 
 		}
 		return modelPrimary;
 	}
 
-	public Model getInventoryModel(int amount) {
-		if (stackableIds != null && amount > 1) {
+	public Model getInventoryModel(int amount)
+	{
+		if(stackableIds != null && amount > 1)
+		{
 			int stackableId = -1;
-			for (int i = 0; i < 10; i++)
-				if (amount >= stackableAmounts[i] && stackableAmounts[i] != 0)
+			for(int i = 0; i < 10; i++)
+				if(amount >= stackableAmounts[i] && stackableAmounts[i] != 0)
 					stackableId = stackableIds[i];
 
-			if (stackableId != -1)
+			if(stackableId != -1)
 				return getDefinition(stackableId).getInventoryModel(1);
 		}
 		Model stackedModel = Model.getModel(modelId);
-		if (stackedModel == null)
+		if(stackedModel == null)
 			return null;
-		if (modifiedModelColors != null) {
-			for (int c = 0; c < modifiedModelColors.length; c++)
+		if(modifiedModelColors != null)
+		{
+			for(int c = 0; c < modifiedModelColors.length; c++)
 				stackedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
 
 		}
 		return stackedModel;
 	}
 
-	public boolean isDialogueModelCached(int gender) {
+	public boolean isDialogueModelCached(int gender)
+	{
 		int dialogueModelId = maleDialogueModelId;
 		int dialogueHatModelId = maleDialogueHatModelId;
-		if (gender == 1) {
+		if(gender == 1)
+		{
 			dialogueModelId = femaleDialogueModelId;
 			dialogueHatModelId = femaleDialogueHatModelId;
 		}
-		if (dialogueModelId == -1)
+		if(dialogueModelId == -1)
 			return true;
 		boolean cached = true;
-		if (!Model.isCached(dialogueModelId))
+		if(!Model.isCached(dialogueModelId))
 			cached = false;
-		if (dialogueHatModelId != -1 && !Model.isCached(dialogueHatModelId))
+		if(dialogueHatModelId != -1 && !Model.isCached(dialogueHatModelId))
 			cached = false;
 		return cached;
 	}
 
-	private void readValues(Buffer stream) {
-		do {
+	private void readValues(Buffer stream)
+	{
+		do
+		{
 			int opcode = stream.getUnsignedByte();
-			if (opcode == 0)
+			if(opcode == 0)
 				return;
-			if (opcode == 1)
+			if(opcode == 1)
 				modelId = stream.getUnsignedLEShort();
-			else if (opcode == 2)
+			else if(opcode == 2)
 				name = stream.getString();
-			else if (opcode == 3)
+			else if(opcode == 3)
 				description = stream.readBytes();
-			else if (opcode == 4)
+			else if(opcode == 4)
 				modelZoom = stream.getUnsignedLEShort();
-			else if (opcode == 5)
+			else if(opcode == 5)
 				modelRotationX = stream.getUnsignedLEShort();
-			else if (opcode == 6)
+			else if(opcode == 6)
 				modelRotationY = stream.getUnsignedLEShort();
-			else if (opcode == 7) {
+			else if(opcode == 7)
+			{
 				modelOffset1 = stream.getUnsignedLEShort();
-				if (modelOffset1 > 32767)
+				if(modelOffset1 > 32767)
 					modelOffset1 -= 0x10000;
-			} else if (opcode == 8) {
+			}
+			else if(opcode == 8)
+			{
 				modelOffset2 = stream.getUnsignedLEShort();
-				if (modelOffset2 > 32767)
+				if(modelOffset2 > 32767)
 					modelOffset2 -= 0x10000;
-			} else if (opcode == 10)
+			}
+			else if(opcode == 10)
 				stream.getUnsignedLEShort();
-			else if (opcode == 11)
+			else if(opcode == 11)
 				stackable = true;
-			else if (opcode == 12)
+			else if(opcode == 12)
 				value = stream.getInt();
-			else if (opcode == 16)
+			else if(opcode == 16)
 				membersObject = true;
-			else if (opcode == 23) {
+			else if(opcode == 23)
+			{
 				maleEquipModelIdPrimary = stream.getUnsignedLEShort();
 				equipModelTranslationMale = stream.get();
-			} else if (opcode == 24)
+			}
+			else if(opcode == 24)
 				maleEquipModelIdSecondary = stream.getUnsignedLEShort();
-			else if (opcode == 25) {
+			else if(opcode == 25)
+			{
 				femaleEquipModelIdPrimary = stream.getUnsignedLEShort();
 				equipModelTranslationFemale = stream.get();
-			} else if (opcode == 26)
+			}
+			else if(opcode == 26)
 				femaleEquipModelIdSecondary = stream.getUnsignedLEShort();
-			else if (opcode >= 30 && opcode < 35) {
-				if (groundActions == null)
+			else if(opcode >= 30 && opcode < 35)
+			{
+				if(groundActions == null)
 					groundActions = new String[5];
 				groundActions[opcode - 30] = stream.getString();
-				if (groundActions[opcode - 30].equalsIgnoreCase("hidden"))
+				if(groundActions[opcode - 30].equalsIgnoreCase("hidden"))
 					groundActions[opcode - 30] = null;
-			} else if (opcode >= 35 && opcode < 40) {
-				if (actions == null)
+			}
+			else if(opcode >= 35 && opcode < 40)
+			{
+				if(actions == null)
 					actions = new String[5];
 				actions[opcode - 35] = stream.getString();
-			} else if (opcode == 40) {
+			}
+			else if(opcode == 40)
+			{
 				int colourCount = stream.getUnsignedByte();
 				modifiedModelColors = new int[colourCount];
 				originalModelColors = new int[colourCount];
-				for (int c = 0; c < colourCount; c++) {
+				for(int c = 0; c < colourCount; c++)
+				{
 					modifiedModelColors[c] = stream.getUnsignedLEShort();
 					originalModelColors[c] = stream.getUnsignedLEShort();
 				}
 
-			} else if (opcode == 78)
+			}
+			else if(opcode == 78)
 				maleEquipModelIdEmblem = stream.getUnsignedLEShort();
-			else if (opcode == 79)
+			else if(opcode == 79)
 				femaleEquipModelIdEmblem = stream.getUnsignedLEShort();
-			else if (opcode == 90)
+			else if(opcode == 90)
 				maleDialogueModelId = stream.getUnsignedLEShort();
-			else if (opcode == 91)
+			else if(opcode == 91)
 				femaleDialogueModelId = stream.getUnsignedLEShort();
-			else if (opcode == 92)
+			else if(opcode == 92)
 				maleDialogueHatModelId = stream.getUnsignedLEShort();
-			else if (opcode == 93)
+			else if(opcode == 93)
 				femaleDialogueHatModelId = stream.getUnsignedLEShort();
-			else if (opcode == 95)
+			else if(opcode == 95)
 				modelRotationZ = stream.getUnsignedLEShort();
-			else if (opcode == 97)
+			else if(opcode == 97)
 				noteId = stream.getUnsignedLEShort();
-			else if (opcode == 98)
+			else if(opcode == 98)
 				noteTemplateId = stream.getUnsignedLEShort();
-			else if (opcode >= 100 && opcode < 110) {
-				if (stackableIds == null) {
+			else if(opcode >= 100 && opcode < 110)
+			{
+				if(stackableIds == null)
+				{
 					stackableIds = new int[10];
 					stackableAmounts = new int[10];
 				}
 				stackableIds[opcode - 100] = stream.getUnsignedLEShort();
 				stackableAmounts[opcode - 100] = stream.getUnsignedLEShort();
-			} else if (opcode == 110)
+			}
+			else if(opcode == 110)
 				modelScaleX = stream.getUnsignedLEShort();
-			else if (opcode == 111)
+			else if(opcode == 111)
 				modelScaleY = stream.getUnsignedLEShort();
-			else if (opcode == 112)
+			else if(opcode == 112)
 				modelScaleZ = stream.getUnsignedLEShort();
-			else if (opcode == 113)
+			else if(opcode == 113)
 				lightModifier = stream.get();
-			else if (opcode == 114)
+			else if(opcode == 114)
 				shadowModifier = stream.get() * 5;
-			else if (opcode == 115)
+			else if(opcode == 115)
 				teamId = stream.getUnsignedByte();
-		} while (true);
+		} while(true);
 	}
 
-	private void setDefaults() {
+	private void setDefaults()
+	{
 		modelId = 0;
 		name = null;
 		description = null;
@@ -520,7 +580,8 @@ public sealed class ItemDefinition {
 		teamId = 0;
 	}
 
-	private void toNote() {
+	private void toNote()
+	{
 		ItemDefinition noteTemplateDefinition = getDefinition(noteTemplateId);
 		modelId = noteTemplateDefinition.modelId;
 		modelZoom = noteTemplateDefinition.modelZoom;
@@ -539,7 +600,7 @@ public sealed class ItemDefinition {
 		value = noteDefinition.value;
 		String prefix = "a";
 		char firstCharacter = noteDefinition.name.charAt(0);
-		if (firstCharacter == 'A' || firstCharacter == 'E' || firstCharacter == 'I' || firstCharacter == 'O'
+		if(firstCharacter == 'A' || firstCharacter == 'E' || firstCharacter == 'I' || firstCharacter == 'O'
 				|| firstCharacter == 'U')
 			prefix = "an";
 		description = ("Swap this note at any bank for " + prefix + " " + noteDefinition.name + ".").getBytes();

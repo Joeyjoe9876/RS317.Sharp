@@ -1,42 +1,50 @@
 
-public sealed class DoubleEndedQueue {
+public sealed class DoubleEndedQueue
+{
 
 	private final Linkable tail;
 	private Linkable current;
 
-	public DoubleEndedQueue() {
+	public DoubleEndedQueue()
+	{
 		tail = new Linkable();
 		tail.next = tail;
 		tail.previous = tail;
 	}
 
-	public Linkable peekFront() {
+	public Linkable peekFront()
+	{
 		Linkable node = tail.next;
 
-		if (node == tail) {
+		if(node == tail)
+		{
 			current = null;
 			return null;
 		}
-		
+
 		current = node.next;
 		return node;
 	}
 
-	public Linkable peekBack() {
+	public Linkable peekBack()
+	{
 		Linkable node = tail.previous;
-		if (node == tail) {
+		if(node == tail)
+		{
 			current = null;
 			return null;
 		}
-		
+
 		current = node.previous;
 		return node;
 	}
 
-	public Linkable getPrevious() {
+	public Linkable getPrevious()
+	{
 		Linkable node = current;
 
-		if (node == tail) {
+		if(node == tail)
+		{
 			current = null;
 			return null;
 		}
@@ -45,8 +53,10 @@ public sealed class DoubleEndedQueue {
 		return node;
 	}
 
-	public void pushBack(Linkable item) {
-		if (item.previous != null) {
+	public void pushBack(Linkable item)
+	{
+		if(item.previous != null)
+		{
 			item.unlink();
 		}
 
@@ -56,8 +66,10 @@ public sealed class DoubleEndedQueue {
 		item.next.previous = item;
 	}
 
-	public void pushFront(Linkable item) {
-		if (item.previous != null) {
+	public void pushFront(Linkable item)
+	{
+		if(item.previous != null)
+		{
 			item.unlink();
 		}
 
@@ -67,26 +79,32 @@ public sealed class DoubleEndedQueue {
 		item.next.previous = item;
 	}
 
-	public Linkable popFront() {
+	public Linkable popFront()
+	{
 		Linkable next = tail.next;
 
-		if (next == tail) {
+		if(next == tail)
+		{
 			return null;
 		}
-		
+
 		next.unlink();
 		return next;
 	}
 
-	public void clear() {
-		if (tail.next == tail) {
+	public void clear()
+	{
+		if(tail.next == tail)
+		{
 			return;
 		}
 
-		while (true) {
+		while(true)
+		{
 			Linkable next = tail.next;
 
-			if (next == tail) {
+			if(next == tail)
+			{
 				return;
 			}
 
@@ -94,10 +112,12 @@ public sealed class DoubleEndedQueue {
 		}
 	}
 
-	public Linkable getNext() {
+	public Linkable getNext()
+	{
 		Linkable node = current;
 
-		if (node == tail) {
+		if(node == tail)
+		{
 			current = null;
 			return null;
 		}

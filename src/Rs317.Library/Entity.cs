@@ -1,5 +1,6 @@
 
-public class Entity : Animable {
+public class Entity : Animable
+{
 
 	public int entScreenX;
 
@@ -67,7 +68,8 @@ public class Entity : Animable {
 	int turnRightAnimationId;
 	int turnLeftAnimationId;
 
-	Entity() {
+	Entity()
+	{
 		waypointX = new int[10];
 		waypointY = new int[10];
 		interactingEntity = -1;
@@ -93,42 +95,49 @@ public class Entity : Animable {
 		turnLeftAnimationId = -1;
 	}
 
-	public boolean isVisible() {
+	public boolean isVisible()
+	{
 		return false;
 	}
 
-	public final void move(boolean flag, int direction) {
+	public final void move(boolean flag, int direction)
+	{
 		int x = waypointX[0];
 		int y = waypointY[0];
-		if (direction == 0) {
+		if(direction == 0)
+		{
 			x--;
 			y++;
 		}
-		if (direction == 1)
+		if(direction == 1)
 			y++;
-		if (direction == 2) {
+		if(direction == 2)
+		{
 			x++;
 			y++;
 		}
-		if (direction == 3)
+		if(direction == 3)
 			x--;
-		if (direction == 4)
+		if(direction == 4)
 			x++;
-		if (direction == 5) {
+		if(direction == 5)
+		{
 			x--;
 			y--;
 		}
-		if (direction == 6)
+		if(direction == 6)
 			y--;
-		if (direction == 7) {
+		if(direction == 7)
+		{
 			x++;
 			y--;
 		}
-		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
+		if(animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
 			animation = -1;
-		if (waypointCount < 9)
+		if(waypointCount < 9)
 			waypointCount++;
-		for (int l = waypointCount; l > 0; l--) {
+		for(int l = waypointCount; l > 0; l--)
+		{
 			waypointX[l] = waypointX[l - 1];
 			waypointY[l] = waypointY[l - 1];
 			waypointRan[l] = waypointRan[l - 1];
@@ -138,21 +147,26 @@ public class Entity : Animable {
 		waypointRan[0] = flag;
 	}
 
-	public final void resetPath() {
+	public final void resetPath()
+	{
 		waypointCount = 0;
 		stepsRemaining = 0;
 	}
 
-	public final void setPos(int x, int y, boolean teleported) {
-		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
+	public final void setPos(int x, int y, boolean teleported)
+	{
+		if(animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
 			animation = -1;
-		if (!teleported) {
+		if(!teleported)
+		{
 			int distanceX = x - waypointX[0];
 			int distanceY = y - waypointY[0];
-			if (distanceX >= -8 && distanceX <= 8 && distanceY >= -8 && distanceY <= 8) {
-				if (waypointCount < 9)
+			if(distanceX >= -8 && distanceX <= 8 && distanceY >= -8 && distanceY <= 8)
+			{
+				if(waypointCount < 9)
 					waypointCount++;
-				for (int waypoint = waypointCount; waypoint > 0; waypoint--) {
+				for(int waypoint = waypointCount; waypoint > 0; waypoint--)
+				{
 					waypointX[waypoint] = waypointX[waypoint - 1];
 					waypointY[waypoint] = waypointY[waypoint - 1];
 					waypointRan[waypoint] = waypointRan[waypoint - 1];
@@ -173,9 +187,11 @@ public class Entity : Animable {
 		this.y = waypointY[0] * 128 + boundaryDimension * 64;
 	}
 
-	public final void updateHitData(int type, int damage, int currentTime) {
-		for (int hit = 0; hit < 4; hit++)
-			if (hitsLoopCycle[hit] <= currentTime) {
+	public final void updateHitData(int type, int damage, int currentTime)
+	{
+		for(int hit = 0; hit < 4; hit++)
+			if(hitsLoopCycle[hit] <= currentTime)
+			{
 				hitArray[hit] = damage;
 				hitMarkTypes[hit] = type;
 				hitsLoopCycle[hit] = currentTime + 70;

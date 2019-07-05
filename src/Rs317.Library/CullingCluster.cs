@@ -1,6 +1,6 @@
-package com.jagex.runescape;
 
-public sealed class CullingCluster {
+public sealed class CullingCluster
+{
 
 	public int tileStartX;
 	public int tileEndX;

@@ -1,9 +1,11 @@
 
-sealed class RSFrame : Frame {
+sealed class RSFrame : Frame
+{
 
 	private final RSApplet applet;
 
-	public RSFrame(RSApplet applet, int width, int height) {
+	public RSFrame(RSApplet applet, int width, int height)
+	{
 		this.applet = applet;
 		setTitle("Jagex");
 		setResizable(false);
@@ -13,19 +15,22 @@ sealed class RSFrame : Frame {
 	}
 
 	@Override
-	public Graphics getGraphics() {
+	public Graphics getGraphics()
+	{
 		Graphics graphics = super.getGraphics();
 		graphics.translate(4, 24);
 		return graphics;
 	}
 
 	@Override
-	public void paint(Graphics graphics) {
+	public void paint(Graphics graphics)
+	{
 		applet.paint(graphics);
 	}
 
 	@Override
-	public void update(Graphics graphics) {
+	public void update(Graphics graphics)
+	{
 		applet.update(graphics);
 	}
 }

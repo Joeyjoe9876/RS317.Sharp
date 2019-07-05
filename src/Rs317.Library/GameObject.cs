@@ -1,5 +1,6 @@
 
-sealed class GameObject : Animable {
+sealed class GameObject : Animable
+{
 
 	private int frame;
 
@@ -20,7 +21,8 @@ sealed class GameObject : Animable {
 	private final int orientation;
 
 	public GameObject(int objectId, int orientation, int type, int vertexHeightBottomRight, int vertexHeightTopRight,
-			int vertexHeightBottomLeft, int vertexHeightTopLeft, int animationId, boolean animating) {
+			int vertexHeightBottomLeft, int vertexHeightTopLeft, int animationId, boolean animating)
+	{
 		this.objectId = objectId;
 		this.type = type;
 		this.orientation = orientation;
@@ -28,13 +30,15 @@ sealed class GameObject : Animable {
 		this.vertexHeightBottomRight = vertexHeightBottomRight;
 		this.vertexHeightTopRight = vertexHeightTopRight;
 		this.vertexHeightTopLeft = vertexHeightTopLeft;
-		if (animationId != -1) {
+		if(animationId != -1)
+		{
 			animation = AnimationSequence.animations[animationId];
 			frame = 0;
 			nextFrameTime = Client.tick;
-			if (animating && animation.frameStep != -1) {
-				frame = (int) (Math.random() * animation.frameCount);
-				nextFrameTime -= (int) (Math.random() * animation.getFrameLength(frame));
+			if(animating && animation.frameStep != -1)
+			{
+				frame = (int)(Math.random() * animation.frameCount);
+				nextFrameTime -= (int)(Math.random() * animation.getFrameLength(frame));
 			}
 		}
 		GameObjectDefinition definition = GameObjectDefinition.getDefinition(this.objectId);
@@ -43,53 +47,62 @@ sealed class GameObject : Animable {
 		childrenIds = definition.childIds;
 	}
 
-	private GameObjectDefinition getChildDefinition() {
+	private GameObjectDefinition getChildDefinition()
+	{
 		int child = -1;
-		if (varBitId != -1) {
+		if(varBitId != -1)
+		{
 			VarBit varBit = VarBit.values[varBitId];
 			int configId = varBit.configId;
 			int lsb = varBit.leastSignificantBit;
 			int msb = varBit.mostSignificantBit;
 			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
-		} else if (configId != -1)
+		}
+		else if(configId != -1)
 			child = clientInstance.interfaceSettings[configId];
-		if (child < 0 || child >= childrenIds.length || childrenIds[child] == -1)
+		if(child < 0 || child >= childrenIds.length || childrenIds[child] == -1)
 			return null;
 		else
 			return GameObjectDefinition.getDefinition(childrenIds[child]);
 	}
 
 	@Override
-	public Model getRotatedModel() {
+	public Model getRotatedModel()
+	{
 		int animationId = -1;
-		if (animation != null) {
+		if(animation != null)
+		{
 			int step = Client.tick - nextFrameTime;
-			if (step > 100 && animation.frameStep > 0)
+			if(step > 100 && animation.frameStep > 0)
 				step = 100;
-			while (step > animation.getFrameLength(frame)) {
+			while(step > animation.getFrameLength(frame))
+			{
 				step -= animation.getFrameLength(frame);
 				frame++;
-				if (frame < animation.frameCount)
+				if(frame < animation.frameCount)
 					continue;
 				frame -= animation.frameStep;
-				if (frame >= 0 && frame < animation.frameCount)
+				if(frame >= 0 && frame < animation.frameCount)
 					continue;
 				animation = null;
 				break;
 			}
 			nextFrameTime = Client.tick - step;
-			if (animation != null)
+			if(animation != null)
 				animationId = animation.primaryFrames[frame];
 		}
 		GameObjectDefinition definition;
-		if (childrenIds != null)
+		if(childrenIds != null)
 			definition = getChildDefinition();
 		else
 			definition = GameObjectDefinition.getDefinition(objectId);
-		if (definition == null) {
+		if(definition == null)
+		{
 			return null;
-		} else {
+		}
+		else
+		{
 			return definition.getModelAt(type, orientation, vertexHeightBottomLeft, vertexHeightBottomRight,
 					vertexHeightTopRight, vertexHeightTopLeft, animationId);
 		}

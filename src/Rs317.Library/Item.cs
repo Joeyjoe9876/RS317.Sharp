@@ -1,5 +1,6 @@
 
-sealed class Item : Animable {
+sealed class Item : Animable
+{
 
 	public int itemId;
 
@@ -8,11 +9,13 @@ sealed class Item : Animable {
 	public int y;
 	public int itemCount;
 
-	public Item() {
+	public Item()
+	{
 	}
 
 	@Override
-	public final Model getRotatedModel() {
+	public final Model getRotatedModel()
+	{
 		ItemDefinition itemDef = ItemDefinition.getDefinition(itemId);
 		return itemDef.getAmountModel(itemCount);
 	}

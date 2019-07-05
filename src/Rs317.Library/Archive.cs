@@ -2,7 +2,8 @@
 /// <summary>
 /// Represents a single archive within a cache.
 /// </summary>
-public sealed class Archive {
+public sealed class Archive
+{
 
 	private final byte[] outputData;
 
@@ -14,18 +15,22 @@ public sealed class Archive {
 	private final int[] initialOffsets;
 	private final boolean decompressed;
 
-	public Archive(byte data[]) {
+	public Archive(byte data[])
+	{
 		Buffer buffer = new Buffer(data);
 		int compressedLength = buffer.get3Bytes();
 		int decompressedLength = buffer.get3Bytes();
 
-		if (decompressedLength != compressedLength) {
+		if(decompressedLength != compressedLength)
+		{
 			byte output[] = new byte[compressedLength];
 			Bzip2Decompressor.decompress(output, compressedLength, data, decompressedLength, 6);
 			outputData = output;
 			buffer = new Buffer(outputData);
 			this.decompressed = true;
-		} else {
+		}
+		else
+		{
 			outputData = data;
 			this.decompressed = false;
 		}
@@ -37,7 +42,8 @@ public sealed class Archive {
 		initialOffsets = new int[fileCount];
 		int offset = buffer.position + fileCount * 10;
 
-		for (int index = 0; index < fileCount; index++) {
+		for(int index = 0; index < fileCount; index++)
+		{
 			hashes[index] = buffer.getInt();
 			decompressedSizes[index] = buffer.get3Bytes();
 			compressedSizes[index] = buffer.get3Bytes();
@@ -46,19 +52,24 @@ public sealed class Archive {
 		}
 	}
 
-	public byte[] decompressFile(String name) {
+	public byte[] decompressFile(String name)
+	{
 		int hash = 0;
 		name = name.toUpperCase();
-		for (int c = 0; c < name.length(); c++)
+		for(int c = 0; c < name.length(); c++)
 			hash = (hash * 61 + name.charAt(c)) - 32;
 
-		for (int file = 0; file < fileCount; file++)
-			if (hashes[file] == hash) {
+		for(int file = 0; file < fileCount; file++)
+			if(hashes[file] == hash)
+			{
 				byte[] output = new byte[decompressedSizes[file]];
-				if (!decompressed) {
+				if(!decompressed)
+				{
 					Bzip2Decompressor.decompress(output, decompressedSizes[file], outputData, compressedSizes[file],
 							initialOffsets[file]);
-				} else {
+				}
+				else
+				{
 					System.arraycopy(outputData, initialOffsets[file], output, 0, decompressedSizes[file]);
 				}
 				return output;

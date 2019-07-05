@@ -1,26 +1,31 @@
 
-public sealed class CacheableQueue {
+public sealed class CacheableQueue
+{
 
 	private final Cacheable head;
 	private Cacheable current;
 
-	public CacheableQueue() {
+	public CacheableQueue()
+	{
 		head = new Cacheable();
 		head.nextCacheable = head;
 		head.previousCacheable = head;
 	}
 
-	public int getSize() {
+	public int getSize()
+	{
 		int count = 0;
 
-		for (Cacheable next = head.nextCacheable; next != head; next = next.nextCacheable)
+		for(Cacheable next = head.nextCacheable; next != head; next = next.nextCacheable)
 			count++;
 
 		return count;
 	}
 
-	public void push(Cacheable item) {
-		if (item.previousCacheable != null) {
+	public void push(Cacheable item)
+	{
+		if(item.previousCacheable != null)
+		{
 			item.unlinkCacheable();
 		}
 
@@ -30,33 +35,39 @@ public sealed class CacheableQueue {
 		item.nextCacheable.previousCacheable = item;
 	}
 
-	public Cacheable pop() {
+	public Cacheable pop()
+	{
 		Cacheable next = head.nextCacheable;
 
-		if (next == head) {
+		if(next == head)
+		{
 			return null;
 		}
-		
-		next.unlinkCacheable();		
+
+		next.unlinkCacheable();
 		return next;
 	}
 
-	public Cacheable peek() {
+	public Cacheable peek()
+	{
 		Cacheable next = head.nextCacheable;
 
-		if (next == head) {
+		if(next == head)
+		{
 			current = null;
 			return null;
 		}
-		
+
 		current = next.nextCacheable;
 		return next;
 	}
 
-	public Cacheable getNext() {
+	public Cacheable getNext()
+	{
 		Cacheable current = this.current;
-		
-		if (current == head) {
+
+		if(current == head)
+		{
 			this.current = null;
 			return null;
 		}

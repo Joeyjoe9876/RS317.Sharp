@@ -1,5 +1,6 @@
 
-public sealed class Tile : Linkable {
+public sealed class Tile : Linkable
+{
 
 	public int z;
 
@@ -26,7 +27,8 @@ public sealed class Tile : Linkable {
 	public int anInt1328;
 	public Tile tileBelow;
 
-	public Tile(int i, int j, int k) {
+	public Tile(int i, int j, int k)
+	{
 		interactiveObjects = new InteractiveObject[5];
 		interactiveObjectsSize = new int[5];
 		anInt1310 = z = i;

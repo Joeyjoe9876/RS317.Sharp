@@ -1,13 +1,16 @@
 
-public sealed class FloorDefinition {
+public sealed class FloorDefinition
+{
 
-	public static void load(Archive archive) {
+	public static void load(Archive archive)
+	{
 		Buffer stream = new Buffer(archive.decompressFile("flo.dat"));
 		int cacheSize = stream.getUnsignedLEShort();
-		if (cache == null)
+		if(cache == null)
 			cache = new FloorDefinition[cacheSize];
-		for (int j = 0; j < cacheSize; j++) {
-			if (cache[j] == null)
+		for(int j = 0; j < cacheSize; j++)
+		{
+			if(cache[j] == null)
 				cache[j] = new FloorDefinition();
 			cache[j].loadDefinition(stream);
 		}
@@ -30,28 +33,35 @@ public sealed class FloorDefinition {
 	public int hsl;
 	public String name;
 
-	private FloorDefinition() {
+	private FloorDefinition()
+	{
 		textureId = -1;
 		occlude = true;
 	}
 
-	private void loadDefinition(Buffer stream) {
-		do {
+	private void loadDefinition(Buffer stream)
+	{
+		do
+		{
 			int opcode = stream.getUnsignedByte();
-			if (opcode == 0)
+			if(opcode == 0)
 				return;
-			else if (opcode == 1) {
+			else if(opcode == 1)
+			{
 				rgbColour = stream.get3Bytes();
 				rgbToHls(rgbColour);
-			} else if (opcode == 2)
+			}
+			else if(opcode == 2)
 				textureId = stream.getUnsignedByte();
-			else if (opcode == 3) {
+			else if(opcode == 3)
+			{
 			} // dummy attribute
-			else if (opcode == 5)
+			else if(opcode == 5)
 				occlude = false;
-			else if (opcode == 6)
+			else if(opcode == 6)
 				name = stream.getString();
-			else if (opcode == 7) {
+			else if(opcode == 7)
+			{
 				int oldHue2 = hue2;
 				int oldSat = saturation;
 				int oldLight = lightness;
@@ -63,87 +73,92 @@ public sealed class FloorDefinition {
 				lightness = oldLight;
 				hue = oldHue;
 				hueDivisor = oldHue;
-			} else {
+			}
+			else
+			{
 				System.out.println("Error unrecognised config code: " + opcode);
 			}
 
-		} while (true);
+		} while(true);
 	}
 
-	private int packHSL(int h, int s, int l) {
-		if (l > 179)
+	private int packHSL(int h, int s, int l)
+	{
+		if(l > 179)
 			s /= 2;
-		if (l > 192)
+		if(l > 192)
 			s /= 2;
-		if (l > 217)
+		if(l > 217)
 			s /= 2;
-		if (l > 243)
+		if(l > 243)
 			s /= 2;
 		return (h / 4 << 10) + (s / 32 << 7) + l / 2;
 	}
 
-	private void rgbToHls(int rgb) {
+	private void rgbToHls(int rgb)
+	{
 		double red = (rgb >> 16 & 0xff) / 256D;
 		double green = (rgb >> 8 & 0xff) / 256D;
 		double blue = (rgb & 0xff) / 256D;
 		double minC = red;
-		if (green < minC)
+		if(green < minC)
 			minC = green;
-		if (blue < minC)
+		if(blue < minC)
 			minC = blue;
 		double maxC = red;
-		if (green > maxC)
+		if(green > maxC)
 			maxC = green;
-		if (blue > maxC)
+		if(blue > maxC)
 			maxC = blue;
 		double h = 0.0D;
 		double s = 0.0D;
 		double l = (minC + maxC) / 2D;
-		if (minC != maxC) {
-			if (l < 0.5D)
+		if(minC != maxC)
+		{
+			if(l < 0.5D)
 				s = (maxC - minC) / (maxC + minC);
-			if (l >= 0.5D)
+			if(l >= 0.5D)
 				s = (maxC - minC) / (2D - maxC - minC);
-			if (red == maxC)
+			if(red == maxC)
 				h = (green - blue) / (maxC - minC);
-			else if (green == maxC)
+			else if(green == maxC)
 				h = 2D + (blue - red) / (maxC - minC);
-			else if (blue == maxC)
+			else if(blue == maxC)
 				h = 4D + (red - green) / (maxC - minC);
 		}
 		h /= 6D;
-		hue2 = (int) (h * 256D);
-		saturation = (int) (s * 256D);
-		lightness = (int) (l * 256D);
-		if (saturation < 0)
+		hue2 = (int)(h * 256D);
+		saturation = (int)(s * 256D);
+		lightness = (int)(l * 256D);
+		if(saturation < 0)
 			saturation = 0;
-		else if (saturation > 255)
+		else if(saturation > 255)
 			saturation = 255;
-		if (lightness < 0)
+		if(lightness < 0)
 			lightness = 0;
-		else if (lightness > 255)
+		else if(lightness > 255)
 			lightness = 255;
-		if (l > 0.5D)
-			hueDivisor = (int) ((1.0D - l) * s * 512D);
+		if(l > 0.5D)
+			hueDivisor = (int)((1.0D - l) * s * 512D);
 		else
-			hueDivisor = (int) (l * s * 512D);
-		if (hueDivisor < 1)
+			hueDivisor = (int)(l * s * 512D);
+		if(hueDivisor < 1)
 			hueDivisor = 1;
-		hue = (int) (h * hueDivisor);
-		int randomHue = (hue2 + (int) (Math.random() * 16D)) - 8;
-		if (randomHue < 0)
+		hue = (int)(h * hueDivisor);
+		int randomHue = (hue2 + (int)(Math.random() * 16D)) - 8;
+		if(randomHue < 0)
 			randomHue = 0;
-		else if (randomHue > 255)
+		else if(randomHue > 255)
 			randomHue = 255;
-		int randomSaturation = (saturation + (int) (Math.random() * 48D)) - 24;
-		if (randomSaturation < 0)
+		int randomSaturation = (saturation + (int)(Math.random() * 48D)) - 24;
+		if(randomSaturation < 0)
 			randomSaturation = 0;
-		else if (randomSaturation > 255)
+		else if(randomSaturation > 255)
 			randomSaturation = 255;
-		int randomLightness = (lightness + (int) (Math.random() * 48D)) - 24;
-		if (randomLightness < 0)
+		int randomLightness = (lightness + (int)(Math.random() * 48D)) - 24;
+		if(randomLightness < 0)
 			randomLightness = 0;
-		else if (randomLightness > 255)
+		else if(randomLightness > 255)
 			randomLightness = 255;
 		hsl = packHSL(randomHue, randomSaturation, randomLightness);
 	}

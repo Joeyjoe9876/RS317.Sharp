@@ -1,38 +1,45 @@
 
-public sealed class NPC : Entity {
+public sealed class NPC : Entity
+{
 
 	public EntityDefinition npcDefinition;
 
-	NPC() {
+	NPC()
+	{
 	}
 
-	private Model getChildModel() {
-		if (super.animation >= 0 && super.animationDelay == 0) {
+	private Model getChildModel()
+	{
+		if(super.animation >= 0 && super.animationDelay == 0)
+		{
 			int frameId2 = AnimationSequence.animations[super.animation].primaryFrames[super.currentAnimationFrame];
 			int frameId1 = -1;
-			if (super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
+			if(super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
 				frameId1 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
 			return npcDefinition.getChildModel(frameId1, frameId2,
 					AnimationSequence.animations[super.animation].flowControl);
 		}
 		int frameId2 = -1;
-		if (super.queuedAnimationId >= 0)
+		if(super.queuedAnimationId >= 0)
 			frameId2 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
 		return npcDefinition.getChildModel(-1, frameId2, null);
 	}
 
 	@Override
-	public Model getRotatedModel() {
-		if (npcDefinition == null)
+	public Model getRotatedModel()
+	{
+		if(npcDefinition == null)
 			return null;
 		Model rotatedModel = getChildModel();
-		if (rotatedModel == null)
+		if(rotatedModel == null)
 			return null;
 		super.height = rotatedModel.modelHeight;
-		if (super.graphicId != -1 && super.currentAnimationId != -1) {
+		if(super.graphicId != -1 && super.currentAnimationId != -1)
+		{
 			SpotAnimation spotAnimation = SpotAnimation.cache[super.graphicId];
 			Model animationModel = spotAnimation.getModel();
-			if (animationModel != null) {
+			if(animationModel != null)
+			{
 				int frameId = spotAnimation.sequences.primaryFrames[super.currentAnimationId];
 				Model animatedModel = new Model(true, Animation.isNullFrame(frameId), false, animationModel);
 				animatedModel.translate(0, -super.graphicHeight, 0);
@@ -40,7 +47,7 @@ public sealed class NPC : Entity {
 				animatedModel.applyTransformation(frameId);
 				animatedModel.triangleSkin = null;
 				animatedModel.vertexSkin = null;
-				if (spotAnimation.scaleXY != 128 || spotAnimation.scaleZ != 128)
+				if(spotAnimation.scaleXY != 128 || spotAnimation.scaleZ != 128)
 					animatedModel.scaleT(spotAnimation.scaleXY, spotAnimation.scaleXY, spotAnimation.scaleZ);
 				animatedModel.applyLighting(64 + spotAnimation.modelLightFalloff, 850 + spotAnimation.modelLightAmbient,
 						-30, -50, -30, true);
@@ -48,13 +55,14 @@ public sealed class NPC : Entity {
 				rotatedModel = new Model(models);
 			}
 		}
-		if (npcDefinition.boundaryDimension == 1)
+		if(npcDefinition.boundaryDimension == 1)
 			rotatedModel.singleTile = true;
 		return rotatedModel;
 	}
 
 	@Override
-	public boolean isVisible() {
+	public boolean isVisible()
+	{
 		return npcDefinition != null;
 	}
 }

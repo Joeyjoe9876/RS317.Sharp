@@ -1,5 +1,6 @@
 
-sealed class RSImageProducer : ImageProducer, ImageObserver {
+sealed class RSImageProducer : ImageProducer, ImageObserver
+{
 
 	public final int[] pixels;
 
@@ -13,7 +14,8 @@ sealed class RSImageProducer : ImageProducer, ImageObserver {
 
 	private final Image image;
 
-	public RSImageProducer(int width, int height, Component component) {
+	public RSImageProducer(int width, int height, Component component)
+	{
 		this.width = width;
 		this.height = height;
 		pixels = new int[width * height];
@@ -29,7 +31,8 @@ sealed class RSImageProducer : ImageProducer, ImageObserver {
 	}
 
 	@Override
-	public synchronized void addConsumer(ImageConsumer imageConsumer) {
+	public synchronized void addConsumer(ImageConsumer imageConsumer)
+	{
 		this.imageConsumer = imageConsumer;
 		imageConsumer.setDimensions(width, height);
 		imageConsumer.setProperties(null);
@@ -37,45 +40,54 @@ sealed class RSImageProducer : ImageProducer, ImageObserver {
 		imageConsumer.setHints(14);
 	}
 
-	public void drawGraphics(int y, Graphics g, int x) {
+	public void drawGraphics(int y, Graphics g, int x)
+	{
 		drawPixels();
 		g.drawImage(image, x, y, this);
 	}
 
-	private synchronized void drawPixels() {
-		if (imageConsumer != null) {
+	private synchronized void drawPixels()
+	{
+		if(imageConsumer != null)
+		{
 			imageConsumer.setPixels(0, 0, width, height, colourModel, pixels, 0, width);
 			imageConsumer.imageComplete(2);
 		}
 	}
 
 	@Override
-	public boolean imageUpdate(Image image, int i, int j, int k, int l, int i1) {
+	public boolean imageUpdate(Image image, int i, int j, int k, int l, int i1)
+	{
 		return true;
 	}
 
-	public void initDrawingArea() {
+	public void initDrawingArea()
+	{
 		DrawingArea.initDrawingArea(height, width, pixels);
 	}
 
 	@Override
-	public synchronized boolean isConsumer(ImageConsumer imageconsumer) {
+	public synchronized boolean isConsumer(ImageConsumer imageconsumer)
+	{
 		return imageConsumer == imageconsumer;
 	}
 
 	@Override
-	public synchronized void removeConsumer(ImageConsumer imageconsumer) {
-		if (imageConsumer == imageconsumer)
+	public synchronized void removeConsumer(ImageConsumer imageconsumer)
+	{
+		if(imageConsumer == imageconsumer)
 			imageConsumer = null;
 	}
 
 	@Override
-	public void requestTopDownLeftRightResend(ImageConsumer imageconsumer) {
+	public void requestTopDownLeftRightResend(ImageConsumer imageconsumer)
+	{
 		System.out.println("TDLR");
 	}
 
 	@Override
-	public void startProduction(ImageConsumer imageconsumer) {
+	public void startProduction(ImageConsumer imageconsumer)
+	{
 		addConsumer(imageconsumer);
 	}
 }

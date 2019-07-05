@@ -5,7 +5,8 @@
 /// Based on Rand.java by Bob Jenkins
 /// http://burtleburtle.net/bob/java/rand/Rand.java
 /// </summary>
-public sealed class ISAACRandomGenerator {
+public sealed class ISAACRandomGenerator
+{
 
 	/**
 	 * log of size of results[] and memory[]
@@ -34,7 +35,8 @@ public sealed class ISAACRandomGenerator {
 	 * 
 	 * @param seed The seed.
 	 */
-	public ISAACRandomGenerator(int seed[]) {
+	public ISAACRandomGenerator(int seed[])
+	{
 		memory = new int[SIZE];
 		results = new int[SIZE];
 		System.arraycopy(seed, 0, results, 0, seed.length);
@@ -44,10 +46,12 @@ public sealed class ISAACRandomGenerator {
 	/**
 	 * Initialise or reinitialise the generator.
 	 */
-	private void initialise() {
+	private void initialise()
+	{
 		int a, b, c, d, e, f, g, h;
 		a = b = c = d = e = f = g = h = 0x9e3779b9;
-		for (int i = 0; i < 4; i++) {
+		for(int i = 0; i < 4; i++)
+		{
 			a ^= b << 11;
 			d += a;
 			b += c;
@@ -74,7 +78,8 @@ public sealed class ISAACRandomGenerator {
 			a += b;
 		}
 
-		for (int i = 0; i < SIZE; i += 8) {
+		for(int i = 0; i < SIZE; i += 8)
+		{
 			a += results[i];
 			b += results[i + 1];
 			c += results[i + 2];
@@ -117,7 +122,8 @@ public sealed class ISAACRandomGenerator {
 			memory[i + 7] = h;
 		}
 
-		for (int i = 0; i < SIZE; i += 8) {
+		for(int i = 0; i < SIZE; i += 8)
+		{
 			a += memory[i];
 			b += memory[i + 1];
 			c += memory[i + 2];
@@ -167,11 +173,13 @@ public sealed class ISAACRandomGenerator {
 	/**
 	 * Generate 256 random results.
 	 */
-	public final void isaac() {
+	public final void isaac()
+	{
 		int a, b, x, y;
 
 		lastResult += ++counter;
-		for (a = 0, b = SIZE / 2; a < SIZE / 2;) {
+		for(a = 0, b = SIZE / 2; a < SIZE / 2;)
+		{
 			x = memory[a];
 			accumulator ^= accumulator << 13;
 			accumulator += memory[b++];
@@ -197,7 +205,8 @@ public sealed class ISAACRandomGenerator {
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
 		}
 
-		for (b = 0; b < SIZE / 2;) {
+		for(b = 0; b < SIZE / 2;)
+		{
 			x = memory[a];
 			accumulator ^= accumulator << 13;
 			accumulator += memory[b++];
@@ -229,8 +238,10 @@ public sealed class ISAACRandomGenerator {
 	 * 
 	 * @return A random value
 	 */
-	public int value() {
-		if (count-- == 0) {
+	public int value()
+	{
+		if(count-- == 0)
+		{
 			isaac();
 			count = (SIZE - 1);
 		}
