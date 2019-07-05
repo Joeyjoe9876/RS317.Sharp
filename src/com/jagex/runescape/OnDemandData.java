@@ -6,12 +6,12 @@ public final class OnDemandData extends Cacheable {
 
 	int dataType;
 
-    byte[] buffer;
+	byte buffer[];
 	int id;
 	boolean incomplete;
 	int loopCycle;
 
 	public OnDemandData() {
-        this.incomplete = true;
+		incomplete = true;
 	}
 }

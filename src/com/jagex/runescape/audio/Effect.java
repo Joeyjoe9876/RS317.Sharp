@@ -8,24 +8,23 @@ import com.jagex.runescape.Buffer;
 
 public final class Effect {
 
-	public static Buffer data(final int i, final int id) {
+	public static Buffer data(int i, int id) {
 		if (effects[id] != null) {
-			final Effect effect = effects[id];
+			Effect effect = effects[id];
 			return effect.encode(i);
 		} else {
 			return null;
 		}
 	}
 
-	public static void load(final Buffer stream) {
+	public static void load(Buffer stream) {
 		_output = new byte[0x6baa8];
 		output = new Buffer(_output);
 		Instrument.initialise();
 		do {
-			final int effect = stream.getUnsignedLEShort();
-			if (effect == 65535) {
-                return;
-            }
+			int effect = stream.getUnsignedLEShort();
+			if (effect == 65535)
+				return;
 			effects[effect] = new Effect();
 			effects[effect].decode(stream);
 			effectDelays[effect] = effects[effect].getDelay();
@@ -46,24 +45,24 @@ public final class Effect {
 	private int loopEnd;
 
 	private Effect() {
-        this.instruments = new Instrument[10];
+		instruments = new Instrument[10];
 	}
 
-	private void decode(final Buffer stream) {
+	private void decode(Buffer stream) {
 		for (int instrument = 0; instrument < 10; instrument++) {
-			final int active = stream.getUnsignedByte();
+			int active = stream.getUnsignedByte();
 			if (active != 0) {
 				stream.position--;
-                this.instruments[instrument] = new Instrument();
-                this.instruments[instrument].decode(stream);
+				instruments[instrument] = new Instrument();
+				instruments[instrument].decode(stream);
 			}
 		}
-        this.loopStart = stream.getUnsignedLEShort();
-        this.loopEnd = stream.getUnsignedLEShort();
+		loopStart = stream.getUnsignedLEShort();
+		loopEnd = stream.getUnsignedLEShort();
 	}
 
-	private Buffer encode(final int loops) {
-		final int size = this.mix(loops);
+	private Buffer encode(int loops) {
+		int size = mix(loops);
 		output.position = 0;
 		output.putInt(0x52494646);
 		output.putLEInt(36 + size);
@@ -84,76 +83,63 @@ public final class Effect {
 
 	private int getDelay() {
 		int delay = 0x98967f;
-		for (int instrument = 0; instrument < 10; instrument++) {
-            if (this.instruments[instrument] != null && this.instruments[instrument].begin / 20 < delay) {
-                delay = this.instruments[instrument].begin / 20;
-            }
-        }
+		for (int instrument = 0; instrument < 10; instrument++)
+			if (instruments[instrument] != null && instruments[instrument].begin / 20 < delay)
+				delay = instruments[instrument].begin / 20;
 
-		if (this.loopStart < this.loopEnd && this.loopStart / 20 < delay) {
-            delay = this.loopStart / 20;
-        }
-		if (delay == 0x98967f || delay == 0) {
-            return 0;
-        }
-		for (int instrument = 0; instrument < 10; instrument++) {
-            if (this.instruments[instrument] != null) {
-                this.instruments[instrument].begin -= delay * 20;
-            }
-        }
+		if (loopStart < loopEnd && loopStart / 20 < delay)
+			delay = loopStart / 20;
+		if (delay == 0x98967f || delay == 0)
+			return 0;
+		for (int instrument = 0; instrument < 10; instrument++)
+			if (instruments[instrument] != null)
+				instruments[instrument].begin -= delay * 20;
 
-		if (this.loopStart < this.loopEnd) {
-            this.loopStart -= delay * 20;
-            this.loopEnd -= delay * 20;
+		if (loopStart < loopEnd) {
+			loopStart -= delay * 20;
+			loopEnd -= delay * 20;
 		}
 		return delay;
 	}
 
 	private int mix(int loopCount) {
 		int _duration = 0;
-		for (int instrument = 0; instrument < 10; instrument++) {
-            if (this.instruments[instrument] != null
-                    && this.instruments[instrument].duration + this.instruments[instrument].begin > _duration) {
-                _duration = this.instruments[instrument].duration + this.instruments[instrument].begin;
-            }
-        }
+		for (int instrument = 0; instrument < 10; instrument++)
+			if (instruments[instrument] != null
+					&& instruments[instrument].duration + instruments[instrument].begin > _duration)
+				_duration = instruments[instrument].duration + instruments[instrument].begin;
 
-		if (_duration == 0) {
-            return 0;
-        }
+		if (_duration == 0)
+			return 0;
 		int stepCount = (22050 * _duration) / 1000;
 		int loopStart = (22050 * this.loopStart) / 1000;
 		int loopEnd = (22050 * this.loopEnd) / 1000;
-		if (loopStart < 0 || loopStart > stepCount || loopEnd < 0 || loopEnd > stepCount || loopStart >= loopEnd) {
-            loopCount = 0;
-        }
+		if (loopStart < 0 || loopStart > stepCount || loopEnd < 0 || loopEnd > stepCount || loopStart >= loopEnd)
+			loopCount = 0;
 		int length = stepCount + (loopEnd - loopStart) * (loopCount - 1);
-		for (int offset = 44; offset < length + 44; offset++) {
-            _output[offset] = -128;
-        }
+		for (int offset = 44; offset < length + 44; offset++)
+			_output[offset] = -128;
 
-		for (int instrument = 0; instrument < 10; instrument++) {
-            if (this.instruments[instrument] != null) {
-                final int duration = (this.instruments[instrument].duration * 22050) / 1000;
-                final int offset = (this.instruments[instrument].begin * 22050) / 1000;
-				final int[] samples = this.instruments[instrument].synthesise(duration, this.instruments[instrument].duration);
-                for (int sample = 0; sample < duration; sample++) {
-                    _output[sample + offset + 44] += (byte) (samples[sample] >> 8);
-                }
+		for (int instrument = 0; instrument < 10; instrument++)
+			if (instruments[instrument] != null) {
+				int duration = (instruments[instrument].duration * 22050) / 1000;
+				int offset = (instruments[instrument].begin * 22050) / 1000;
+				int samples[] = instruments[instrument].synthesise(duration, instruments[instrument].duration);
+				for (int sample = 0; sample < duration; sample++)
+					_output[sample + offset + 44] += (byte) (samples[sample] >> 8);
 
-            }
-        }
+			}
 
 		if (loopCount > 1) {
 			loopStart += 44;
 			loopEnd += 44;
 			stepCount += 44;
-			final int offset = (length += 44) - stepCount;
-            if (stepCount - loopEnd >= 0)
-                System.arraycopy(_output, loopEnd, _output, loopEnd + offset, stepCount - loopEnd);
+			int offset = (length += 44) - stepCount;
+			for (int step = stepCount - 1; step >= loopEnd; step--)
+				_output[step + offset] = _output[step];
 
 			for (int loop = 1; loop < loopCount; loop++) {
-				final int _offset = (loopEnd - loopStart) * loop;
+				int _offset = (loopEnd - loopStart) * loop;
 				System.arraycopy(_output, loopStart, _output, loopStart + _offset, loopEnd - loopStart);
 
 			}

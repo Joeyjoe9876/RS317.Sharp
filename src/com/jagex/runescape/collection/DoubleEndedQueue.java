@@ -6,72 +6,72 @@ public final class DoubleEndedQueue {
 	private Linkable current;
 
 	public DoubleEndedQueue() {
-        this.tail = new Linkable();
-        this.tail.next = this.tail;
-        this.tail.previous = this.tail;
+		tail = new Linkable();
+		tail.next = tail;
+		tail.previous = tail;
 	}
 
 	public Linkable peekFront() {
-		final Linkable node = this.tail.next;
+		Linkable node = tail.next;
 
-		if (node == this.tail) {
-            this.current = null;
+		if (node == tail) {
+			current = null;
 			return null;
 		}
-
-        this.current = node.next;
+		
+		current = node.next;
 		return node;
 	}
 
 	public Linkable peekBack() {
-		final Linkable node = this.tail.previous;
-		if (node == this.tail) {
-            this.current = null;
+		Linkable node = tail.previous;
+		if (node == tail) {
+			current = null;
 			return null;
 		}
-
-        this.current = node.previous;
+		
+		current = node.previous;
 		return node;
 	}
 
 	public Linkable getPrevious() {
-		final Linkable node = this.current;
+		Linkable node = current;
 
-		if (node == this.tail) {
-            this.current = null;
+		if (node == tail) {
+			current = null;
 			return null;
 		}
 
-        this.current = node.previous;
+		current = node.previous;
 		return node;
 	}
 
-	public void pushBack(final Linkable item) {
+	public void pushBack(Linkable item) {
 		if (item.previous != null) {
 			item.unlink();
 		}
 
-		item.previous = this.tail.previous;
-		item.next = this.tail;
+		item.previous = tail.previous;
+		item.next = tail;
 		item.previous.next = item;
 		item.next.previous = item;
 	}
 
-	public void pushFront(final Linkable item) {
+	public void pushFront(Linkable item) {
 		if (item.previous != null) {
 			item.unlink();
 		}
 
-		item.previous = this.tail;
-		item.next = this.tail.next;
+		item.previous = tail;
+		item.next = tail.next;
 		item.previous.next = item;
 		item.next.previous = item;
 	}
 
 	public Linkable popFront() {
-		final Linkable next = this.tail.next;
+		Linkable next = tail.next;
 
-		if (next == this.tail) {
+		if (next == tail) {
 			return null;
 		}
 		
@@ -80,14 +80,14 @@ public final class DoubleEndedQueue {
 	}
 
 	public void clear() {
-		if (this.tail.next == this.tail) {
+		if (tail.next == tail) {
 			return;
 		}
 
 		while (true) {
-			final Linkable next = this.tail.next;
+			Linkable next = tail.next;
 
-			if (next == this.tail) {
+			if (next == tail) {
 				return;
 			}
 
@@ -96,14 +96,14 @@ public final class DoubleEndedQueue {
 	}
 
 	public Linkable getNext() {
-		final Linkable node = this.current;
+		Linkable node = current;
 
-		if (node == this.tail) {
-            this.current = null;
+		if (node == tail) {
+			current = null;
 			return null;
 		}
 
-        this.current = node.next;
+		current = node.next;
 		return node;
 	}
 }

@@ -10,14 +10,14 @@ package com.jagex.runescape.bzip2;
  */
 public final class Bzip2Decompressor {
 
-	private static final BZip2DecompressionState state = new BZip2DecompressionState();
+	private static BZip2DecompressionState state = new BZip2DecompressionState();
 
 	/*
 	 * http://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2
 	 * /huffman.c
 	 */
-	private static void createDecodeTables(final int[] limit, final int[] base, final int[] perm,
-										   final byte[] len, final int minLen, final int maxLen, final int alphaSize) {
+	private static void createDecodeTables(int limit[], int base[], int perm[],
+			byte len[], int minLen, int maxLen, int alphaSize) {
 		int pp = 0;
 		for (int i = minLen; i <= maxLen; i++) {
 			for (int j = 0; j < alphaSize; j++) {
@@ -57,8 +57,8 @@ public final class Bzip2Decompressor {
 		}
 	}
 
-	public static int decompress(final byte[] output, int retVal, final byte[] bzStream,
-                                 final int maxLen, final int minLen) {
+	public static int decompress(byte output[], int retVal, byte[] bzStream,
+			int maxLen, int minLen) {
 		synchronized (state) {
 			state.stream = bzStream; // input
 			state.nextIn = minLen;
@@ -79,7 +79,7 @@ public final class Bzip2Decompressor {
 		}
 	}
 
-	private static void decompress(final BZip2DecompressionState block) {
+	private static void decompress(BZip2DecompressionState block) {
 		int gMinLen = 0;
 		int[] gLimit = null;
 		int[] gBase = null;
@@ -105,7 +105,11 @@ public final class Bzip2Decompressor {
 			uc = getUChar(block);
 			uc = getUChar(block);
 			uc = getBit(block);
-			block.blockRandomised = uc != 0;
+			if (uc != 0) {
+				block.blockRandomised = true;
+			} else {
+				block.blockRandomised = false;
+			}
 			if (block.blockRandomised) {
 				System.out.println("PANIC! RANDOMISED BLOCK!");
 			}
@@ -120,8 +124,12 @@ public final class Bzip2Decompressor {
 			/*--- Receive the mapping table ---*/
 
 			for (int i = 0; i < 16; i++) {
-				final byte bit = getBit(block);
-				block.inUse16[i] = bit == 1;
+				byte bit = getBit(block);
+				if (bit == 1) {
+					block.inUse16[i] = true;
+				} else {
+					block.inUse16[i] = false;
+				}
 			}
 
 			for (int i = 0; i < 256; i++) {
@@ -131,7 +139,7 @@ public final class Bzip2Decompressor {
 			for (int i = 0; i < 16; i++) {
 				if (block.inUse16[i]) {
 					for (int j = 0; j < 16; j++) {
-						final byte bit = getBit(block);
+						byte bit = getBit(block);
 						if (bit == 1) {
 							block.inUse[i * 16 + j] = true;
 						}
@@ -141,22 +149,22 @@ public final class Bzip2Decompressor {
 			}
 
 			makeMaps(block);
-			final int alphaSize = block.nInUse + 2;
+			int alphaSize = block.nInUse + 2;
 			/*
 			 * number of different Huffman tables in use
 			 */
-			final int nGroups = getBits(3, block);
+			int nGroups = getBits(3, block);
 			/*
 			 * number of times that the Huffman tables are swapped (each 50
 			 * bytes)
 			 */
-			final int nSelectors = getBits(15, block);
+			int nSelectors = getBits(15, block);
 
 			/*--- Now the selectors ---*/
 			for (int i = 0; i < nSelectors; i++) {
 				int count = 0;
 				do {
-					final byte terminator = getBit(block);
+					byte terminator = getBit(block);
 					if (terminator == 0) {
 						break;
 					}
@@ -171,14 +179,14 @@ public final class Bzip2Decompressor {
 
 			/*--- Undo the MTF values for the selectors. ---*/
 
-			final byte[] pos = new byte[6];
+			byte[] pos = new byte[6];
 			for (byte v = 0; v < nGroups; v++) {
 				pos[v] = v;
 			}
 
 			for (int i = 0; i < nSelectors; i++) {
 				byte v = block.selectorMtf[i];
-				final byte tmp = pos[v];
+				byte tmp = pos[v];
 				for (; v > 0; v--) {
 					pos[v] = pos[v - 1];
 				}
@@ -229,7 +237,7 @@ public final class Bzip2Decompressor {
 
 			/*--- Now the MTF values ---*/
 
-			final int eob = block.nInUse + 1; // End of block?
+			int eob = block.nInUse + 1; // End of block?
 			int groupNo = -1;
 			int groupPos = 0;
 			for (int i = 0; i <= 255; i++) {
@@ -255,7 +263,7 @@ public final class Bzip2Decompressor {
 			if (groupPos == 0) {
 				groupNo++;
 				groupPos = 50;
-				final byte gSel = block.selector[groupNo];
+				byte gSel = block.selector[groupNo];
 				gMinLen = block.minLens[gSel];
 				gLimit = block.limit[gSel];
 				gPerm = block.perm[gSel];
@@ -287,7 +295,7 @@ public final class Bzip2Decompressor {
 						if (groupPos == 0) {
 							groupNo++;
 							groupPos = 50;
-							final byte gSel = block.selector[groupNo];
+							byte gSel = block.selector[groupNo];
 							gMinLen = block.minLens[gSel];
 							gLimit = block.limit[gSel];
 							gPerm = block.perm[gSel];
@@ -306,7 +314,7 @@ public final class Bzip2Decompressor {
 						nextSym = gPerm[zvec_ - gBase[zn_]];
 					} while (nextSym == 0 || nextSym == 1);
 					es++;
-					final byte uc_ = block.seqToUnseq[block.mtfa[block.mtfbase[0]] & 0xff];
+					byte uc_ = block.seqToUnseq[block.mtfa[block.mtfbase[0]] & 0xff];
 					block.unzftab[uc_ & 0xff] += es;
 					for (; es > 0; es--) {
 						BZip2DecompressionState.tt[nblock] = uc_ & 0xff;
@@ -315,13 +323,13 @@ public final class Bzip2Decompressor {
 
 				} else {
 					int nn = nextSym - 1;
-					final byte uc_;
+					byte uc_;
 					/* avoid general-case expense */
 					if (nn < 16) {
-						final int pp = block.mtfbase[0];
+						int pp = block.mtfbase[0];
 						uc_ = block.mtfa[pp + nn];
 						for (; nn > 3; nn -= 4) {
-							final int z = pp + nn;
+							int z = pp + nn;
 							block.mtfa[z] = block.mtfa[z - 1];
 							block.mtfa[z - 1] = block.mtfa[z - 2];
 							block.mtfa[z - 2] = block.mtfa[z - 3];
@@ -336,7 +344,7 @@ public final class Bzip2Decompressor {
 					} else {
 						/* general case */
 						int lno = nn / 16; // 16 is the MTFL size
-						final int off = nn % 16;
+						int off = nn % 16;
 						int pp = block.mtfbase[lno] + off;
 						uc_ = block.mtfa[pp];
 						for (; pp > block.mtfbase[lno]; pp--) {
@@ -372,7 +380,7 @@ public final class Bzip2Decompressor {
 					if (groupPos == 0) {
 						groupNo++;
 						groupPos = 50;
-						final byte byte14 = block.selector[groupNo];
+						byte byte14 = block.selector[groupNo];
 						gMinLen = block.minLens[byte14];
 						gLimit = block.limit[byte14];
 						gPerm = block.perm[byte14];
@@ -400,7 +408,9 @@ public final class Bzip2Decompressor {
 			block.stateOutCh = 0;
 			/*-- Set up cftab to facilitate generation of T^(-1) --*/
 			block.cftab[0] = 0;
-			System.arraycopy(block.unzftab, 0, block.cftab, 1, 256);
+			for (int i = 1; i <= 256; i++) {
+				block.cftab[i] = block.unzftab[i - 1];
+			}
 
 			for (int i = 1; i <= 256; i++) {
 				block.cftab[i] += block.cftab[i - 1];
@@ -408,7 +418,7 @@ public final class Bzip2Decompressor {
 
 			/*-- compute the T^(-1) vector --*/
 			for (int i = 0; i < nblock; i++) {
-				final byte uc_ = (byte) (BZip2DecompressionState.tt[i] & 0xff);
+				byte uc_ = (byte) (BZip2DecompressionState.tt[i] & 0xff);
 				BZip2DecompressionState.tt[block.cftab[uc_ & 0xff]] |= i << 8;
 				block.cftab[uc_ & 0xff]++;
 			}
@@ -421,19 +431,23 @@ public final class Bzip2Decompressor {
 			block.nBlockUsed++;
 			block.nBlock = nblock;
 			method226(block);
-			flag19 = block.nBlockUsed == block.nBlock + 1 && block.stateOutLen == 0;
+			if (block.nBlockUsed == block.nBlock + 1 && block.stateOutLen == 0) {
+				flag19 = true;
+			} else {
+				flag19 = false;
+			}
 		}
 	}
 
-	private static byte getBit(final BZip2DecompressionState block) {
+	private static byte getBit(BZip2DecompressionState block) {
 		return (byte) getBits(1, block);
 	}
 
-	private static int getBits(final int numBits, final BZip2DecompressionState block) {
-		final int bits;
+	private static int getBits(int numBits, BZip2DecompressionState block) {
+		int bits;
 		do {
 			if (block.bsLive >= numBits) {
-				final int v = block.bsBuff >> block.bsLive - numBits & (1 << numBits)
+				int v = block.bsBuff >> block.bsLive - numBits & (1 << numBits)
 						- 1;
 				block.bsLive -= numBits;
 				bits = v;
@@ -452,11 +466,11 @@ public final class Bzip2Decompressor {
 		return bits;
 	}
 
-	private static byte getUChar(final BZip2DecompressionState block) {
+	private static byte getUChar(BZip2DecompressionState block) {
 		return (byte) getBits(8, block);
 	}
 
-	private static void makeMaps(final BZip2DecompressionState block) {
+	private static void makeMaps(BZip2DecompressionState block) {
 		block.nInUse = 0;
 		for (int i = 0; i < 256; i++) {
 			if (block.inUse[i]) {
@@ -467,20 +481,20 @@ public final class Bzip2Decompressor {
 
 	}
 
-	private static void method226(final BZip2DecompressionState block) {
+	private static void method226(BZip2DecompressionState block) {
 		// unRLE_obuf_to_output_FAST
 		byte stateOutCh = block.stateOutCh;
 		int stateOutLen = block.stateOutLen;
 		int nBlockUsed = block.nBlockUsed;
 		int k0 = block.k0;
-		final int[] tt = BZip2DecompressionState.tt;
+		int[] tt = BZip2DecompressionState.tt;
 		int tPos = block.tPos;
-		final byte[] buf = block.buf;
+		byte[] buf = block.buf;
 		int csNextOut = block.nextOut;
 		int csAvailOut = block.availOut;
 
-		final int availOutInit = csAvailOut;
-		final int savedNBlockPP = block.nBlock + 1;
+		int availOutInit = csAvailOut;
+		int savedNBlockPP = block.nBlock + 1;
 
 		outer: do {
 
@@ -522,7 +536,7 @@ public final class Bzip2Decompressor {
 				// BZ_GET_FAST_C
 
 				tPos = tt[tPos];
-				final byte k1 = (byte) (tPos & 0xff);
+				byte k1 = (byte) (tPos & 0xff);
 				tPos >>= 8;
 
 				nBlockUsed++;
@@ -556,7 +570,7 @@ public final class Bzip2Decompressor {
 			// BZ_GET_FAST_C
 
 			tPos = tt[tPos];
-			final byte k1 = (byte) (tPos & 0xff);
+			byte k1 = (byte) (tPos & 0xff);
 			tPos >>= 8;
 
 			// end BZ_GET_FAST_C
@@ -568,7 +582,7 @@ public final class Bzip2Decompressor {
 					stateOutLen = 3;
 
 					tPos = tt[tPos];
-					final byte k1_ = (byte) (tPos & 0xff);
+					byte k1_ = (byte) (tPos & 0xff);
 					tPos >>= 8;
 
 					if (++nBlockUsed != savedNBlockPP) {
@@ -577,7 +591,7 @@ public final class Bzip2Decompressor {
 						} else {
 
 							tPos = tt[tPos];
-							final byte k1__ = (byte) (tPos & 0xff);
+							byte k1__ = (byte) (tPos & 0xff);
 							tPos >>= 8;
 
 							nBlockUsed++;
@@ -593,7 +607,7 @@ public final class Bzip2Decompressor {
 				}
 			}
 		} while (true);
-		final int oldTotalOutLo32 = block.totalOutLo32;
+		int oldTotalOutLo32 = block.totalOutLo32;
 		block.totalOutLo32 += availOutInit - csAvailOut;
 		if (block.totalOutLo32 < oldTotalOutLo32) {
 			block.totalOutHigh32++;

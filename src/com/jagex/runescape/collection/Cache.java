@@ -11,50 +11,51 @@ public class Cache {
 	private final LinkableHashMap hashmap;
 	private final CacheableQueue retrievedItems;
 
-	public Cache(final int length) {
-        this.empty = new Cacheable();
-        this.retrievedItems = new CacheableQueue();
-        this.hashmap = new LinkableHashMap(1024);
+	public Cache(int length) {
+		empty = new Cacheable();
+		retrievedItems = new CacheableQueue();
+		hashmap = new LinkableHashMap(1024);
 
-        this.size = length;
-        this.available = length;
+		size = length;
+		available = length;		
 	}
 
-	public Cacheable get(final long key) {
-		final Cacheable item = (Cacheable) this.hashmap.get(key);
+	public Cacheable get(long key) {
+		Cacheable item = (Cacheable) hashmap.get(key);
 
 		if (item != null) {
-            this.retrievedItems.push(item);
+			retrievedItems.push(item);
 		}
 
 		return item;
 	}
 
-	public void put(final Cacheable item, final long key) {
-		if (this.available == 0) {
-			final Cacheable oldest = this.retrievedItems.pop();
+	public void put(Cacheable item, long key) {
+		if (available == 0) {
+			Cacheable oldest = retrievedItems.pop();
 			oldest.unlink();
 			oldest.unlinkCacheable();
 
-			if (oldest == this.empty) {
-				final Cacheable secondOldest = this.retrievedItems.pop();
+			if (oldest == empty) {
+				Cacheable secondOldest = retrievedItems.pop();
 				secondOldest.unlink();
 				secondOldest.unlinkCacheable();
 			}
 		} else {
-            this.available--;
+			available--;
 		}
 
-        this.hashmap.put(key, item);
-        this.retrievedItems.push(item);
+		hashmap.put(key, item);
+		retrievedItems.push(item);
+		return;
 	}
 
 	public void clear() {
 		while (true) {
-			final Cacheable oldest = this.retrievedItems.pop();
+			Cacheable oldest = retrievedItems.pop();
 
 			if (oldest == null) {
-                this.available = this.size;
+				available = size;
 				return;
 			}
 
