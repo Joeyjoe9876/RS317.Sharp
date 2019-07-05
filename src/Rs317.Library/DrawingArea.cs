@@ -1,6 +1,19 @@
 
 public class DrawingArea : Cacheable
 {
+
+	public static int[] pixels;
+
+	public static int width;
+	public static int height;
+	public static int topY;
+	public static int bottomY;
+	public static int topX;
+	public static int bottomX;
+	public static int centerX;
+	public static int viewportCentreX;
+	public static int viewportCentreY;
+
 	public static void clear()
 	{
 		int i = width * height;
@@ -177,7 +190,7 @@ public class DrawingArea : Cacheable
 
 	}
 
-	public static void initDrawingArea(int height, int width, int pixels[])
+	public static void initDrawingArea(int height, int width, int[] pixels)
 	{
 		DrawingArea.pixels = pixels;
 		DrawingArea.width = width;
@@ -258,17 +271,4 @@ public class DrawingArea : Cacheable
 		viewportCentreX = bottomX / 2;
 		viewportCentreY = bottomY / 2;
 	}
-
-	public static int pixels[];
-
-	public static int width;
-	public static int height;
-	public static int topY;
-	public static int bottomY;
-	public static int topX;
-	public static int bottomX;
-	public static int centerX;
-	public static int viewportCentreX;
-	public static int viewportCentreY;
-
 }
