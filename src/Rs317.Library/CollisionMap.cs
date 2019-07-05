@@ -28,7 +28,7 @@ sealed class CollisionMap
 		clippingData[x][y] |= 0x200000;
 	}
 
-	public void markSolidOccupant(int x, int y, int width, int height, int orientation, boolean impenetrable)
+	public void markSolidOccupant(int x, int y, int width, int height, int orientation, bool impenetrable)
 	{
 		int occupied = 256;
 		if(impenetrable)
@@ -52,7 +52,7 @@ sealed class CollisionMap
 
 	}
 
-	public void markWall(int y, int orientation, int x, int position, boolean impenetrable)
+	public void markWall(int y, int orientation, int x, int position, bool impenetrable)
 	{
 		x -= insetX;
 		y -= insetY;
@@ -208,7 +208,7 @@ sealed class CollisionMap
 		}
 	}
 
-	public boolean reachedFacingObject(int startX, int startY, int endX, int endY, int endDistanceX, int endDistanceY,
+	public bool reachedFacingObject(int startX, int startY, int endX, int endY, int endDistanceX, int endDistanceY,
 			int surroundings)
 	{
 		int endX2 = (endX + endDistanceX) - 1;
@@ -227,7 +227,7 @@ sealed class CollisionMap
 						&& (clippingData[startX - insetX][startY - insetY] & 0x20) == 0 && (surroundings & 1) == 0;
 	}
 
-	public boolean reachedWall(int startX, int startY, int endX, int endY, int endPosition, int endOrientation)
+	public bool reachedWall(int startX, int startY, int endX, int endY, int endPosition, int endOrientation)
 	{
 		if(startX == endX && startY == endY)
 			return true;
@@ -331,7 +331,7 @@ sealed class CollisionMap
 		return false;
 	}
 
-	public boolean reachedWallDecoration(int startX, int startY, int endX, int endY, int endPosition,
+	public bool reachedWallDecoration(int startX, int startY, int endX, int endY, int endPosition,
 			int endOrientation)
 	{
 		if(startX == endX && startY == endY)
@@ -413,7 +413,7 @@ sealed class CollisionMap
 		clippingData[x][y] &= 0xdfffff;
 	}
 
-	public void unmarkSolidOccupant(int x, int y, int width, int height, int orientation, boolean impenetrable)
+	public void unmarkSolidOccupant(int x, int y, int width, int height, int orientation, bool impenetrable)
 	{
 		int occupied = 256;
 		if(impenetrable)
@@ -437,7 +437,7 @@ sealed class CollisionMap
 
 	}
 
-	public void unmarkWall(int x, int y, int position, int orientation, boolean impenetrable)
+	public void unmarkWall(int x, int y, int position, int orientation, bool impenetrable)
 	{
 		x -= insetX;
 		y -= insetY;

@@ -150,7 +150,7 @@ private static void trimWhitespaces(char[] chars)
 	}
 }
 
-private static boolean isValid(char c)
+private static bool isValid(char c)
 {
 	return c >= ' ' && c <= 127 || c == ' ' || c == '\n' || c == '\t' || c == '\243' || c == '\u20AC';
 }
@@ -200,7 +200,7 @@ private static void replaceUppercases(char[] from, char[] to)
 
 private static void formatUppercases(char[] chars)
 {
-	boolean flag = true;
+	bool flag = true;
 	for(int n = 0; n < chars.length; n++)
 	{
 		char c = chars[n];
@@ -305,7 +305,7 @@ private static void filterDomain(char[] chars, char[] domain, char[] filteredDot
 
 		if(off >= domain.length)
 		{
-			boolean bad = false;
+			bool bad = false;
 			int status0 = getDomainAtFilterStatus(start, chars, filteredAts);
 			int status1 = getDomainDotFilterStatus(end - 1, chars, filteredDots);
 
@@ -489,7 +489,7 @@ private static void filterTld(char chars[], char tld[], int type, char filteredD
 
 		if(off >= tld.length)
 		{
-			boolean bad = false;
+			bool bad = false;
 			int status0 = getTldDotFilterStatus(chars, start, filteredDot);
 			int status1 = getTldSlashFilterStatus(chars, end - 1, filteredSlash);
 
@@ -531,7 +531,7 @@ private static void filterTld(char chars[], char tld[], int type, char filteredD
 				{
 					if(status0 == 4)
 					{
-						boolean findStart = false;
+						bool findStart = false;
 						for(int i = first - 1; i >= 0; i--)
 						{
 							if(findStart)
@@ -550,7 +550,7 @@ private static void filterTld(char chars[], char tld[], int type, char filteredD
 						}
 					}
 
-					boolean findStart = false;
+					bool findStart = false;
 					for(int i = first - 1; i >= 0; i--)
 					{
 						if(findStart)
@@ -576,7 +576,7 @@ private static void filterTld(char chars[], char tld[], int type, char filteredD
 					// there was a string of asterisks.
 					if(status1 == 4)
 					{
-						boolean findLast = false;
+						bool findLast = false;
 						for(int i = last + 1; i < chars.length; i++)
 						{
 							if(findLast)
@@ -595,7 +595,7 @@ private static void filterTld(char chars[], char tld[], int type, char filteredD
 						}
 					}
 
-					boolean findLast = false;
+					bool findLast = false;
 					for(int i = last + 1; i < chars.length; i++)
 					{
 						if(findLast)
@@ -718,9 +718,9 @@ private static void filterBad(char[] chars, char[] fragment, byte badCombination
 		int iterations = 0;
 		stride = 1;
 
-		boolean isSymbol = false;
-		boolean isEmulated = false;
-		boolean isNumeral = false;
+		bool isSymbol = false;
+		bool isEmulated = false;
+		bool isNumeral = false;
 
 		while(end < chars.length && (!isEmulated || !isNumeral))
 		{
@@ -792,7 +792,7 @@ private static void filterBad(char[] chars, char[] fragment, byte badCombination
 
 		if(fragOff >= fragment.length && (!isEmulated || !isNumeral))
 		{
-			boolean bad = true;
+			bool bad = true;
 
 			if(!isSymbol)
 			{
@@ -817,8 +817,8 @@ private static void filterBad(char[] chars, char[] fragment, byte badCombination
 			}
 			else
 			{
-				boolean badCurrent = false;
-				boolean badNext = false;
+				bool badCurrent = false;
+				bool badNext = false;
 
 				// if the previous is out of range or a symbol
 				if(start - 1 < 0 || isSymbol(chars[start - 1]) && chars[start - 1] != '\'')
@@ -834,7 +834,7 @@ private static void filterBad(char[] chars, char[] fragment, byte badCombination
 
 				if(!badCurrent || !badNext)
 				{
-					boolean good = false;
+					bool good = false;
 					int cur = start - 2;
 
 					if(badCurrent)
@@ -856,7 +856,7 @@ private static void filterBad(char[] chars, char[] fragment, byte badCombination
 								frag[off] = chars[cur + off];
 							}
 
-							boolean valid = true;
+							bool valid = true;
 
 							// if we read zero chars
 							if(off == 0)
@@ -925,7 +925,7 @@ private static void filterBad(char[] chars, char[] fragment, byte badCombination
 
 }
 
-private static boolean comboMatches(byte a, byte b, byte combos[][])
+private static bool comboMatches(byte a, byte b, byte combos[][])
 {
 	int first = 0;
 	if(combos[first][0] == a && combos[first][1] == b)
@@ -1234,7 +1234,7 @@ private static void filterNumFragments(char[] chars)
 
 	while((index = indexOfNumber(chars, end)) != -1)
 	{
-		boolean foundLowercase = false;
+		bool foundLowercase = false;
 
 		// scan for lowercase char
 		for(int i = end; i >= 0 && i < index && !foundLowercase; i++)
@@ -1314,12 +1314,12 @@ private static int indexOfNonNumber(char[] chars, int off)
 	return chars.length;
 }
 
-private static boolean isSymbol(char c)
+private static bool isSymbol(char c)
 {
 	return !isAlpha(c) && !isNumeral(c);
 }
 
-private static boolean isNotLowercaseAlpha(char c)
+private static bool isNotLowercaseAlpha(char c)
 {
 	if(c < 'a' || c > 'z')
 	{
@@ -1328,29 +1328,29 @@ private static boolean isNotLowercaseAlpha(char c)
 	return c == 'v' || c == 'x' || c == 'j' || c == 'q' || c == 'z';
 }
 
-private static boolean isAlpha(char c)
+private static bool isAlpha(char c)
 {
 	return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
 }
 
-private static boolean isNumeral(char c)
+private static bool isNumeral(char c)
 {
 	return c >= '0' && c <= '9';
 }
 
-private static boolean isLowercaseAlpha(char c)
+private static bool isLowercaseAlpha(char c)
 {
 	return c >= 'a' && c <= 'z';
 }
 
-private static boolean isUppercaseAlpha(char c)
+private static bool isUppercaseAlpha(char c)
 {
 	return c >= 'A' && c <= 'Z';
 }
 
-private static boolean isBadFragment(char[] chars)
+private static bool isBadFragment(char[] chars)
 {
-	boolean skip = true;
+	bool skip = true;
 
 	for(int i = 0; i < chars.length; i++)
 	{

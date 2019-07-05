@@ -29,7 +29,7 @@ public sealed class WorldController
 		TILE_VISIBILITY_MAP = null;
 	}
 
-	private static boolean onScreen(int x, int y, int z)
+	private static bool onScreen(int x, int y, int z)
 	{
 		int l = y * curveSineX + x * curveCosineX >> 16;
 		int i1 = y * curveCosineX - x * curveSineX >> 16;
@@ -50,7 +50,7 @@ public sealed class WorldController
 		bottom = viewportHeight;
 		midX = viewportWidth / 2;
 		midY = viewportHeight / 2;
-		boolean tileOnScreen[][] [] [] = new boolean[9][32][53][53];
+		bool tileOnScreen[][] [] [] = new bool[9][32][53][53];
 		for (int angleY = 128; angleY <= 384; angleY += 32) {
 			for (int angleX = 0; angleX< 2048; angleX += 64) {
 				curveSineY = Model.SINE[angleY];
@@ -63,7 +63,7 @@ public sealed class WorldController
 					for (int y = -26; y <= 26; y++) {
 						int worldX = x * 128;
 	int worldY = y * 128;
-	boolean visible = false;
+	bool visible = false;
 						for (int worldZ = -i; worldZ <= j; worldZ += 128) {
 							if (!onScreen(worldX, worldY, ai[anglePointerY] + worldZ))
 								continue;
@@ -84,7 +84,7 @@ tileOnScreen[anglePointerY][anglePointerX][x + 25 + 1][y + 25 + 1] = visible;
 			for (int anglePointerX = 0; anglePointerX< 32; anglePointerX++) {
 				for (int relativeX = -25; relativeX< 25; relativeX++) {
 					for (int relativeZ = -25; relativeZ< 25; relativeZ++) {
-						boolean visible = false;
+						bool visible = false;
 label0: for (int f = -1; f <= 1; f++) {
 							for (int g = -1; g <= 1; g++) {
 								if (tileOnScreen[anglePointerY][anglePointerX][relativeX + f + 25 + 1][relativeZ + g
@@ -118,7 +118,7 @@ label0: for (int f = -1; f <= 1; f++) {
 
 	}
 
-	public static boolean lowMemory = true;
+	public static bool lowMemory = true;
 
 private int mapSizeZ;
 
@@ -180,7 +180,7 @@ private static int[] faceOffsetX3 = { -45, 45, 45, -45 };
 
 private static int[] faceOffsetY3 = { 45, 45, -45, -45 };
 
-private static boolean clicked;
+private static bool clicked;
 
 private static int clickX;
 
@@ -233,8 +233,8 @@ private int[][] tileShapeIndices = { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 			{ 12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3 },
 			{ 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
 			{ 3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12 } };
-private static boolean[][][][] TILE_VISIBILITY_MAPS = new boolean[8][32][51][51];
-private static boolean[][] TILE_VISIBILITY_MAP;
+private static bool[][][][] TILE_VISIBILITY_MAPS = new bool[8][32][51][51];
+private static bool[][] TILE_VISIBILITY_MAP;
 private static int midX;
 private static int midY;
 private static int left;
@@ -264,15 +264,15 @@ static {
 	initToNull();
 }
 
-public boolean addEntity(int x, int y, int z, int worldX, int worldY, int worldZ, int rotation, int tileWidth,
+public bool addEntity(int x, int y, int z, int worldX, int worldY, int worldZ, int rotation, int tileWidth,
 		int tileHeight, Animable entity, int uid)
 {
 	return entity == null || addEntityC(x, y, z, worldX, worldY, worldZ, rotation, (tileWidth - y) + 1,
 			(tileHeight - x) + 1, uid, entity, true, (byte)0);
 }
 
-public boolean addEntity(int z, int worldX, int worldY, int worldZ, int yaw, Animable entity, int uid, int delta,
-		boolean accountForYaw)
+public bool addEntity(int z, int worldX, int worldY, int worldZ, int yaw, Animable entity, int uid, int delta,
+		bool accountForYaw)
 {
 	if(entity == null)
 		return true;
@@ -302,7 +302,7 @@ public boolean addEntity(int z, int worldX, int worldY, int worldZ, int yaw, Ani
 			entity, true, (byte)0);
 }
 
-public boolean addEntityB(int x, int y, int z, int worldZ, int rotation, int tileWidth, int tileHeight, int uid,
+public bool addEntityB(int x, int y, int z, int worldZ, int rotation, int tileWidth, int tileHeight, int uid,
 		Animable entity, byte objConf)
 {
 	if(entity == null)
@@ -318,8 +318,8 @@ public boolean addEntityB(int x, int y, int z, int worldZ, int rotation, int til
 	}
 }
 
-private boolean addEntityC(int minX, int minY, int z, int worldX, int worldY, int worldZ, int rotation, int tileWidth,
-		int tileHeight, int uid, Animable renderable, boolean isDynamic, byte objConf)
+private bool addEntityC(int minX, int minY, int z, int worldX, int worldY, int worldZ, int rotation, int tileWidth,
+		int tileHeight, int uid, Animable renderable, bool isDynamic, byte objConf)
 {
 	for(int x = minX; x < minX + tileHeight; x++)
 	{
@@ -696,7 +696,7 @@ public void initToNull()
 
 }
 
-private boolean isMouseWithinTriangle(int mouseX, int mouseY, int pointAY, int pointBY, int pointCY, int pointAX,
+private bool isMouseWithinTriangle(int mouseX, int mouseY, int pointAY, int pointBY, int pointCY, int pointAX,
 		int pointBX, int pointCX)
 {
 	if(mouseY < pointAY && mouseY < pointBY && mouseY < pointCY)
@@ -762,7 +762,7 @@ private void method306(Model model, int x, int y, int z)
 
 private void method307(int z, int j, int k, int x, int y, Model model)
 {
-	boolean flag = true;
+	bool flag = true;
 	int positionX = x;
 	int position2X = x + j;
 	int positionY = y - 1;
@@ -818,7 +818,7 @@ private void method307(int z, int j, int k, int x, int y, Model model)
 
 }
 
-private void mergeNormals(Model model, Model secondModel, int posX, int posY, int posZ, boolean flag)
+private void mergeNormals(Model model, Model secondModel, int posX, int posY, int posZ, bool flag)
 {
 	anInt488++;
 	int count = 0;
@@ -884,7 +884,7 @@ private void mergeNormals(Model model, Model secondModel, int posX, int posY, in
 
 }
 
-private boolean method320(int x, int y, int z)
+private bool method320(int x, int y, int z)
 {
 	int l = anIntArrayArrayArray445[z][x][y];
 	if(l == -anInt448)
@@ -908,7 +908,7 @@ private boolean method320(int x, int y, int z)
 	}
 }
 
-private boolean method321(int x, int y, int z, int wallType)
+private bool method321(int x, int y, int z, int wallType)
 {
 	if(!method320(x, y, z))
 		return false;
@@ -1012,7 +1012,7 @@ private boolean method321(int x, int y, int z, int wallType)
 	}
 }
 
-private boolean method322(int z, int x, int y, int offsetZ)
+private bool method322(int z, int x, int y, int offsetZ)
 {
 	if(!method320(x, y, z))
 		return false;
@@ -1024,7 +1024,7 @@ private boolean method322(int z, int x, int y, int offsetZ)
 			&& method324(_x + 1, (_y + 128) - 1, heightMap[z][x][y + 1] - offsetZ);
 }
 
-private boolean method323(int minimumX, int maximumX, int minimumY, int maximumY, int z, int offsetZ)
+private bool method323(int minimumX, int maximumX, int minimumY, int maximumY, int z, int offsetZ)
 {
 	if(minimumX == maximumX && minimumY == maximumY)
 	{
@@ -1057,7 +1057,7 @@ private boolean method323(int minimumX, int maximumX, int minimumY, int maximumY
 	return method324(_x, y, _z) && method324(x, y, _z);
 }
 
-private boolean method324(int x, int y, int z)
+private bool method324(int x, int y, int z)
 {
 	for(int c = 0; c < processedCullingClustersPointer; c++)
 	{
@@ -1162,7 +1162,7 @@ private void processCulling()
 			int distanceFromCameraEndY = (cluster.tileEndY - cameraPositionTileY) + 25;
 			if(distanceFromCameraEndY > 50)
 				distanceFromCameraEndY = 50;
-			boolean visible = false;
+			bool visible = false;
 			while(distanceFromCameraStartY <= distanceFromCameraEndY)
 				if(TILE_VISIBILITY_MAP[distanceFromCameraStartX][distanceFromCameraStartY++])
 				{
@@ -1205,7 +1205,7 @@ private void processCulling()
 			int distanceFromCameraEndX = (cluster.tileEndX - cameraPositionTileX) + 25;
 			if(distanceFromCameraEndX > 50)
 				distanceFromCameraEndX = 50;
-			boolean visible = false;
+			bool visible = false;
 			while(distanceFromCameraStartX <= distanceFromCameraEndX)
 				if(TILE_VISIBILITY_MAP[distanceFromCameraStartX++][distanceFromCameraStartY])
 				{
@@ -1255,7 +1255,7 @@ private void processCulling()
 					int distanceFromCameraEndX = (cluster.tileEndX - cameraPositionTileX) + 25;
 					if(distanceFromCameraEndX > 50)
 						distanceFromCameraEndX = 50;
-					boolean visible = false;
+					bool visible = false;
 					label0: for(int x = distanceFromCameraStartX; x <= distanceFromCameraEndX; x++)
 					{
 						for(int y = distanceFromCameraStartY; y <= distanceFromCameraEndY; y++)
@@ -1419,13 +1419,13 @@ public void render(int cameraPosX, int cameraPosY, int curveX, int cameraPosZ, i
 						if (tile.logicHeight > plane
 								|| !TILE_VISIBILITY_MAP[(x - cameraPositionTileX) + 25][(y - cameraPositionTileY) + 25]
 										&& heightMap[z][x][y] - cameraPosZ< 2000) {
-							tile.aBoolean1322 = false;
-							tile.aBoolean1323 = false;
+							tile.abool1322 = false;
+							tile.abool1323 = false;
 							tile.anInt1325 = 0;
 						} else {
-							tile.aBoolean1322 = true;
-							tile.aBoolean1323 = true;
-							tile.aBoolean1324 = tile.entityCount > 0;
+							tile.abool1322 = true;
+							tile.abool1323 = true;
+							tile.abool1324 = tile.entityCount > 0;
 							anInt446++;
 						}
 				}
@@ -1446,24 +1446,24 @@ int y2 = cameraPositionTileY - offsetY;
 						if (x >= currentPositionX) {
 							if (y >= currentPositionY) {
 								Tile tile = tiles[x][y];
-								if (tile != null && tile.aBoolean1322)
+								if (tile != null && tile.abool1322)
 									renderTile(tile, true);
 							}
 							if (y2<mapBoundsY) {
 								Tile tile = tiles[x][y2];
-								if (tile != null && tile.aBoolean1322)
+								if (tile != null && tile.abool1322)
 									renderTile(tile, true);
 							}
 						}
 						if (x2<mapBoundsX) {
 							if (y >= currentPositionY) {
 								Tile tile = tiles[x2][y];
-								if (tile != null && tile.aBoolean1322)
+								if (tile != null && tile.abool1322)
 									renderTile(tile, true);
 							}
 							if (y2<mapBoundsY) {
 								Tile tile = tiles[x2][y2];
-								if (tile != null && tile.aBoolean1322)
+								if (tile != null && tile.abool1322)
 									renderTile(tile, true);
 							}
 						}
@@ -1490,24 +1490,24 @@ int y2 = cameraPositionTileY - offsetY;
 						if (x >= currentPositionX) {
 							if (y >= currentPositionY) {
 								Tile tile = tiles[x][y];
-								if (tile != null && tile.aBoolean1322)
+								if (tile != null && tile.abool1322)
 									renderTile(tile, false);
 							}
 							if (y2<mapBoundsY) {
 								Tile tile = tiles[x][y2];
-								if (tile != null && tile.aBoolean1322)
+								if (tile != null && tile.abool1322)
 									renderTile(tile, false);
 							}
 						}
 						if (x2<mapBoundsX) {
 							if (y >= currentPositionY) {
 								Tile tile = tiles[x2][y];
-								if (tile != null && tile.aBoolean1322)
+								if (tile != null && tile.abool1322)
 									renderTile(tile, false);
 							}
 							if (y2<mapBoundsY) {
 								Tile tile = tiles[x2][y2];
-								if (tile != null && tile.aBoolean1322)
+								if (tile != null && tile.abool1322)
 									renderTile(tile, false);
 							}
 						}
@@ -1739,7 +1739,7 @@ private void renderShapedTile(ShapedTile shapedTile, int tileX, int tileY, int s
 
 }
 
-private void renderTile(Tile _tile, boolean flag)
+private void renderTile(Tile _tile, bool flag)
 {
 	tileList.pushBack(_tile);
 	do
@@ -1750,48 +1750,48 @@ private void renderTile(Tile _tile, boolean flag)
 			groundTile = (Tile)tileList.popFront();
 			if(groundTile == null)
 				return;
-		} while(!groundTile.aBoolean1323);
+		} while(!groundTile.abool1323);
 		int x = groundTile.x;
 		int y = groundTile.y;
 		int z = groundTile.z;
 		int l = groundTile.anInt1310;
 		Tile tiles[][] = groundArray[z];
-	if(groundTile.aBoolean1322)
+	if(groundTile.abool1322)
 	{
 		if(flag)
 		{
 			if(z > 0)
 			{
 				Tile tile = groundArray[z - 1][x][y];
-				if(tile != null && tile.aBoolean1323)
+				if(tile != null && tile.abool1323)
 					continue;
 			}
 			if(x <= cameraPositionTileX && x > currentPositionX)
 			{
 				Tile tile = tiles[x - 1][y];
-				if(tile != null && tile.aBoolean1323
-						&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 1) == 0))
+				if(tile != null && tile.abool1323
+						&& (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 1) == 0))
 					continue;
 			}
 			if(x >= cameraPositionTileX && x < mapBoundsX - 1)
 			{
 				Tile tile = tiles[x + 1][y];
-				if(tile != null && tile.aBoolean1323
-						&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 4) == 0))
+				if(tile != null && tile.abool1323
+						&& (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 4) == 0))
 					continue;
 			}
 			if(y <= cameraPositionTileY && y > currentPositionY)
 			{
 				Tile tile = tiles[x][y - 1];
-				if(tile != null && tile.aBoolean1323
-						&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 8) == 0))
+				if(tile != null && tile.abool1323
+						&& (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 8) == 0))
 					continue;
 			}
 			if(y >= cameraPositionTileY && y < mapBoundsY - 1)
 			{
 				Tile tile = tiles[x][y + 1];
-				if(tile != null && tile.aBoolean1323
-						&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 2) == 0))
+				if(tile != null && tile.abool1323
+						&& (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 2) == 0))
 					continue;
 			}
 		}
@@ -1799,7 +1799,7 @@ private void renderTile(Tile _tile, boolean flag)
 		{
 			flag = true;
 		}
-		groundTile.aBoolean1322 = false;
+		groundTile.abool1322 = false;
 		if(groundTile.tileBelow != null)
 		{
 			Tile tile = groundTile.tileBelow;
@@ -1826,7 +1826,7 @@ private void renderTile(Tile _tile, boolean flag)
 			}
 
 		}
-		boolean flag1 = false;
+		bool flag1 = false;
 		if(groundTile.plainTile != null)
 		{
 			if(!method320(x, y, l))
@@ -1966,32 +1966,32 @@ private void renderTile(Tile _tile, boolean flag)
 			if(x < cameraPositionTileX && (interactiveObjectsSizeOR & 4) != 0)
 			{
 				Tile tile = tiles[x + 1][y];
-				if(tile != null && tile.aBoolean1323)
+				if(tile != null && tile.abool1323)
 					tileList.pushBack(tile);
 			}
 			if(y < cameraPositionTileY && (interactiveObjectsSizeOR & 2) != 0)
 			{
 				Tile tile = tiles[x][y + 1];
-				if(tile != null && tile.aBoolean1323)
+				if(tile != null && tile.abool1323)
 					tileList.pushBack(tile);
 			}
 			if(x > cameraPositionTileX && (interactiveObjectsSizeOR & 1) != 0)
 			{
 				Tile tile = tiles[x - 1][y];
-				if(tile != null && tile.aBoolean1323)
+				if(tile != null && tile.abool1323)
 					tileList.pushBack(tile);
 			}
 			if(y > cameraPositionTileY && (interactiveObjectsSizeOR & 8) != 0)
 			{
 				Tile tile = tiles[x][y - 1];
-				if(tile != null && tile.aBoolean1323)
+				if(tile != null && tile.abool1323)
 					tileList.pushBack(tile);
 			}
 		}
 	}
 	if(groundTile.anInt1325 != 0)
 	{
-		boolean flag2 = true;
+		bool flag2 = true;
 		for(int e = 0; e < groundTile.entityCount; e++)
 		{
 			if(groundTile.interactiveObjects[e].anInt528 == anInt448
@@ -2011,11 +2011,11 @@ private void renderTile(Tile _tile, boolean flag)
 			groundTile.anInt1325 = 0;
 		}
 	}
-	if(groundTile.aBoolean1324)
+	if(groundTile.abool1324)
 		try
 		{
 			int entityCount = groundTile.entityCount;
-			groundTile.aBoolean1324 = false;
+			groundTile.abool1324 = false;
 			int l1 = 0;
 			label0: for(int e = 0; e < entityCount; e++)
 			{
@@ -2027,9 +2027,9 @@ private void renderTile(Tile _tile, boolean flag)
 					for(int _y = entity.tileTop; _y <= entity.tileBottom; _y++)
 					{
 						Tile tile = tiles[_x][_y];
-						if(tile.aBoolean1322)
+						if(tile.abool1322)
 						{
-							groundTile.aBoolean1324 = true;
+							groundTile.abool1324 = true;
 						}
 						else
 						{
@@ -2046,7 +2046,7 @@ private void renderTile(Tile _tile, boolean flag)
 								l6 += 2;
 							if((l6 & tile.anInt1325) != groundTile.anInt1327)
 								continue;
-							groundTile.aBoolean1324 = true;
+							groundTile.abool1324 = true;
 						}
 						continue label0;
 					}
@@ -2108,47 +2108,47 @@ private void renderTile(Tile _tile, boolean flag)
 						Tile tile = tiles[_x][_y];
 						if(tile.anInt1325 != 0)
 							tileList.pushBack(tile);
-						else if((_x != x || _y != y) && tile.aBoolean1323)
+						else if((_x != x || _y != y) && tile.abool1323)
 							tileList.pushBack(tile);
 					}
 
 				}
 
 			}
-			if(groundTile.aBoolean1324)
+			if(groundTile.abool1324)
 				continue;
 		}
 		catch(Exception _ex)
 		{
-			groundTile.aBoolean1324 = false;
+			groundTile.abool1324 = false;
 		}
-	if(!groundTile.aBoolean1323 || groundTile.anInt1325 != 0)
+	if(!groundTile.abool1323 || groundTile.anInt1325 != 0)
 		continue;
 	if(x <= cameraPositionTileX && x > currentPositionX)
 	{
 		Tile tile = tiles[x - 1][y];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			continue;
 	}
 	if(x >= cameraPositionTileX && x < mapBoundsX - 1)
 	{
 		Tile tile = tiles[x + 1][y];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			continue;
 	}
 	if(y <= cameraPositionTileY && y > currentPositionY)
 	{
 		Tile tile = tiles[x][y - 1];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			continue;
 	}
 	if(y >= cameraPositionTileY && y < mapBoundsY - 1)
 	{
 		Tile tile = tiles[x][y + 1];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			continue;
 	}
-	groundTile.aBoolean1323 = false;
+	groundTile.abool1323 = false;
 	anInt446--;
 	GroundItemTile groundItemTile = groundTile.groundItemTile;
 	if(groundItemTile != null && groundItemTile.anInt52 != 0)
@@ -2223,31 +2223,31 @@ private void renderTile(Tile _tile, boolean flag)
 	if(z < mapSizeZ - 1)
 	{
 		Tile tile = groundArray[z + 1][x][y];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			tileList.pushBack(tile);
 	}
 	if(x < cameraPositionTileX)
 	{
 		Tile tile = tiles[x + 1][y];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			tileList.pushBack(tile);
 	}
 	if(y < cameraPositionTileY)
 	{
 		Tile tile = tiles[x][y + 1];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			tileList.pushBack(tile);
 	}
 	if(x > cameraPositionTileX)
 	{
 		Tile tile = tiles[x - 1][y];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			tileList.pushBack(tile);
 	}
 	if(y > cameraPositionTileY)
 	{
 		Tile tile = tiles[x][y - 1];
-		if(tile != null && tile.aBoolean1323)
+		if(tile != null && tile.abool1323)
 			tileList.pushBack(tile);
 	}
 } while (true);

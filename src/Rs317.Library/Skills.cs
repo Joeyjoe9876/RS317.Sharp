@@ -6,7 +6,7 @@ sealed class Skills
 			"magic", "cooking", "woodcutting", "fletching", "fishing", "firemaking", "crafting", "smithing", "mining",
 			"herblore", "agility", "thieving", "slayer", "farming", "runecraft", "-unused-", "-unused-", "-unused-",
 			"-unused-" };
-	public static boolean[] skillEnabled = { true, true, true, true, true, true, true, true, true, true, true,
+	public static bool[] skillEnabled = { true, true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true, true, true, false, true, false, false, false, false };
 
 }

@@ -32,8 +32,8 @@ public class BZip2DecompressionState
 
 	/* map of bytes used in block */
 	int nInUse;
-	boolean[] inUse;
-	boolean[] inUse16;
+	bool[] inUse;
+	bool[] inUse16;
 	byte[] seqToUnseq;
 
 	byte[] stream;
@@ -41,7 +41,7 @@ public class BZip2DecompressionState
 
 	/* for doing the run-length decoding */
 	int stateOutLen;
-	boolean blockRandomised;
+	bool blockRandomised;
 	byte stateOutCh;
 
 	/* the buffer for bit stream reading */
@@ -86,8 +86,8 @@ public class BZip2DecompressionState
 	{
 		unzftab = new int[256];
 		cftab = new int[257];
-		inUse = new boolean[256];
-		inUse16 = new boolean[16];
+		inUse = new bool[256];
+		inUse16 = new bool[16];
 		seqToUnseq = new byte[256];
 		mtfa = new byte[4096];
 		mtfbase = new int[16];

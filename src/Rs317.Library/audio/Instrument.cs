@@ -216,7 +216,7 @@ sealed class Instrument
 			gatingReleaseEnvelope.resetValues();
 			gatingAttackEnvelope.resetValues();
 			int counter = 0;
-			boolean muted = true;
+			bool muted = true;
 			for(int position = 0; position < steps; position++)
 			{
 				int stepOn = gatingReleaseEnvelope.step(steps);

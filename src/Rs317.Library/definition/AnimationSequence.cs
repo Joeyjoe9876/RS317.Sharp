@@ -25,7 +25,7 @@ public sealed class AnimationSequence
 	private int[] frameLengths;
 	public int frameStep;
 	public int flowControl[];
-	public boolean dynamic;
+	public bool dynamic;
 	public int priority;
 	public int playerReplacementShield;
 	public int playerReplacementWeapon;

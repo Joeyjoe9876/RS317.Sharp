@@ -98,7 +98,7 @@ public sealed class Bzip2Decompressor
 		{
 			BZip2DecompressionState.tt = new int[block.blockSize100k * 0x186a0]; // 100000
 		}
-		boolean flag19 = true;
+		bool flag19 = true;
 		while(flag19)
 		{
 			byte uc = getUChar(block);
@@ -616,7 +616,7 @@ public sealed class Bzip2Decompressor
 				csNextOut++;
 				csAvailOut--;
 			}
-			boolean flag = true;
+			bool flag = true;
 			while(flag)
 			{
 				flag = false;

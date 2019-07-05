@@ -281,32 +281,32 @@ public sealed class RSInterface
 	public int width;
 	public String tooltip;
 	public String selectedActionName;
-	public boolean textCentred;
+	public bool textCentred;
 	public int scrollPosition;
 	public String actions[];
 	public int opcodes[][];
-	public boolean filled;
+	public bool filled;
 	public String textActive;
 	public int hoveredPopup;
 	public int inventorySpritePaddingColumn;
 	public int colourDefault;
 	public int modelTypeDefault;
 	public int modelIdDefault;
-	public boolean itemDeletesDragged;
+	public bool itemDeletesDragged;
 	public int parentID;
 	public int spellUsableOn;
 	private static Cache spriteCache;
 	public int colourActiveHover;
 	public int children[];
 	public int childX[];
-	public boolean usableItemInterface;
+	public bool usableItemInterface;
 	public GameFont textDrawingAreas;
 	public int inventorySpritePaddingRow;
 	public int conditionType[];
 	public int animationFrame;
 	public int spritesY[];
 	public String textDefault;
-	public boolean inventory;
+	public bool inventory;
 	public int id;
 	public int inventoryStackSize[];
 	public int inventoryItemId[];
@@ -315,16 +315,16 @@ public sealed class RSInterface
 	private int modelIdActive;
 	public int animationIdDefault;
 	public int animationIdActive;
-	public boolean itemSwappable;
+	public bool itemSwappable;
 	public Sprite spriteActive;
 	public int scrollMax;
 	public int type;
 	public int x;
 	private static Cache modelCache = new Cache(30);
 	public int y;
-	public boolean hoverOnly;
+	public bool hoverOnly;
 	public int height;
-	public boolean textShadowed;
+	public bool textShadowed;
 	public int modelZoom;
 	public int modelRotationX;
 	public int modelRotationY;
@@ -334,7 +334,7 @@ public sealed class RSInterface
 	{
 	}
 
-	public Model getAnimatedModel(int frame1Id, int frame2Id, boolean active)
+	public Model getAnimatedModel(int frame1Id, int frame2Id, bool active)
 	{
 		Model model;
 		if(active)

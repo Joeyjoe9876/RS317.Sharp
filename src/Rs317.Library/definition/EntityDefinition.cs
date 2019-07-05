@@ -69,15 +69,15 @@ public sealed class EntityDefinition
 	private static EntityDefinition[] cache;
 	public static Client clientInstance;
 	public int turnRightAnimationId;
-	public boolean clickable;
+	public bool clickable;
 	private int brightness;
 	private int scaleZ;
-	public boolean visibleMinimap;
+	public bool visibleMinimap;
 	public int childrenIDs[];
 	public byte description[];
 	private int scaleXY;
 	private int contrast;
-	public boolean visible;
+	public bool visible;
 	private int[] modelIds;
 	public static Cache modelCache = new Cache(30);
 
@@ -135,7 +135,7 @@ public sealed class EntityDefinition
 		Model model = (Model)modelCache.get(id);
 		if(model == null)
 		{
-			boolean notCached = false;
+			bool notCached = false;
 			for(int m = 0; m < modelIds.length; m++)
 				if(!Model.isCached(modelIds[m]))
 					notCached = true;
@@ -188,7 +188,7 @@ public sealed class EntityDefinition
 		}
 		if(headModelIds == null)
 			return null;
-		boolean someModelsNotCached = false;
+		bool someModelsNotCached = false;
 		for(int i = 0; i < headModelIds.length; i++)
 			if(!Model.isCached(headModelIds[i]))
 				someModelsNotCached = true;

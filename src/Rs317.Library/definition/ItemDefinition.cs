@@ -200,7 +200,7 @@ public sealed class ItemDefinition
 
 	private int[] originalModelColors;
 
-	public boolean membersObject;
+	public bool membersObject;
 
 	private int femaleEquipModelIdEmblem;
 
@@ -217,12 +217,12 @@ public sealed class ItemDefinition
 	private int femaleDialogueHatModelId;
 	private int modelId;
 	private int maleDialogueModelId;
-	public boolean stackable;
+	public bool stackable;
 	public byte description[];
 	private int noteId;
 	private static int cacheIndex;
 	public int modelZoom;
-	public static boolean membersWorld = true;
+	public static bool membersWorld = true;
 	private static Buffer stream;
 	private int shadowModifier;
 	private int maleEquipModelIdEmblem;
@@ -249,7 +249,7 @@ public sealed class ItemDefinition
 		id = -1;
 	}
 
-	public boolean equipModelCached(int gender)
+	public bool equipModelCached(int gender)
 	{
 		int equipModelIdPrimary = maleEquipModelIdPrimary;
 		int equipModelIdSecondary = maleEquipModelIdSecondary;
@@ -262,7 +262,7 @@ public sealed class ItemDefinition
 		}
 		if(equipModelIdPrimary == -1)
 			return true;
-		boolean cached = true;
+		bool cached = true;
 		if(!Model.isCached(equipModelIdPrimary))
 			cached = false;
 		if(equipModelIdSecondary != -1 && !Model.isCached(equipModelIdSecondary))
@@ -396,7 +396,7 @@ public sealed class ItemDefinition
 		return stackedModel;
 	}
 
-	public boolean isDialogueModelCached(int gender)
+	public bool isDialogueModelCached(int gender)
 	{
 		int dialogueModelId = maleDialogueModelId;
 		int dialogueHatModelId = maleDialogueHatModelId;
@@ -407,7 +407,7 @@ public sealed class ItemDefinition
 		}
 		if(dialogueModelId == -1)
 			return true;
-		boolean cached = true;
+		bool cached = true;
 		if(!Model.isCached(dialogueModelId))
 			cached = false;
 		if(dialogueHatModelId != -1 && !Model.isCached(dialogueHatModelId))

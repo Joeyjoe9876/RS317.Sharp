@@ -12,7 +12,7 @@ public sealed class Archive
 	private int[] decompressedSizes;
 	private int[] compressedSizes;
 	private int[] initialOffsets;
-	private boolean decompressed;
+	private bool decompressed;
 
 	public Archive(byte data[])
 	{

@@ -12,13 +12,13 @@ public sealed class Animation
 	public static void init(int size)
 	{
 		animations = new Animation[size + 1];
-		opaque = new boolean[size + 1];
+		opaque = new bool[size + 1];
 		for(int i = 0; i < size + 1; i++)
 			opaque[i] = true;
 
 	}
 
-	public static boolean isNullFrame(int frameId)
+	public static bool isNullFrame(int frameId)
 	{
 		return frameId == -1;
 	}
@@ -151,5 +151,5 @@ public sealed class Animation
 	public int transformationX[];
 	public int transformationY[];
 	public int transformationZ[];
-	private static boolean[] opaque;
+	private static bool[] opaque;
 }

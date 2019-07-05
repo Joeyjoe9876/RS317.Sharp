@@ -17,9 +17,9 @@ public sealed class Tile : Linkable
 	public int[] interactiveObjectsSize;
 	public int interactiveObjectsSizeOR;
 	public int logicHeight;
-	public boolean aBoolean1322;
-	public boolean aBoolean1323;
-	public boolean aBoolean1324;
+	public bool abool1322;
+	public bool abool1323;
+	public bool abool1324;
 	public int anInt1325;
 	public int anInt1326;
 	public int anInt1327;

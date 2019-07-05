@@ -46,7 +46,7 @@ sealed class TextInput
 			}
 		}
 
-		boolean endOfSentence = true;
+		bool endOfSentence = true;
 		for(int c = 0; c < pointer; c++)
 		{
 			char character = characterList[c];

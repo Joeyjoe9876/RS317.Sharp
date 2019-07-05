@@ -304,7 +304,7 @@ sealed class Region
 		return (hsl & 0xff80) + lightness;
 	}
 
-	public static boolean modelTypeCached(int objectId, int type)
+	public static bool modelTypeCached(int objectId, int type)
 	{
 		GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 		if(type == 11)
@@ -348,9 +348,9 @@ sealed class Region
 		return vDist2 / 16 + vDist1 / 8 + vLocal / 4;
 	}
 
-	public static boolean regionCached(int regionX, int regionY, byte[] objectData)
+	public static bool regionCached(int regionX, int regionY, byte[] objectData)
 	{
-		boolean cached = true;
+		bool cached = true;
 		Buffer objectDataStream = new Buffer(objectData);
 		int objectId = -1;
 		do
@@ -360,7 +360,7 @@ sealed class Region
 				break;
 			objectId += objectIdIncrement;
 			int pos = 0;
-			boolean readSecondValue = false;
+			bool readSecondValue = false;
 			do
 			{
 				if(readSecondValue)
@@ -432,7 +432,7 @@ sealed class Region
 	private int regionSizeY;
 	private byte[][][] overlayOrientations;
 	private byte[][][] renderRuleFlags;
-	static boolean lowMemory = true;
+	static bool lowMemory = true;
 	private static int POWERS_OF_TWO[] = { 1, 2, 4, 8 };
 
 	public Region(byte renderRuleFlags[][][], int vertexHeights[][][])
@@ -606,7 +606,7 @@ h = h + randomiserHue & 0xff;
 									hslBitsetRandomised = generateHSLBitset(h, s, l);
 								}
 								if (_plane > 0) {
-									boolean hideUnderlay = true;
+									bool hideUnderlay = true;
 									if (underlayFloorId == 0 && overlayClippingPaths[_plane][x][y] != 0)
 										hideUnderlay = false;
 									if (overlayFloorId > 0 && !FloorDefinition.cache[overlayFloorId - 1].occlude)

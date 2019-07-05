@@ -5,7 +5,7 @@ public sealed class OnDemandData : Cacheable
 
 	byte buffer[];
 	int id;
-	boolean incomplete;
+	bool incomplete;
 	int loopCycle;
 
 	public OnDemandData()

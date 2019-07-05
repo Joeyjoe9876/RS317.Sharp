@@ -22,7 +22,7 @@ public sealed class FloorDefinition
 
 	public int textureId;
 
-	public boolean occlude;
+	public bool occlude;
 
 	public int hue2;
 	public int saturation;

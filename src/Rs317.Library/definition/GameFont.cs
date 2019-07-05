@@ -32,7 +32,7 @@ public sealed class GameFont : DrawingArea
 
 	private Random random;
 
-	private boolean strikethrough;
+	private bool strikethrough;
 
 	/**
 	 * Initialise a GameFont.
@@ -43,7 +43,7 @@ public sealed class GameFont : DrawingArea
 	 * 
 	 * @param monospace Is the font monospace?
 	 */
-	public GameFont(String name, Archive archive, boolean monospace)
+	public GameFont(String name, Archive archive, bool monospace)
 	{
 		glyphPixels = new byte[256][];
 		glyphWidth = new int[256];
@@ -434,7 +434,7 @@ public sealed class GameFont : DrawingArea
 	 * 
 	 * @param shadowed      Whether the text is shadowed or not.
 	 */
-	public void drawTextWithPotentialShadow(String text, int x, int y, int currentColour, boolean shadowed)
+	public void drawTextWithPotentialShadow(String text, int x, int y, int currentColour, bool shadowed)
 	{
 		strikethrough = false;
 		int originalX = x;
@@ -511,7 +511,7 @@ public sealed class GameFont : DrawingArea
 	 * 
 	 * @param shadow Whether or not a shadow should be drawn.
 	 */
-	public void drawCentredTextWithPotentialShadow(String text, int x, int y, int colour, boolean shadow)
+	public void drawCentredTextWithPotentialShadow(String text, int x, int y, int colour, bool shadow)
 	{
 		drawTextWithPotentialShadow(text, x - getTextDisplayedWidth(text) / 2, y, colour, shadow);
 	}

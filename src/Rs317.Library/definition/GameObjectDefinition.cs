@@ -43,7 +43,7 @@ public sealed class GameObjectDefinition
 		stream = null;
 	}
 
-	public boolean unknownAttribute;
+	public bool unknownAttribute;
 
 	private byte ambient;
 
@@ -65,23 +65,23 @@ public sealed class GameObjectDefinition
 	private int[] originalModelColors;
 	private int scaleX;
 	public int configIds;
-	private boolean rotated;
-	public static boolean lowMemory;
+	private bool rotated;
+	public static bool lowMemory;
 	private static Buffer stream;
 	public int id;
 	private static int[] streamOffsets;
-	public boolean walkable;
+	public bool walkable;
 	public int mapScene;
 	public int childIds[];
 	private int _solid;
 	public int sizeY;
-	public boolean adjustToTerrain;
-	public boolean wall;
+	public bool adjustToTerrain;
+	public bool wall;
 	public static Client clientInstance;
-	private boolean unwalkableSolid;
-	public boolean solid;
+	private bool unwalkableSolid;
+	public bool solid;
 	public int face;
-	private boolean delayShading;
+	private bool delayShading;
 	private static int cacheIndex;
 	private int scaleY;
 	private int[] modelIds;
@@ -89,8 +89,8 @@ public sealed class GameObjectDefinition
 	public int offsetAmplifier;
 	private int[] modelTypes;
 	public byte description[];
-	public boolean hasActions;
-	public boolean castsShadow;
+	public bool hasActions;
+	public bool castsShadow;
 	public static Cache animatedModelCache = new Cache(30);
 	public int animationId;
 	private static GameObjectDefinition[] cache;
@@ -118,7 +118,7 @@ public sealed class GameObjectDefinition
 				return cachedModel;
 			if(modelIds == null)
 				return null;
-			boolean mirror = rotated ^ (face > 3);
+			bool mirror = rotated ^ (face > 3);
 			int modelCount = modelIds.length;
 			for(int m = 0; m < modelCount; m++)
 			{
@@ -160,7 +160,7 @@ public sealed class GameObjectDefinition
 			if(model != null)
 				return model;
 			int modelId = modelIds[modelType];
-			boolean mirror = rotated ^ (face > 3);
+			bool mirror = rotated ^ (face > 3);
 			if(mirror)
 				modelId += 0x10000;
 			subModel = (Model)modelCache.get(modelId);
@@ -174,9 +174,9 @@ public sealed class GameObjectDefinition
 				modelCache.put(subModel, modelId);
 			}
 		}
-		boolean scale;
+		bool scale;
 		scale = scaleX != 128 || scaleY != 128 || scaleZ != 128;
-		boolean translate;
+		bool translate;
 		translate = translateX != 0 || translateY != 0 || translateZ != 0;
 		Model animatedModel = new Model(modifiedModelColors == null, Animation.isNullFrame(animationId),
 				face == 0 && animationId == -1 && !scale && !translate, subModel);
@@ -422,17 +422,17 @@ public sealed class GameObjectDefinition
 			_solid = solid ? 1 : 0;
 	}
 
-	public boolean modelCached()
+	public bool modelCached()
 	{
 		if(modelIds == null)
 			return true;
-		boolean cached = true;
+		bool cached = true;
 		for(int m = 0; m < modelIds.length; m++)
 			cached &= Model.isCached(modelIds[m] & 0xffff);
 		return cached;
 	}
 
-	public boolean modelTypeCached(int modelType)
+	public bool modelTypeCached(int modelType)
 	{
 		if(modelTypes == null)
 		{
@@ -440,7 +440,7 @@ public sealed class GameObjectDefinition
 				return true;
 			if(modelType != 10)
 				return true;
-			boolean cached = true;
+			bool cached = true;
 			for(int id = 0; id < modelIds.length; id++)
 				cached &= Model.isCached(modelIds[id] & 0xffff);
 

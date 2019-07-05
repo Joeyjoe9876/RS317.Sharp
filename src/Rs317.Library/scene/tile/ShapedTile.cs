@@ -12,7 +12,7 @@ public sealed class ShapedTile
 	public int[] triangleB;
 	public int[] triangleC;
 	public int triangleTexture[];
-	public boolean flat;
+	public bool flat;
 	public int shape;
 	public int rotation;
 	public int underlayRGB;

@@ -2182,10 +2182,10 @@ public sealed class Rasterizer : DrawingArea
 	}
 
 	public static int anInt1459 = -477;
-	public static boolean lowMemory = true;
-	public static boolean restrictEdges;
-	private static boolean opaque;
-	public static boolean textured = true;
+	public static bool lowMemory = true;
+	public static bool restrictEdges;
+	private static bool opaque;
+	public static bool textured = true;
 	public static int alpha;
 	public static int centreX;
 	public static int centreY;
@@ -2196,7 +2196,7 @@ public sealed class Rasterizer : DrawingArea
 	public static int lineOffsets[];
 	private static int loadedTextureCount;
 	public static IndexedImage textureImages[] = new IndexedImage[50];
-	private static boolean[] transparent = new boolean[50];
+	private static bool[] transparent = new bool[50];
 	private static int[] averageTextureColour = new int[50];
 	private static int texelPoolPointer;
 	private static int[][] texelArrayPool;

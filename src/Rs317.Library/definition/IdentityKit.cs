@@ -28,7 +28,7 @@ public sealed class IdentityKit
 	private int[] modifiedModelColours;
 
 	private int[] headModelIds = { -1, -1, -1, -1, -1 };
-	public boolean widgetDisplayed;
+	public bool widgetDisplayed;
 
 	private IdentityKit()
 	{
@@ -38,11 +38,11 @@ public sealed class IdentityKit
 		widgetDisplayed = false;
 	}
 
-	public boolean bodyModelCached()
+	public bool bodyModelCached()
 	{
 		if(modelIds == null)
 			return true;
-		boolean cached = true;
+		bool cached = true;
 		for(int m = 0; m < modelIds.length; m++)
 			if(!Model.isCached(modelIds[m]))
 				cached = false;
@@ -92,9 +92,9 @@ public sealed class IdentityKit
 		return model;
 	}
 
-	public boolean headModelCached()
+	public bool headModelCached()
 	{
-		boolean cached = true;
+		bool cached = true;
 		for(int m = 0; m < 5; m++)
 			if(headModelIds[m] != -1 && !Model.isCached(headModelIds[m]))
 				cached = false;
