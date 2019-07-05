@@ -16,7 +16,7 @@ public sealed class FloorDefinition
 
 	}
 
-	public static FloorDefinition cache[];
+	public static FloorDefinition[] cache;
 
 	public int rgbColour;
 
