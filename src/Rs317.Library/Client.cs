@@ -8514,14 +8514,21 @@ private void nullLoader()
 	flameRightBackground2 = null;
 }
 
-private DataInputStream openJagGrabInputStream(String s) throws IOException
+//TODO: Add exception documentation
+/// <summary>
+/// 
+/// </summary>
+/// <exception cref=""></exception>
+/// <returns></returns>
+private DataInputStream openJagGrabInputStream(String s)
 {
-		// if(!aBoolean872)
-		// if(signlink.mainapp != null)
-		// return signlink.openurl(s);
-		// else
-		// return new DataInputStream((new URL(getCodeBase(), s)).openStream());
-		if (jaggrabSocket != null) {
+	// if(!aBoolean872)
+	// if(signlink.mainapp != null)
+	// return signlink.openurl(s);
+	// else
+	// return new DataInputStream((new URL(getCodeBase(), s)).openStream());
+	if(jaggrabSocket != null)
+	{
 		try
 		{
 			jaggrabSocket.close();
@@ -8536,18 +8543,24 @@ private DataInputStream openJagGrabInputStream(String s) throws IOException
 	java.io.InputStream inputstream = jaggrabSocket.getInputStream();
 	OutputStream outputstream = jaggrabSocket.getOutputStream();
 	outputstream.write(("JAGGRAB /" + s + "\n\n").getBytes());
-		return new DataInputStream(inputstream);
-	}
+	return new DataInputStream(inputstream);
+}
 
-	public Socket openSocket(int port) throws IOException
+//TODO: Add exception documentation
+/// <summary>
+/// 
+/// </summary>
+/// <exception cref=""></exception>
+/// <returns></returns>
+public Socket openSocket(int port)
 {
-		if (signlink.applet != null)
-			return signlink.openSocket(port);
-		else
-			return new Socket(InetAddress.getByName(getCodeBase().getHost()), port);
-	}
+	if(signlink.applet != null)
+		return signlink.openSocket(port);
+	else
+		return new Socket(InetAddress.getByName(getCodeBase().getHost()), port);
+}
 
-	private void parseGroupPacket(Buffer stream, int opcode)
+private void parseGroupPacket(Buffer stream, int opcode)
 {
 	if(opcode == 84)
 	{
