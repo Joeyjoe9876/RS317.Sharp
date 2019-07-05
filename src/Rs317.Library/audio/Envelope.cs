@@ -15,7 +15,7 @@ sealed class Envelope
 	int form;
 	private int critical;
 	private int phaseId;
-	private int step;
+	private int currentStep;
 	private int amplitude;
 	private int ticks;
 
@@ -44,11 +44,12 @@ sealed class Envelope
 	{
 		critical = 0;
 		phaseId = 0;
-		step = 0;
+		currentStep = 0;
 		amplitude = 0;
 		ticks = 0;
 	}
 
+	//TODO: Rename this
 	int step(int period)
 	{
 		if(ticks >= critical)
@@ -58,10 +59,10 @@ sealed class Envelope
 				phaseId = phaseCount - 1;
 			critical = (int)((phaseDuration[phaseId] / 65536D) * period);
 			if(critical > ticks)
-				step = ((phasePeak[phaseId] << 15) - amplitude) / (critical - ticks);
+				currentStep = ((phasePeak[phaseId] << 15) - amplitude) / (critical - ticks);
 		}
-		amplitude += step;
+		amplitude += currentStep;
 		ticks++;
-		return amplitude - step >> 15;
+		return amplitude - currentStep >> 15;
 	}
 }
