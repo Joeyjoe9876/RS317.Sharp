@@ -1,10 +1,10 @@
 
 public class Animable : Cacheable
 {
-	public VertexNormal vertexNormals[];
+	public VertexNormal[] vertexNormals;
 	public int modelHeight;
 
-	Animable()
+	protected Animable()
 	{
 		modelHeight = 1000;
 	}
