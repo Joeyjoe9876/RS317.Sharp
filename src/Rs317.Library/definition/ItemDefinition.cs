@@ -1,4 +1,8 @@
 
+using System;
+using System.Text;
+using Reinterpret.Net;
+
 public sealed class ItemDefinition
 {
 	public static ItemDefinition getDefinition(int id)
@@ -18,7 +22,7 @@ public sealed class ItemDefinition
 		if(!membersWorld && definition.membersObject)
 		{
 			definition.name = "Members Object";
-			definition.description = "Login to a members' server to use this object.".getBytes();
+			definition.description = "Login to a members' server to use this object.".Reinterpret(Encoding.ASCII);
 			definition.groundActions = null;
 			definition.actions = null;
 			definition.teamId = 0;
@@ -65,8 +69,8 @@ public sealed class ItemDefinition
 		Sprite itemSprite = new Sprite(32, 32);
 		int textureCentreX = Rasterizer.centreX;
 		int textureCentreY = Rasterizer.centreY;
-		int lineOffsets[] = Rasterizer.lineOffsets;
-		int pixels[] = DrawingArea.pixels;
+		int[] lineOffsets = Rasterizer.lineOffsets;
+		int[] pixels = DrawingArea.pixels;
 		int width = DrawingArea.width;
 		int height = DrawingArea.height;
 		int topX = DrawingArea.topX;
@@ -161,14 +165,14 @@ public sealed class ItemDefinition
 	public static void load(Archive streamLoader)
 	{
 		stream = new Buffer(streamLoader.decompressFile("obj.dat"));
-		Buffer stream = new Buffer(streamLoader.decompressFile("obj.idx"));
-		itemCount = stream.getUnsignedLEShort();
+		Buffer index = new Buffer(streamLoader.decompressFile("obj.idx"));
+		itemCount = index.getUnsignedLEShort();
 		streamOffsets = new int[itemCount];
 		int offset = 2;
 		for(int item = 0; item < itemCount; item++)
 		{
 			streamOffsets[item] = offset;
-			offset += stream.getUnsignedLEShort();
+			offset += index.getUnsignedLEShort();
 		}
 
 		cache = new ItemDefinition[10];
@@ -210,7 +214,7 @@ public sealed class ItemDefinition
 	private int maleEquipModelIdPrimary;
 	private int maleDialogueHatModelId;
 	private int modelScaleX;
-	public String groundActions[];
+	public String[] groundActions;
 	private int modelOffset1;
 	public String name;
 	private static ItemDefinition[] cache;
@@ -218,7 +222,7 @@ public sealed class ItemDefinition
 	private int modelId;
 	private int maleDialogueModelId;
 	public bool stackable;
-	public byte description[];
+	public byte[] description;
 	private int noteId;
 	private static int cacheIndex;
 	public int modelZoom;
@@ -227,7 +231,7 @@ public sealed class ItemDefinition
 	private int shadowModifier;
 	private int maleEquipModelIdEmblem;
 	private int maleEquipModelIdSecondary;
-	public String actions[];
+	public String[] actions;
 	public int modelRotationX;
 	private int modelScaleZ;
 	private int modelScaleY;
@@ -294,7 +298,7 @@ public sealed class ItemDefinition
 			stackedModel.scaleT(modelScaleX, modelScaleZ, modelScaleY);
 		if(modifiedModelColors != null)
 		{
-			for(int l = 0; l < modifiedModelColors.length; l++)
+			for(int l = 0; l < modifiedModelColors.Length; l++)
 				stackedModel.recolour(modifiedModelColors[l], originalModelColors[l]);
 
 		}
@@ -319,12 +323,12 @@ public sealed class ItemDefinition
 		if(dialogueHatModelId != -1)
 		{
 			Model dialogueHatModel = Model.getModel(dialogueHatModelId);
-			Model dialogueModels[] = { dialogueModel, dialogueHatModel };
+			Model[] dialogueModels = { dialogueModel, dialogueHatModel };
 			dialogueModel = new Model(2, dialogueModels);
 		}
 		if(modifiedModelColors != null)
 		{
-			for(int c = 0; c < modifiedModelColors.length; c++)
+			for(int c = 0; c < modifiedModelColors.Length; c++)
 				dialogueModel.recolour(modifiedModelColors[c], originalModelColors[c]);
 
 		}
@@ -350,13 +354,13 @@ public sealed class ItemDefinition
 			{
 				Model modelSecondary = Model.getModel(equipModelIdSecondary);
 				Model modelEmblem = Model.getModel(equipModelIdEmblem);
-				Model models[] = { modelPrimary, modelSecondary, modelEmblem };
+				Model[] models = { modelPrimary, modelSecondary, modelEmblem };
 				modelPrimary = new Model(3, models);
 			}
 			else
 			{
 				Model modelSecondary = Model.getModel(equipModelIdSecondary);
-				Model models[] = { modelPrimary, modelSecondary };
+				Model[] models = { modelPrimary, modelSecondary };
 				modelPrimary = new Model(2, models);
 			}
 		if(gender == 0 && equipModelTranslationMale != 0)
@@ -365,7 +369,7 @@ public sealed class ItemDefinition
 			modelPrimary.translate(0, equipModelTranslationFemale, 0);
 		if(modifiedModelColors != null)
 		{
-			for(int c = 0; c < modifiedModelColors.length; c++)
+			for(int c = 0; c < modifiedModelColors.Length; c++)
 				modelPrimary.recolour(modifiedModelColors[c], originalModelColors[c]);
 
 		}
@@ -389,7 +393,7 @@ public sealed class ItemDefinition
 			return null;
 		if(modifiedModelColors != null)
 		{
-			for(int c = 0; c < modifiedModelColors.length; c++)
+			for(int c = 0; c < modifiedModelColors.Length; c++)
 				stackedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
 
 		}
@@ -473,7 +477,7 @@ public sealed class ItemDefinition
 				if(groundActions == null)
 					groundActions = new String[5];
 				groundActions[opcode - 30] = stream.getString();
-				if(groundActions[opcode - 30].equalsIgnoreCase("hidden"))
+				if(groundActions[opcode - 30].Equals("hidden", StringComparison.InvariantCultureIgnoreCase))
 					groundActions[opcode - 30] = null;
 			}
 			else if(opcode >= 35 && opcode < 40)
@@ -598,11 +602,11 @@ public sealed class ItemDefinition
 		membersObject = noteDefinition.membersObject;
 		value = noteDefinition.value;
 		String prefix = "a";
-		char firstCharacter = noteDefinition.name.charAt(0);
+		char firstCharacter = noteDefinition.name[0];
 		if(firstCharacter == 'A' || firstCharacter == 'E' || firstCharacter == 'I' || firstCharacter == 'O'
 				|| firstCharacter == 'U')
 			prefix = "an";
-		description = ("Swap this note at any bank for " + prefix + " " + noteDefinition.name + ".").getBytes();
+		description = Encoding.ASCII.GetBytes($"Swap this note at any bank for {prefix} {noteDefinition.name}.");
 		stackable = true;
 	}
 
