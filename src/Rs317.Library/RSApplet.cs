@@ -7,7 +7,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 
 	int minDelay;
 
-	private final long[] otims;
+	private long[] otims;
 
 	int fps;
 
@@ -53,7 +53,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 
 	final int[] keyStatus;
 
-	private final int[] inputBuffer;
+	private int[] inputBuffer;
 
 	private int readIndex;
 
@@ -196,7 +196,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 		startRunnable(this, 1);
 	}
 
-	public sealed override final void keyPressed(KeyEvent keyevent)
+	public sealed override void keyPressed(KeyEvent keyevent)
 	{
 		idleTime = 0;
 		int keyCode = keyevent.getKeyCode();

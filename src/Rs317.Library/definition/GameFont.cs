@@ -14,23 +14,23 @@ public sealed class GameFont : DrawingArea
 	 * An array containing the pixels used in the glyph. Stored as either 1 or 0
 	 * signifying whether that pixel should be drawn or not.
 	 */
-	private final byte[][] glyphPixels;
-	private final int[] glyphWidth;
-	private final int[] glyphHeight;
+	private byte[][] glyphPixels;
+	private int[] glyphWidth;
+	private int[] glyphHeight;
 
 	/*
 	 * The spacing (kerning), horizontal and vertical, between glyphs in a font.
 	 * 
 	 * http://en.wikipedia.org/wiki/Kerning
 	 */
-	private final int[] horizontalKerning;
-	private final int[] verticalKerning;
+	private int[] horizontalKerning;
+	private int[] verticalKerning;
 
-	private final int[] glyphDisplayWidth;
+	private int[] glyphDisplayWidth;
 
 	public int fontHeight;
 
-	private final Random random;
+	private Random random;
 
 	private boolean strikethrough;
 

@@ -120,23 +120,23 @@ label0: for (int f = -1; f <= 1; f++) {
 
 	public static boolean lowMemory = true;
 
-private final int mapSizeZ;
+private int mapSizeZ;
 
-private final int mapSizeX;
+private int mapSizeX;
 
-private final int mapSizeY;
+private int mapSizeY;
 
-private final int[][][] heightMap;
+private int[][][] heightMap;
 
-private final Tile[][] [] groundArray;
+private Tile[][] [] groundArray;
 
 	private int currentPositionZ;
 
 private int interactiveObjectCacheCurrentPos;
 
-private final InteractiveObject[] interactiveObjectCache;
+private InteractiveObject[] interactiveObjectCache;
 
-	private final int[][][] anIntArrayArrayArray445;
+	private int[][][] anIntArrayArrayArray445;
 
 private static int anInt446;
 
@@ -172,13 +172,13 @@ private static int curveCosineX;
 
 private static InteractiveObject[] interactiveObjects = new InteractiveObject[100];
 
-private static final int[] faceOffsetX2 = { 53, -53, -53, 53 };
+private static int[] faceOffsetX2 = { 53, -53, -53, 53 };
 
-private static final int[] faceOffsetY2 = { -53, -53, 53, 53 };
+private static int[] faceOffsetY2 = { -53, -53, 53, 53 };
 
-private static final int[] faceOffsetX3 = { -45, 45, 45, -45 };
+private static int[] faceOffsetX3 = { -45, 45, 45, -45 };
 
-private static final int[] faceOffsetY3 = { 45, 45, -45, -45 };
+private static int[] faceOffsetY3 = { 45, 45, -45, -45 };
 
 private static boolean clicked;
 
@@ -190,7 +190,7 @@ public static int clickedTileX = -1;
 
 public static int clickedTileY = -1;
 
-private static final int anInt472;
+private static int anInt472;
 
 private static int[] cullingClusterPointer;
 
@@ -198,38 +198,38 @@ private static CullingCluster[][] cullingClusters;
 
 private static int processedCullingClustersPointer;
 
-private static final CullingCluster[] processedCullingClusters = new CullingCluster[500];
+private static CullingCluster[] processedCullingClusters = new CullingCluster[500];
 
 	private static DoubleEndedQueue tileList = new DoubleEndedQueue();
 
-private static final int[] anIntArray478 = { 19, 55, 38, 155, 255, 110, 137, 205, 76 };
+private static int[] anIntArray478 = { 19, 55, 38, 155, 255, 110, 137, 205, 76 };
 
-private static final int[] anIntArray479 = { 160, 192, 80, 96, 0, 144, 80, 48, 160 };
+private static int[] anIntArray479 = { 160, 192, 80, 96, 0, 144, 80, 48, 160 };
 
-private static final int[] anIntArray480 = { 76, 8, 137, 4, 0, 1, 38, 2, 19 };
+private static int[] anIntArray480 = { 76, 8, 137, 4, 0, 1, 38, 2, 19 };
 
-private static final int[] anIntArray481 = { 0, 0, 2, 0, 0, 2, 1, 1, 0 };
+private static int[] anIntArray481 = { 0, 0, 2, 0, 0, 2, 1, 1, 0 };
 
-private static final int[] anIntArray482 = { 2, 0, 0, 2, 0, 0, 0, 4, 4 };
+private static int[] anIntArray482 = { 2, 0, 0, 2, 0, 0, 0, 4, 4 };
 
-private static final int[] anIntArray483 = { 0, 4, 4, 8, 0, 0, 8, 0, 0 };
+private static int[] anIntArray483 = { 0, 4, 4, 8, 0, 0, 8, 0, 0 };
 
-private static final int[] anIntArray484 = { 1, 1, 0, 0, 0, 8, 0, 0, 8 };
+private static int[] anIntArray484 = { 1, 1, 0, 0, 0, 8, 0, 0, 8 };
 
-private static final int[] textureRGB = { 41, 39248, 41, 4643, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 43086,
+private static int[] textureRGB = { 41, 39248, 41, 4643, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 43086,
 			41, 41, 41, 41, 41, 41, 41, 8602, 41, 28992, 41, 41, 41, 41, 41, 5056, 41, 41, 41, 7079, 41, 41, 41, 41, 41,
 			41, 41, 41, 41, 41, 3131, 41, 41, 41 };
-private final int[] anIntArray486;
-private final int[] anIntArray487;
+private int[] anIntArray486;
+private int[] anIntArray487;
 private int anInt488;
-private final int[][] tileShapePoints = { new int[16], { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+private int[][] tileShapePoints = { new int[16], { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1 }, { 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 },
 			{ 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1 }, { 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 }, { 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0 },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 }, { 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1 },
 			{ 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1 },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1 } };
-private final int[][] tileShapeIndices = { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+private int[][] tileShapeIndices = { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
 			{ 12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3 },
 			{ 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
 			{ 3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12 } };

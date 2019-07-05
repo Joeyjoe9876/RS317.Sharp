@@ -37,9 +37,9 @@ sealed class Instrument
 	private Envelope volumeModulationAmplitude;
 	private Envelope gatingReleaseEnvelope;
 	private Envelope gatingAttackEnvelope;
-	private final int[] oscillationVolume;
-	private final int[] oscillationPitch;
-	private final int[] oscillationDelay;
+	private int[] oscillationVolume;
+	private int[] oscillationPitch;
+	private int[] oscillationDelay;
 	private int delayTime;
 	private int delayFeedback;
 	private SoundFilter filter;
@@ -49,11 +49,11 @@ sealed class Instrument
 	private static int[] output;
 	private static int[] noise;
 	private static int[] sine;
-	private static final int[] phases = new int[5];
-	private static final int[] delays = new int[5];
-	private static final int[] volumeStep = new int[5];
-	private static final int[] pitchStep = new int[5];
-	private static final int[] pitchBaseStep = new int[5];
+	private static int[] phases = new int[5];
+	private static int[] delays = new int[5];
+	private static int[] volumeStep = new int[5];
+	private static int[] pitchStep = new int[5];
+	private static int[] pitchBaseStep = new int[5];
 
 	public Instrument()
 	{

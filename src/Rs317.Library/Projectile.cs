@@ -1,9 +1,9 @@
 
 sealed class Projectile : Animable
 {
-	public final int delay;
+	public int delay;
 
-	public final int endCycle;
+	public int endCycle;
 
 	private double speedVectorX;
 
@@ -13,22 +13,22 @@ sealed class Projectile : Animable
 	private double speedVectorZ;
 	private double offsetZ;
 	private boolean moving;
-	private final int startX;
-	private final int startY;
-	private final int startZ;
-	public final int endZ;
+	private int startX;
+	private int startY;
+	private int startZ;
+	public int endZ;
 	public double currentX;
 	public double currentY;
 	public double currentZ;
-	private final int startSlope;
-	private final int startDistance;
-	public final int targetId;
-	private final SpotAnimation animation;
+	private int startSlope;
+	private int startDistance;
+	public int targetId;
+	private SpotAnimation animation;
 	private int animationFrame;
 	private int duration;
 	public int rotationY;
 	private int rotationX;
-	public final int plane;
+	public int plane;
 
 	public Projectile(int startSlope, int endZ, int delay, int endCycle, int startDistance, int plane, int startZ,
 			int startY, int startX, int targetId, int l2)

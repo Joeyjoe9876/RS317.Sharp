@@ -3,21 +3,21 @@ sealed class GameObject : Animable
 {
 	private int frame;
 
-	private final int[] childrenIds;
+	private int[] childrenIds;
 
-	private final int varBitId;
+	private int varBitId;
 
-	private final int configId;
-	private final int vertexHeightBottomLeft;
-	private final int vertexHeightBottomRight;
-	private final int vertexHeightTopRight;
-	private final int vertexHeightTopLeft;
+	private int configId;
+	private int vertexHeightBottomLeft;
+	private int vertexHeightBottomRight;
+	private int vertexHeightTopRight;
+	private int vertexHeightTopLeft;
 	private AnimationSequence animation;
 	private int nextFrameTime;
 	public static Client clientInstance;
-	private final int objectId;
-	private final int type;
-	private final int orientation;
+	private int objectId;
+	private int type;
+	private int orientation;
 
 	public GameObject(int objectId, int orientation, int type, int vertexHeightBottomRight, int vertexHeightTopRight,
 			int vertexHeightBottomLeft, int vertexHeightTopLeft, int animationId, boolean animating)

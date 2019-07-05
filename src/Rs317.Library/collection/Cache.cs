@@ -4,11 +4,11 @@
 /// </summary>
 public class Cache
 {
-	private final Cacheable empty;
-	private final int size;
+	private Cacheable empty;
+	private int size;
 	private int available;
-	private final LinkableHashMap hashmap;
-	private final CacheableQueue retrievedItems;
+	private LinkableHashMap hashmap;
+	private CacheableQueue retrievedItems;
 
 	public Cache(int length)
 	{

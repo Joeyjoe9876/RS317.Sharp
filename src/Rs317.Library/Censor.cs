@@ -13,10 +13,10 @@ public class Censor
 	private static char tlds[][];
 	private static int tldTypes[];
 
-	private static final String WHITELISTED_WORDS[] = { "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
-	private static final char[] SPELLED_AT_SYMBOL = { '(', 'a', ')' };
-	private static final char[] SPELLED_DOT = { 'd', 'o', 't' };
-	private static final char[] SPELLED_SLASH = { 's', 'l', 'a', 's', 'h' };
+	private static String WHITELISTED_WORDS[] = { "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
+	private static char[] SPELLED_AT_SYMBOL = { '(', 'a', ')' };
+	private static char[] SPELLED_DOT = { 'd', 'o', 't' };
+	private static char[] SPELLED_SLASH = { 's', 'l', 'a', 's', 'h' };
 
 	public static void load(Archive archive)
 	{

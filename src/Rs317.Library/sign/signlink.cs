@@ -211,15 +211,15 @@ public sealed class signlink : Runnable
 		}
 	}
 
-	public static final int clientversion = 317;
+	public static int clientversion = 317;
 
 	public static int uid;
 
 	public static int storeid = 32;
 	public static RandomAccessFile cache_dat = null;
-	public static final RandomAccessFile[] cache_idx = new RandomAccessFile[5];
+	public static RandomAccessFile[] cache_idx = new RandomAccessFile[5];
 	public static boolean sunjava;
-	public static final Applet applet = null;
+	public static Applet applet = null;
 	private static boolean active;
 	private static int threadliveid;
 	private static InetAddress socketip;

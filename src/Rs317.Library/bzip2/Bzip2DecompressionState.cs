@@ -39,7 +39,7 @@ public class BZip2DecompressionState
 	byte[] stream;
 	byte[] buf; // out
 
-	/* for doing the final run-length decoding */
+	/* for doing the run-length decoding */
 	int stateOutLen;
 	boolean blockRandomised;
 	byte stateOutCh;

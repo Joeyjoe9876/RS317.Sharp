@@ -5,11 +5,11 @@ public class Entity : Animable
 
 	public int entScreenY;
 
-	public final int index = -1;
+	public int index = -1;
 
-	public final int[] waypointX;
+	public int[] waypointX;
 
-	public final int[] waypointY;
+	public int[] waypointY;
 	public int interactingEntity;
 	int stepsDelayed;
 
@@ -99,7 +99,7 @@ public class Entity : Animable
 		return false;
 	}
 
-	public final void move(boolean flag, int direction)
+	public void move(boolean flag, int direction)
 	{
 		int x = waypointX[0];
 		int y = waypointY[0];
@@ -146,13 +146,13 @@ public class Entity : Animable
 		waypointRan[0] = flag;
 	}
 
-	public final void resetPath()
+	public void resetPath()
 	{
 		waypointCount = 0;
 		stepsRemaining = 0;
 	}
 
-	public final void setPos(int x, int y, boolean teleported)
+	public void setPos(int x, int y, boolean teleported)
 	{
 		if(animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
 			animation = -1;
@@ -186,7 +186,7 @@ public class Entity : Animable
 		this.y = waypointY[0] * 128 + boundaryDimension * 64;
 	}
 
-	public final void updateHitData(int type, int damage, int currentTime)
+	public void updateHitData(int type, int damage, int currentTime)
 	{
 		for(int hit = 0; hit < 4; hit++)
 			if(hitsLoopCycle[hit] <= currentTime)

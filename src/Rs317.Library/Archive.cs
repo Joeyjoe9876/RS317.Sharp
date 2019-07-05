@@ -4,15 +4,15 @@
 /// </summary>
 public sealed class Archive
 {
-	private final byte[] outputData;
+	private byte[] outputData;
 
-	private final int fileCount;
+	private int fileCount;
 
-	private final int[] hashes;
-	private final int[] decompressedSizes;
-	private final int[] compressedSizes;
-	private final int[] initialOffsets;
-	private final boolean decompressed;
+	private int[] hashes;
+	private int[] decompressedSizes;
+	private int[] compressedSizes;
+	private int[] initialOffsets;
+	private boolean decompressed;
 
 	public Archive(byte data[])
 	{

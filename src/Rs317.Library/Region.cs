@@ -399,41 +399,41 @@ sealed class Region
 
 	private static int randomiserHue = (int)(Math.random() * 17D) - 8;
 
-	private final int[] blendedHue;
+	private int[] blendedHue;
 
-	private final int[] blendedSaturation;
+	private int[] blendedSaturation;
 
-	private final int[] blendedLightness;
+	private int[] blendedLightness;
 
-	private final int[] blendedHueDivisor;
+	private int[] blendedHueDivisor;
 
-	private final int[] blendDirectionTracker;
+	private int[] blendDirectionTracker;
 
-	private final int[][][] vertexHeights;
+	private int[][][] vertexHeights;
 
-	private final byte[][][] overlayFloorIds;
+	private byte[][][] overlayFloorIds;
 
 	static int plane;
 
 	private static int randomiserLightness = (int)(Math.random() * 33D) - 16;
 
-	private final byte[][][] tileShadowIntensity;
+	private byte[][][] tileShadowIntensity;
 
-	private final int[][][] tileCullingBitsets;
+	private int[][][] tileCullingBitsets;
 
-	private final byte[][][] overlayClippingPaths;
-	private static final int FACE_OFFSET_X[] = { 1, 0, -1, 0 };
-	private final int[][] tileLightIntensity;
-	private static final int WALL_CORNER_ORIENTATION[] = { 16, 32, 64, 128 };
-	private final byte[][][] underlayFloorIds;
-	private static final int FACE_OFFSET_Y[] = { 0, -1, 0, 1 };
+	private byte[][][] overlayClippingPaths;
+	private static int FACE_OFFSET_X[] = { 1, 0, -1, 0 };
+	private int[][] tileLightIntensity;
+	private static int WALL_CORNER_ORIENTATION[] = { 16, 32, 64, 128 };
+	private byte[][][] underlayFloorIds;
+	private static int FACE_OFFSET_Y[] = { 0, -1, 0, 1 };
 	static int lowestPlane = 99;
-	private final int regionSizeX;
-	private final int regionSizeY;
-	private final byte[][][] overlayOrientations;
-	private final byte[][][] renderRuleFlags;
+	private int regionSizeX;
+	private int regionSizeY;
+	private byte[][][] overlayOrientations;
+	private byte[][][] renderRuleFlags;
 	static boolean lowMemory = true;
-	private static final int POWERS_OF_TWO[] = { 1, 2, 4, 8 };
+	private static int POWERS_OF_TWO[] = { 1, 2, 4, 8 };
 
 	public Region(byte renderRuleFlags[][][], int vertexHeights[][][])
 	{
@@ -456,7 +456,7 @@ sealed class Region
 		blendDirectionTracker = new int[regionSizeY];
 	}
 
-	public final void createRegion(CollisionMap collisionMap[], WorldController worldController)
+	public void createRegion(CollisionMap collisionMap[], WorldController worldController)
 	{
 		for(int plane = 0; plane < 4; plane++)
 		{
@@ -857,7 +857,7 @@ private int getVisibilityPlane(int y, int plane, int x)
 		return plane;
 }
 
-public final void initiateVertexHeights(int startY, int countY, int countX, int startX)
+public void initiateVertexHeights(int startY, int countY, int countX, int startX)
 {
 	for(int y = startY; y <= startY + countY; y++)
 	{
@@ -878,7 +878,7 @@ public final void initiateVertexHeights(int startY, int countY, int countX, int 
 	}
 }
 
-public final void loadObjectBlock(int blockX, CollisionMap collisionMap[], int blockY,
+public void loadObjectBlock(int blockX, CollisionMap collisionMap[], int blockY,
 		WorldController worldController, byte blockData[])
 {
 	start:
@@ -921,7 +921,7 @@ public final void loadObjectBlock(int blockX, CollisionMap collisionMap[], int b
 	}
 }
 
-public final void loadObjectSubblock(CollisionMap collisionMap[], WorldController worldController, int i, int j,
+public void loadObjectSubblock(CollisionMap collisionMap[], WorldController worldController, int i, int j,
 		int k, int objectPlane, byte blockData[], int i1, int rotation, int k1)
 {
 	start:
@@ -971,7 +971,7 @@ public final void loadObjectSubblock(CollisionMap collisionMap[], WorldControlle
 	}
 }
 
-public final void loadTerrainBlock(byte blockData[], int blockY, int blockX, int k, int l,
+public void loadTerrainBlock(byte blockData[], int blockY, int blockX, int k, int l,
 		CollisionMap collisionMap[])
 {
 	for(int plane = 0; plane < 4; plane++)
@@ -999,7 +999,7 @@ public final void loadTerrainBlock(byte blockData[], int blockY, int blockX, int
 	}
 }
 
-public final void loadTerrainSubblock(int subBlockZ, int rotation, CollisionMap collisionMap[], int mapRegionX,
+public void loadTerrainSubblock(int subBlockZ, int rotation, CollisionMap collisionMap[], int mapRegionX,
 		int subBlockX, byte terrainData[], int subBlockY, int blockPlane, int mapRegionY)
 {
 	for(int regionX = 0; regionX < 8; regionX++)

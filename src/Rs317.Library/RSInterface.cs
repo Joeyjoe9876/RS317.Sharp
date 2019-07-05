@@ -320,7 +320,7 @@ public sealed class RSInterface
 	public int scrollMax;
 	public int type;
 	public int x;
-	private static final Cache modelCache = new Cache(30);
+	private static Cache modelCache = new Cache(30);
 	public int y;
 	public boolean hoverOnly;
 	public int height;

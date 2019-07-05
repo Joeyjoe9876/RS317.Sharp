@@ -23,8 +23,8 @@ public sealed class ISAACRandomGenerator
 	final static int MASK = (SIZE - 1) << 2;
 
 	private int count;
-	private final int[] results;
-	private final int[] memory;
+	private int[] results;
+	private int[] memory;
 	private int accumulator;
 	private int lastResult;
 	private int counter;
@@ -172,7 +172,7 @@ public sealed class ISAACRandomGenerator
 	/**
 	 * Generate 256 random results.
 	 */
-	public final void isaac()
+	public void isaac()
 	{
 		int a, b, x, y;
 
