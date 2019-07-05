@@ -113,18 +113,20 @@ public sealed class EntityDefinition
 			int configId = varBit.configId;
 			int lsb = varBit.leastSignificantBit;
 			int msb = varBit.mostSignificantBit;
+
+			//TODO: Make this config stuff, not something in Client.
 			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			childId = clientInstance.interfaceSettings[configId] >> lsb & bit;
 		}
 		else if(settingId != -1)
 			childId = clientInstance.interfaceSettings[settingId];
-		if(childId < 0 || childId >= childrenIDs.length || childrenIDs[childId] == -1)
+		if(childId < 0 || childId >= childrenIDs.Length || childrenIDs[childId] == -1)
 			return null;
 		else
 			return getDefinition(childrenIDs[childId]);
 	}
 
-	public Model getChildModel(int frameId2, int frameId1, int framesFrom2[])
+	public Model getChildModel(int frameId2, int frameId1, int[] framesFrom2)
 	{
 		if(childrenIDs != null)
 		{
@@ -138,23 +140,23 @@ public sealed class EntityDefinition
 		if(model == null)
 		{
 			bool notCached = false;
-			for(int m = 0; m < modelIds.length; m++)
+			for(int m = 0; m < modelIds.Length; m++)
 				if(!Model.isCached(modelIds[m]))
 					notCached = true;
 
 			if(notCached)
 				return null;
-			Model childModels[] = new Model[modelIds.length];
-			for(int m = 0; m < modelIds.length; m++)
+			Model[] childModels = new Model[modelIds.Length];
+			for(int m = 0; m < modelIds.Length; m++)
 				childModels[m] = Model.getModel(modelIds[m]);
 
-			if(childModels.length == 1)
+			if(childModels.Length == 1)
 				model = childModels[0];
 			else
-				model = new Model(childModels.length, childModels);
+				model = new Model(childModels.Length, childModels);
 			if(modifiedModelColours != null)
 			{
-				for(int c = 0; c < modifiedModelColours.length; c++)
+				for(int c = 0; c < modifiedModelColours.Length; c++)
 					model.recolour(modifiedModelColours[c], originalModelColours[c]);
 
 			}
@@ -191,24 +193,24 @@ public sealed class EntityDefinition
 		if(headModelIds == null)
 			return null;
 		bool someModelsNotCached = false;
-		for(int i = 0; i < headModelIds.length; i++)
+		for(int i = 0; i < headModelIds.Length; i++)
 			if(!Model.isCached(headModelIds[i]))
 				someModelsNotCached = true;
 
 		if(someModelsNotCached)
 			return null;
-		Model headModels[] = new Model[headModelIds.length];
-		for(int j = 0; j < headModelIds.length; j++)
+		Model[] headModels = new Model[headModelIds.Length];
+		for(int j = 0; j < headModelIds.Length; j++)
 			headModels[j] = Model.getModel(headModelIds[j]);
 
 		Model headModel;
-		if(headModels.length == 1)
+		if(headModels.Length == 1)
 			headModel = headModels[0];
 		else
-			headModel = new Model(headModels.length, headModels);
+			headModel = new Model(headModels.Length, headModels);
 		if(modifiedModelColours != null)
 		{
-			for(int c = 0; c < modifiedModelColours.length; c++)
+			for(int c = 0; c < modifiedModelColours.Length; c++)
 				headModel.recolour(modifiedModelColours[c], originalModelColours[c]);
 
 		}
@@ -252,7 +254,7 @@ public sealed class EntityDefinition
 				if(actions == null)
 					actions = new String[5];
 				actions[opcode - 30] = stream.getString();
-				if(actions[opcode - 30].equalsIgnoreCase("hidden"))
+				if(actions[opcode - 30].Equals("hidden", StringComparison.InvariantCultureIgnoreCase))
 					actions[opcode - 30] = null;
 			}
 			else if(opcode == 40)
