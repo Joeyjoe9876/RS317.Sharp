@@ -53,7 +53,7 @@ sealed class RSImageProducer : ImageProducer, ImageObserver
 		}
 	}
 
-	public override boolean imageUpdate(Image image, int i, int j, int k, int l, int i1)
+	public override bool imageUpdate(Image image, int i, int j, int k, int l, int i1)
 	{
 		return true;
 	}
@@ -63,7 +63,7 @@ sealed class RSImageProducer : ImageProducer, ImageObserver
 		DrawingArea.initDrawingArea(height, width, pixels);
 	}
 
-	public override synchronized boolean isConsumer(ImageConsumer imageconsumer)
+	public override synchronized bool isConsumer(ImageConsumer imageconsumer)
 	{
 		return imageConsumer == imageconsumer;
 	}

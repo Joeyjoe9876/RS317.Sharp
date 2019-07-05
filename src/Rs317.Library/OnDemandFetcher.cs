@@ -39,13 +39,13 @@ public sealed class OnDemandFetcher : Runnable
 
 	private int filesLoaded;
 
-	private boolean running;
+	private bool running;
 
 	private OutputStream outputStream;
 
 	private int[] mapIndices4;
 
-	private boolean waiting;
+	private bool waiting;
 
 	private DoubleEndedQueue complete;
 
@@ -173,7 +173,7 @@ public sealed class OnDemandFetcher : Runnable
 		failedRequests++;
 	}
 
-	private boolean crcMatches(int cacheVersion, int cacheChecksum, byte data[])
+	private bool crcMatches(int cacheVersion, int cacheChecksum, byte data[])
 	{
 		if(data == null || data.length < 2)
 			return false;
@@ -288,7 +288,7 @@ public sealed class OnDemandFetcher : Runnable
 		}
 	}
 
-	public boolean method564(int i)
+	public bool method564(int i)
 	{
 		for(int k = 0; k < mapIndices1.length; k++)
 			if(mapIndices3[k] == i)
@@ -354,7 +354,7 @@ public sealed class OnDemandFetcher : Runnable
 		}
 	}
 
-	public boolean midiIdEqualsOne(int i)
+	public bool midiIdEqualsOne(int i)
 	{
 		return musicPriorities[i] == 1;
 	}
@@ -378,7 +378,7 @@ public sealed class OnDemandFetcher : Runnable
 		}
 	}
 
-	public void preloadRegions(boolean flag)
+	public void preloadRegions(bool flag)
 	{
 		int j = mapIndices1.length;
 		for(int k = 0; k < j; k++)
@@ -550,7 +550,7 @@ public sealed class OnDemandFetcher : Runnable
 						readData();
 				}
 
-				boolean flag = false;
+				bool flag = false;
 				for(OnDemandData onDemandData = (OnDemandData)requested
 						.peekFront(); onDemandData != null; onDemandData = (OnDemandData)requested.getPrevious())
 					if(onDemandData.incomplete)

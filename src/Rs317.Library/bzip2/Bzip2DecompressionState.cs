@@ -15,17 +15,17 @@ public class BZip2DecompressionState
 	// Class32
 
 	/* Constants */
-	final int bzMaxAlphaSize = 258;
-	final int bzMaxCodeLen = 23;
-	final int bzRunB = 1;
-	final int bzNGroups = 6;
-	final int bzGSize = 50;
-	final int bzNIters = 4;
-	final int bzMaxSelectors = 18002; // (2 + (900000 / BZ_G_SIZE))
+	int bzMaxAlphaSize = 258;
+	int bzMaxCodeLen = 23;
+	int bzRunB = 1;
+	int bzNGroups = 6;
+	int bzGSize = 50;
+	int bzNIters = 4;
+	int bzMaxSelectors = 18002; // (2 + (900000 / BZ_G_SIZE))
 
 	/*-- Constants for the fast MTF decoder. --*/
-	final int mtfaSize = 4096;
-	final int mtflSize = 16;
+	int mtfaSize = 4096;
+	int mtflSize = 16;
 
 	/* for undoing the Burrows-Wheeler transform (FAST) */
 	public static int[] tt;

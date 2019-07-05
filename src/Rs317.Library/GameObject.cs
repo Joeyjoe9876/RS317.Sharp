@@ -20,7 +20,7 @@ sealed class GameObject : Animable
 	private int orientation;
 
 	public GameObject(int objectId, int orientation, int type, int vertexHeightBottomRight, int vertexHeightTopRight,
-			int vertexHeightBottomLeft, int vertexHeightTopLeft, int animationId, boolean animating)
+			int vertexHeightBottomLeft, int vertexHeightTopLeft, int animationId, bool animating)
 	{
 		this.objectId = objectId;
 		this.type = type;

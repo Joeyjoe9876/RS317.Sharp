@@ -7,7 +7,7 @@
 /// </summary>
 sealed class SoundFilter
 {
-	final int[] pairCount;
+	int[] pairCount;
 
 	private int[][][] pairPhase;
 

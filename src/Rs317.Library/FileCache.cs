@@ -80,15 +80,15 @@ sealed class FileCache
 		}
 	}
 
-	public synchronized boolean put(int size, byte data[], int index)
+	public synchronized bool put(int size, byte data[], int index)
 {
-	boolean exists = put(true, index, size, data);
+	bool exists = put(true, index, size, data);
 	if(!exists)
 		exists = put(false, index, size, data);
 	return exists;
 }
 
-private synchronized boolean put(boolean exists, int index, int size, byte data[])
+private synchronized bool put(bool exists, int index, int size, byte data[])
 {
 	try
 	{

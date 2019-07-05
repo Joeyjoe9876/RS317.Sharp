@@ -6,7 +6,7 @@ sealed class MouseDetection : Runnable
 	public Object syncObject;
 
 	public int[] coordsY;
-	public boolean running;
+	public bool running;
 	public int[] coordsX;
 	public int coordsIndex;
 

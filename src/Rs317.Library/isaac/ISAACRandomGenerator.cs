@@ -10,17 +10,17 @@ public sealed class ISAACRandomGenerator
 	/**
 	 * log of size of results[] and memory[]
 	 */
-	final static int SIZEL = 8;
+	static int SIZEL = 8;
 
 	/**
 	 * size of results[] and memory[]
 	 */
-	final static int SIZE = 1 << SIZEL;
+	static int SIZE = 1 << SIZEL;
 
 	/**
 	 * for pseudorandom lookup
 	 */
-	final static int MASK = (SIZE - 1) << 2;
+	static int MASK = (SIZE - 1) << 2;
 
 	private int count;
 	private int[] results;

@@ -177,7 +177,7 @@ public sealed class signlink : Runnable
 		threadreq = runnable;
 	}
 
-	public static synchronized boolean wavereplay()
+	public static synchronized bool wavereplay()
 	{
 		if(savereq != null)
 		{
@@ -192,7 +192,7 @@ public sealed class signlink : Runnable
 		}
 	}
 
-	public static synchronized boolean wavesave(byte abyte0[], int i)
+	public static synchronized bool wavesave(byte abyte0[], int i)
 	{
 		if(i > 0x1e8480)
 			return false;
@@ -218,9 +218,9 @@ public sealed class signlink : Runnable
 	public static int storeid = 32;
 	public static RandomAccessFile cache_dat = null;
 	public static RandomAccessFile[] cache_idx = new RandomAccessFile[5];
-	public static boolean sunjava;
+	public static bool sunjava;
 	public static Applet applet = null;
-	private static boolean active;
+	private static bool active;
 	private static int threadliveid;
 	private static InetAddress socketip;
 	private static int socketreq;
@@ -234,15 +234,15 @@ public sealed class signlink : Runnable
 	private static int savelen;
 	private static String savereq = null;
 	private static byte[] savebuf = null;
-	private static boolean midiplay;
+	private static bool midiplay;
 	private static int midipos;
 	public static String midi = null;
 	public static int midiVolume;
 	public static int midiFade;
-	private static boolean waveplay;
+	private static bool waveplay;
 	private static int wavepos;
 	public static int wavevol;
-	public static boolean reporterror = true;
+	public static bool reporterror = true;
 	public static String errorname = "";
 
 	private signlink()

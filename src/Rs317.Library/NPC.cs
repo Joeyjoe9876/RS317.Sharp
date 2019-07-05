@@ -58,7 +58,7 @@ public sealed class NPC : Entity
 		return rotatedModel;
 	}
 
-	public override boolean isVisible()
+	public override bool isVisible()
 	{
 		return npcDefinition != null;
 	}

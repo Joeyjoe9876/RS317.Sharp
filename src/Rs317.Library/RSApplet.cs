@@ -11,7 +11,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 
 	int fps;
 
-	boolean debugRequested;
+	bool debugRequested;
 
 	int width;
 
@@ -23,9 +23,9 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 
 	RSFrame gameFrame;
 
-	private boolean clearScreen;
+	private bool clearScreen;
 
-	boolean awtFocus;
+	bool awtFocus;
 
 	int idleTime;
 
@@ -51,7 +51,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 
 	long clickTime;
 
-	final int[] keyStatus;
+	int[] keyStatus;
 
 	private int[] inputBuffer;
 
@@ -75,7 +75,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	{
 	}
 
-	final void createClientFrame(int width, int height)
+	void createClientFrame(int width, int height)
 	{
 		this.width = width;
 		this.height = height;
@@ -187,7 +187,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 			return this;
 	}
 
-	final void initClientFrame(int width, int height)
+	void initClientFrame(int width, int height)
 	{
 		this.width = width;
 		this.height = height;
@@ -364,7 +364,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 	{
 	}
 
-	final int readCharacter()
+	int readCharacter()
 	{
 		int character = -1;
 		if(writeIndex != readIndex)
@@ -483,7 +483,7 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 			exit();
 	}
 
-	final void setFrameRate(int frameRate)
+	void setFrameRate(int frameRate)
 	{
 		delayTime = 1000 / frameRate;
 	}

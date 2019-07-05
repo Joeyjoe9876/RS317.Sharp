@@ -7,7 +7,7 @@ sealed class RSSocket : Runnable
 
 	private Socket socket;
 
-	private boolean closed;
+	private bool closed;
 
 	private RSApplet rsApplet;
 
@@ -17,8 +17,8 @@ sealed class RSSocket : Runnable
 
 	private int buffIndex;
 
-	private boolean isWriter;
-	private boolean hasIOError;
+	private bool isWriter;
+	private bool hasIOError;
 
 	//TODO: Add exception documentation
 	/// <summary>

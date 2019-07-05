@@ -7,9 +7,9 @@ public sealed class Player : Entity
 
 	public EntityDefinition npcAppearance;
 
-	boolean preventRotation;
+	bool preventRotation;
 
-	final int[] bodyPartColour;
+	int[] bodyPartColour;
 
 	public int team;
 
@@ -22,7 +22,7 @@ public sealed class Player : Entity
 	public int modifiedAppearanceStartTime;
 	int modifiedAppearanceEndTime;
 	int drawHeight2;
-	boolean visible;
+	bool visible;
 	int anInt1711;
 	int drawHeight;
 	int anInt1713;
@@ -83,7 +83,7 @@ public sealed class Player : Entity
 		Model model_1 = (Model)mruNodes.get(l);
 		if(model_1 == null)
 		{
-			boolean flag = false;
+			bool flag = false;
 			for(int i2 = 0; i2 < 12; i2++)
 			{
 				int k2 = appearance[i2];
@@ -165,7 +165,7 @@ public sealed class Player : Entity
 			return null;
 		if(npcAppearance != null)
 			return npcAppearance.getHeadModel();
-		boolean flag = false;
+		bool flag = false;
 		for(int i = 0; i < 12; i++)
 		{
 			int j = appearance[i];
@@ -282,7 +282,7 @@ public sealed class Player : Entity
 		return appearanceModel;
 	}
 
-	public sealed override boolean isVisible()
+	public sealed override bool isVisible()
 	{
 		return visible;
 	}

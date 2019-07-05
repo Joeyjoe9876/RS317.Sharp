@@ -23,7 +23,7 @@ public sealed class Model : Animable
 		Model.requester = requester;
 	}
 
-	public static boolean isCached(int model)
+	public static bool isCached(int model)
 	{
 		if(modelHeaders == null)
 			return false;
@@ -132,7 +132,7 @@ public sealed class Model : Animable
 	{
 		modelHeaders = null;
 		restrictEdges = null;
-		aBooleanArray1664 = null;
+		aboolArray1664 = null;
 		vertexScreenX = null;
 		vertexScreenY = null;
 		vertexScreenZ = null;
@@ -224,12 +224,12 @@ public sealed class Model : Animable
 	private int[] triangleSkins;
 	public int vertexSkin[][];
 	public int triangleSkin[][];
-	public boolean singleTile;
+	public bool singleTile;
 	public VertexNormal vertexNormalOffset[];
 	private static ModelHeader[] modelHeaders;
 	private static OnDemandFetcher requester;
-	private static boolean[] restrictEdges = new boolean[4096];
-	private static boolean[] aBooleanArray1664 = new boolean[4096];
+	private static bool[] restrictEdges = new bool[4096];
+	private static bool[] aboolArray1664 = new bool[4096];
 	private static int[] vertexScreenX = new int[4096];
 	private static int[] vertexScreenY = new int[4096];
 	private static int[] vertexScreenZ = new int[4096];
@@ -249,7 +249,7 @@ public sealed class Model : Animable
 	private static int vertexModifierX;
 	private static int vertexModifierY;
 	private static int vertexModifierZ;
-	public static boolean aBoolean1684;
+	public static bool abool1684;
 	public static int cursorX;
 	public static int cursorY;
 	public static int resourceCount;
@@ -270,7 +270,7 @@ private Model()
 	singleTile = false;
 }
 
-public Model(boolean flag, boolean flag1, boolean flag2, Model model)
+public Model(bool flag, bool flag1, bool flag2, Model model)
 {
 	singleTile = false;
 	vertexCount = model.vertexCount;
@@ -337,7 +337,7 @@ public Model(boolean flag, boolean flag1, boolean flag2, Model model)
 	texturedTrianglePointsZ = model.texturedTrianglePointsZ;
 }
 
-public Model(boolean flag, boolean flag1, Model model)
+public Model(bool flag, bool flag1, Model model)
 {
 	singleTile = false;
 	vertexCount = model.vertexCount;
@@ -567,10 +567,10 @@ private Model(int model)
 public Model(int modelCount, Model models[])
 {
 	singleTile = false;
-	boolean setDrawType = false;
-	boolean setPriority = false;
-	boolean setAlpha = false;
-	boolean setSkins = false;
+	bool setDrawType = false;
+	bool setPriority = false;
+	bool setAlpha = false;
+	bool setSkins = false;
 	vertexCount = 0;
 	triangleCount = 0;
 	texturedTriangleCount = 0;
@@ -682,10 +682,10 @@ public Model(Model models[])
 {
 	int modelCount = 2;// was parameter
 	singleTile = false;
-	boolean flag1 = false;
-	boolean flag2 = false;
-	boolean flag3 = false;
-	boolean flag4 = false;
+	bool flag1 = false;
+	bool flag2 = false;
+	bool flag3 = false;
+	bool flag4 = false;
 	vertexCount = 0;
 	triangleCount = 0;
 	texturedTriangleCount = 0;
@@ -804,7 +804,7 @@ public Model(Model models[])
 }
 
 public void applyLighting(int lightMod, int magnitudeMultiplier, int lightX, int lightY, int lightZ,
-		boolean flatShading)
+		bool flatShading)
 {
 	int lightMagnitude = (int)Math.sqrt(lightX * lightX + lightY * lightY + lightZ * lightZ);
 	int magnitude = magnitudeMultiplier * lightMagnitude >> 8;
@@ -1129,7 +1129,7 @@ public void handleShading(int intensity, int falloff, int lightX, int lightY, in
 	triangleColours = null;
 }
 
-private void method483(boolean flag, boolean flag1, int i)
+private void method483(bool flag, bool flag1, int i)
 {
 	for(int j = 0; j < diagonal3D; j++)
 		anIntArray1671[j] = 0;
@@ -1145,7 +1145,7 @@ private void method483(boolean flag, boolean flag1, int i)
 			int screenXZ = vertexScreenX[z];
 			if(flag && (screenXX == -5000 || screenXY == -5000 || screenXZ == -5000))
 			{
-				aBooleanArray1664[triangle] = true;
+				aboolArray1664[triangle] = true;
 				int j5 = (vertexScreenZ[x] + vertexScreenZ[y] + vertexScreenZ[z]) / 3 + diagonal3DAboveOrigin;
 				anIntArrayArray1672[j5][anIntArray1671[j5]++] = triangle;
 			}
@@ -1160,7 +1160,7 @@ private void method483(boolean flag, boolean flag1, int i)
 				if((screenXX - screenXY) * (vertexScreenY[z] - vertexScreenY[y])
 						- (vertexScreenY[x] - vertexScreenY[y]) * (screenXZ - screenXY) > 0)
 				{
-					aBooleanArray1664[triangle] = false;
+					aboolArray1664[triangle] = false;
 					restrictEdges[triangle] = screenXX < 0 || screenXY < 0 || screenXZ < 0
 							|| screenXX > DrawingArea.centerX || screenXY > DrawingArea.centerX
 							|| screenXZ > DrawingArea.centerX;
@@ -1505,7 +1505,7 @@ private void method485(int triangle)
 	}
 }
 
-private boolean method486(int i, int j, int k, int l, int i1, int j1, int k1, int l1)
+private bool method486(int i, int j, int k, int l, int i1, int j1, int k1, int l1)
 {
 	if(j < k && j < l && j < i1)
 		return false;
@@ -1600,7 +1600,7 @@ public void normalise()
 
 private void rasterise(int i)
 {
-	if(aBooleanArray1664[i])
+	if(aboolArray1664[i])
 	{
 		method485(i);
 		return;
@@ -1689,11 +1689,11 @@ public override void renderAtPoint(int i, int yCameraSine, int yCameraCosine, in
 	if(i5 / i3 >= DrawingArea.viewportCentreY)
 		return;
 	int j5 = l2 + (base.modelHeight * yCameraSine >> 16);
-	boolean flag = false;
+	bool flag = false;
 	if(k2 - j5 <= 50)
 		flag = true;
-	boolean flag1 = false;
-	if(i2 > 0 && aBoolean1684)
+	bool flag1 = false;
+	if(i2 > 0 && abool1684)
 	{
 		int k5 = k2 - l2;
 		if(k5 <= 50)
@@ -1848,7 +1848,7 @@ public void renderSingle(int rotationY, int rotationZ, int rotationXW, int trans
 	}
 }
 
-public void replaceWithModel(Model model, boolean replaceAlpha)
+public void replaceWithModel(Model model, bool replaceAlpha)
 {
 	vertexCount = model.vertexCount;
 	triangleCount = model.triangleCount;

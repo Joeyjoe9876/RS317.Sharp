@@ -12,7 +12,7 @@ sealed class Projectile : Animable
 	private double speedScalar;
 	private double speedVectorZ;
 	private double offsetZ;
-	private boolean moving;
+	private bool moving;
 	private int startX;
 	private int startY;
 	private int startZ;

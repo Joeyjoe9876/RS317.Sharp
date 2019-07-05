@@ -23,9 +23,9 @@ public class Entity : Animable
 	int standAnimationId;
 	int standTurnAnimationId;
 	int chatColour;
-	final int[] hitArray;
-	final int[] hitMarkTypes;
-	final int[] hitsLoopCycle;
+	int[] hitArray;
+	int[] hitMarkTypes;
+	int[] hitsLoopCycle;
 	int queuedAnimationId;
 	int queuedAnimationFrame;
 	int queuedAnimationDuration;
@@ -49,7 +49,7 @@ public class Entity : Animable
 	int faceTowardX;
 	int faceTowardY;
 	int boundaryDimension;
-	boolean dynamic;
+	bool dynamic;
 	int stepsRemaining;
 	int startX;
 	int endX;
@@ -61,7 +61,7 @@ public class Entity : Animable
 	public int x;
 	public int y;
 	int currentRotation;
-	final boolean[] waypointRan;
+	bool[] waypointRan;
 	int walkAnimationId;
 	int turnAboutAnimationId;
 	int turnRightAnimationId;
@@ -87,19 +87,19 @@ public class Entity : Animable
 		textCycle = 100;
 		boundaryDimension = 1;
 		dynamic = false;
-		waypointRan = new boolean[10];
+		waypointRan = new bool[10];
 		walkAnimationId = -1;
 		turnAboutAnimationId = -1;
 		turnRightAnimationId = -1;
 		turnLeftAnimationId = -1;
 	}
 
-	public boolean isVisible()
+	public bool isVisible()
 	{
 		return false;
 	}
 
-	public void move(boolean flag, int direction)
+	public void move(bool flag, int direction)
 	{
 		int x = waypointX[0];
 		int y = waypointY[0];
@@ -152,7 +152,7 @@ public class Entity : Animable
 		stepsRemaining = 0;
 	}
 
-	public void setPos(int x, int y, boolean teleported)
+	public void setPos(int x, int y, bool teleported)
 	{
 		if(animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
 			animation = -1;

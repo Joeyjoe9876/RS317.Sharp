@@ -128,7 +128,7 @@ public sealed class Client : RSApplet
 	private DoubleEndedQueue[][][] groundArray;
 	private int[] anIntArray828;
 	private int[] anIntArray829;
-	private volatile boolean currentlyDrawingFlames;
+	private volatile bool currentlyDrawingFlames;
 	private Socket jaggrabSocket;
 	private int loginScreenState;
 	private Buffer textStream;
@@ -143,7 +143,7 @@ public sealed class Client : RSApplet
 	private String clickToContinueString;
 	private int privateChatMode;
 	private Buffer loginStream;
-	private boolean effectsEnabled;
+	private bool effectsEnabled;
 	private int[] currentFlameColours;
 	private int[] flameColour1;
 	private int[] flameColour2;
@@ -164,16 +164,16 @@ public sealed class Client : RSApplet
 	private IndexedImage redStone2_4;
 	private Sprite mapFlag;
 	private Sprite mapMarker;
-	private boolean aBoolean872;
+	private bool abool872;
 	private int[] cameraJitter;
 	private int currentTrackId;
-	private boolean[] customCameraActive;
+	private bool[] customCameraActive;
 	private int playerWeight;
 	private MouseDetection mouseDetection;
-	private volatile boolean drawFlames;
+	private volatile bool drawFlames;
 	private String reportAbuseInput;
 	private int playerListId;
-	private boolean menuOpen;
+	private bool menuOpen;
 	private int anInt886;
 	private String inputString;
 	private int MAX_ENTITY_COUNT;
@@ -208,7 +208,7 @@ public sealed class Client : RSApplet
 	private int plane;
 	private int[] skillLevel;
 	private long[] ignoreListAsLongs;
-	private boolean loadingError;
+	private bool loadingError;
 	private int SCROLLBAR_GRIP_LOWLIGHT;
 	private int[] cameraFrequency;
 	private int[][] tileRenderCount;
@@ -233,14 +233,14 @@ public sealed class Client : RSApplet
 	private int menuWidth;
 	private int menuHeight;
 	private long privateMessageTarget;
-	private boolean windowFocused;
+	private bool windowFocused;
 	private long[] friendsListAsLongs;
 	private int currentSong;
 	private static int localWorldId = 10;
 	static int portOffset;
-	private static boolean membersWorld = true;
-	private static boolean lowMemory;
-	private volatile boolean drawingFlames;
+	private static bool membersWorld = true;
+	private static bool lowMemory;
+	private volatile bool drawingFlames;
 	private int spriteDrawX;
 	private int spriteDrawY;
 	private int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
@@ -248,9 +248,9 @@ public sealed class Client : RSApplet
 	private IndexedImage titleButtonImage;
 	private int[] compassHingeSize;
 	private int[] anIntArray969;
-	final FileCache[] caches;
+	FileCache[] caches;
 	public int interfaceSettings[];
-	private boolean aBoolean972;
+	private bool abool972;
 	private int overheadMessageCount;
 	private int[] overheadTextDrawX;
 	private int[] overheadTextDrawY;
@@ -266,7 +266,7 @@ public sealed class Client : RSApplet
 	private int cameraRandomisationCounter;
 	private int lastItemDragTime;
 	private int[] characterEditColours;
-	private static boolean clientRunning;
+	private static bool clientRunning;
 	private int anInt995;
 	private int anInt996;
 	private int cameraOffsetZ;
@@ -291,7 +291,7 @@ public sealed class Client : RSApplet
 	private int currentCameraPositionH;
 	private int currentCameraPositionV;
 	private int cameraMovedWriteDelay;
-	private boolean cameraMovedWrite;
+	private bool cameraMovedWrite;
 	private int walkableInterfaceId;
 	private static int[] EXPERIENCE_TABLE;
 	private int minimapState;
@@ -304,7 +304,7 @@ public sealed class Client : RSApplet
 	private IndexedImage backBase2Image;
 	private IndexedImage backHmid1Image;
 	private int[] unknownCameraVariable;
-	private boolean characterModelChanged;
+	private bool characterModelChanged;
 	private Sprite[] mapFunctionImage;
 	private int baseX;
 	private int baseY;
@@ -318,14 +318,14 @@ public sealed class Client : RSApplet
 	private int[] skillMaxLevel;
 	private int[] defaultSettings;
 	private int membershipStatus;
-	private boolean characterEditChangeGender;
+	private bool characterEditChangeGender;
 	private int anInt1048;
 	private String loadingBarText;
 	private static int loadedRegions;
 	private int[] minimapLeft;
 	private Archive archiveTitle;
 	private int flashingSidebar;
-	private boolean multiCombatZone;
+	private bool multiCombatZone;
 	private DoubleEndedQueue stationaryGraphicQueue;
 	private int[] compassWidthMap;
 	private RSInterface chatboxInterface;
@@ -349,7 +349,7 @@ public sealed class Client : RSApplet
 	private Sprite mapDotFriend;
 	private Sprite mapDotTeam;
 	private int loadingBarPercentage;
-	private boolean loadingMap;
+	private bool loadingMap;
 	private String[] friendsList;
 	private Buffer inStream;
 	private int moveItemInterfaceId;
@@ -369,7 +369,7 @@ public sealed class Client : RSApplet
 	private int anInt1100;
 	private int anInt1101;
 	private int anInt1102;
-	private boolean drawTabIcons;
+	private bool drawTabIcons;
 	private int systemUpdateTime;
 	private RSImageProducer topCentreBackgroundTile;
 	private RSImageProducer bottomCentreBackgroundTile;
@@ -389,35 +389,35 @@ public sealed class Client : RSApplet
 	private RSImageProducer topSideIconImageProducer;
 	public static Player localPlayer;
 	private String[] playerActionText;
-	private boolean[] playerActionUnpinned;
+	private bool[] playerActionUnpinned;
 	private int[][][] constructMapTiles;
 	private int[] tabInterfaceIDs = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 	private int cameraRandomisationV;
 	private int nextCameraRandomisationV;
 	private int menuActionRow;
-	private boolean spellSelected;
+	private bool spellSelected;
 	private int selectedSpellId;
 	private int spellUsableOn;
 	private String spellTooltip;
 	private Sprite[] minimapHint;
-	private boolean inTutorialIsland;
+	private bool inTutorialIsland;
 	private IndexedImage redStone1;
 	private IndexedImage redStone2;
 	private IndexedImage redStone3;
 	private IndexedImage redStone1_2;
 	private IndexedImage redStone2_2;
 	private int playerEnergy;
-	private boolean continuedDialogue;
+	private bool continuedDialogue;
 	private Sprite[] crosses;
-	private boolean musicEnabled;
+	private bool musicEnabled;
 	private IndexedImage[] flameRuneImage;
-	private boolean redrawTab;
+	private bool redrawTab;
 	private int unreadMessages;
-	private static boolean displayFpsAndMemory;
-	public boolean loggedIn;
-	private boolean reportAbuseMute;
-	private boolean loadGeneratedMap;
-	private boolean cutsceneActive;
+	private static bool displayFpsAndMemory;
+	public bool loggedIn;
+	private bool reportAbuseMute;
+	private bool loadGeneratedMap;
+	private bool cutsceneActive;
 	static int tick;
 	private static String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"\243$%^&*()-_=+[{]};:'@#~,<.>/?\\| ";
 	private RSImageProducer tabImageProducer;
@@ -432,7 +432,7 @@ public sealed class Client : RSApplet
 	private long songStartTime;
 	private String enteredUsername;
 	private String enteredPassword;
-	private boolean genericLoadingError;
+	private bool genericLoadingError;
 	private int[] objectTypes = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 	private int reportAbuseInterfaceID;
 	private DoubleEndedQueue spawnObjectList;
@@ -459,7 +459,7 @@ public sealed class Client : RSApplet
 	private int[] cameraAmplitude;
 	static int[] BEARD_COLOURS = { 9104, 10275, 7595, 3610, 7975, 8526, 918, 38802, 24466, 10145, 58654, 5027,
 			1457, 16565, 34991, 25486 };
-	private static boolean flagged;
+	private static bool flagged;
 	private int[] trackIds;
 	private int flameCycle;
 	private int minimapRotation;
@@ -474,14 +474,14 @@ public sealed class Client : RSApplet
 	private long lastClickTime;
 	private int currentTabId;
 	private int hintIconNpcId;
-	private boolean redrawChatbox;
+	private bool redrawChatbox;
 	private int inputDialogState;
 	private int nextSong;
-	private boolean songChanging;
+	private bool songChanging;
 	private int[] minimapLineWidth;
 	private CollisionMap[] currentCollisionMap;
 	public static int BITFIELD_MAX_VALUE[];
-	private boolean updateChatSettings;
+	private bool updateChatSettings;
 	private int[] mapCoordinates;
 	private int[] terrainDataIds;
 	private int[] objectDataIds;
@@ -490,7 +490,7 @@ public sealed class Client : RSApplet
 	public int anInt1239 = 100;
 	private int[] privateMessages;
 	private int[] trackLoop;
-	private boolean lastItemDragged;
+	private bool lastItemDragged;
 	private int atInventoryLoopCycle;
 	private int atInventoryInterface;
 	private int atInventoryIndex;
@@ -500,11 +500,11 @@ public sealed class Client : RSApplet
 	private int chatEffectsDisabled;
 	private int[] trackDelay;
 	private int inTutorial;
-	private boolean rsAlreadyLoaded;
+	private bool rsAlreadyLoaded;
 	private int oneMouseButton;
 	private int minimapRandomisationCounter;
-	private boolean welcomeScreenRaised;
-	private boolean messagePromptRaised;
+	private bool welcomeScreenRaised;
+	private bool messagePromptRaised;
 	private int songStartOffset;
 	private byte[][][] tileFlags;
 	private int prevSong;
@@ -526,7 +526,7 @@ public sealed class Client : RSApplet
 	private int nextCameraRandomisationH;
 	private int[] walkingQueueX;
 	private int[] walkingQueueY;
-	private boolean itemSelected;
+	private bool itemSelected;
 	private int lastItemSelectedSlot;
 	private int lastItemSelectedInterface;
 	private int useItemId;
@@ -568,10 +568,10 @@ BITFIELD_MAX_VALUE = new int[32];
 	effectsEnabled = true;
 	openInterfaceId = -1;
 	skillExperience = new int[Skills.skillsCount];
-	aBoolean872 = false;
+	abool872 = false;
 	cameraJitter = new int[5];
 	currentTrackId = -1;
-	customCameraActive = new boolean[5];
+	customCameraActive = new bool[5];
 	drawFlames = false;
 	reportAbuseInput = "";
 	playerListId = -1;
@@ -607,7 +607,7 @@ BITFIELD_MAX_VALUE = new int[32];
 	anIntArray969 = new int[256];
 	caches = new FileCache[5];
 	interfaceSettings = new int[2000];
-	aBoolean972 = false;
+	abool972 = false;
 	overheadMessageCount = 50;
 	overheadTextDrawX = new int[overheadMessageCount];
 	overheadTextDrawY = new int[overheadMessageCount];
@@ -654,7 +654,7 @@ BITFIELD_MAX_VALUE = new int[32];
 	drawTabIcons = false;
 	chatboxInputNeededString = "";
 	playerActionText = new String[5];
-	playerActionUnpinned = new boolean[5];
+	playerActionUnpinned = new bool[5];
 	constructMapTiles = new int[4][13][13];
 	nextCameraRandomisationV = 2;
 	minimapHint = new Sprite[1000];
@@ -796,16 +796,16 @@ private void addIgnore(long target)
 	throw new RuntimeException();
 }
 
-private void adjustVolume(boolean flag, int volume)
+private void adjustVolume(bool flag, int volume)
 {
 	signlink.midiVolume = volume;
 	if(flag)
 		signlink.midi = "voladjust";
 }
 
-private boolean animateInterface(int timePassed, int interfaceId)
+private bool animateInterface(int timePassed, int interfaceId)
 {
-	boolean animated = false;
+	bool animated = false;
 	RSInterface targetInterface = RSInterface.cache[interfaceId];
 	for(int c = 0; c < targetInterface.children.length; c++)
 	{
@@ -1314,7 +1314,7 @@ private void buildChatboxMenu(int y)
 
 }
 
-private boolean buildFriendsListMenu(RSInterface rsInterface)
+private bool buildFriendsListMenu(RSInterface rsInterface)
 {
 	int type = rsInterface.contentType;
 	if(type >= 1 && type <= 200 || type >= 701 && type <= 900)
@@ -1380,7 +1380,7 @@ private void buildInterfaceMenu(int i, RSInterface rsInterface, int k, int l, in
 			if(childInterface.actionType == 1 && k >= i2 && i1 >= j2 && k < i2 + childInterface.width
 					&& i1 < j2 + childInterface.height)
 			{
-				boolean flag = false;
+				bool flag = false;
 				if(childInterface.contentType != 0)
 					flag = buildFriendsListMenu(childInterface);
 				if(!flag)
@@ -2130,7 +2130,7 @@ private void clearTopInterfaces()
 	openInterfaceId = -1;
 }
 
-private boolean clickInteractiveObject(int hash, int y, int x)
+private bool clickInteractiveObject(int hash, int y, int x)
 {
 	int objectId = hash >> 14 & 0x7FFF;
 	int config = worldController.getConfig(hash, x, y, plane);
@@ -2221,7 +2221,7 @@ private void connectServer()
 	 * (byte)4, s + " - Will retry in " + l + " secs."); } try {
 	 * Thread.sleep(1000L); } catch(Exception _ex) { } }
 	 * 
-	 * j *= 2; if(j > 60) j = 60; aBoolean872 = !aBoolean872; } }
+	 * j *= 2; if(j > 60) j = 60; abool872 = !abool872; } }
 	 */
 }
 
@@ -2440,7 +2440,7 @@ private void doAction(int row)
 	}
 	if(menuAction == 234)
 	{
-		boolean flag1 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
+		bool flag1 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
 				localPlayer.waypointX[0], false, actionInformation2);
 		if(!flag1)
 			flag1 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
@@ -2466,7 +2466,7 @@ private void doAction(int row)
 	}
 	if(menuAction == 511)
 	{
-		boolean flag2 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
+		bool flag2 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
 				localPlayer.waypointX[0], false, actionInformation2);
 		if(!flag2)
 			flag2 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
@@ -2501,7 +2501,7 @@ private void doAction(int row)
 	if(menuAction == 315)
 	{
 		RSInterface rsInterface = RSInterface.cache[actionInformation1];
-		boolean flag8 = true;
+		bool flag8 = true;
 		if(rsInterface.contentType > 0)
 			flag8 = promptUserForInput(rsInterface);
 		if(flag8)
@@ -2644,7 +2644,7 @@ private void doAction(int row)
 		{
 			name = name.substring(position + 5).trim();
 			String nameAsLong = TextClass.formatName(TextClass.longToName(TextClass.nameToLong(name)));
-			boolean foundPlayer = false;
+			bool foundPlayer = false;
 			for(int p = 0; p < localPlayerCount; p++)
 			{
 				Player player = players[localPlayers[p]];
@@ -2760,7 +2760,7 @@ private void doAction(int row)
 	}
 	if(menuAction == 213)
 	{
-		boolean flag3 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
+		bool flag3 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
 				localPlayer.waypointX[0], false, actionInformation2);
 		if(!flag3)
 			flag3 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
@@ -2806,7 +2806,7 @@ private void doAction(int row)
 	}
 	if(menuAction == 652)
 	{
-		boolean flag4 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
+		bool flag4 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
 				localPlayer.waypointX[0], false, actionInformation2);
 		if(!flag4)
 			flag4 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
@@ -2822,7 +2822,7 @@ private void doAction(int row)
 	}
 	if(menuAction == 94)
 	{
-		boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
+		bool flag5 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
 				localPlayer.waypointX[0], false, actionInformation2);
 		if(!flag5)
 			flag5 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
@@ -2999,7 +2999,7 @@ private void doAction(int row)
 	}
 	if(menuAction == 567)
 	{
-		boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
+		bool flag6 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
 				localPlayer.waypointX[0], false, actionInformation2);
 		if(!flag6)
 			flag6 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
@@ -3218,7 +3218,7 @@ private void doAction(int row)
 	}
 	if(menuAction == 244)
 	{
-		boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
+		bool flag7 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
 				localPlayer.waypointX[0], false, actionInformation2);
 		if(!flag7)
 			flag7 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
@@ -3344,8 +3344,8 @@ private void doFlamesDrawing()
 	flameRightBackground.drawGraphics(0, base.gameGraphics, 637);
 }
 
-private boolean doWalkTo(int clickType, int objectRotation, int objectSizeY, int objectType, int startY,
-		int objectSizeX, int targetSurroundings, int endY, int startX, boolean flag, int endX)
+private bool doWalkTo(int clickType, int objectRotation, int objectSizeY, int objectType, int startY,
+		int objectSizeX, int targetSurroundings, int endY, int startX, bool flag, int endX)
 {
 	byte mapSizeX = 104;
 	byte mapSizeY = 104;
@@ -3366,7 +3366,7 @@ private boolean doWalkTo(int clickType, int objectRotation, int objectSizeY, int
 	int currentIndex = 0;
 	walkingQueueX[nextIndex] = startX;
 	walkingQueueY[nextIndex++] = startY;
-	boolean foundDestination = false;
+	bool foundDestination = false;
 	int maxPathSize = walkingQueueX.length;
 	int clippingPaths[][] = currentCollisionMap[plane].clippingData;
 		while (currentIndex != nextIndex) {
@@ -4155,7 +4155,7 @@ private void drawGameScreen()
 		redrawTab = true;
 	if(inventoryOverlayInterfaceID != -1)
 	{
-		boolean flag1 = animateInterface(animationTimePassed, inventoryOverlayInterfaceID);
+		bool flag1 = animateInterface(animationTimePassed, inventoryOverlayInterfaceID);
 		if(flag1)
 			redrawTab = true;
 	}
@@ -4187,7 +4187,7 @@ private void drawGameScreen()
 	}
 	if(chatboxInterfaceId != -1)
 	{
-		boolean flag2 = animateInterface(animationTimePassed, chatboxInterfaceId);
+		bool flag2 = animateInterface(animationTimePassed, chatboxInterfaceId);
 		if(flag2)
 			redrawChatbox = true;
 	}
@@ -4477,7 +4477,7 @@ private void drawInterface(int j, int x, RSInterface rsInterface, int y)
 			}
 			else if(childInterface.type == 3)
 			{
-				boolean hover = false;
+				bool hover = false;
 				if(anInt1039 == childInterface.id || anInt1048 == childInterface.id
 						|| anInt1026 == childInterface.id)
 					hover = true;
@@ -4514,7 +4514,7 @@ private void drawInterface(int j, int x, RSInterface rsInterface, int y)
 			{
 				GameFont textDrawingArea = childInterface.textDrawingAreas;
 				String text = childInterface.textDefault;
-				boolean hover = false;
+				bool hover = false;
 				if(anInt1039 == childInterface.id || anInt1048 == childInterface.id
 						|| anInt1026 == childInterface.id)
 					hover = true;
@@ -4633,7 +4633,7 @@ private void drawInterface(int j, int x, RSInterface rsInterface, int y)
 				Rasterizer.centreY = _y + childInterface.height / 2;
 				int sine = Rasterizer.SINE[childInterface.modelRotationX] * childInterface.modelZoom >> 16;
 				int cosine = Rasterizer.COSINE[childInterface.modelRotationX] * childInterface.modelZoom >> 16;
-				boolean active = interfaceIsActive(childInterface);
+				bool active = interfaceIsActive(childInterface);
 				int anim = active ? childInterface.animationIdActive : childInterface.animationIdDefault;
 
 				Model model;
@@ -4730,7 +4730,7 @@ void override drawLoadingText(int percentage, String text)
 	}
 }
 
-private void drawLoginScreen(boolean originalLoginScreen)
+private void drawLoginScreen(bool originalLoginScreen)
 {
 	setupLoginScreen();
 	loginBoxLeftBackgroundTile.initDrawingArea();
@@ -4983,7 +4983,7 @@ private void drawMinimap()
 		{
 			int mapX = player.x / 32 - localPlayer.x / 32;
 			int mapY = player.y / 32 - localPlayer.y / 32;
-			boolean friend = false;
+			bool friend = false;
 			long nameHash = TextClass.nameToLong(player.name);
 			for(int f = 0; f < friendsCount; f++)
 			{
@@ -4993,7 +4993,7 @@ private void drawMinimap()
 				break;
 			}
 
-			boolean team = false;
+			bool team = false;
 			if(localPlayer.team != 0 && player.team != 0 && localPlayer.team == player.team)
 				team = true;
 			if(friend)
@@ -5515,7 +5515,7 @@ private int getWorldDrawPlane()
 	return worldDrawPlane;
 }
 
-private boolean handleIncomingData()
+private bool handleIncomingData()
 {
 	if(socket == null)
 		return false;
@@ -6088,7 +6088,7 @@ private boolean handleIncomingData()
 			{
 				String name = message.substring(0, message.indexOf(":"));
 				long nameAsLong = TextClass.nameToLong(name);
-				boolean ignored = false;
+				bool ignored = false;
 				for(int p = 0; p < ignoreCount; p++)
 				{
 					if(ignoreListAsLongs[p] != nameAsLong)
@@ -6104,7 +6104,7 @@ private boolean handleIncomingData()
 			{
 				String name = message.substring(0, message.indexOf(":"));
 				long nameAsLong = TextClass.nameToLong(name);
-				boolean ignored = false;
+				bool ignored = false;
 				for(int p = 0; p < ignoreCount; p++)
 				{
 					if(ignoreListAsLongs[p] != nameAsLong)
@@ -6120,7 +6120,7 @@ private boolean handleIncomingData()
 			{
 				String name = message.substring(0, message.indexOf(":"));
 				long nameAsLong = TextClass.nameToLong(name);
-				boolean ignored = false;
+				bool ignored = false;
 				for(int p = 0; p < ignoreCount; p++)
 				{
 					if(ignoreListAsLongs[p] != nameAsLong)
@@ -6185,7 +6185,7 @@ private boolean handleIncomingData()
 				friendsCount++;
 				redrawTab = true;
 			}
-			for(boolean orderComplete = false; !orderComplete;)
+			for(bool orderComplete = false; !orderComplete;)
 			{
 				orderComplete = true;
 				for(int friend = 0; friend < friendsCount - 1; friend++)
@@ -6314,7 +6314,7 @@ private boolean handleIncomingData()
 			long nameAsLong = inStream.getLong();
 			int messageId = inStream.getInt();
 			int playerRights = inStream.getUnsignedByte();
-			boolean ignored = false;
+			bool ignored = false;
 			for(int message = 0; message < 100; message++)
 			{
 				if(privateMessages[message] != messageId)
@@ -6400,7 +6400,7 @@ private boolean handleIncomingData()
 		}
 		if(packetOpcode == 171)
 		{
-			boolean hiddenUntilHovered = inStream.getUnsignedByte() == 1;
+			bool hiddenUntilHovered = inStream.getUnsignedByte() == 1;
 			int interfaceId = inStream.getUnsignedLEShort();
 			RSInterface.cache[interfaceId].hoverOnly = hiddenUntilHovered;
 			packetOpcode = -1;
@@ -6790,7 +6790,7 @@ private void handleInterfaceSetting(int s)
 	if(opcode == 3)
 	{
 		// Music volume
-		boolean originalMusicEnabled = musicEnabled;
+		bool originalMusicEnabled = musicEnabled;
 		if(setting == 0)
 		{
 			adjustVolume(musicEnabled, 0);
@@ -6872,7 +6872,7 @@ private void handleMusic()
 	for(int track = 0; track < trackCount; track++)
 		if(trackDelay[track] <= 0)
 		{
-			boolean moveToNextSong = false;
+			bool moveToNextSong = false;
 			try
 			{
 				if(trackIds[track] == currentTrackId && trackLoop[track] == currentTrackLoop)
@@ -6962,7 +6962,7 @@ private int initialiseRegionLoading()
 			return -2;
 	}
 
-	boolean regionsCached = true;
+	bool regionsCached = true;
 	for(int region = 0; region < terrainData.length; region++)
 	{
 		byte objects[] = objectData[region];
@@ -7003,7 +7003,7 @@ private String interfaceIntToString(int value)
 		return "*";
 }
 
-private boolean interfaceIsActive(RSInterface rsInterface)
+private bool interfaceIsActive(RSInterface rsInterface)
 {
 	if(rsInterface.conditionType == null)
 		return false;
@@ -7033,7 +7033,7 @@ private boolean interfaceIsActive(RSInterface rsInterface)
 	return true;
 }
 
-private boolean isFriendOrSelf(String name)
+private bool isFriendOrSelf(String name)
 {
 	if(name == null)
 		return false;
@@ -7411,7 +7411,7 @@ private void loadTitleScreen()
 	}
 }
 
-private void login(String playerUsername, String playerPassword, boolean recoveredConnection)
+private void login(String playerUsername, String playerPassword, bool recoveredConnection)
 {
 	signlink.errorname = playerUsername;
 	try
@@ -8031,7 +8031,7 @@ private void updateGame()
 	{
 		int x = WorldController.clickedTileX;
 		int y = WorldController.clickedTileY;
-		boolean walkable = doWalkTo(0, 0, 0, 0, localPlayer.waypointY[0], 0, 0, y, localPlayer.waypointX[0], true,
+		bool walkable = doWalkTo(0, 0, 0, 0, localPlayer.waypointY[0], 0, 0, y, localPlayer.waypointX[0], true,
 				x);
 		WorldController.clickedTileX = -1;
 		if(walkable)
@@ -8469,7 +8469,7 @@ private void markMinimap(Sprite sprite, int x, int y)
 	minimapImageProducer.initDrawingArea();
 }
 
-private boolean menuRowIsAddFriend(int row)
+private bool menuRowIsAddFriend(int row)
 {
 	if(row < 0)
 		return false;
@@ -8516,7 +8516,7 @@ private void nullLoader()
 /// <returns></returns>
 private DataInputStream openJagGrabInputStream(String s)
 {
-	// if(!aBoolean872)
+	// if(!abool872)
 	// if(signlink.mainapp != null)
 	// return signlink.openurl(s);
 	// else
@@ -9180,7 +9180,7 @@ private void updateLogin()
 				int character = readCharacter();
 				if(character == -1)
 					break;
-				boolean validCharacter = false;
+				bool validCharacter = false;
 				for(int c = 0; c < validUserPassChars.length(); c++)
 				{
 					if(character != validUserPassChars.charAt(c))
@@ -9435,7 +9435,7 @@ private void processMinimapClick()
 			int l1 = j * cosine - i * sine >> 11;
 			int i2 = localPlayer.x + k1 >> 7;
 			int j2 = localPlayer.y - l1 >> 7;
-			boolean canWalk = doWalkTo(1, 0, 0, 0, localPlayer.waypointY[0], 0, 0, j2, localPlayer.waypointX[0],
+			bool canWalk = doWalkTo(1, 0, 0, 0, localPlayer.waypointY[0], 0, 0, j2, localPlayer.waypointX[0],
 					true, i2);
 			if(canWalk)
 			{
@@ -9567,7 +9567,7 @@ private void processRightClick()
 		redrawChatbox = true;
 		anInt1039 = anInt886;
 	}
-	boolean ordered = false;
+	bool ordered = false;
 	while(!ordered)
 	{
 		ordered = true;
@@ -9816,7 +9816,7 @@ private void processWalkingStep(Entity entity)
 	}
 }
 
-private boolean promptUserForInput(RSInterface rsInterface)
+private bool promptUserForInput(RSInterface rsInterface)
 {
 	int contentType = rsInterface.contentType;
 	if(friendListStatus == 2)
@@ -10081,7 +10081,7 @@ private void renderGameView()
 		}
 
 	int textureId = Rasterizer.textureGetCount;
-	Model.aBoolean1684 = true;
+	Model.abool1684 = true;
 	Model.resourceCount = 0;
 	Model.cursorX = base.mouseX - 4;
 	Model.cursorY = base.mouseY - 4;
@@ -10191,7 +10191,7 @@ private void renderMinimap(int z)
 
 	}
 
-	private void renderNPCs(boolean flag)
+	private void renderNPCs(bool flag)
 {
 	for(int n = 0; n < npcCount; n++)
 	{
@@ -10216,7 +10216,7 @@ private void renderMinimap(int z)
 	}
 }
 
-private void renderPlayers(boolean localPlayerOnly)
+private void renderPlayers(bool localPlayerOnly)
 {
 	if(localPlayer.x >> 7 == destinationX && localPlayer.y >> 7 == destinationY)
 		destinationX = 0;
@@ -10320,7 +10320,7 @@ private void renderStationaryGraphics()
 
 }
 
-private boolean replayWave()
+private bool replayWave()
 {
 	return signlink.wavereplay();
 }
@@ -10452,7 +10452,7 @@ private Archive requestArchive(int i, String s, String s1, int j, int k)
 			l *= 2;
 			if(l > 60)
 				l = 60;
-			aBoolean872 = !aBoolean872;
+			abool872 = !abool872;
 		}
 
 	}
@@ -10557,26 +10557,26 @@ public override void run()
 	}
 }
 
-private void saveMidi(boolean flag, byte abyte0[])
+private void saveMidi(bool flag, byte abyte0[])
 {
 	signlink.midiFade = flag ? 1 : 0;
 	signlink.midisave(abyte0, abyte0.length);
 }
 
-private boolean saveWave(byte abyte0[], int i)
+private bool saveWave(byte abyte0[], int i)
 {
 	return abyte0 == null || signlink.wavesave(abyte0, i);
 }
 
-private void scrollInterface(int i, int j, int k, int l, RSInterface rsInterface, int i1, boolean redrawTabArea,
+private void scrollInterface(int i, int j, int k, int l, RSInterface rsInterface, int i1, bool redrawTabArea,
 		int j1)
 {
 	int anInt992;
-	if(aBoolean972)
+	if(abool972)
 		anInt992 = 32;
 	else
 		anInt992 = 0;
-	aBoolean972 = false;
+	abool972 = false;
 	if(k >= i && k < i + 16 && l >= i1 && l < i1 + 16)
 	{
 		rsInterface.scrollPosition -= anInt1213 * 4;
@@ -10603,7 +10603,7 @@ private void scrollInterface(int i, int j, int k, int l, RSInterface rsInterface
 		rsInterface.scrollPosition = ((j1 - j) * i2) / j2;
 		if(redrawTabArea)
 			redrawTab = true;
-		aBoolean972 = true;
+		abool972 = true;
 	}
 }
 
@@ -10976,7 +10976,7 @@ void override startUp()
 		// return;
 	}
 	clientRunning = true;
-	boolean validHost = true;
+	bool validHost = true;
 	String s = getDocumentBaseHost();
 	if(s.endsWith("jagex.com"))
 		validHost = true;
@@ -11554,7 +11554,7 @@ private void updateEntities()
 		int y = overheadTextDrawY[m];
 		int w = overheadTextWidth[m];
 		int h = overheadTextHeight[m];
-		boolean messagesRemaining = true;
+		bool messagesRemaining = true;
 		while(messagesRemaining)
 		{
 			messagesRemaining = false;
@@ -12153,7 +12153,7 @@ private void updatePlayer(Buffer stream, int updateType, Player player, int play
 		if(player.name != null && player.visible)
 		{
 			long nameAsLong = TextClass.nameToLong(player.name);
-			boolean ignored = false;
+			bool ignored = false;
 			if(rights <= 1)
 			{
 				for(int p = 0; p < ignoreCount; p++)

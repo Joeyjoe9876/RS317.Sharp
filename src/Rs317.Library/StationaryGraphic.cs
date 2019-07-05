@@ -9,7 +9,7 @@ sealed class StationaryGraphic : Animable
 
 	public int drawHeight;
 	public int stationaryGraphicLoopCycle;
-	public boolean transformationCompleted;
+	public bool transformationCompleted;
 	private SpotAnimation animation;
 	private int elapsedFrames;
 	private int duration;
