@@ -3,12 +3,12 @@ using System;
 
 public sealed class OnDemandData : Cacheable
 {
-	public int dataType { get; private set; }
+	public int dataType { get; set; }
 
-	byte[] buffer;
+	public byte[] buffer { get; private set; }
 	int id;
-	bool incomplete;
-	int loopCycle;
+	public bool incomplete { get; set; }
+	public int loopCycle { get; set; }
 
 	public OnDemandData()
 	{
@@ -18,5 +18,10 @@ public sealed class OnDemandData : Cacheable
 	public void InitializeBuffer(byte[] bytes)
 	{
 		buffer = bytes ?? throw new ArgumentNullException(nameof(bytes));
+	}
+
+	public void ClearBuffer()
+	{
+		buffer = null;
 	}
 }
