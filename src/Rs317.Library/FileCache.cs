@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 /// <summary>
 /// Represents a file cache containing multiple archives.
 /// </summary>
-sealed class FileCache
+public sealed class FileCache
 {
 	private static byte[] buffer = new byte[520];
 	private FileStream dataFile;

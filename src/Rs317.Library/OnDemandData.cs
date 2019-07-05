@@ -1,9 +1,11 @@
 
+using System;
+
 public sealed class OnDemandData : Cacheable
 {
-	int dataType;
+	public int dataType { get; private set; }
 
-	byte buffer[];
+	byte[] buffer;
 	int id;
 	bool incomplete;
 	int loopCycle;
@@ -11,5 +13,10 @@ public sealed class OnDemandData : Cacheable
 	public OnDemandData()
 	{
 		incomplete = true;
+	}
+
+	public void InitializeBuffer(byte[] bytes)
+	{
+		buffer = bytes ?? throw new ArgumentNullException(nameof(bytes));
 	}
 }
