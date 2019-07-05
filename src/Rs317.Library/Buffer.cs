@@ -1,9 +1,33 @@
 
+using System;
+using System.Numerics;
+using System.Text;
+using Reinterpret.Net;
+
 public sealed class Buffer : Cacheable
 {
+	public byte[] buffer;
+
+	public int position;
+
+	public int bitPosition;
+
+	private static int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
+		32767, 65535, 0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 0x1ffffff,
+		0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1 };
+
+	public ISAACRandomGenerator encryptor;
+
+	private static int cacheCount;
+
+	private static DoubleEndedQueue BUFFER_CACHE = new DoubleEndedQueue();
+
+	private static readonly object SyncObject = new object();
+
 	public static Buffer create()
 	{
-		synchronized(BUFFER_CACHE) {
+		lock(SyncObject)
+		{
 			Buffer stream = null;
 
 			if(cacheCount > 0)
@@ -18,27 +42,12 @@ public sealed class Buffer : Cacheable
 				return stream;
 			}
 		}
+
 		Buffer stream_1 = new Buffer();
 		stream_1.position = 0;
 		stream_1.buffer = new byte[5000];
 		return stream_1;
 	}
-
-	public byte[] buffer;
-
-	public int position;
-
-	public int bitPosition;
-
-	private static int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
-			32767, 65535, 0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 0x1ffffff,
-			0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1 };
-
-	public ISAACRandomGenerator encryptor;
-
-	private static int cacheCount;
-
-	private static DoubleEndedQueue BUFFER_CACHE = new DoubleEndedQueue();
 
 	private Buffer()
 	{
@@ -59,14 +68,14 @@ public sealed class Buffer : Cacheable
 	{
 		int tmpPos = position;
 		position = 0;
-		byte buf[] = new byte[tmpPos];
+		byte[] buf = new byte[tmpPos];
 		readBytes(tmpPos, 0, buf);
 		BigInteger val1 = new BigInteger(buf);
 		BigInteger val2 = val1/* .modPow(val1, val2) */;
-		byte finalBuf[] = val2.toByteArray();
+		byte[] finalBuf = val2.ToByteArray();
 		position = 0;
-		put(finalBuf.length);
-		putBytes(finalBuf, finalBuf.length, 0);
+		put(finalBuf.Length);
+		putBytes(finalBuf, finalBuf.Length, 0);
 	}
 
 	public byte get()
@@ -86,7 +95,7 @@ public sealed class Buffer : Cacheable
 		return (byte)(-buffer[position++]);
 	}
 
-	public void getBytes(int startPos, int endPos, byte buf[])
+	public void getBytes(int startPos, int endPos, byte[] buf)
 	{
 		for(int k = (endPos + startPos) - 1; k >= endPos; k--)
 			buf[k] = buffer[position++];
@@ -175,7 +184,8 @@ public sealed class Buffer : Cacheable
 		int i = position;
 		while(buffer[position++] != 10)
 			;
-		return new String(buffer, i, position - i - 1);
+
+		return Encoding.ASCII.GetString(buffer, i, position - i - 1);
 	}
 
 	public int getUnsignedByte()
@@ -244,11 +254,10 @@ public sealed class Buffer : Cacheable
 		buffer[position++] = (byte)(-i);
 	}
 
-	public void putBytes(byte buf[], int length, int startPosition)
+	public void putBytes(byte[] buf, int length, int startPosition)
 	{
 		for(int k = startPosition; k < startPosition + length; k++)
 			buffer[position++] = buf[k];
-
 	}
 
 	public void putByteS(int j)
@@ -256,7 +265,7 @@ public sealed class Buffer : Cacheable
 		buffer[position++] = (byte)(128 - j);
 	}
 
-	public void putBytesA(int i, byte buf[], int j)
+	public void putBytesA(int i, byte[] buf, int j)
 	{
 		for(int k = (i + j) - 1; k >= i; k--)
 			buffer[position++] = (byte)(buf[k] + 128);
@@ -304,10 +313,10 @@ public sealed class Buffer : Cacheable
 			buffer[position++] = (byte)(int)(l >> 8);
 			buffer[position++] = (byte)(int)l;
 		}
-		catch(RuntimeException ex)
+		catch(Exception ex)
 		{
-			signlink.reporterror("14395, " + 5 + ", " + l + ", " + ex.toString());
-			throw new RuntimeException();
+			signlink.reporterror("14395, " + 5 + ", " + l + ", " + ex.ToString());
+			throw new InvalidOperationException($"Failed to {nameof(putLong)}");
 		}
 	}
 
@@ -336,8 +345,8 @@ public sealed class Buffer : Cacheable
 	public void putString(String s)
 	{
 		// s.getBytes(0, s.length(), buffer, currentOffset); //deprecated
-		System.arraycopy(s.getBytes(), 0, buffer, position, s.length());
-		position += s.length();
+		System.Buffer.BlockCopy(s.Reinterpret(Encoding.ASCII), 0, buffer, position, s.Length);
+		position += s.Length;
 		buffer[position++] = 10;
 	}
 
@@ -362,14 +371,19 @@ public sealed class Buffer : Cacheable
 	public byte[] readBytes()
 	{
 		int tmpPos = position;
+		
+		//Skip
 		while(buffer[position++] != 10)
-			;
-		byte buf[] = new byte[position - tmpPos - 1];
-		System.arraycopy(buffer, tmpPos, buf, tmpPos - tmpPos, position - 1 - tmpPos);
+		{
+
+		}
+
+		byte[] buf = new byte[position - tmpPos - 1];
+		System.Buffer.BlockCopy(buffer, tmpPos, buf, tmpPos - tmpPos, position - 1 - tmpPos);
 		return buf;
 	}
 
-	public void readBytes(int length, int startPosition, byte dest[])
+	public void readBytes(int length, int startPosition, byte[] dest)
 	{
 		for(int i = startPosition; i < startPosition + length; i++)
 			dest[i] = buffer[position++];
