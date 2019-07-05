@@ -1,12 +1,6 @@
-package com.jagex.runescape.audio;
 
-/*
- * Some of this file was refactored by 'veer' of http://www.moparscape.org.
- */
-
-import com.jagex.runescape.Buffer;
-
-public final class Effect {
+//Some of this file was refactored by 'veer' of http://www.moparscape.org.
+public sealed class Effect {
 
 	public static Buffer data(int i, int id) {
 		if (effects[id] != null) {

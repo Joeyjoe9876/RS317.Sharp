@@ -1,4 +1,3 @@
-package com.jagex.runescape.collection;
 
 public class Cacheable extends Linkable {
 

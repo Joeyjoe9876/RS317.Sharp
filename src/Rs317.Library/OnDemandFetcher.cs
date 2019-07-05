@@ -1,13 +1,3 @@
-package com.jagex.runescape;
-
-import java.io.*;
-import java.net.Socket;
-import java.util.zip.CRC32;
-import java.util.zip.GZIPInputStream;
-
-import com.jagex.runescape.collection.CacheableQueue;
-import com.jagex.runescape.collection.DoubleEndedQueue;
-import com.jagex.runescape.sign.signlink;
 
 public sealed class OnDemandFetcher implements Runnable {
 

@@ -1,8 +1,3 @@
-package com.jagex.runescape.sign;
-
-import java.applet.Applet;
-import java.io.*;
-import java.net.*;
 
 public sealed class signlink implements Runnable {
 

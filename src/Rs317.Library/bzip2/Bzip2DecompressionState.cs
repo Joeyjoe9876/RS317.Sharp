@@ -1,19 +1,16 @@
-package com.jagex.runescape.bzip2;
 
-/*
- * From Major at Rune-Server
- * https://www.rune-server.ee/runescape-development/rs2-client/snippets/430099-bzip2-classes-refactor.html
- */
+//From Major at Rune-Server
+//https://www.rune-server.ee/runescape-development/rs2-client/snippets/430099-bzip2-classes-refactor.html
 
-/**
- * A Java implementation of the DState struct (structure holding all the
- * decompression-side stuff).
- * 
- * @see http 
- *      ://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2
- *      /bzlib_private.h
- */
-class BZip2DecompressionState {
+/// <summary>
+/// A Java implementation of the DState struct (structure holding all the
+/// decompression-side stuff).
+/// 
+/// @see http 
+///      ://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2
+///      /bzlib_private.h
+/// </summary>
+public class BZip2DecompressionState {
 
 	// Class32
 

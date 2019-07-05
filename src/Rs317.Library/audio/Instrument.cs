@@ -1,11 +1,5 @@
-package com.jagex.runescape.audio;
 
-/*
- * Some of this file was refactored by 'veer' of http://www.moparscape.org.
- */
-
-import com.jagex.runescape.Buffer;
-
+//Some of this file was refactored by 'veer' of http://www.moparscape.org.
 sealed class Instrument {
 
 	public static void initialise() {

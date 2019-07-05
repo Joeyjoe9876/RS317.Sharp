@@ -1,12 +1,7 @@
-package com.jagex.runescape;
 
-import java.io.*;
-
-/**
- * 
- * Represents a file cache containing multiple archives.
- * 
- */
+/// <summary>
+/// Represents a file cache containing multiple archives.
+/// </summary>
 sealed class FileCache {
 
 	private static final byte[] buffer = new byte[520];

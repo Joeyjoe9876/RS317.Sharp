@@ -1,4 +1,3 @@
-package com.jagex.runescape;
 
 public sealed class InteractiveObject {
 

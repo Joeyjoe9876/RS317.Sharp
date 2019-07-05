@@ -1,4 +1,3 @@
-package com.jagex.runescape;
 
 sealed class PacketInformation {
 

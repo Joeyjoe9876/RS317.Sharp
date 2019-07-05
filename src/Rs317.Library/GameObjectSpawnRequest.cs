@@ -1,6 +1,3 @@
-package com.jagex.runescape;
-
-import com.jagex.runescape.collection.Linkable;
 
 sealed class GameObjectSpawnRequest extends Linkable {
 

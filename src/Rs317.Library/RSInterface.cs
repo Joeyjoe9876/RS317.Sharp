@@ -1,7 +1,3 @@
-package com.jagex.runescape;
-
-import com.jagex.runescape.collection.Cache;
-import com.jagex.runescape.definition.*;
 
 public sealed class RSInterface {
 

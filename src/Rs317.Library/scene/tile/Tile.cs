@@ -1,8 +1,3 @@
-package com.jagex.runescape.scene.tile;
-
-import com.jagex.runescape.InteractiveObject;
-import com.jagex.runescape.collection.Linkable;
-import com.jagex.runescape.scene.object.*;
 
 public sealed class Tile extends Linkable {
 

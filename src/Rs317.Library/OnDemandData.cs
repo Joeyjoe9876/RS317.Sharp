@@ -1,6 +1,3 @@
-package com.jagex.runescape;
-
-import com.jagex.runescape.collection.Cacheable;
 
 public sealed class OnDemandData extends Cacheable {
 

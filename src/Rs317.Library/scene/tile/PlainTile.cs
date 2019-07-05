@@ -1,4 +1,3 @@
-package com.jagex.runescape.scene.tile;
 
 public sealed class PlainTile {
 

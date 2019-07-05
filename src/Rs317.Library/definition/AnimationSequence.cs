@@ -1,8 +1,3 @@
-package com.jagex.runescape.definition;
-
-import com.jagex.runescape.Animation;
-import com.jagex.runescape.Archive;
-import com.jagex.runescape.Buffer;
 
 public sealed class AnimationSequence {
 

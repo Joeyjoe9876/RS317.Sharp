@@ -1,21 +1,4 @@
-package com.jagex.runescape;
 
-import java.applet.AppletContext;
-import java.awt.*;
-import java.io.*;
-import java.net.*;
-
-import com.jagex.runescape.audio.Effect;
-import com.jagex.runescape.collection.*;
-import com.jagex.runescape.definition.*;
-import com.jagex.runescape.sign.signlink;
-import com.jagex.runescape.isaac.ISAACRandomGenerator;
-import com.jagex.runescape.scene.WorldController;
-import com.jagex.runescape.scene.object.GroundDecoration;
-import com.jagex.runescape.scene.object.Wall;
-import com.jagex.runescape.scene.object.WallDecoration;
-
-@SuppressWarnings("serial")
 public sealed class Client extends RSApplet {
 
 	private static String formatAmount(int amount) {

@@ -1,6 +1,3 @@
-package com.jagex.runescape.scene.object;
-
-import com.jagex.runescape.Animable;
 
 public sealed class GroundItemTile {
 

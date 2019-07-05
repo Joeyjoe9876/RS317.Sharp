@@ -1,6 +1,3 @@
-package com.jagex.runescape;
-
-import com.jagex.runescape.definition.ItemDefinition;
 
 sealed class Item extends Animable {
 

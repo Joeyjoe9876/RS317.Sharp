@@ -1,7 +1,3 @@
-package com.jagex.runescape;
-
-import java.awt.*;
-import java.awt.image.PixelGrabber;
 
 public sealed class Sprite extends DrawingArea {
 

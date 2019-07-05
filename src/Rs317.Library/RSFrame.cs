@@ -1,8 +1,4 @@
-package com.jagex.runescape;
 
-import java.awt.*;
-
-@SuppressWarnings("serial")
 sealed class RSFrame extends Frame {
 
 	private final RSApplet applet;

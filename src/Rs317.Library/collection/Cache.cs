@@ -1,8 +1,7 @@
-package com.jagex.runescape.collection;
 
-/*
- * A least-recently-used cache
- */
+/// <summary>
+/// A least-recently-used cache
+/// </summary>
 public class Cache {
 
 	private final Cacheable empty;

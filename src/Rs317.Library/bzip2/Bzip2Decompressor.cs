@@ -1,13 +1,10 @@
-package com.jagex.runescape.bzip2;
 
-/*
- * From Major at Rune-Server
- * https://www.rune-server.ee/runescape-development/rs2-client/snippets/430099-bzip2-classes-refactor.html
- */
+//From Major at Rune-Server
+//https://www.rune-server.ee/runescape-development/rs2-client/snippets/430099-bzip2-classes-refactor.html
 
-/*
- * http://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2/
- */
+/// <summary>
+/// http://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2/
+/// </summary>
 public sealed class Bzip2Decompressor {
 
 	private static BZip2DecompressionState state = new BZip2DecompressionState();

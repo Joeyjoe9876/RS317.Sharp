@@ -1,4 +1,3 @@
-package com.jagex.runescape.collection;
 
 public sealed class CacheableQueue {
 

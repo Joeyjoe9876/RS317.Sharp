@@ -1,6 +1,3 @@
-package com.jagex.runescape;
-
-import com.jagex.runescape.definition.AnimationSequence;
 
 public class Entity extends Animable {
 

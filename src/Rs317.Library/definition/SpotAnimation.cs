@@ -1,9 +1,3 @@
-package com.jagex.runescape.definition;
-
-import com.jagex.runescape.Archive;
-import com.jagex.runescape.Buffer;
-import com.jagex.runescape.Model;
-import com.jagex.runescape.collection.Cache;
 
 public sealed class SpotAnimation {
 

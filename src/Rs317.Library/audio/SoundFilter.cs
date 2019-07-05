@@ -1,16 +1,10 @@
-package com.jagex.runescape.audio;
 
-/*
- * Some of this file was refactored by 'veer' of http://www.moparscape.org.
- */
-
-import com.jagex.runescape.Buffer;
-
-/*
- * an impl of an adaptive iir filter that calculates
- * coefficients from pole magnitude/phases and a serial
- * configuration of cascading biquad sections
- */
+//Some of this file was refactored by 'veer' of http://www.moparscape.org.
+/// <summary>
+///an impl of an adaptive iir filter that calculates
+///coefficients from pole magnitude/phases and a serial
+/// configuration of cascading biquad sections
+/// </summary>
 sealed class SoundFilter {
 
 	final int[] pairCount;

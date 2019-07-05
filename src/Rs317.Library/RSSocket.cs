@@ -1,7 +1,3 @@
-package com.jagex.runescape;
-
-import java.io.*;
-import java.net.Socket;
 
 sealed class RSSocket implements Runnable {
 

@@ -1,11 +1,9 @@
-package com.jagex.runescape;
 
-/*
- * Based on the work of Dane from Rune-Server
- * 
- * https://www.rune-server.ee/runescape-development/rs2-client/snippets/578391-censor-java.html
- */
-
+/// <summary>
+/// Based on the work of Dane from Rune-Server
+/// 
+/// https://www.rune-server.ee/runescape-development/rs2-client/snippets/578391-censor-java.html
+/// </summary>
 public class Censor {
 
 	private static int fragments[];
