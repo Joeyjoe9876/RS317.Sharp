@@ -44,8 +44,8 @@ sealed class Instrument
 	private int delayFeedback;
 	private SoundFilter filter;
 	private Envelope filterEnvelope;
-	int duration;
-	int begin;
+	public int duration { get; internal set; }
+	public int begin { get; internal set; }
 	private static int[] output;
 	private static int[] noise;
 	private static int[] sine;

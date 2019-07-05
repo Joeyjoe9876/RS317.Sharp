@@ -24,7 +24,7 @@ public sealed class Buffer : Cacheable
 		return stream_1;
 	}
 
-	public byte buffer[];
+	public byte[] buffer;
 
 	public int position;
 
@@ -44,7 +44,7 @@ public sealed class Buffer : Cacheable
 	{
 	}
 
-	public Buffer(byte buf[])
+	public Buffer(byte[] buf)
 	{
 		buffer = buf;
 		position = 0;

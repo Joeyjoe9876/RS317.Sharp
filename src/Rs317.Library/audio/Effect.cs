@@ -126,14 +126,14 @@ public sealed class Effect
 			loopCount = 0;
 		int length = stepCount + (loopEnd - loopStart) * (loopCount - 1);
 		for(int offset = 44; offset < length + 44; offset++)
-			_output[offset] = -128;
+			_output[offset] = unchecked((byte)-128); //From RS2Sharp. TODO: Investigate why this hack is done.
 
 		for(int instrument = 0; instrument < 10; instrument++)
 			if(instruments[instrument] != null)
 			{
 				int duration = (instruments[instrument].duration * 22050) / 1000;
 				int offset = (instruments[instrument].begin * 22050) / 1000;
-				int samples[] = instruments[instrument].synthesise(duration, instruments[instrument].duration);
+				int[] samples = instruments[instrument].synthesise(duration, instruments[instrument].duration);
 				for(int sample = 0; sample < duration; sample++)
 					_output[sample + offset + 44] += (byte)(samples[sample] >> 8);
 
@@ -151,8 +151,7 @@ public sealed class Effect
 			for(int loop = 1; loop < loopCount; loop++)
 			{
 				int _offset = (loopEnd - loopStart) * loop;
-				System.arraycopy(_output, loopStart, _output, loopStart + _offset, loopEnd - loopStart);
-
+				System.Buffer.BlockCopy(_output, loopStart, _output, loopStart + _offset, loopEnd - loopStart);
 			}
 
 			length -= 44;
