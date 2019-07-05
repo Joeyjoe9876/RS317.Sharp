@@ -69,7 +69,7 @@ public class Entity : Animable
 	int turnRightAnimationId;
 	int turnLeftAnimationId;
 
-	Entity()
+	protected Entity()
 	{
 		waypointX = new int[10];
 		waypointY = new int[10];
