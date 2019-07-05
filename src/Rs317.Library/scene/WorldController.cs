@@ -2322,7 +2322,7 @@ public void shadeModels(int y, int x, int z)
 {
 	int lightness = 64;// was parameter
 	int magnitudeMultiplier = 768;// was parameter
-	int distanceFromOrigin = (int)Math.sqrt(x * x + y * y + z * z);
+	int distanceFromOrigin = (int)Math.Sqrt(x * x + y * y + z * z);
 	int magnitude = magnitudeMultiplier * distanceFromOrigin >> 8;
 	for(int _z = 0; _z < mapSizeZ; _z++)
 	{

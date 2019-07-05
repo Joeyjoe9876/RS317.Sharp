@@ -98,7 +98,7 @@ sealed class Projectile : Animable
 		{
 			double distanceX = targetX - startX;
 			double distanceY = targetY - startY;
-			double distanceScalar = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+			double distanceScalar = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
 			currentX = startX + (distanceX * startDistance) / distanceScalar;
 			currentY = startY + (distanceY * startDistance) / distanceScalar;
 			currentZ = startZ;
@@ -106,7 +106,7 @@ sealed class Projectile : Animable
 		double cyclesRemaining = (endCycle + 1) - currentCycle;
 		speedVectorX = (targetX - currentX) / cyclesRemaining;
 		speedVectorY = (targetY - currentY) / cyclesRemaining;
-		speedScalar = Math.sqrt(speedVectorX * speedVectorX + speedVectorY * speedVectorY);
+		speedScalar = Math.Sqrt(speedVectorX * speedVectorX + speedVectorY * speedVectorY);
 		if(!moving)
 			speedVectorZ = -speedScalar * Math.tan(startSlope * 0.02454369D);
 		offsetZ = (2D * (targetZ - currentZ - speedVectorZ * cyclesRemaining)) / (cyclesRemaining * cyclesRemaining);

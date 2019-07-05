@@ -493,14 +493,14 @@ sealed class Region
 	int directionalLightX = -50;
 	int directionalLightZ = -10;
 	int directionalLightY = -50;
-	int directionalLightLength = (int)Math.sqrt(directionalLightX * directionalLightX
+	int directionalLightLength = (int)Math.Sqrt(directionalLightX * directionalLightX
 			+ directionalLightZ * directionalLightZ + directionalLightY * directionalLightY);
 	int specularDistribution = specularDistributionFactor * directionalLightLength >> 8;
 			for (int y = 1; y<regionSizeY - 1; y++) {
 				for (int x = 1; x<regionSizeX - 1; x++) {
 					int heightDifferenceX = vertexHeights[_plane][x + 1][y] - vertexHeights[_plane][x - 1][y];
 	int heightDifferenceY = vertexHeights[_plane][x][y + 1] - vertexHeights[_plane][x][y - 1];
-	int normalisedLength = (int)Math.sqrt(
+	int normalisedLength = (int)Math.Sqrt(
 			heightDifferenceX * heightDifferenceX + 0x10000 + heightDifferenceY * heightDifferenceY);
 	int normalisedX = (heightDifferenceX << 8) / normalisedLength;
 	int normalisedZ = 0x10000 / normalisedLength;
