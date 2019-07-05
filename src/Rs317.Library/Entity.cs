@@ -1,4 +1,6 @@
 
+using System;
+
 public class Entity : Animable
 {
 	public int entScreenX;
