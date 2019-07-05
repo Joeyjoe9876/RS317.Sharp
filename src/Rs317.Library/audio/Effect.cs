@@ -2,6 +2,24 @@
 //Some of this file was refactored by 'veer' of http://www.moparscape.org.
 public sealed class Effect
 {
+	private static Effect[] effects = new Effect[5000];
+
+	public static int[] effectDelays = new int[5000];
+
+	private static byte[] _output;
+
+	private static Buffer output;
+
+	private Instrument[] instruments;
+
+	private int loopStart;
+	private int loopEnd;
+
+	private Effect()
+	{
+		instruments = new Instrument[10];
+	}
+
 	public static Buffer data(int i, int id)
 	{
 		if(effects[id] != null)
@@ -29,24 +47,6 @@ public sealed class Effect
 			effects[effect].decode(stream);
 			effectDelays[effect] = effects[effect].getDelay();
 		} while(true);
-	}
-
-	private static Effect[] effects = new Effect[5000];
-
-	public static int[] effectDelays = new int[5000];
-
-	private static byte[] _output;
-
-	private static Buffer output;
-
-	private Instrument[] instruments;
-
-	private int loopStart;
-	private int loopEnd;
-
-	private Effect()
-	{
-		instruments = new Instrument[10];
 	}
 
 	private void decode(Buffer stream)
