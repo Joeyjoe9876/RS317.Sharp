@@ -1,4 +1,6 @@
 
+using System;
+
 sealed class Projectile : Animable
 {
 	public int delay;
@@ -79,8 +81,8 @@ sealed class Projectile : Animable
 		currentY += speedVectorY * time;
 		currentZ += speedVectorZ * time + 0.5D * offsetZ * time * time;
 		speedVectorZ += offsetZ * time;
-		rotationY = (int)(Math.atan2(speedVectorX, speedVectorY) * 325.94900000000001D) + 1024 & 0x7ff;
-		rotationX = (int)(Math.atan2(speedVectorZ, speedScalar) * 325.94900000000001D) & 0x7ff;
+		rotationY = (int)(Math.Atan2(speedVectorX, speedVectorY) * 325.94900000000001D) + 1024 & 0x7ff;
+		rotationX = (int)(Math.Atan2(speedVectorZ, speedScalar) * 325.94900000000001D) & 0x7ff;
 		if(animation.sequences != null)
 			for(duration += time; duration > animation.sequences.getFrameLength(animationFrame);)
 			{
@@ -108,7 +110,7 @@ sealed class Projectile : Animable
 		speedVectorY = (targetY - currentY) / cyclesRemaining;
 		speedScalar = Math.Sqrt(speedVectorX * speedVectorX + speedVectorY * speedVectorY);
 		if(!moving)
-			speedVectorZ = -speedScalar * Math.tan(startSlope * 0.02454369D);
+			speedVectorZ = -speedScalar * Math.Tan(startSlope * 0.02454369D);
 		offsetZ = (2D * (targetZ - currentZ - speedVectorZ * cyclesRemaining)) / (cyclesRemaining * cyclesRemaining);
 	}
 }
