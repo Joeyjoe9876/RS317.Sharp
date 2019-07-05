@@ -34,11 +34,11 @@ public sealed class ISAACRandomGenerator
 	 * 
 	 * @param seed The seed.
 	 */
-	public ISAACRandomGenerator(int seed[])
+	public ISAACRandomGenerator(int[] seed)
 	{
 		memory = new int[SIZE];
 		results = new int[SIZE];
-		System.arraycopy(seed, 0, results, 0, seed.length);
+		System.Buffer.BlockCopy(seed, 0, results, 0, seed.Length * sizeof(int));
 		initialise();
 	}
 
@@ -48,31 +48,31 @@ public sealed class ISAACRandomGenerator
 	private void initialise()
 	{
 		int a, b, c, d, e, f, g, h;
-		a = b = c = d = e = f = g = h = 0x9e3779b9;
+		a = b = c = d = e = f = g = h = unchecked((int)0x9e3779b9);
 		for(int i = 0; i < 4; i++)
 		{
 			a ^= b << 11;
 			d += a;
 			b += c;
-			b ^= c >>> 2;
+			b ^= c >> 2;
 			e += b;
 			c += d;
 			c ^= d << 8;
 			f += c;
 			d += e;
-			d ^= e >>> 16;
+			d ^= e >> 16;
 			g += d;
 			e += f;
 			e ^= f << 10;
 			h += e;
 			f += g;
-			f ^= g >>> 4;
+			f ^= g >> 4;
 			a += f;
 			g += h;
 			g ^= h << 8;
 			b += g;
 			h += a;
-			h ^= a >>> 9;
+			h ^= a >> 9;
 			c += h;
 			a += b;
 		}
@@ -90,25 +90,25 @@ public sealed class ISAACRandomGenerator
 			a ^= b << 11;
 			d += a;
 			b += c;
-			b ^= c >>> 2;
+			b ^= c >> 2;
 			e += b;
 			c += d;
 			c ^= d << 8;
 			f += c;
 			d += e;
-			d ^= e >>> 16;
+			d ^= e >> 16;
 			g += d;
 			e += f;
 			e ^= f << 10;
 			h += e;
 			f += g;
-			f ^= g >>> 4;
+			f ^= g >> 4;
 			a += f;
 			g += h;
 			g ^= h << 8;
 			b += g;
 			h += a;
-			h ^= a >>> 9;
+			h ^= a >> 9;
 			c += h;
 			a += b;
 			memory[i] = a;
@@ -134,25 +134,25 @@ public sealed class ISAACRandomGenerator
 			a ^= b << 11;
 			d += a;
 			b += c;
-			b ^= c >>> 2;
+			b ^= c >> 2;
 			e += b;
 			c += d;
 			c ^= d << 8;
 			f += c;
 			d += e;
-			d ^= e >>> 16;
+			d ^= e >> 16;
 			g += d;
 			e += f;
 			e ^= f << 10;
 			h += e;
 			f += g;
-			f ^= g >>> 4;
+			f ^= g >> 4;
 			a += f;
 			g += h;
 			g ^= h << 8;
 			b += g;
 			h += a;
-			h ^= a >>> 9;
+			h ^= a >> 9;
 			c += h;
 			a += b;
 			memory[i] = a;
@@ -186,7 +186,7 @@ public sealed class ISAACRandomGenerator
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
 
 			x = memory[a];
-			accumulator ^= accumulator >>> 6;
+			accumulator ^= accumulator >> 6;
 			accumulator += memory[b++];
 			memory[a] = y = memory[(x & MASK) >> 2] + accumulator + lastResult;
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
@@ -198,7 +198,7 @@ public sealed class ISAACRandomGenerator
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
 
 			x = memory[a];
-			accumulator ^= accumulator >>> 16;
+			accumulator ^= accumulator >> 16;
 			accumulator += memory[b++];
 			memory[a] = y = memory[(x & MASK) >> 2] + accumulator + lastResult;
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
@@ -213,7 +213,7 @@ public sealed class ISAACRandomGenerator
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
 
 			x = memory[a];
-			accumulator ^= accumulator >>> 6;
+			accumulator ^= accumulator >> 6;
 			accumulator += memory[b++];
 			memory[a] = y = memory[(x & MASK) >> 2] + accumulator + lastResult;
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
@@ -225,7 +225,7 @@ public sealed class ISAACRandomGenerator
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
 
 			x = memory[a];
-			accumulator ^= accumulator >>> 16;
+			accumulator ^= accumulator >> 16;
 			accumulator += memory[b++];
 			memory[a] = y = memory[(x & MASK) >> 2] + accumulator + lastResult;
 			results[a++] = lastResult = memory[((y >> SIZEL) & MASK) >> 2] + x;
