@@ -1,3 +1,4 @@
+using System;
 
 public sealed class IdentityKit
 {
@@ -17,7 +18,7 @@ public sealed class IdentityKit
 
 	public static int count;
 
-	public static IdentityKit cache[];
+	public static IdentityKit[] cache;
 
 	public int partId;
 
@@ -43,7 +44,7 @@ public sealed class IdentityKit
 		if(modelIds == null)
 			return true;
 		bool cached = true;
-		for(int m = 0; m < modelIds.length; m++)
+		for(int m = 0; m < modelIds.Length; m++)
 			if(!Model.isCached(modelIds[m]))
 				cached = false;
 
@@ -54,15 +55,15 @@ public sealed class IdentityKit
 	{
 		if(modelIds == null)
 			return null;
-		Model models[] = new Model[modelIds.length];
-		for(int m = 0; m < modelIds.length; m++)
+		Model[] models = new Model[modelIds.Length];
+		for(int m = 0; m < modelIds.Length; m++)
 			models[m] = Model.getModel(modelIds[m]);
 
 		Model model;
-		if(models.length == 1)
+		if(models.Length == 1)
 			model = models[0];
 		else
-			model = new Model(models.length, models);
+			model = new Model(models.Length, models);
 		for(int colour = 0; colour < 6; colour++)
 		{
 			if(originalModelColours[colour] == 0)
@@ -75,7 +76,7 @@ public sealed class IdentityKit
 
 	public Model getHeadModel()
 	{
-		Model models[] = new Model[5];
+		Model[] models = new Model[5];
 		int modelCount = 0;
 		for(int m = 0; m < 5; m++)
 			if(headModelIds[m] != -1)
@@ -130,7 +131,7 @@ public sealed class IdentityKit
 			else if(opcode >= 60 && opcode < 70)
 				headModelIds[opcode - 60] = stream.getUnsignedLEShort();
 			else
-				System.out.println("Error unrecognised config code: " + opcode);
+				Console.WriteLine($"Error unrecognized config code: {opcode}");
 		} while(true);
 	}
 }
