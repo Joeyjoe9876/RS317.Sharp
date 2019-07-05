@@ -1,4 +1,6 @@
 
+using System;
+
 public sealed class GameFont : DrawingArea
 {
 	/*
@@ -192,7 +194,7 @@ public sealed class GameFont : DrawingArea
 	 * 
 	 * @param colour         The colour to draw the pixels in.
 	 */
-	private void render(byte input[], int inputPosition, int inputWidth, int output[], int outputPosition,
+	private void render(byte[] input, int inputPosition, int inputWidth, int[] output, int outputPosition,
 			int outputWidth, int width, int height, int colour)
 	{
 		int _width = -(width >> 2);
@@ -264,13 +266,13 @@ public sealed class GameFont : DrawingArea
 	 * 
 	 * @param alpha          The alpha value for the pixels.
 	 */
-	private void renderAlpha(byte input[], int inputPosition, int inputWidth, int output[], int outputPosition,
+	private void renderAlpha(byte[] input, int inputPosition, int inputWidth, int[] output, int outputPosition,
 			int outputWidth, int width, int height, int colour, int alpha)
 	{
 		/*
 		 * Calculate the colour and the alpha values.
 		 */
-		colour = ((colour & 0xff00ff) * alpha & 0xff00ff00) + ((colour & 0xff00) * alpha & 0xff0000) >> 8;
+		colour = (int)((colour & 0xff00ff) * alpha & 0xff00ff00) + ((colour & 0xff00) * alpha & 0xff0000) >> 8;
 		alpha = 256 - alpha;
 
 		/*
@@ -286,7 +288,7 @@ public sealed class GameFont : DrawingArea
 				if(input[inputPosition++] != 0)
 				{
 					int outputColour = output[outputPosition];
-					output[outputPosition++] = (((outputColour & 0xff00ff) * alpha & 0xff00ff00)
+					output[outputPosition++] = (int)(((outputColour & 0xff00ff) * alpha & 0xff00ff00)
 							+ ((outputColour & 0xff00) * alpha & 0xff0000) >> 8) + colour;
 				}
 				else
@@ -314,7 +316,7 @@ public sealed class GameFont : DrawingArea
 	 * 
 	 * @param colour      The colour of the glyph.
 	 */
-	private void drawGlyph(byte glyphPixels[], int x, int y, int width, int height, int colour)
+	private void drawGlyph(byte[] glyphPixels, int x, int y, int width, int height, int colour)
 	{
 		int outputPosition = x + y * DrawingArea.width;
 		int outputWidth = DrawingArea.width - width;
@@ -368,7 +370,7 @@ public sealed class GameFont : DrawingArea
 		}
 	}
 
-	private void drawGlyphAlpha(byte glyphPixels[], int x, int y, int width, int height, int colour, int alpha)
+	private void drawGlyphAlpha(byte[] glyphPixels, int x, int y, int width, int height, int colour, int alpha)
 	{
 		int outputPosition = x + y * DrawingArea.width;
 		int outputWidth = DrawingArea.width - width;
@@ -449,22 +451,22 @@ public sealed class GameFont : DrawingArea
 		/*
 		 * Iterate through every character in the text.
 		 */
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
 			/*
 			 * Check if the current piece of text being processed is a colour for (@dre@ for
 			 * example)
 			 */
-			if(text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@')
+			if(text[c] == '@' && c + 4 < text.Length && text[c + 4] == '@')
 			{
-				int colour = handleEmbeddedEffect(text.substring(c + 1, c + 4));
+				int colour = handleEmbeddedEffect(text.Substring(c + 1, c + 4));
 				if(colour != -1)
 					currentColour = colour;
 				c += 4;
 			}
 			else
 			{
-				char character = text.charAt(c);
+				char character = text[c];
 
 				/*
 				 * If the character is a space, we don't need to draw it (but we do still offset
@@ -534,16 +536,17 @@ public sealed class GameFont : DrawingArea
 		if(text == null)
 			return;
 
+		//TODO: For performance reasons I don't generate a new random with a new seed. That's ridiculous to do.
 		/*
 		 * Set the seet for the RNG.
 		 */
-		random.setSeed(seed);
+		//random.setSeed(seed);
 
 		/*
 		 * Generate a random alpha value that is more opaque than the shadow (192 is the
 		 * alpha value for the shadow).
 		 */
-		int alpha = 192 + (random.nextInt() & 0x1f);
+		int alpha = 192 + (random.Next() & 0x1f);
 
 		/*
 		 * Draw from the top-left instead of the bottom.
@@ -553,22 +556,22 @@ public sealed class GameFont : DrawingArea
 		/*
 		 * Iterate through all the characters in the text.
 		 */
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
 			/*
 			 * Check if the current piece of text being processed is a colour for (@dre@ for
 			 * example)
 			 */
-			if(text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@')
+			if(text[c] == '@' && c + 4 < text.Length && text[c + 4] == '@')
 			{
-				int colour = handleEmbeddedEffect(text.substring(c + 1, c + 4));
+				int colour = handleEmbeddedEffect(text.Substring(c + 1, c + 4));
 				if(colour != -1)
 					currentColour = colour;
 				c += 4;
 			}
 			else
 			{
-				char character = text.charAt(c);
+				char character = text[c];
 
 				/*
 				 * If the character is a space, we don't draw it - we just add the width of the
@@ -589,7 +592,7 @@ public sealed class GameFont : DrawingArea
 				 * 
 				 * Not sure why.
 				 */
-				if((random.nextInt() & 3) == 0)
+				if((random.Next() & 3) == 0)
 					x++;
 			}
 		}
@@ -619,9 +622,9 @@ public sealed class GameFont : DrawingArea
 		/*
 		 * Iterate through every character in the text.
 		 */
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
-			char character = text.charAt(c);
+			char character = text[c];
 
 			/*
 			 * If the character is a space, we don't draw it - we just add the width of the
@@ -708,9 +711,9 @@ public sealed class GameFont : DrawingArea
 		/*
 		 * Iterate through the characters in the text.
 		 */
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
-			char character = text.charAt(c);
+			char character = text[c];
 			/*
 			 * If the character is a space we do not draw it, but we still move the x
 			 * position by the width of the space.
@@ -721,7 +724,7 @@ public sealed class GameFont : DrawingArea
 				 * The y position of the text is determined using a sine wave.
 				 */
 				drawGlyph(glyphPixels[character], x + horizontalKerning[character],
-						y + verticalKerning[character] + (int)(Math.sin(c / 2D + tick / 5D) * 5D),
+						y + verticalKerning[character] + (int)(Math.Sin(c / 2D + tick / 5D) * 5D),
 						glyphWidth[character], glyphHeight[character], colour);
 			}
 			x += glyphDisplayWidth[character];
@@ -771,9 +774,9 @@ public sealed class GameFont : DrawingArea
 		/*
 		 * Iterate through the characters in the text.
 		 */
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
-			char character = text.charAt(c);
+			char character = text[c];
 
 			/*
 			 * If the character is a space we do not draw it, but we still move the x
@@ -787,7 +790,7 @@ public sealed class GameFont : DrawingArea
 				 * shaking for.
 				 */
 				drawGlyph(glyphPixels[character], x + horizontalKerning[character],
-						y + verticalKerning[character] + (int)(Math.sin(c / 1.5D + tick) * amplitude),
+						y + verticalKerning[character] + (int)(Math.Sin(c / 1.5D + tick) * amplitude),
 						glyphWidth[character], glyphHeight[character], colour);
 			}
 			x += glyphDisplayWidth[character];
@@ -828,9 +831,9 @@ public sealed class GameFont : DrawingArea
 		/*
 		 * Iterate through the characters in the text.
 		 */
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
-			char character = text.charAt(c);
+			char character = text[c];
 			/*
 			 * If the character is a space we do not draw it, but we still move the x
 			 * position by the width of the space.
@@ -841,8 +844,8 @@ public sealed class GameFont : DrawingArea
 				 * The x and y positions of the text are determined using sine waves.
 				 */
 				drawGlyph(glyphPixels[character],
-						x + horizontalKerning[character] + (int)(Math.sin(c / 5D + tick / 5D) * 5D),
-						y + verticalKerning[character] + (int)(Math.sin(c / 3D + tick / 5D) * 5D),
+						x + horizontalKerning[character] + (int)(Math.Sin(c / 5D + tick / 5D) * 5D),
+						y + verticalKerning[character] + (int)(Math.Sin(c / 3D + tick / 5D) * 5D),
 						glyphWidth[character], glyphHeight[character], colour);
 			}
 			x += glyphDisplayWidth[character];
@@ -860,44 +863,50 @@ public sealed class GameFont : DrawingArea
 	 */
 	private int handleEmbeddedEffect(String name)
 	{
-		if(name.equals("red"))
-			return 0xff0000;
-		if(name.equals("gre"))
-			return 65280;
-		if(name.equals("blu"))
-			return 255;
-		if(name.equals("yel"))
-			return 0xffff00;
-		if(name.equals("cya"))
-			return 65535;
-		if(name.equals("mag"))
-			return 0xff00ff;
-		if(name.equals("whi"))
-			return 0xffffff;
-		if(name.equals("bla"))
-			return 0;
-		if(name.equals("lre"))
-			return 0xff9040;
-		if(name.equals("dre"))
-			return 0x800000;
-		if(name.equals("dbl"))
-			return 128;
-		if(name.equals("or1"))
-			return 0xffb000;
-		if(name.equals("or2"))
-			return 0xff7000;
-		if(name.equals("or3"))
-			return 0xff3000;
-		if(name.equals("gr1"))
-			return 0xc0ff00;
-		if(name.equals("gr2"))
-			return 0x80ff00;
-		if(name.equals("gr3"))
-			return 0x40ff00;
-		if(name.equals("str"))
-			strikethrough = true;
-		if(name.equals("end"))
-			strikethrough = false;
+		switch (name)
+		{
+			case "red":
+				return 0xff0000;
+			case "gre":
+				return 65280;
+			case "blu":
+				return 255;
+			case "yel":
+				return 0xffff00;
+			case "cya":
+				return 65535;
+			case "mag":
+				return 0xff00ff;
+			case "whi":
+				return 0xffffff;
+			case "bla":
+				return 0;
+			case "lre":
+				return 0xff9040;
+			case "dre":
+				return 0x800000;
+			case "dbl":
+				return 128;
+			case "ore1":
+				return 0xffb000;
+			case "ore2":
+				return 0xff7000;
+			case "ore3":
+				return 0xff3000;
+			case "gr1":
+				return 0xc0ff00;
+			case "gr2":
+				return 0x80ff00;
+			case "gr3":
+				return 0x40ff00;
+			case "str":
+				strikethrough = true;
+				break;
+			case "end":
+				strikethrough = false;
+				break;
+		}
+
 		return -1;
 	}
 
@@ -917,13 +926,13 @@ public sealed class GameFont : DrawingArea
 		/*
 		 * Iterate through every character in the text.
 		 */
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
 			/*
 			 * If the current character is the start of a colour code or a crown code we can
 			 * skip it as it will be stripped out later and therefore not be displayed.
 			 */
-			if(text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@')
+			if(text[c] == '@' && c + 4 < text.Length && text[c + 4] == '@')
 			{
 				c += 4;
 			}
@@ -933,7 +942,7 @@ public sealed class GameFont : DrawingArea
 				 * Add the displayed width of the current character's glyph to the total width
 				 * of the text.
 				 */
-				width += glyphDisplayWidth[text.charAt(c)];
+				width += glyphDisplayWidth[text[c]];
 			}
 		}
 
@@ -957,9 +966,9 @@ public sealed class GameFont : DrawingArea
 		 * Iterate through every character in the text and add the displayed width of
 		 * that character's glyph to the total width of the text.
 		 */
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
-			width += glyphDisplayWidth[text.charAt(c)];
+			width += glyphDisplayWidth[text[c]];
 		}
 
 		return width;
