@@ -3,9 +3,9 @@ public sealed class Tile : Linkable
 {
 	public int z;
 
-	public final int x;
-	public final int y;
-	public final int anInt1310;
+	public sealed int x;
+	public sealed int y;
+	public sealed int anInt1310;
 	public PlainTile plainTile;
 	public ShapedTile shapedTile;
 	public Wall wall;
@@ -13,8 +13,8 @@ public sealed class Tile : Linkable
 	public GroundDecoration groundDecoration;
 	public GroundItemTile groundItemTile;
 	public int entityCount;
-	public final InteractiveObject[] interactiveObjects;
-	public final int[] interactiveObjectsSize;
+	public sealed InteractiveObject[] interactiveObjects;
+	public sealed int[] interactiveObjectsSize;
 	public int interactiveObjectsSizeOR;
 	public int logicHeight;
 	public boolean aBoolean1322;

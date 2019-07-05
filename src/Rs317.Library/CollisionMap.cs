@@ -1,15 +1,15 @@
 
 sealed class CollisionMap
 {
-	private final int insetX;
+	private sealed int insetX;
 
-	private final int insetY;
+	private sealed int insetY;
 
-	private final int width;
+	private sealed int width;
 
-	private final int height;
+	private sealed int height;
 
-	public final int[][] clippingData;
+	public sealed int[][] clippingData;
 
 	public CollisionMap()
 	{

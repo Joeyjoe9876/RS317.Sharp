@@ -1,17 +1,17 @@
 
 sealed class RSImageProducer : ImageProducer, ImageObserver
 {
-	public final int[] pixels;
+	public sealed int[] pixels;
 
-	public final int width;
+	public sealed int width;
 
-	public final int height;
+	public sealed int height;
 
-	private final ColorModel colourModel;
+	private sealed ColorModel colourModel;
 
 	private ImageConsumer imageConsumer;
 
-	private final Image image;
+	private sealed Image image;
 
 	public RSImageProducer(int width, int height, Component component)
 	{

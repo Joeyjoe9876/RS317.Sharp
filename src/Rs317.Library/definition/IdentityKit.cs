@@ -23,11 +23,11 @@ public sealed class IdentityKit
 
 	private int[] modelIds;
 
-	private final int[] originalModelColours;
+	private sealed int[] originalModelColours;
 
-	private final int[] modifiedModelColours;
+	private sealed int[] modifiedModelColours;
 
-	private final int[] headModelIds = { -1, -1, -1, -1, -1 };
+	private sealed int[] headModelIds = { -1, -1, -1, -1, -1 };
 	public boolean widgetDisplayed;
 
 	private IdentityKit()

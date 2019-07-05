@@ -3,11 +3,11 @@ sealed class MouseDetection : Runnable
 {
 	private Client clientInstance;
 
-	public final Object syncObject;
+	public sealed Object syncObject;
 
-	public final int[] coordsY;
+	public sealed int[] coordsY;
 	public boolean running;
-	public final int[] coordsX;
+	public sealed int[] coordsX;
 	public int coordsIndex;
 
 	public MouseDetection(Client client1)

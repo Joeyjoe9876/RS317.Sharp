@@ -31,15 +31,15 @@ public sealed class Effect
 		} while(true);
 	}
 
-	private static final Effect[] effects = new Effect[5000];
+	private static sealed Effect[] effects = new Effect[5000];
 
-	public static final int[] effectDelays = new int[5000];
+	public static sealed int[] effectDelays = new int[5000];
 
 	private static byte[] _output;
 
 	private static Buffer output;
 
-	private final Instrument[] instruments;
+	private sealed Instrument[] instruments;
 
 	private int loopStart;
 	private int loopEnd;

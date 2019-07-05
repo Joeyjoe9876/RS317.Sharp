@@ -1,7 +1,7 @@
 
 public sealed class DoubleEndedQueue
 {
-	private final Linkable tail;
+	private sealed Linkable tail;
 	private Linkable current;
 
 	public DoubleEndedQueue()

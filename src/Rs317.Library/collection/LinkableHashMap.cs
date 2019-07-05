@@ -1,8 +1,8 @@
 
 public class LinkableHashMap
 {
-	private final int size;
-	private final Linkable[] entries;
+	private sealed int size;
+	private sealed Linkable[] entries;
 
 	public LinkableHashMap(int size)
 	{

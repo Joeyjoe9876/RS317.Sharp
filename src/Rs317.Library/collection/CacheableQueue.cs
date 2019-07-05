@@ -1,7 +1,7 @@
 
 public sealed class CacheableQueue
 {
-	private final Cacheable head;
+	private sealed Cacheable head;
 	private Cacheable current;
 
 	public CacheableQueue()

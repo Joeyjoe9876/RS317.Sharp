@@ -30,7 +30,7 @@ public sealed class Buffer : Cacheable
 
 	public int bitPosition;
 
-	private static final int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
+	private static sealed int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
 			32767, 65535, 0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 0x1ffffff,
 			0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1 };
 
@@ -38,7 +38,7 @@ public sealed class Buffer : Cacheable
 
 	private static int cacheCount;
 
-	private static final DoubleEndedQueue BUFFER_CACHE = new DoubleEndedQueue();
+	private static sealed DoubleEndedQueue BUFFER_CACHE = new DoubleEndedQueue();
 
 	private Buffer()
 	{
@@ -63,10 +63,10 @@ public sealed class Buffer : Cacheable
 		readBytes(tmpPos, 0, buf);
 		BigInteger val1 = new BigInteger(buf);
 		BigInteger val2 = val1/* .modPow(val1, val2) */;
-		byte finalBuf[] = val2.toByteArray();
+		byte sealedBuf[] = val2.toByteArray();
 		position = 0;
-		put(finalBuf.length);
-		putBytes(finalBuf, finalBuf.length, 0);
+		put(sealedBuf.length);
+		putBytes(sealedBuf, sealedBuf.length, 0);
 	}
 
 	public byte get()

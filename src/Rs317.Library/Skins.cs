@@ -1,9 +1,9 @@
 
 public sealed class Skins
 {
-	public final int[] opcodes;
+	public sealed int[] opcodes;
 
-	public final int[][] skinList;
+	public sealed int[][] skinList;
 
 	public Skins(Buffer buffer)
 	{
