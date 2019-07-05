@@ -1,4 +1,6 @@
 
+using System;
+
 public sealed class EntityDefinition
 {
 	public static EntityDefinition getDefinition(int id)
@@ -55,7 +57,7 @@ public sealed class EntityDefinition
 	private static Buffer stream;
 	public int combatLevel;
 	public String name;
-	public String actions[];
+	public String[] actions;
 	public int walkAnimationId;
 	public byte boundaryDimension;
 	private int[] originalModelColours;
@@ -73,8 +75,8 @@ public sealed class EntityDefinition
 	private int brightness;
 	private int scaleZ;
 	public bool visibleMinimap;
-	public int childrenIDs[];
-	public byte description[];
+	public int[] childrenIDs;
+	public byte[] description;
 	private int scaleXY;
 	private int contrast;
 	public bool visible;

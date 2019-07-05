@@ -1,7 +1,9 @@
 
+using System;
+
 public sealed class VarBit
 {
-	public static VarBit values[];
+	public static VarBit[] values;
 	public int configId;
 	public int leastSignificantBit;
 	public int mostSignificantBit;
@@ -26,10 +28,9 @@ public sealed class VarBit
 			values[i].load(buffer);
 		}
 
-		if(buffer.position != buffer.buffer.length)
-		{
-			System.out.println("varbit load mismatch");
-		}
+		if(buffer.position != buffer.buffer.Length)
+			throw new InvalidOperationException("varbit load mismatch");
+		
 	}
 
 	private void load(Buffer buffer)
@@ -52,10 +53,10 @@ public sealed class VarBit
 			} // dummy
 			else if(opcode == 3)
 				buffer.getInt();
-			else if(opcode == 4)
+			else if (opcode == 4)
 				buffer.getInt();
 			else
-				System.out.println("Error unrecognised config code: " + opcode);
+				throw new InvalidOperationException($"Error unrecognised config code: {opcode}");
 		} while(true);
 	}
 }
