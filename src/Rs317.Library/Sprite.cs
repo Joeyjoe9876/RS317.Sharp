@@ -1,7 +1,16 @@
 
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Net.Mime;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.PixelFormats;
+
 public sealed class Sprite : DrawingArea
 {
-	public int pixels[];
+	public int[] pixels;
 
 	public int width;
 
@@ -23,7 +32,7 @@ public sealed class Sprite : DrawingArea
 		maxWidth = indexStream.getUnsignedLEShort();
 		maxHeight = indexStream.getUnsignedLEShort();
 		int length = indexStream.getUnsignedByte();
-		int pixels[] = new int[length];
+		int[] pixels = new int[length];
 		for(int p = 0; p < length - 1; p++)
 		{
 			pixels[p + 1] = indexStream.get3Bytes();
@@ -64,29 +73,26 @@ public sealed class Sprite : DrawingArea
 		}
 	}
 
-	public Sprite(byte abyte0[], Component component)
+	public Sprite(byte[] abyte0, Component component)
 	{
 		try
 		{
-			// Image image =
-			// Toolkit.getDefaultToolkit().getImage(signlink.findcachedir()+"mopar.jpg");
-			Image image = Toolkit.getDefaultToolkit().createImage(abyte0);
-			MediaTracker mediatracker = new MediaTracker(component);
-			mediatracker.addImage(image, 0);
-			mediatracker.waitForAll();
-			width = image.getWidth(component);
-			height = image.getHeight(component);
-			maxWidth = width;
-			maxHeight = height;
-			offsetX = 0;
-			offsetY = 0;
-			pixels = new int[width * height];
-			PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, width, height, pixels, 0, width);
-			pixelgrabber.grabPixels();
+			/*using(Image<Rgba32> loadedImage = Image.Load(new MemoryStream(abyte0)))
+			{
+				width = loadedImage.Width;
+				height = loadedImage.Height;
+				maxWidth = width;
+				maxHeight = height;
+				offsetX = 0;
+				offsetY = 0;
+
+				//TODO: Let's try to avoid an allocation here.
+				pixels = loadedImage.GetPixelSpan().ToArray().Select(p => );
+			}*/
 		}
 		catch(Exception _ex)
 		{
-			System.out.println("Error converting jpg");
+			Console.WriteLine("Error converting jpg");
 		}
 	}
 
@@ -100,7 +106,7 @@ public sealed class Sprite : DrawingArea
 
 	public void adjustRGB(int adjustmentR, int adjustmentG, int adjustmentB)
 	{
-		for(int pixel = 0; pixel < pixels.length; pixel++)
+		for(int pixel = 0; pixel < pixels.Length; pixel++)
 		{
 			int originalColour = pixels[pixel];
 			if(originalColour != 0)
@@ -130,7 +136,7 @@ public sealed class Sprite : DrawingArea
 	}
 
 	private void blockCopy(int destinationPointer, int copyLength, int k, int sourceBlockLength, int sourcePointer,
-			int destinationBlockLength, int source[], int destination[])
+			int destinationBlockLength, int[] source, int[] destination)
 	{
 		int blockCount = -(copyLength >> 2);
 		copyLength = -(copyLength & 3);
@@ -152,7 +158,7 @@ public sealed class Sprite : DrawingArea
 		}
 	}
 
-	private void blockCopyAlpha(int sourcePointer, int blockCount, int destination[], int source[],
+	private void blockCopyAlpha(int sourcePointer, int blockCount, int[] destination, int[] source,
 			int sourceBlockLength, int i1, int destinationBlockLength, int alpha, int destinationPointer)
 	{
 		int sourceValue;// was parameter
@@ -165,7 +171,7 @@ public sealed class Sprite : DrawingArea
 				if(sourceValue != 0)
 				{
 					int destinationValue = destination[destinationPointer];
-					destination[destinationPointer++] = ((sourceValue & 0xff00ff) * alpha
+					destination[destinationPointer++] = (int)((sourceValue & 0xff00ff) * alpha
 							+ (destinationValue & 0xff00ff) * destinationAlpha & 0xff00ff00)
 							+ ((sourceValue & 0xff00) * alpha + (destinationValue & 0xff00) * destinationAlpha
 									& 0xff0000) >> 8;
@@ -181,7 +187,7 @@ public sealed class Sprite : DrawingArea
 		}
 	}
 
-	private void blockCopyTransparent(int destination[], int source[], int sourcePointer, int destinationPointer,
+	private void blockCopyTransparent(int[] destination, int[] source, int sourcePointer, int destinationPointer,
 			int copyLength, int i1, int destinationBlockLength, int sourceBlockLength)
 	{
 		int value;// was parameter
@@ -410,7 +416,7 @@ public sealed class Sprite : DrawingArea
 		}
 	}
 
-	private void method355(int ai[], int i, byte abyte0[], int j, int ai1[], int k, int l, int i1, int j1, int k1)
+	private void method355(int[] ai, int i, byte[] abyte0, int j, int[] ai1, int k, int l, int i1, int j1, int k1)
 	{
 		int l1 = -(i >> 2);
 		i = -(i & 3);
@@ -468,8 +474,8 @@ public sealed class Sprite : DrawingArea
 		{
 			int i2 = -width / 2;
 			int j2 = -height / 2;
-			int k2 = (int)(Math.sin(rotation) * 65536D);
-			int l2 = (int)(Math.cos(rotation) * 65536D);
+			int k2 = (int)(Math.Sin(rotation) * 65536D);
+			int l2 = (int)(Math.Cos(rotation) * 65536D);
 			k2 = k2 * hingeSize >> 8;
 			l2 = l2 * hingeSize >> 8;
 			int i3 = (centreX << 16) + (j2 * k2 + i2 * l2);
@@ -502,15 +508,15 @@ public sealed class Sprite : DrawingArea
 		}
 	}
 
-	public void rotate(int height, int rotation, int widthMap[], int hingeSize, int ai1[], int centreY, int y, int x,
+	public void rotate(int height, int rotation, int[] widthMap, int hingeSize, int[] ai1, int centreY, int y, int x,
 			int width, int centreX)
 	{
 		try
 		{
 			int negativeCentreX = -width / 2;
 			int negativeCentreY = -height / 2;
-			int offsetY = (int)(Math.sin(rotation / 326.11000000000001D) * 65536D);
-			int offsetX = (int)(Math.cos(rotation / 326.11000000000001D) * 65536D);
+			int offsetY = (int)(Math.Sin(rotation / 326.11000000000001D) * 65536D);
+			int offsetX = (int)(Math.Cos(rotation / 326.11000000000001D) * 65536D);
 			offsetY = offsetY * hingeSize >> 8;
 			offsetX = offsetX * hingeSize >> 8;
 			int j3 = (centreX << 16) + (negativeCentreY * offsetY + negativeCentreX * offsetX);
@@ -542,10 +548,10 @@ public sealed class Sprite : DrawingArea
 
 	public void trim()
 	{
-		int targetPixels[] = new int[maxWidth * maxHeight];
+		int[] targetPixels = new int[maxWidth * maxHeight];
 		for(int _y = 0; _y < height; _y++)
 		{
-			System.arraycopy(pixels, _y * width, targetPixels, _y + offsetY * maxWidth + offsetX, width);
+			System.Buffer.BlockCopy(pixels, _y * width, targetPixels, _y + offsetY * maxWidth + offsetX, width);
 		}
 
 		pixels = targetPixels;
