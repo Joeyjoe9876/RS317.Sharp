@@ -1,3 +1,5 @@
+using System;
+
 public sealed class GameObjectDefinition
 {
 	public static GameObjectDefinition getDefinition(int objectId)
@@ -18,20 +20,19 @@ public sealed class GameObjectDefinition
 	public static void load(Archive archive)
 	{
 		stream = new Buffer(archive.decompressFile("loc.dat"));
-		Buffer stream = new Buffer(archive.decompressFile("loc.idx"));
+		Buffer index = new Buffer(archive.decompressFile("loc.idx"));
 		int objectCount = stream.getUnsignedLEShort();
 		streamOffsets = new int[objectCount];
 		int offset = 2;
-		for(int index = 0; index < objectCount; index++)
+		for(int j = 0; j < objectCount; j++)
 		{
-			streamOffsets[index] = offset;
-			offset += stream.getUnsignedLEShort();
+			streamOffsets[j] = offset;
+			offset += index.getUnsignedLEShort();
 		}
 
 		cache = new GameObjectDefinition[20];
 		for(int c = 0; c < 20; c++)
 			cache[c] = new GameObjectDefinition();
-
 	}
 
 	public static void nullLoader()
@@ -72,7 +73,7 @@ public sealed class GameObjectDefinition
 	private static int[] streamOffsets;
 	public bool walkable;
 	public int mapScene;
-	public int childIds[];
+	public int[] childIds;
 	private int _solid;
 	public int sizeY;
 	public bool adjustToTerrain;
@@ -88,7 +89,7 @@ public sealed class GameObjectDefinition
 	public int varBitId;
 	public int offsetAmplifier;
 	private int[] modelTypes;
-	public byte description[];
+	public byte[] description;
 	public bool hasActions;
 	public bool castsShadow;
 	public static Cache animatedModelCache = new Cache(30);
@@ -97,7 +98,7 @@ public sealed class GameObjectDefinition
 	private int translateZ;
 	private int[] modifiedModelColors;
 	public static Cache modelCache = new Cache(500);
-	public String actions[];
+	public String[] actions;
 
 	private GameObjectDefinition()
 	{
@@ -119,7 +120,7 @@ public sealed class GameObjectDefinition
 			if(modelIds == null)
 				return null;
 			bool mirror = rotated ^ (face > 3);
-			int modelCount = modelIds.length;
+			int modelCount = modelIds.Length;
 			for(int m = 0; m < modelCount; m++)
 			{
 				int subModelId = modelIds[m];
@@ -145,7 +146,7 @@ public sealed class GameObjectDefinition
 		else
 		{
 			int modelType = -1;
-			for(int t = 0; t < modelTypes.length; t++)
+			for(int t = 0; t < modelTypes.Length; t++)
 			{
 				if(modelTypes[t] != type)
 					continue;
@@ -191,7 +192,7 @@ public sealed class GameObjectDefinition
 			animatedModel.rotate90Degrees();
 		if(modifiedModelColors != null)
 		{
-			for(int c = 0; c < modifiedModelColors.length; c++)
+			for(int c = 0; c < modifiedModelColors.Length; c++)
 				animatedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
 
 		}
@@ -220,7 +221,7 @@ public sealed class GameObjectDefinition
 		}
 		else if(configIds != -1)
 			child = clientInstance.interfaceSettings[configIds];
-		if(child < 0 || child >= childIds.length || childIds[child] == -1)
+		if(child < 0 || child >= childIds.Length || childIds[child] == -1)
 			return null;
 		else
 			return getDefinition(childIds[child]);
@@ -254,14 +255,14 @@ public sealed class GameObjectDefinition
 	private void loadDefinition(Buffer stream)
 	{
 		int _actions = -1;
-		label0: do
+		do
 		{
 			int opcode;
 			do
 			{
 				opcode = stream.getUnsignedByte();
 				if(opcode == 0)
-					break label0;
+					goto label0; //what the fuck
 				if(opcode == 1)
 				{
 					int modelCount = stream.getUnsignedByte();
@@ -340,7 +341,7 @@ public sealed class GameObjectDefinition
 					if(actions == null)
 						actions = new String[5];
 					actions[opcode - 30] = stream.getString();
-					if(actions[opcode - 30].equalsIgnoreCase("hidden"))
+					if(actions[opcode - 30].Equals("hidden", StringComparison.InvariantCultureIgnoreCase))
 						actions[opcode - 30] = null;
 				}
 				else if(opcode == 40)
@@ -389,7 +390,7 @@ public sealed class GameObjectDefinition
 						continue;
 					_solid = stream.getUnsignedByte();
 				}
-				continue label0;
+				continue;
 			} while(opcode != 77);
 			varBitId = stream.getUnsignedLEShort();
 			if(varBitId == 65535)
@@ -407,6 +408,7 @@ public sealed class GameObjectDefinition
 			}
 
 		} while(true);
+		label0:
 		if(_actions == -1)
 		{
 			hasActions = modelIds != null && (modelTypes == null || modelTypes[0] == 10);
@@ -427,7 +429,7 @@ public sealed class GameObjectDefinition
 		if(modelIds == null)
 			return true;
 		bool cached = true;
-		for(int m = 0; m < modelIds.length; m++)
+		for(int m = 0; m < modelIds.Length; m++)
 			cached &= Model.isCached(modelIds[m] & 0xffff);
 		return cached;
 	}
@@ -441,12 +443,12 @@ public sealed class GameObjectDefinition
 			if(modelType != 10)
 				return true;
 			bool cached = true;
-			for(int id = 0; id < modelIds.length; id++)
+			for(int id = 0; id < modelIds.Length; id++)
 				cached &= Model.isCached(modelIds[id] & 0xffff);
 
 			return cached;
 		}
-		for(int type = 0; type < modelTypes.length; type++)
+		for(int type = 0; type < modelTypes.Length; type++)
 			if(modelTypes[type] == modelType)
 				return Model.isCached(modelIds[type] & 0xffff);
 
@@ -457,7 +459,7 @@ public sealed class GameObjectDefinition
 	{
 		if(modelIds == null)
 			return;
-		for(int modelId = 0; modelId < modelIds.length; modelId++)
+		for(int modelId = 0; modelId < modelIds.Length; modelId++)
 			requester.passiveRequest(modelIds[modelId] & 0xffff, 0);
 	}
 
