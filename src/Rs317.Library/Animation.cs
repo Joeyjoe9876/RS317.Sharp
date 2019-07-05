@@ -1,6 +1,16 @@
 
 public sealed class Animation
 {
+	private static Animation[] animations;
+	public int displayLength;
+	public Skins animationSkins;
+	public int frameCount;
+	public int[] opcodeTable;
+	public int[] transformationX;
+	public int[] transformationY;
+	public int[] transformationZ;
+	private static bool[] opaque;
+
 	public static Animation forFrameId(int frameId)
 	{
 		if(animations == null)
@@ -23,10 +33,10 @@ public sealed class Animation
 		return frameId == -1;
 	}
 
-	public static void method529(byte data[])
+	public static void method529(byte[] data)
 	{
 		Buffer buffer = new Buffer(data);
-		buffer.position = data.length - 8;
+		buffer.position = data.Length - 8;
 
 		int attributesOffset = buffer.getUnsignedLEShort();
 		int transformationOffset = buffer.getUnsignedLEShort();
@@ -53,13 +63,13 @@ public sealed class Animation
 		Buffer baseBuffer = new Buffer(data);
 		baseBuffer.position = offset;
 
-		Skins base = new Skins(baseBuffer);
+		Skins @base = new Skins(baseBuffer);
 		int count = headerBuffer.getUnsignedLEShort();
 
-		int transformationIndices[] = new int[500];
-		int transformX[] = new int[500];
-		int transformY[] = new int[500];
-		int transformZ[] = new int[500];
+		int[] transformationIndices = new int[500];
+		int[] transformX = new int[500];
+		int[] transformY = new int[500];
+		int[] transformZ = new int[500];
 
 		for(int i = 0; i < count; i++)
 		{
@@ -67,7 +77,7 @@ public sealed class Animation
 
 			Animation anim = animations[id] = new Animation();
 			anim.displayLength = durationBuffer.getUnsignedByte();
-			anim.animationSkins = base;
+			anim.animationSkins = @base;
 
 			int transformationCount = headerBuffer.getUnsignedByte();
 			int highestIndex = -1;
@@ -79,11 +89,11 @@ public sealed class Animation
 
 				if(attribute > 0)
 				{
-					if(base.opcodes[index] != 0)
+					if(@base.opcodes[index] != 0)
 					{
 						for(int next = index - 1; next > highestIndex; next--)
 						{
-							if(base.opcodes[next] != 0)
+							if(@base.opcodes[next] != 0)
 								continue;
 							transformationIndices[transformation] = next;
 							transformX[transformation] = 0;
@@ -96,7 +106,7 @@ public sealed class Animation
 					}
 					transformationIndices[transformation] = index;
 
-					int standard = base.opcodes[index] == 3 ? 128 : 0;
+					int standard = @base.opcodes[index] == 3 ? 128 : 0;
 
 					if((attribute & 1) != 0)
 						transformX[transformation] = transformationBuffer.getSmartA();
@@ -117,7 +127,7 @@ public sealed class Animation
 
 					transformation++;
 
-					if(base.opcodes[index] == 5)
+					if(@base.opcodes[index] == 5)
 						opaque[id] = false;
 				}
 			}
@@ -142,14 +152,4 @@ public sealed class Animation
 	{
 		animations = null;
 	}
-
-	private static Animation[] animations;
-	public int displayLength;
-	public Skins animationSkins;
-	public int frameCount;
-	public int opcodeTable[];
-	public int transformationX[];
-	public int transformationY[];
-	public int transformationZ[];
-	private static bool[] opaque;
 }
