@@ -1,4 +1,6 @@
 
+using System;
+
 public sealed class SpotAnimation
 {
 	public static void load(Archive archive)
@@ -17,7 +19,7 @@ public sealed class SpotAnimation
 
 	}
 
-	public static SpotAnimation cache[];
+	public static SpotAnimation[] cache;
 
 	private int id;
 
@@ -89,7 +91,7 @@ public sealed class SpotAnimation
 			else if(opcode >= 50 && opcode < 60)
 				modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
 			else
-				System.out.println("Error unrecognised spotanim config code: " + opcode);
+				Console.WriteLine($"Error unrecognized spotanim config code: {opcode}");
 		} while(true);
 	}
 }
