@@ -36,8 +36,8 @@ sealed class GameObject : Animable
 			nextFrameTime = Client.tick;
 			if(animating && animation.frameStep != -1)
 			{
-				frame = (int)(Math.random() * animation.frameCount);
-				nextFrameTime -= (int)(Math.random() * animation.getFrameLength(frame));
+				frame = (int)(StaticRandomGenerator.Next() * animation.frameCount);
+				nextFrameTime -= (int)(StaticRandomGenerator.Next() * animation.getFrameLength(frame));
 			}
 		}
 		GameObjectDefinition definition = GameObjectDefinition.getDefinition(this.objectId);
@@ -60,7 +60,7 @@ sealed class GameObject : Animable
 		}
 		else if(configId != -1)
 			child = clientInstance.interfaceSettings[configId];
-		if(child < 0 || child >= childrenIds.length || childrenIds[child] == -1)
+		if(child < 0 || child >= childrenIds.Length || childrenIds[child] == -1)
 			return null;
 		else
 			return GameObjectDefinition.getDefinition(childrenIds[child]);
