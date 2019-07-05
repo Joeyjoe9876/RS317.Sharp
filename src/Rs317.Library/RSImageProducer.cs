@@ -1,7 +1,6 @@
 
 sealed class RSImageProducer : ImageProducer, ImageObserver
 {
-
 	public final int[] pixels;
 
 	public final int width;

@@ -1,7 +1,6 @@
 
 public sealed class WorldController
 {
-
 	public static void createCullingCluster(int z, int highestX, int lowestX, int highestY, int lowestY, int highestZ,
 			int lowestZ, int searchMask)
 	{

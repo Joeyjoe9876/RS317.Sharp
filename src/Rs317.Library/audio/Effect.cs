@@ -2,7 +2,6 @@
 //Some of this file was refactored by 'veer' of http://www.moparscape.org.
 public sealed class Effect
 {
-
 	public static Buffer data(int i, int id)
 	{
 		if(effects[id] != null)

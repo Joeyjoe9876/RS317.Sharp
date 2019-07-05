@@ -1,7 +1,6 @@
 
 public sealed class RSInterface
 {
-
 	private static Sprite getImage(int spriteId, Archive streamLoader, String spriteName)
 	{
 		long spriteHash = (TextClass.spriteNameToHash(spriteName) << 8) + spriteId;

@@ -1,7 +1,6 @@
 
 public sealed class EntityDefinition
 {
-
 	public static EntityDefinition getDefinition(int id)
 	{
 		for(int c = 0; c < 20; c++)

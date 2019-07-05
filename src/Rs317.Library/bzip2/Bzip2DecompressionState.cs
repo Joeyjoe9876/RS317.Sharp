@@ -12,7 +12,6 @@
 /// </summary>
 public class BZip2DecompressionState
 {
-
 	// Class32
 
 	/* Constants */

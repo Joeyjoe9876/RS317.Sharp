@@ -1,7 +1,6 @@
 
 public class LinkableHashMap
 {
-
 	private final int size;
 	private final Linkable[] entries;
 

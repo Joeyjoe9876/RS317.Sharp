@@ -1,7 +1,6 @@
 
 sealed class RSFrame : Frame
 {
-
 	private final RSApplet applet;
 
 	public RSFrame(RSApplet applet, int width, int height)

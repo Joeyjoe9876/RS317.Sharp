@@ -1,7 +1,6 @@
 
 public sealed class Skins
 {
-
 	public final int[] opcodes;
 
 	public final int[][] skinList;

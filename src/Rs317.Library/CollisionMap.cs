@@ -1,7 +1,6 @@
 
 sealed class CollisionMap
 {
-
 	private final int insetX;
 
 	private final int insetY;

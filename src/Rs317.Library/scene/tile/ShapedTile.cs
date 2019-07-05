@@ -1,7 +1,6 @@
 
 public sealed class ShapedTile
 {
-
 	public final int[] originalVertexX;
 
 	public final int[] originalVertexY;

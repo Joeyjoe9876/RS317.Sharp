@@ -1,7 +1,6 @@
 
 public sealed class IndexedImage : DrawingArea
 {
-
 	public byte pixels[];
 
 	public final int[] palette;

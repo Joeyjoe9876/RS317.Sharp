@@ -1,7 +1,6 @@
 
 public class Linkable
 {
-
 	public long id;
 	public Linkable next;
 	public Linkable previous;

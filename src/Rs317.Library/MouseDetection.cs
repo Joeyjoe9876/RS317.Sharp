@@ -1,7 +1,6 @@
 
 sealed class MouseDetection : Runnable
 {
-
 	private Client clientInstance;
 
 	public final Object syncObject;

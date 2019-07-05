@@ -1,7 +1,6 @@
 
 public sealed class Animation
 {
-
 	public static Animation forFrameId(int frameId)
 	{
 		if(animations == null)

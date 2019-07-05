@@ -1,7 +1,6 @@
 
 public sealed class WallDecoration
 {
-
 	public int z;
 
 	public int x;

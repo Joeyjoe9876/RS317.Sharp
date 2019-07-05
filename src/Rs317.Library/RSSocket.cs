@@ -1,7 +1,6 @@
 
 sealed class RSSocket : Runnable
 {
-
 	private InputStream inputStream;
 
 	private OutputStream outputStream;

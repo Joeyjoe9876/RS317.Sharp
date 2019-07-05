@@ -1,7 +1,6 @@
 
 sealed class GameObject : Animable
 {
-
 	private int frame;
 
 	private final int[] childrenIds;

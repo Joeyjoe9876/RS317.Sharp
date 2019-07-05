@@ -1,7 +1,6 @@
 
 public sealed class IdentityKit
 {
-
 	public static void load(Archive streamLoader)
 	{
 		Buffer stream = new Buffer(streamLoader.decompressFile("idk.dat"));

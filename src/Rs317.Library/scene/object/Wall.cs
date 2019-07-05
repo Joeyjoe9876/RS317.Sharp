@@ -1,7 +1,6 @@
 
 public sealed class Wall
 {
-
 	public int z;
 
 	public int x;

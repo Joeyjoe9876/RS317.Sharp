@@ -1,7 +1,6 @@
 
 public sealed class AnimationSequence
 {
-
 	public static void unpackConfig(Archive streamLoader)
 	{
 		Buffer stream = new Buffer(streamLoader.decompressFile("seq.dat"));

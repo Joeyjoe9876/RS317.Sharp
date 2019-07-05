@@ -1,7 +1,6 @@
 
 sealed class TextClass
 {
-
 	public static String asterisksForString(String string)
 	{
 		StringBuffer asterisks = new StringBuffer();

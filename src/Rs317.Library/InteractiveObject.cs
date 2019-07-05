@@ -1,7 +1,6 @@
 
 public sealed class InteractiveObject
 {
-
 	public int z;
 
 	public int worldZ;

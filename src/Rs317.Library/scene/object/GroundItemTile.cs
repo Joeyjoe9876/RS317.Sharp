@@ -1,7 +1,6 @@
 
 public sealed class GroundItemTile
 {
-
 	public int z;
 
 	public int x;

@@ -6,7 +6,6 @@
 /// </summary>
 public class Censor
 {
-
 	private static int fragments[];
 	private static char bads[][];
 	private static byte badCombinations[][] [];

@@ -1,7 +1,6 @@
 
 public sealed class GameFont : DrawingArea
 {
-
 	/*
 	 * Referred to as a 'glyph' rather than a 'character' as a character remains the
 	 * same between fonts ('a' is always 'a') however a glyph is a representation of

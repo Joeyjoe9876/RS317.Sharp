@@ -1,7 +1,6 @@
 
 public sealed class VarBit
 {
-
 	public static VarBit values[];
 	public int configId;
 	public int leastSignificantBit;

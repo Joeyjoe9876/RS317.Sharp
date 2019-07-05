@@ -1,7 +1,6 @@
 
 sealed class Projectile : Animable
 {
-
 	public final int delay;
 
 	public final int endCycle;

@@ -1,7 +1,6 @@
 
 sealed class Region
 {
-
 	private static int calculateNoise(int x, int seed)
 	{
 		int n = x + seed * 57;

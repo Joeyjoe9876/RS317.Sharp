@@ -1,7 +1,6 @@
 
 public sealed class Client : RSApplet
 {
-
 	private static String formatAmount(int amount)
 	{
 		String formattedAmount = String.valueOf(amount);

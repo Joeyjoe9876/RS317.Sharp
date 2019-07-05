@@ -1,7 +1,6 @@
 
 public sealed class GroundDecoration
 {
-
 	public int z;
 
 	public int x;

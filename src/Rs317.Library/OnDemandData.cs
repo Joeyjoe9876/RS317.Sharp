@@ -1,7 +1,6 @@
 
 public sealed class OnDemandData : Cacheable
 {
-
 	int dataType;
 
 	byte buffer[];

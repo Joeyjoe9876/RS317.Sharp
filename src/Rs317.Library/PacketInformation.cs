@@ -1,7 +1,6 @@
 
 sealed class PacketInformation
 {
-
 	/*
 	 * suspected to be a link between a "real" opcode and an "obfuscated" opcode.
 	 * 

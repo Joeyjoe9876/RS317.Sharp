@@ -1,7 +1,6 @@
 
 public sealed class Model : Animable
 {
-
 	public static Model getModel(int model)
 	{
 		if(modelHeaders == null)

@@ -4,7 +4,6 @@
 /// </summary>
 sealed class FileCache
 {
-
 	private static final byte[] buffer = new byte[520];
 	private final RandomAccessFile dataFile;
 	private final RandomAccessFile indexFile;

@@ -1,7 +1,6 @@
 
 public sealed class Player : Entity
 {
-
 	public int rights;
 
 	private long aLong1697;

@@ -1,7 +1,6 @@
 
 public sealed class SpotAnimation
 {
-
 	public static void load(Archive archive)
 	{
 		Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));

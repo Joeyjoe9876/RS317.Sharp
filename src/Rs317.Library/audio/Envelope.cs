@@ -2,7 +2,6 @@
 //Some of this file was refactored by 'veer' of http://www.moparscape.org.
 sealed class Envelope
 {
-
 	private int phaseCount;
 
 	private int[] phaseDuration;

@@ -1,7 +1,6 @@
 
 public sealed class NPC : Entity
 {
-
 	public EntityDefinition npcDefinition;
 
 	NPC()

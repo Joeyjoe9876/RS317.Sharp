@@ -1,7 +1,6 @@
 
 sealed class GameObjectSpawnRequest : Linkable
 {
-
 	public int id2;
 
 	public int face2;

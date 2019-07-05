@@ -1,7 +1,6 @@
 
 public sealed class OnDemandFetcher : Runnable
 {
-
 	private int totalFiles;
 
 	private final DoubleEndedQueue requested;

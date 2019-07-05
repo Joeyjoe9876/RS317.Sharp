@@ -1,7 +1,6 @@
 
 public sealed class Varp
 {
-
 	public static Varp values[];
 	public int type;
 

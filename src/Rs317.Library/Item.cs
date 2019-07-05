@@ -1,7 +1,6 @@
 
 sealed class Item : Animable
 {
-
 	public int itemId;
 
 	public int x;

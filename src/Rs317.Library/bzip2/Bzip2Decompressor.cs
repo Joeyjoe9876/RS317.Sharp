@@ -7,7 +7,6 @@
 /// </summary>
 public sealed class Bzip2Decompressor
 {
-
 	private static BZip2DecompressionState state = new BZip2DecompressionState();
 
 	/*

@@ -1,7 +1,6 @@
 
 sealed class StationaryGraphic : Animable
 {
-
 	public final int z;
 
 	public final int x;

@@ -1,7 +1,6 @@
 
 public sealed class CullingCluster
 {
-
 	public int tileStartX;
 	public int tileEndX;
 	public int tileStartY;

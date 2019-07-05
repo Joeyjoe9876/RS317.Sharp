@@ -1,7 +1,6 @@
 
 public sealed class Tile : Linkable
 {
-
 	public int z;
 
 	public final int x;

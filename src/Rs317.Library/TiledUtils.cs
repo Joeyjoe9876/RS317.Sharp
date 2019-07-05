@@ -1,7 +1,6 @@
 
 sealed class TiledUtils
 {
-
 	public static int getRotatedLandscapeChunkX(int rotation, int objectSizeY, int x, int y, int objectSizeX)
 	{
 		rotation &= 3;

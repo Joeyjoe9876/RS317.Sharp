@@ -4,7 +4,6 @@
 /// </summary>
 public sealed class Archive
 {
-
 	private final byte[] outputData;
 
 	private final int fileCount;

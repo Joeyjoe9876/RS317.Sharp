@@ -1,7 +1,6 @@
 
 public sealed class PlainTile
 {
-
 	public final int colourA;
 
 	public final int colourB;

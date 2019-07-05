@@ -1,7 +1,6 @@
 
 public class Entity : Animable
 {
-
 	public int entScreenX;
 
 	public int entScreenY;

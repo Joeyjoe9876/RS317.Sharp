@@ -4,7 +4,6 @@
 /// </summary>
 public class Cache
 {
-
 	private final Cacheable empty;
 	private final int size;
 	private int available;

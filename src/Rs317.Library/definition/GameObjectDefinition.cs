@@ -1,6 +1,5 @@
 public sealed class GameObjectDefinition
 {
-
 	public static GameObjectDefinition getDefinition(int objectId)
 	{
 		for(int c = 0; c < 20; c++)

@@ -1,7 +1,6 @@
 
 sealed class ModelHeader
 {
-
 	public byte modelData[];
 
 	public int vertexCount;

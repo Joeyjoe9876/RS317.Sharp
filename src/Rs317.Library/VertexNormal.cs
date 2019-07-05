@@ -1,7 +1,6 @@
 
 public sealed class VertexNormal
 {
-
 	public int x;
 
 	public int y;

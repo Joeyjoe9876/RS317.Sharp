@@ -7,7 +7,6 @@
 /// </summary>
 public sealed class ISAACRandomGenerator
 {
-
 	/**
 	 * log of size of results[] and memory[]
 	 */

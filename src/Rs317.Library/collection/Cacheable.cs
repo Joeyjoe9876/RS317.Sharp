@@ -1,7 +1,6 @@
 
 public class Cacheable : Linkable
 {
-
 	public Cacheable nextCacheable;
 	public Cacheable previousCacheable;
 

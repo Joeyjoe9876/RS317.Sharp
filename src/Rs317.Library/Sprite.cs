@@ -1,7 +1,6 @@
 
 public sealed class Sprite : DrawingArea
 {
-
 	public int pixels[];
 
 	public int width;

@@ -1,7 +1,6 @@
 
 public sealed class FloorDefinition
 {
-
 	public static void load(Archive archive)
 	{
 		Buffer stream = new Buffer(archive.decompressFile("flo.dat"));
