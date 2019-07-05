@@ -4,7 +4,7 @@ import com.jagex.runescape.InteractiveObject;
 import com.jagex.runescape.collection.Linkable;
 import com.jagex.runescape.scene.object.*;
 
-public final class Tile extends Linkable {
+public sealed class Tile extends Linkable {
 
 	public int z;
 

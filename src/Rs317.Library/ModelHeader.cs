@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-final class ModelHeader {
+sealed class ModelHeader {
 
 	public byte modelData[];
 

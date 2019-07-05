@@ -1,6 +1,6 @@
 package com.jagex.runescape.scene.tile;
 
-public final class PlainTile {
+public sealed class PlainTile {
 
 	public final int colourA;
 

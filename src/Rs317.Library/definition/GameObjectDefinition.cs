@@ -8,7 +8,7 @@ import com.jagex.runescape.Model;
 import com.jagex.runescape.OnDemandFetcher;
 import com.jagex.runescape.collection.Cache;
 
-public final class GameObjectDefinition {
+public sealed class GameObjectDefinition {
 
 	public static GameObjectDefinition getDefinition(int objectId) {
 		for (int c = 0; c < 20; c++)

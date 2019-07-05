@@ -17,7 +17,7 @@ import com.jagex.runescape.Animable;
 import com.jagex.runescape.VertexNormal;
 import com.jagex.runescape.DrawingArea;
 
-public final class WorldController {
+public sealed class WorldController {
 
 	public static void createCullingCluster(int z, int highestX, int lowestX, int highestY, int lowestY, int highestZ,
 			int lowestZ, int searchMask) {

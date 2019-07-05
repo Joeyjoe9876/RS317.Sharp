@@ -9,7 +9,7 @@ import com.jagex.runescape.collection.CacheableQueue;
 import com.jagex.runescape.collection.DoubleEndedQueue;
 import com.jagex.runescape.sign.signlink;
 
-public final class OnDemandFetcher implements Runnable {
+public sealed class OnDemandFetcher implements Runnable {
 
 	private int totalFiles;
 

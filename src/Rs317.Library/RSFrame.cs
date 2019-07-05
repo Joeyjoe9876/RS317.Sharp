@@ -3,7 +3,7 @@ package com.jagex.runescape;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-final class RSFrame extends Frame {
+sealed class RSFrame extends Frame {
 
 	private final RSApplet applet;
 

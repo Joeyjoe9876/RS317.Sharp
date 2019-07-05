@@ -6,7 +6,7 @@ package com.jagex.runescape.audio;
 
 import com.jagex.runescape.Buffer;
 
-final class Instrument {
+sealed class Instrument {
 
 	public static void initialise() {
 		noise = new int[32768];

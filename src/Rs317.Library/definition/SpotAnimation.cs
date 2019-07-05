@@ -5,7 +5,7 @@ import com.jagex.runescape.Buffer;
 import com.jagex.runescape.Model;
 import com.jagex.runescape.collection.Cache;
 
-public final class SpotAnimation {
+public sealed class SpotAnimation {
 
 	public static void load(Archive archive) {
 		Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));

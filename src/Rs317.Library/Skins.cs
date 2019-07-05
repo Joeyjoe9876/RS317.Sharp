@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-public final class Skins {
+public sealed class Skins {
 
 	public final int[] opcodes;
 

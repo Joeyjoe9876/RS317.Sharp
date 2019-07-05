@@ -7,7 +7,7 @@ package com.jagex.runescape.isaac;
  * http://burtleburtle.net/bob/java/rand/Rand.java
  */
 
-public final class ISAACRandomGenerator {
+public sealed class ISAACRandomGenerator {
 
 	/**
 	 * log of size of results[] and memory[]

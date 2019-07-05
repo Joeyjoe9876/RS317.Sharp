@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 import com.jagex.runescape.definition.SpotAnimation;
 
-final class StationaryGraphic extends Animable {
+sealed class StationaryGraphic extends Animable {
 
 	public final int z;
 

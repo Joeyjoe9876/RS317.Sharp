@@ -4,7 +4,7 @@ import com.jagex.runescape.Archive;
 import com.jagex.runescape.Buffer;
 import com.jagex.runescape.Model;
 
-public final class IdentityKit {
+public sealed class IdentityKit {
 
 	public static void load(Archive streamLoader) {
 		Buffer stream = new Buffer(streamLoader.decompressFile("idk.dat"));

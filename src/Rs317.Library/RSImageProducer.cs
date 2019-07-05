@@ -3,7 +3,7 @@ package com.jagex.runescape;
 import java.awt.*;
 import java.awt.image.*;
 
-final class RSImageProducer implements ImageProducer, ImageObserver {
+sealed class RSImageProducer implements ImageProducer, ImageObserver {
 
 	public final int[] pixels;
 

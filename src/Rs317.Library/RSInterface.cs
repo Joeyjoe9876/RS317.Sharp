@@ -3,7 +3,7 @@ package com.jagex.runescape;
 import com.jagex.runescape.collection.Cache;
 import com.jagex.runescape.definition.*;
 
-public final class RSInterface {
+public sealed class RSInterface {
 
 	private static Sprite getImage(int spriteId, Archive streamLoader, String spriteName) {
 		long spriteHash = (TextClass.spriteNameToHash(spriteName) << 8) + spriteId;

@@ -6,7 +6,7 @@ import com.jagex.runescape.isaac.ISAACRandomGenerator;
 
 import java.math.BigInteger;
 
-public final class Buffer extends Cacheable {
+public sealed class Buffer extends Cacheable {
 
     public static Buffer create() {
         synchronized (BUFFER_CACHE) {

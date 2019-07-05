@@ -16,7 +16,7 @@ import com.jagex.runescape.scene.object.Wall;
 import com.jagex.runescape.scene.object.WallDecoration;
 
 @SuppressWarnings("serial")
-public final class Client extends RSApplet {
+public sealed class Client extends RSApplet {
 
 	private static String formatAmount(int amount) {
 		String formattedAmount = String.valueOf(amount);

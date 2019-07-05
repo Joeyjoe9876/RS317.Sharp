@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-public final class Model extends Animable {
+public sealed class Model extends Animable {
 
 	public static Model getModel(int model) {
 		if (modelHeaders == null)

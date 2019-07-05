@@ -4,7 +4,7 @@ import java.applet.Applet;
 import java.io.*;
 import java.net.*;
 
-public final class signlink implements Runnable {
+public sealed class signlink implements Runnable {
 
 	public static synchronized void dnslookup(String s) {
 		dns = s;

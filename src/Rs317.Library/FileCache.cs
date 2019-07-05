@@ -7,7 +7,7 @@ import java.io.*;
  * Represents a file cache containing multiple archives.
  * 
  */
-final class FileCache {
+sealed class FileCache {
 
 	private static final byte[] buffer = new byte[520];
 	private final RandomAccessFile dataFile;

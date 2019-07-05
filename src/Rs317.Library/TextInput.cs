@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-final class TextInput {
+sealed class TextInput {
 
 	public static String processText(String s) {
 		stream.position = 0;

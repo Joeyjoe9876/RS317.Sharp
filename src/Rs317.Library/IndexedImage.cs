@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-public final class IndexedImage extends DrawingArea {
+public sealed class IndexedImage extends DrawingArea {
 
 	public byte pixels[];
 

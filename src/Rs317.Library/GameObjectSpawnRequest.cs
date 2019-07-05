@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 import com.jagex.runescape.collection.Linkable;
 
-final class GameObjectSpawnRequest extends Linkable {
+sealed class GameObjectSpawnRequest extends Linkable {
 
 	public int id2;
 

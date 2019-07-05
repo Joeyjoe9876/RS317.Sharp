@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-public final class VertexNormal {
+public sealed class VertexNormal {
 
 	public int x;
 

@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 import com.jagex.runescape.definition.SpotAnimation;
 
-final class Projectile extends Animable {
+sealed class Projectile extends Animable {
 
 	public final int delay;
 

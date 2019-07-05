@@ -4,7 +4,7 @@ import com.jagex.runescape.Animation;
 import com.jagex.runescape.Archive;
 import com.jagex.runescape.Buffer;
 
-public final class AnimationSequence {
+public sealed class AnimationSequence {
 
 	public static void unpackConfig(Archive streamLoader) {
 		Buffer stream = new Buffer(streamLoader.decompressFile("seq.dat"));

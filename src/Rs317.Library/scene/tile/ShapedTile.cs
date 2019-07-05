@@ -1,6 +1,6 @@
 package com.jagex.runescape.scene.tile;
 
-public final class ShapedTile {
+public sealed class ShapedTile {
 
 	public final int[] originalVertexX;
 

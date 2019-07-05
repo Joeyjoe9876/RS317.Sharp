@@ -3,7 +3,7 @@ package com.jagex.runescape;
 import java.io.*;
 import java.net.Socket;
 
-final class RSSocket implements Runnable {
+sealed class RSSocket implements Runnable {
 
 	private InputStream inputStream;
 

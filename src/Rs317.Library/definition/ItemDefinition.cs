@@ -8,7 +8,7 @@ import com.jagex.runescape.Rasterizer;
 import com.jagex.runescape.Sprite;
 import com.jagex.runescape.collection.Cache;
 
-public final class ItemDefinition {
+public sealed class ItemDefinition {
 
 	public static ItemDefinition getDefinition(int id) {
 		for (int i = 0; i < 10; i++)

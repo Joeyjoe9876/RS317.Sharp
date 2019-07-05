@@ -1,6 +1,6 @@
 package com.jagex.runescape.collection;
 
-public final class DoubleEndedQueue {
+public sealed class DoubleEndedQueue {
 
 	private final Linkable tail;
 	private Linkable current;

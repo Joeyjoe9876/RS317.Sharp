@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-final class MouseDetection implements Runnable {
+sealed class MouseDetection implements Runnable {
 
 	private Client clientInstance;
 

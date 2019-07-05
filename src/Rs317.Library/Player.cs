@@ -3,7 +3,7 @@ package com.jagex.runescape;
 import com.jagex.runescape.collection.Cache;
 import com.jagex.runescape.definition.*;
 
-public final class Player extends Entity {
+public sealed class Player extends Entity {
 
 	public int rights;
 

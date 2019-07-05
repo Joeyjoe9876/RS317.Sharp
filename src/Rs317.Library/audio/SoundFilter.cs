@@ -11,7 +11,7 @@ import com.jagex.runescape.Buffer;
  * coefficients from pole magnitude/phases and a serial
  * configuration of cascading biquad sections
  */
-final class SoundFilter {
+sealed class SoundFilter {
 
 	final int[] pairCount;
 

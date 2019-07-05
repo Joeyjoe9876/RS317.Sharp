@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-public final class InteractiveObject {
+public sealed class InteractiveObject {
 
 	public int z;
 

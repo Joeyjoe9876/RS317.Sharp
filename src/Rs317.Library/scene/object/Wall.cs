@@ -2,7 +2,7 @@ package com.jagex.runescape.scene.object;
 
 import com.jagex.runescape.Animable;
 
-public final class Wall {
+public sealed class Wall {
 
 	public int z;
 

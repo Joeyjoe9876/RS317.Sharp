@@ -4,7 +4,7 @@ import com.jagex.runescape.definition.AnimationSequence;
 import com.jagex.runescape.definition.EntityDefinition;
 import com.jagex.runescape.definition.SpotAnimation;
 
-public final class NPC extends Entity {
+public sealed class NPC extends Entity {
 
 	public EntityDefinition npcDefinition;
 

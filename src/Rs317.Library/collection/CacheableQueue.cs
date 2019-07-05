@@ -1,6 +1,6 @@
 package com.jagex.runescape.collection;
 
-public final class CacheableQueue {
+public sealed class CacheableQueue {
 
 	private final Cacheable head;
 	private Cacheable current;

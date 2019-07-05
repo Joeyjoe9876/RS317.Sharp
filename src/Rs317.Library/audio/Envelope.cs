@@ -6,7 +6,7 @@ package com.jagex.runescape.audio;
 
 import com.jagex.runescape.Buffer;
 
-final class Envelope {
+sealed class Envelope {
 
 	private int phaseCount;
 

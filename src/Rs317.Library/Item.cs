@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 import com.jagex.runescape.definition.ItemDefinition;
 
-final class Item extends Animable {
+sealed class Item extends Animable {
 
 	public int itemId;
 

@@ -7,7 +7,7 @@ import com.jagex.runescape.bzip2.*;
  * Represents a single archive within a cache.
  * 
  */
-public final class Archive {
+public sealed class Archive {
 
 	private final byte[] outputData;
 

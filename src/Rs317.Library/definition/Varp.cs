@@ -3,7 +3,7 @@ package com.jagex.runescape.definition;
 import com.jagex.runescape.Archive;
 import com.jagex.runescape.Buffer;
 
-public final class Varp {
+public sealed class Varp {
 
 	public static Varp values[];
 	public int type;

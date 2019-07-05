@@ -3,7 +3,7 @@ package com.jagex.runescape;
 import java.awt.*;
 import java.awt.image.PixelGrabber;
 
-public final class Sprite extends DrawingArea {
+public sealed class Sprite extends DrawingArea {
 
 	public int pixels[];
 

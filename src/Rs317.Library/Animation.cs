@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-public final class Animation {
+public sealed class Animation {
 
 	public static Animation forFrameId(int frameId) {
 		if (animations == null)

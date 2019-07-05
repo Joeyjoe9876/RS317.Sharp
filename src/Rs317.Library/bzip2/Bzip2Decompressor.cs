@@ -8,7 +8,7 @@ package com.jagex.runescape.bzip2;
 /*
  * http://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2/
  */
-public final class Bzip2Decompressor {
+public sealed class Bzip2Decompressor {
 
 	private static BZip2DecompressionState state = new BZip2DecompressionState();
 
