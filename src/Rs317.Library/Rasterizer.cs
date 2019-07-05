@@ -1,14 +1,43 @@
 
+using System;
+
 public sealed class Rasterizer : DrawingArea
 {
+	private const int TEXEL_POOL_MAX_SIZE = 20;
+
+	public static int anInt1459 = -477;
+	public static bool lowMemory = true;
+	public static bool restrictEdges;
+	private static bool opaque;
+	public static bool textured = true;
+	public static int alpha;
+	public static int centreX;
+	public static int centreY;
+	private static int[] anIntArray1468;
+	public static int[] anIntArray1469;
+	public static int[] SINE;
+	public static int[] COSINE;
+	public static int[] lineOffsets;
+	private static int loadedTextureCount;
+	public static IndexedImage[] textureImages = new IndexedImage[50];
+	private static bool[] transparent = new bool[50];
+	private static int[] averageTextureColour = new int[50];
+	private static int texelPoolPointer;
+	private static int[][] texelArrayPool; //Don't initialize for some reason.
+	private static int[][] texelCache = new int[50][];
+	public static int[] textureLastUsed = new int[50];
+	public static int textureGetCount;
+	public static int[] HSL_TO_RGB = new int[0x10000];
+	private static int[][] texturePalettes = new int[50][];
+
 	private static int adjustBrightness(int rgb, double intensity)
 	{
 		double r = (rgb >> 16) / 256D;
 		double g = (rgb >> 8 & 0xff) / 256D;
 		double b = (rgb & 0xff) / 256D;
-		r = Math.pow(r, intensity);
-		g = Math.pow(g, intensity);
-		b = Math.pow(b, intensity);
+		r = Math.Pow(r, intensity);
+		g = Math.Pow(g, intensity);
+		b = Math.Pow(b, intensity);
 		int byteR = (int)(r * 256D);
 		int byteG = (int)(g * 256D);
 		int byteB = (int)(b * 256D);
@@ -17,7 +46,7 @@ public sealed class Rasterizer : DrawingArea
 
 	public static void calculatePalette(double brightness)
 	{
-		brightness += Math.random() * 0.029999999999999999D - 0.014999999999999999D;
+		brightness += StaticRandomGenerator.Next() * 0.029999999999999999D - 0.014999999999999999D;
 		int hsl = 0;
 		for(int k = 0; k < 512; k++)
 		{
@@ -84,9 +113,9 @@ public sealed class Rasterizer : DrawingArea
 		for(int textureId = 0; textureId < 50; textureId++)
 			if(textureImages[textureId] != null)
 			{
-				int palette[] = textureImages[textureId].palette;
-				texturePalettes[textureId] = new int[palette.length];
-				for(int colour = 0; colour < palette.length; colour++)
+				int[] palette = textureImages[textureId].palette;
+				texturePalettes[textureId] = new int[palette.Length];
+				for(int colour = 0; colour < palette.Length; colour++)
 				{
 					texturePalettes[textureId][colour] = adjustBrightness(palette[colour], brightness);
 					if((texturePalettes[textureId][colour] & 0xf8f8ff) == 0 && colour != 0)
@@ -105,7 +134,6 @@ public sealed class Rasterizer : DrawingArea
 		texelArrayPool = null;
 		for(int i = 0; i < 50; i++)
 			texelCache[i] = null;
-
 	}
 
 	public static void drawFlatTriangle(int i, int j, int k, int l, int i1, int j1, int k1)
@@ -891,7 +919,7 @@ public sealed class Rasterizer : DrawingArea
 	public static void drawTexturedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC,
 			int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId)
 	{
-		int texture[] = getTexturePixels(textureId);
+		int[] texture = getTexturePixels(textureId);
 		opaque = !transparent[textureId];
 		k2 = j2 - k2;
 		j3 = i3 - j3;
@@ -1478,7 +1506,7 @@ public sealed class Rasterizer : DrawingArea
 		int red = 0;
 		int green = 0;
 		int blue = 0;
-		int colourCount = texturePalettes[textureId].length;
+		int colourCount = texturePalettes[textureId].Length;
 		for(int k1 = 0; k1 < colourCount; k1++)
 		{
 			red += texturePalettes[textureId][k1] >> 16 & 0xff;
@@ -1499,7 +1527,7 @@ public sealed class Rasterizer : DrawingArea
 		textureLastUsed[textureId] = textureGetCount++;
 		if(texelCache[textureId] != null)
 			return texelCache[textureId];
-		int texels[];
+		int[] texels;
 		if(texelPoolPointer > 0)
 		{
 			texels = texelArrayPool[--texelPoolPointer];
@@ -1521,7 +1549,7 @@ public sealed class Rasterizer : DrawingArea
 		}
 		texelCache[textureId] = texels;
 		IndexedImage background = textureImages[textureId];
-		int texturePalette[] = texturePalettes[textureId];
+		int[] texturePalette = texturePalettes[textureId];
 		if(lowMemory)
 		{
 			transparent[textureId] = false;
@@ -1530,9 +1558,9 @@ public sealed class Rasterizer : DrawingArea
 				int texel = texels[texelPointer] = texturePalette[background.pixels[texelPointer]] & 0xf8f8ff;
 				if(texel == 0)
 					transparent[textureId] = true;
-				texels[4096 + texelPointer] = texel - (texel >>> 3) & 0xf8f8ff;
-				texels[8192 + texelPointer] = texel - (texel >>> 2) & 0xf8f8ff;
-				texels[12288 + texelPointer] = texel - (texel >>> 2) - (texel >>> 3) & 0xf8f8ff;
+				texels[4096 + texelPointer] = texel - (texel >> 3) & 0xf8f8ff;
+				texels[8192 + texelPointer] = texel - (texel >> 2) & 0xf8f8ff;
+				texels[12288 + texelPointer] = texel - (texel >> 2) - (texel >> 3) & 0xf8f8ff;
 			}
 
 		}
@@ -1561,16 +1589,16 @@ public sealed class Rasterizer : DrawingArea
 				int texel = texels[texelPointer];
 				if(texel == 0)
 					transparent[textureId] = true;
-				texels[16384 + texelPointer] = texel - (texel >>> 3) & 0xf8f8ff;
-				texels[32768 + texelPointer] = texel - (texel >>> 2) & 0xf8f8ff;
-				texels[49152 + texelPointer] = texel - (texel >>> 2) - (texel >>> 3) & 0xf8f8ff;
+				texels[16384 + texelPointer] = texel - (texel >> 3) & 0xf8f8ff;
+				texels[32768 + texelPointer] = texel - (texel >> 2) & 0xf8f8ff;
+				texels[49152 + texelPointer] = texel - (texel >> 2) - (texel >> 3) & 0xf8f8ff;
 			}
 
 		}
 		return texels;
 	}
 
-	private static void method375(int ai[], int i, int l, int i1, int j1, int k1)
+	private static void method375(int[] ai, int i, int l, int i1, int j1, int k1)
 	{
 		int j;// was parameter
 		int k;// was parameter
@@ -1691,7 +1719,7 @@ public sealed class Rasterizer : DrawingArea
 		} while(--k > 0);
 	}
 
-	private static void method377(int ai[], int i, int j, int l, int i1)
+	private static void method377(int[] ai, int i, int j, int l, int i1)
 	{
 		int k;// was parameter
 		if(restrictEdges)
@@ -1734,7 +1762,7 @@ public sealed class Rasterizer : DrawingArea
 
 	}
 
-	private static void method379(int ai[], int ai1[], int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
+	private static void method379(int[] ai, int[] ai1, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
 			int k2, int l2, int i3)
 	{
 		int i = 0;// was parameter
@@ -1813,28 +1841,28 @@ public sealed class Rasterizer : DrawingArea
 			{
 				while(k3-- > 0)
 				{
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i = i4;
 					j = k4;
 					l1 += k2;
@@ -1858,7 +1886,7 @@ public sealed class Rasterizer : DrawingArea
 				}
 				for(k3 = i1 - l & 7; k3-- > 0;)
 				{
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >> i8;
 					i += i7;
 					j += k7;
 				}
@@ -1868,42 +1896,42 @@ public sealed class Rasterizer : DrawingArea
 			while(k3-- > 0)
 			{
 				int k8;
-				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = k8;
 				k++;
 				i += i7;
 				j += k7;
-				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = k8;
 				k++;
 				i += i7;
 				j += k7;
-				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = k8;
 				k++;
 				i += i7;
 				j += k7;
-				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = k8;
 				k++;
 				i += i7;
 				j += k7;
-				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = k8;
 				k++;
 				i += i7;
 				j += k7;
-				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = k8;
 				k++;
 				i += i7;
 				j += k7;
-				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = k8;
 				k++;
 				i += i7;
 				j += k7;
-				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((k8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = k8;
 				k++;
 				i = i4;
@@ -1930,7 +1958,7 @@ public sealed class Rasterizer : DrawingArea
 			for(k3 = i1 - l & 7; k3-- > 0;)
 			{
 				int l8;
-				if((l8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
+				if((l8 = ai1[(j & 0xfc0) + (i >> 6)] >> i8) != 0)
 					ai[k] = l8;
 				k++;
 				i += i7;
@@ -1976,28 +2004,28 @@ public sealed class Rasterizer : DrawingArea
 		{
 			while(k3-- > 0)
 			{
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i = j4;
 				j = l4;
 				l1 += k2;
@@ -2021,7 +2049,7 @@ public sealed class Rasterizer : DrawingArea
 			}
 			for(k3 = i1 - l & 7; k3-- > 0;)
 			{
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >> j8;
 				i += j7;
 				j += l7;
 			}
@@ -2031,42 +2059,42 @@ public sealed class Rasterizer : DrawingArea
 		while(k3-- > 0)
 		{
 			int i9;
-			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((i9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = i9;
 			k++;
 			i = j4;
@@ -2093,7 +2121,7 @@ public sealed class Rasterizer : DrawingArea
 		for(int l3 = i1 - l & 7; l3-- > 0;)
 		{
 			int j9;
-			if((j9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
+			if((j9 = ai1[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
 				ai[k] = j9;
 			k++;
 			i += j7;
@@ -2129,16 +2157,18 @@ public sealed class Rasterizer : DrawingArea
 
 	public static void resetTextures()
 	{
-		if(texelArrayPool == null)
+		if (texelArrayPool == null)
 		{
-			texelPoolPointer = 20;
-			if(lowMemory)
-				texelArrayPool = new int[texelPoolPointer][16384];
-			else
-				texelArrayPool = new int[texelPoolPointer][0x10000];
-			for(int i = 0; i < 50; i++)
-				texelCache[i] = null;
+			clearTextureCache();
 
+			texelPoolPointer = TEXEL_POOL_MAX_SIZE;
+			texelArrayPool = new int[TEXEL_POOL_MAX_SIZE][];
+
+			int texelDepth = lowMemory ? 16384 : 0x10000;
+
+			//TODO: this SUCKS and it's going to slow down rendering dramatically. We need a better approach.
+			for(int i = 0; i < texelDepth; i++)
+				texelArrayPool[i] = new int[texelDepth];
 		}
 	}
 
@@ -2168,7 +2198,7 @@ public sealed class Rasterizer : DrawingArea
 		for(int i = 0; i < 50; i++)
 			try
 			{
-				textureImages[i] = new IndexedImage(archive, String.valueOf(i), 0);
+				textureImages[i] = new IndexedImage(archive, i.ToString(), 0);
 				if(lowMemory && textureImages[i].resizeWidth == 128)
 					textureImages[i].resizeToHalf();
 				else
@@ -2181,45 +2211,22 @@ public sealed class Rasterizer : DrawingArea
 
 	}
 
-	public static int anInt1459 = -477;
-	public static bool lowMemory = true;
-	public static bool restrictEdges;
-	private static bool opaque;
-	public static bool textured = true;
-	public static int alpha;
-	public static int centreX;
-	public static int centreY;
-	private static int[] anIntArray1468;
-	public static int[] anIntArray1469;
-	public static int SINE[];
-	public static int COSINE[];
-	public static int lineOffsets[];
-	private static int loadedTextureCount;
-	public static IndexedImage textureImages[] = new IndexedImage[50];
-	private static bool[] transparent = new bool[50];
-	private static int[] averageTextureColour = new int[50];
-	private static int texelPoolPointer;
-	private static int[][] texelArrayPool;
-	private static int[][] texelCache = new int[50][];
-	public static int textureLastUsed[] = new int[50];
-	public static int textureGetCount;
-	public static int HSL_TO_RGB[] = new int[0x10000];
-	private static int[][] texturePalettes = new int[50][];
-
-	static {
+	static Rasterizer()
+	{
 		anIntArray1468 = new int[512];
 		anIntArray1469 = new int[2048];
 		SINE = new int[2048];
 		COSINE = new int[2048];
-		for (int i = 1; i< 512; i++)
+		for(int i = 1; i < 512; i++)
 			anIntArray1468[i] = 32768 / i;
 
-		for (int j = 1; j< 2048; j++)
+		for(int j = 1; j < 2048; j++)
 			anIntArray1469[j] = 0x10000 / j;
 
-		for (int k = 0; k< 2048; k++) {
-			SINE[k] = (int) (65536D * Math.sin(k* 0.0030679614999999999D));
-			COSINE[k] = (int) (65536D * Math.cos(k* 0.0030679614999999999D));
+		for(int k = 0; k < 2048; k++)
+		{
+			SINE[k] = (int)(65536D * Math.Sin(k * 0.0030679614999999999D));
+			COSINE[k] = (int)(65536D * Math.Cos(k * 0.0030679614999999999D));
 		}
 
 	}
