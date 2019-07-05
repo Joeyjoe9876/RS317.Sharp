@@ -11,7 +11,7 @@ public sealed class ShapedTile
 	public int[] triangleA;
 	public int[] triangleB;
 	public int[] triangleC;
-	public int triangleTexture[];
+	public int[] triangleTexture;
 	public bool flat;
 	public int shape;
 	public int rotation;
@@ -22,18 +22,78 @@ public sealed class ShapedTile
 	public static int[] viewspaceX = new int[6];
 	public static int[] viewspaceY = new int[6];
 	public static int[] viewspaceZ = new int[6];
-	private static int[][] shapedTilePointData = { { 1, 3, 5, 7 }, { 1, 3, 5, 7 }, { 1, 3, 5, 7 },
-			{ 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 2, 6 },
-			{ 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 11, 12 }, { 1, 3, 5, 7, 11, 12 },
-			{ 1, 3, 5, 7, 13, 14 } };
-	private static int[][] shapedTileElementData = { { 0, 1, 2, 3, 0, 0, 1, 3 }, { 1, 1, 2, 3, 1, 0, 1, 3 },
-			{ 0, 1, 2, 3, 1, 0, 1, 3 }, { 0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3 }, { 0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4 },
-			{ 0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4 }, { 0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3 },
-			{ 0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3 }, { 0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5 },
-			{ 0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5 },
-			{ 0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3 },
-			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3 },
-			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5 } };
+
+	private static int[][] shapedTilePointData = new int[][]{
+		new int[]{
+			1, 3, 5, 7
+		}, new int[]{
+			1, 3, 5, 7
+		}, new int[]{
+			1, 3, 5, 7
+		}, new int[]{
+			1, 3, 5, 7, 6
+		}, new int[]{
+			1, 3, 5, 7, 6
+		}, new int[]{
+			1, 3, 5, 7, 6
+		}, new int[]{
+			1, 3, 5, 7, 6
+		}, new int[]{
+			1, 3, 5, 7, 2, 6
+		}, new int[]{
+			1, 3, 5, 7, 2, 8
+		}, new int[]{
+			1, 3, 5, 7, 2, 8
+		}, new int[]{
+			1, 3, 5, 7, 11, 12
+		}, new int[]{
+			1, 3, 5, 7, 11, 12
+		}, new int[]{
+			1, 3, 5, 7, 13, 14
+		}
+	};
+	private static int[][] shapedTileElementData = new int[][] {
+	   new int[]{
+			0, 1, 2, 3, 0, 0, 1, 3
+		}, new int[]{
+			1, 1, 2, 3, 1, 0, 1, 3
+		}, new int[]{
+			0, 1, 2, 3, 1, 0, 1, 3
+		}, new int[]{
+			0, 0, 1, 2, 0, 0, 2, 4, 1, 0,
+			4, 3
+		}, new int[]{
+			0, 0, 1, 4, 0, 0, 4, 3, 1, 1,
+			2, 4
+		},new int[] {
+			0, 0, 4, 3, 1, 0, 1, 2, 1, 0,
+			2, 4
+		},new int[] {
+			0, 1, 2, 4, 1, 0, 1, 4, 1, 0,
+			4, 3
+		}, new int[]{
+			0, 4, 1, 2, 0, 4, 2, 5, 1, 0,
+			4, 5, 1, 0, 5, 3
+		}, new int[]{
+			0, 4, 1, 2, 0, 4, 2, 3, 0, 4,
+			3, 5, 1, 0, 4, 5
+		},new int[] {
+			0, 0, 4, 5, 1, 4, 1, 2, 1, 4,
+			2, 3, 1, 4, 3, 5
+		}, new int[]{
+			0, 0, 1, 5, 0, 1, 4, 5, 0, 1,
+			2, 4, 1, 0, 5, 3, 1, 5, 4, 3,
+			1, 4, 2, 3
+		}, new int[]{
+			1, 0, 1, 5, 1, 1, 4, 5, 1, 1,
+			2, 4, 0, 0, 5, 3, 0, 5, 4, 3,
+			0, 4, 2, 3
+		}, new int[]{
+			1, 0, 5, 4, 1, 0, 1, 5, 0, 0,
+			4, 3, 0, 4, 5, 3, 0, 5, 2, 3,
+			0, 1, 2, 5
+		}
+	};
 
 	public ShapedTile(int tileX, int yA, int yB, int yC, int yD, int tileZ, int rotation, int texture, int shape, int cA,
 			int cAA, int cB, int cBA, int cC, int cCA, int cD, int cDA, int overlayRGB, int underlayRGB)
@@ -43,17 +103,17 @@ public sealed class ShapedTile
 		this.rotation = rotation;
 		this.underlayRGB = underlayRGB;
 		this.overlayRGB = overlayRGB;
-		char const512 = '\200';
+		char const512 = (char) 128; //'\200';
 		int const256 = const512 / 2;
 		int const128 = const512 / 4;
 		int const384 = (const512 * 3) / 4;
-		int shapedTileMesh[] = shapedTilePointData[shape];
-		int shapedTileMeshLength = shapedTileMesh.length;
+		int[] shapedTileMesh = shapedTilePointData[shape];
+		int shapedTileMeshLength = shapedTileMesh.Length;
 		originalVertexX = new int[shapedTileMeshLength];
 		originalVertexY = new int[shapedTileMeshLength];
 		originalVertexZ = new int[shapedTileMeshLength];
-		int vertexColourOverlay[] = new int[shapedTileMeshLength];
-		int vertexColourUnderlay[] = new int[shapedTileMeshLength];
+		int[] vertexColourOverlay = new int[shapedTileMeshLength];
+		int[] vertexColourUnderlay = new int[shapedTileMeshLength];
 		int x512 = tileX * const512;
 		int z512 = tileZ * const512;
 		for(int vertex = 0; vertex < shapedTileMeshLength; vertex++)
@@ -205,8 +265,8 @@ public sealed class ShapedTile
 			vertexColourUnderlay[vertex] = vertexCUnderlay;
 		}
 
-		int shapedTileElements[] = shapedTileElementData[shape];
-		int vertexCount = shapedTileElements.length / 4;
+		int[] shapedTileElements = shapedTileElementData[shape];
+		int vertexCount = shapedTileElements.Length / 4;
 		triangleA = new int[vertexCount];
 		triangleB = new int[vertexCount];
 		triangleC = new int[vertexCount];
