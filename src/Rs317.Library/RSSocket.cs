@@ -1,5 +1,5 @@
 
-sealed class RSSocket implements Runnable {
+sealed class RSSocket : Runnable {
 
 	private InputStream inputStream;
 

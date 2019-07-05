@@ -1,5 +1,5 @@
 
-public sealed class signlink implements Runnable {
+public sealed class signlink : Runnable {
 
 	public static synchronized void dnslookup(String s) {
 		dns = s;

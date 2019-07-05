@@ -1,5 +1,5 @@
 
-public sealed class OnDemandFetcher implements Runnable {
+public sealed class OnDemandFetcher : Runnable {
 
 	private int totalFiles;
 

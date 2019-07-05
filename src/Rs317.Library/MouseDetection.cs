@@ -1,5 +1,5 @@
 
-sealed class MouseDetection implements Runnable {
+sealed class MouseDetection : Runnable {
 
 	private Client clientInstance;
 

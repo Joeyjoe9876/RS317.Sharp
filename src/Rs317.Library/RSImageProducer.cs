@@ -1,5 +1,5 @@
 
-sealed class RSImageProducer implements ImageProducer, ImageObserver {
+sealed class RSImageProducer : ImageProducer, ImageObserver {
 
 	public final int[] pixels;
 
