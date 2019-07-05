@@ -1,11 +1,16 @@
 
-sealed class RSSocket : Runnable
+using System;
+using System.IO;
+using System.Net.Sockets;
+using System.Threading;
+
+sealed class RSSocket : IRunnable
 {
-	private InputStream inputStream;
+	private NetworkStream inputStream;
 
-	private OutputStream outputStream;
+	private NetworkStream outputStream;
 
-	private Socket socket;
+	private TcpClient socket;
 
 	private bool closed;
 
@@ -26,17 +31,17 @@ sealed class RSSocket : Runnable
 	/// </summary>
 	/// <exception cref=""></exception>
 	/// <returns></returns>
-	public RSSocket(RSApplet RSApplet_, Socket socket1)
+	public RSSocket(RSApplet RSApplet_, TcpClient socket1)
 	{
 		closed = false;
 		isWriter = false;
 		hasIOError = false;
 		rsApplet = RSApplet_;
 		socket = socket1;
-		socket.setSoTimeout(30000);
-		socket.setTcpNoDelay(true);
-		inputStream = socket.getInputStream();
-		outputStream = socket.getOutputStream();
+		socket.SendTimeout = 30000;
+		socket.NoDelay = true;
+		inputStream = socket.GetStream();
+		outputStream = socket.GetStream();
 	}
 
 	//TODO: Add exception documentation
@@ -50,7 +55,7 @@ sealed class RSSocket : Runnable
 		if(closed)
 			return 0;
 		else
-			return inputStream.available();
+			return socket.Available;
 	}
 
 	public void close()
@@ -59,33 +64,37 @@ sealed class RSSocket : Runnable
 		try
 		{
 			if(inputStream != null)
-				inputStream.close();
+				inputStream.Close();
 			if(outputStream != null)
-				outputStream.close();
+				outputStream.Close();
 			if(socket != null)
-				socket.close();
+				socket.Close();
 		}
-		catch(IOException _ex)
+		catch(Exception _ex)
 		{
-			System.out.println("Error closing stream");
+			throw new InvalidOperationException($"Error closing stream. Error: {_ex.Message}", _ex);
 		}
 		isWriter = false;
-		synchronized(this) {
-			notify();
+
+		//Prevent runnable thread from hanging.
+		lock (this)
+		{
+			Monitor.PulseAll(this);
 		}
+
 		buffer = null;
 	}
 
 	public void printDebug()
 	{
-		System.out.println("dummy:" + closed);
-		System.out.println("tcycl:" + writeIndex);
-		System.out.println("tnum:" + buffIndex);
-		System.out.println("writer:" + isWriter);
-		System.out.println("ioerror:" + hasIOError);
+		Console.WriteLine("dummy:" + closed);
+		Console.WriteLine("tcycl:" + writeIndex);
+		Console.WriteLine("tnum:" + buffIndex);
+		Console.WriteLine("writer:" + isWriter);
+		Console.WriteLine("ioerror:" + hasIOError);
 		try
 		{
-			System.out.println("available:" + available());
+			Console.WriteLine("available:" + available());
 		}
 		catch(IOException _ex)
 		{
@@ -103,7 +112,7 @@ sealed class RSSocket : Runnable
 		if(closed)
 			return 0;
 		else
-			return inputStream.read();
+			return inputStream.ReadByte();
 	}
 
 	//TODO: Add exception documentation
@@ -112,7 +121,7 @@ sealed class RSSocket : Runnable
 	/// </summary>
 	/// <exception cref=""></exception>
 	/// <returns></returns>
-	public void read(byte abyte0[], int j)
+	public void read(byte[] abyte0, int j)
 	{
 		int i = 0;// was parameter
 		if(closed)
@@ -120,7 +129,7 @@ sealed class RSSocket : Runnable
 		int k;
 		for(; j > 0; j -= k)
 		{
-			k = inputStream.read(abyte0, i, j);
+			k = inputStream.Read(abyte0, i, j);
 			if(k <= 0)
 				throw new IOException("EOF");
 			i += k;
@@ -128,19 +137,20 @@ sealed class RSSocket : Runnable
 
 	}
 
-	public override void run()
+	public void run()
 	{
 		while(isWriter)
 		{
 			int i;
 			int j;
-			synchronized(this) {
+			lock(this)
+			{
 				if(buffIndex == writeIndex)
 					try
 					{
-						wait();
+						Monitor.Wait(this);
 					}
-					catch(InterruptedException _ex)
+					catch(Exception _ex)
 					{
 					}
 				if(!isWriter)
@@ -155,7 +165,7 @@ sealed class RSSocket : Runnable
 			{
 				try
 				{
-					outputStream.write(buffer, j, i);
+					outputStream.Write(buffer, j, i);
 				}
 				catch(IOException _ex)
 				{
@@ -165,7 +175,7 @@ sealed class RSSocket : Runnable
 				try
 				{
 					if(buffIndex == writeIndex)
-						outputStream.flush();
+						outputStream.Flush();
 				}
 				catch(IOException _ex)
 				{
@@ -181,7 +191,7 @@ sealed class RSSocket : Runnable
 	/// </summary>
 	/// <exception cref=""></exception>
 	/// <returns></returns>
-	public void write(int i, byte abyte0[])
+	public void write(int i, byte[] abyte0)
 	{
 		if(closed)
 			return;
@@ -192,8 +202,8 @@ sealed class RSSocket : Runnable
 		}
 		if(buffer == null)
 			buffer = new byte[5000];
-		synchronized(this)
-{
+		lock(this)
+		{
 			for(int l = 0; l < i; l++)
 			{
 				buffer[buffIndex] = abyte0[l];
@@ -207,7 +217,7 @@ sealed class RSSocket : Runnable
 				isWriter = true;
 				rsApplet.startRunnable(this, 3);
 			}
-			notify();
+			Monitor.PulseAll(this);
 		}
 	}
 }

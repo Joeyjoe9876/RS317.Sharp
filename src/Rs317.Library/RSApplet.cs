@@ -1,4 +1,6 @@
 
+using System.Threading.Tasks;
+
 public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, KeyListener, FocusListener, WindowListener
 {
 	private int gameState;
@@ -494,11 +496,10 @@ public class RSApplet : Applet, Runnable, MouseListener, MouseMotionListener, Ke
 			gameState = 0;
 	}
 
-	public void startRunnable(Runnable runnable, int priority)
+	public void startRunnable(IRunnable runnable, int priority)
 	{
-		Thread thread = new Thread(runnable);
-		thread.start();
-		thread.setPriority(priority);
+		//Run it on the threadpool instead.
+		Task.Factory.StartNew(runnable.run);
 	}
 
 	void startUp()
