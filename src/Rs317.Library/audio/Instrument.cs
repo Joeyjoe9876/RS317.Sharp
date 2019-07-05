@@ -1,19 +1,22 @@
 
 //Some of this file was refactored by 'veer' of http://www.moparscape.org.
+
+using System;
+
 sealed class Instrument
 {
 	public static void initialise()
 	{
 		noise = new int[32768];
 		for(int noiseId = 0; noiseId < 32768; noiseId++)
-			if(Math.random() > 0.5D)
+			if(StaticRandomGenerator.NextDouble() > 0.5D)
 				noise[noiseId] = 1;
 			else
 				noise[noiseId] = -1;
 
 		sine = new int[32768];
 		for(int sineId = 0; sineId < 32768; sineId++)
-			sine[sineId] = (int)(Math.sin(sineId / 5215.1903000000002D) * 16384D);
+			sine[sineId] = (int)(Math.Sin(sineId / 5215.1903000000002D) * 16384D);
 
 		output = new int[0x35d54];
 	}
@@ -172,7 +175,7 @@ sealed class Instrument
 				delays[oscillationVolumeId] = (int)(oscillationDelay[oscillationVolumeId] * d);
 				volumeStep[oscillationVolumeId] = (oscillationVolume[oscillationVolumeId] << 14) / 100;
 				pitchStep[oscillationVolumeId] = (int)(((pitchEnvelope.end - pitchEnvelope.start) * 32.768000000000001D
-						* Math.pow(1.0057929410678534D, oscillationPitch[oscillationVolumeId])) / d);
+						* Math.Pow(1.0057929410678534D, oscillationPitch[oscillationVolumeId])) / d);
 				pitchBaseStep[oscillationVolumeId] = (int)((pitchEnvelope.start * 32.768000000000001D) / d);
 			}
 
@@ -261,16 +264,17 @@ sealed class Instrument
 				{
 					int y = (int)((long)output[n + M] * (long)SoundFilter.invUnity >> 16);
 					for(int k8 = 0; k8 < M; k8++)
-						y += (int)((long)output[(n + M) - 1 - k8] * (long)SoundFilter.coefficient[0][k8] >> 16);
+						y += (int)((long)output[(n + M) - 1 - k8] * (long)SoundFilter.coefficient[0, k8] >> 16);
 
 					for(int j9 = 0; j9 < n; j9++)
-						y -= (int)((long)output[n - 1 - j9] * (long)SoundFilter.coefficient[1][j9] >> 16);
+						y -= (int)((long)output[n - 1 - j9] * (long)SoundFilter.coefficient[1, j9] >> 16);
 
 					output[n] = y;
 					t = filterEnvelope.step(steps + 1);
 				}
 
-				char offset = '\200'; // 128
+				//Thanks to RS2Sharp
+				char offset = (char)128; // 128
 				delay = offset;
 				do
 				{
@@ -281,11 +285,11 @@ sealed class Instrument
 						int y = (int)((long)output[n + M] * (long)SoundFilter.invUnity >> 16);
 						for(int position = 0; position < M; position++)
 							y += (int)((long)output[(n + M) - 1 - position]
-									* (long)SoundFilter.coefficient[0][position] >> 16);
+									* (long)SoundFilter.coefficient[0, position] >> 16);
 
 						for(int position = 0; position < N; position++)
 							y -= (int)((long)output[n - 1 - position]
-									* (long)SoundFilter.coefficient[1][position] >> 16);
+									* (long)SoundFilter.coefficient[1, position] >> 16);
 
 						output[n] = y;
 						t = filterEnvelope.step(steps + 1);
@@ -302,11 +306,11 @@ sealed class Instrument
 					int y = 0;
 					for(int position = (n + M) - steps; position < M; position++)
 						y += (int)((long)output[(n + M) - 1 - position]
-								* (long)SoundFilter.coefficient[0][position] >> 16);
+								* (long)SoundFilter.coefficient[0, position] >> 16);
 
 					for(int position = 0; position < N; position++)
 						y -= (int)((long)output[n - 1 - position]
-								* (long)SoundFilter.coefficient[1][position] >> 16);
+								* (long)SoundFilter.coefficient[1, position] >> 16);
 
 					output[n] = y;
 				}

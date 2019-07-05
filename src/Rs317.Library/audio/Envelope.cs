@@ -8,11 +8,11 @@ sealed class Envelope
 
 	private int[] phasePeak;
 
-	int start;
+	public int start { get; private set; }
 
-	int end;
+	public int end { get; private set; }
 
-	int form;
+	public int form { get; private set; }
 	private int critical;
 	private int phaseId;
 	private int currentStep;
@@ -40,7 +40,7 @@ sealed class Envelope
 
 	}
 
-	void resetValues()
+	public void resetValues()
 	{
 		critical = 0;
 		phaseId = 0;
@@ -50,7 +50,7 @@ sealed class Envelope
 	}
 
 	//TODO: Rename this
-	int step(int period)
+	public int step(int period)
 	{
 		if(ticks >= critical)
 		{

@@ -1,32 +1,40 @@
 
 //Some of this file was refactored by 'veer' of http://www.moparscape.org.
+
+using System;
+using System.Collections.ObjectModel;
+
 /// <summary>
-///an impl of an adaptive iir filter that calculates
-///coefficients from pole magnitude/phases and a serial
+/// an impl of an adaptive iir filter that calculates
+/// coefficients from pole magnitude/phases and a serial
 /// configuration of cascading biquad sections
 /// </summary>
 sealed class SoundFilter
 {
-	int[] pairCount;
+	//TODO: let's not just directly expose immutable arrays here.
+	public int[] pairCount;
 
-	private int[][][] pairPhase;
+	private int[,,] pairPhase;
 
-	private int[][][] pairMagnitude;
+	private int[,,] pairMagnitude;
 
 	private int[] unity;
 
-	private static float[][] _coefficient = new float[2][8];
+	private static float[,] _coefficient = new float[2,8];
 
-	static int[][] coefficient = new int[2][8];
+	//TODO: Let's not expose this directly
+	public static int[,] coefficient = new int[2,8];
 
+	//This isn't a backing field, there is a cached transformation that occurs to it
+	//so there are two? I don't know, I didn't write this terrible stuff.
 	private static float _invUnity;
-	static int invUnity;
+	public static int invUnity { get; private set; }
 
 	public SoundFilter()
 	{
 		pairCount = new int[2];
-		pairPhase = new int[2][2][4];
-		pairMagnitude = new int[2][2][4];
+		pairPhase = new int[2,2,4];
+		pairMagnitude = new int[2,2,4];
 		unity = new int[2];
 	}
 
@@ -138,5 +146,4 @@ sealed class SoundFilter
 		float f = 32.7032F * (float)Math.pow(2D, alpha);
 		return (f * 3.141593F) / 11025F;
 	}
-
 }
