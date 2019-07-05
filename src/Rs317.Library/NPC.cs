@@ -3,7 +3,7 @@ public sealed class NPC : Entity
 {
 	public EntityDefinition npcDefinition;
 
-	NPC()
+	private NPC()
 	{
 	}
 
@@ -18,10 +18,13 @@ public sealed class NPC : Entity
 			return npcDefinition.getChildModel(frameId1, frameId2,
 					AnimationSequence.animations[base.animation].flowControl);
 		}
-		int frameId2 = -1;
-		if(base.queuedAnimationId >= 0)
-			frameId2 = AnimationSequence.animations[base.queuedAnimationId].primaryFrames[base.queuedAnimationFrame];
-		return npcDefinition.getChildModel(-1, frameId2, null);
+		else
+		{
+			int frameId2 = -1;
+			if(base.queuedAnimationId >= 0)
+				frameId2 = AnimationSequence.animations[base.queuedAnimationId].primaryFrames[base.queuedAnimationFrame];
+			return npcDefinition.getChildModel(-1, frameId2, null);
+		}
 	}
 
 	public override Model getRotatedModel()
@@ -49,7 +52,7 @@ public sealed class NPC : Entity
 					animatedModel.scaleT(spotAnimation.scaleXY, spotAnimation.scaleXY, spotAnimation.scaleZ);
 				animatedModel.applyLighting(64 + spotAnimation.modelLightFalloff, 850 + spotAnimation.modelLightAmbient,
 						-30, -50, -30, true);
-				Model models[] = { rotatedModel, animatedModel };
+				Model[] models = { rotatedModel, animatedModel };
 				rotatedModel = new Model(models);
 			}
 		}

@@ -22,25 +22,25 @@ public class Entity : Animable
 	public String overheadTextMessage;
 	public int height;
 	public int turnDirection;
-	int standAnimationId;
+	protected int standAnimationId { get; private set; }
 	int standTurnAnimationId;
 	int chatColour;
 	int[] hitArray;
 	int[] hitMarkTypes;
 	int[] hitsLoopCycle;
-	int queuedAnimationId;
-	int queuedAnimationFrame;
+	protected int queuedAnimationId { get; private set; }
+	protected int queuedAnimationFrame { get; private set; }
 	int queuedAnimationDuration;
-	int graphicId;
-	int currentAnimationId;
+	protected int graphicId { get; private set; }
+	protected int currentAnimationId { get; private set; }
 	int currentAnimationTimeRemaining;
 	int graphicEndCycle;
-	int graphicHeight;
+	protected int graphicHeight { get; private set; }
 	int waypointCount;
 	public int animation;
-	int currentAnimationFrame;
+	protected int currentAnimationFrame { get; private set; }
 	int currentAnimationDuration;
-	int animationDelay;
+	protected int animationDelay { get; private set; }
 	int currentAnimationLoopCount;
 	int chatEffect;
 	public int loopCycleStatus;
@@ -96,7 +96,7 @@ public class Entity : Animable
 		turnLeftAnimationId = -1;
 	}
 
-	public bool isVisible()
+	public virtual bool isVisible()
 	{
 		return false;
 	}
