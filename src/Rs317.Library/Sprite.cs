@@ -1,5 +1,5 @@
 
-public sealed class Sprite extends DrawingArea {
+public sealed class Sprite : DrawingArea {
 
 	public int pixels[];
 

@@ -1,5 +1,5 @@
 
-sealed class Item extends Animable {
+sealed class Item : Animable {
 
 	public int itemId;
 

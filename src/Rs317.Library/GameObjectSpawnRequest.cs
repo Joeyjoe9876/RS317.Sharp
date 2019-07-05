@@ -1,5 +1,5 @@
 
-sealed class GameObjectSpawnRequest extends Linkable {
+sealed class GameObjectSpawnRequest : Linkable {
 
 	public int id2;
 

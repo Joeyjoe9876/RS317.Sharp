@@ -1,5 +1,5 @@
 
-public sealed class GameFont extends DrawingArea {
+public sealed class GameFont : DrawingArea {
 
 	/*
 	 * Referred to as a 'glyph' rather than a 'character' as a character remains the

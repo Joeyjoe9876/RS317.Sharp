@@ -1,5 +1,5 @@
 
-sealed class Projectile extends Animable {
+sealed class Projectile : Animable {
 
 	public final int delay;
 

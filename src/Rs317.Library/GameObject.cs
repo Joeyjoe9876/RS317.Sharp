@@ -1,5 +1,5 @@
 
-sealed class GameObject extends Animable {
+sealed class GameObject : Animable {
 
 	private int frame;
 

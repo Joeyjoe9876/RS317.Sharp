@@ -1,5 +1,5 @@
 
-public class Animable extends Cacheable {
+public class Animable : Cacheable {
 	public VertexNormal vertexNormals[];
 	public int modelHeight;
 

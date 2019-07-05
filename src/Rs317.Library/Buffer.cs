@@ -1,5 +1,5 @@
 
-public sealed class Buffer extends Cacheable {
+public sealed class Buffer : Cacheable {
 
     public static Buffer create() {
         synchronized (BUFFER_CACHE) {

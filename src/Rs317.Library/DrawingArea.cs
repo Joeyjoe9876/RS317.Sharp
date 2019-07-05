@@ -1,5 +1,5 @@
 
-public class DrawingArea extends Cacheable {
+public class DrawingArea : Cacheable {
 
 	public static void clear() {
 		int i = width * height;

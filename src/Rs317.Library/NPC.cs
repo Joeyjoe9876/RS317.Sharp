@@ -1,5 +1,5 @@
 
-public sealed class NPC extends Entity {
+public sealed class NPC : Entity {
 
 	public EntityDefinition npcDefinition;
 

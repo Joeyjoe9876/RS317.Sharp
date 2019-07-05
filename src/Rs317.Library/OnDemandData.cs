@@ -1,5 +1,5 @@
 
-public sealed class OnDemandData extends Cacheable {
+public sealed class OnDemandData : Cacheable {
 
 	int dataType;
 

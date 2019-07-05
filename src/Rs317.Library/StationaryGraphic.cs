@@ -1,5 +1,5 @@
 
-sealed class StationaryGraphic extends Animable {
+sealed class StationaryGraphic : Animable {
 
 	public final int z;
 

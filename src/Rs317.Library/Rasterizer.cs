@@ -1,5 +1,5 @@
 
-public sealed class Rasterizer extends DrawingArea {
+public sealed class Rasterizer : DrawingArea {
 
 	private static int adjustBrightness(int rgb, double intensity) {
 		double r = (rgb >> 16) / 256D;

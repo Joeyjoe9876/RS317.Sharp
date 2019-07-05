@@ -1,5 +1,5 @@
 
-public sealed class Tile extends Linkable {
+public sealed class Tile : Linkable {
 
 	public int z;
 

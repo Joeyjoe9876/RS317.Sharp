@@ -1,5 +1,5 @@
 
-sealed class RSFrame extends Frame {
+sealed class RSFrame : Frame {
 
 	private final RSApplet applet;
 

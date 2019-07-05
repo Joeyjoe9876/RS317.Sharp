@@ -1,5 +1,5 @@
 
-public class Entity extends Animable {
+public class Entity : Animable {
 
 	public int entScreenX;
 

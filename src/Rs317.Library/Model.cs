@@ -1,5 +1,5 @@
 
-public sealed class Model extends Animable {
+public sealed class Model : Animable {
 
 	public static Model getModel(int model) {
 		if (modelHeaders == null)

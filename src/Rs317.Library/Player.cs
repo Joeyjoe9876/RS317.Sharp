@@ -1,5 +1,5 @@
 
-public sealed class Player extends Entity {
+public sealed class Player : Entity {
 
 	public int rights;
 

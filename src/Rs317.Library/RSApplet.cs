@@ -1,5 +1,5 @@
 
-public class RSApplet extends Applet
+public class RSApplet : Applet
 		implements Runnable, MouseListener, MouseMotionListener, KeyListener, FocusListener, WindowListener {
 
 	private int gameState;

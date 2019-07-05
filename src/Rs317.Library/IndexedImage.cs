@@ -1,5 +1,5 @@
 
-public sealed class IndexedImage extends DrawingArea {
+public sealed class IndexedImage : DrawingArea {
 
 	public byte pixels[];
 
