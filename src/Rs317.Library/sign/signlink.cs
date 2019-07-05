@@ -146,7 +146,8 @@ public sealed class signlink
 
 	public static void reporterror(String s)
 	{
-		Console.WriteLine($"Error: {s}");
+		if(shouldReportErrors)
+			Console.WriteLine($"Error: {s}");
 	}
 
 	public static Task startpriv(IPAddress inetaddress)
@@ -220,7 +221,7 @@ public sealed class signlink
 	public static FileStream cache_dat = null;
 	public static FileStream[] cache_idx = new FileStream[5];
 	public static bool sunjava;
-	public static Applet applet = null;
+	public static Object applet = null;
 	private static bool active;
 	private static int threadliveid;
 	private static IPAddress socketip;

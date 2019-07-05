@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-sealed class RSImageProducer
+public sealed class RSImageProducer
 {
 	public int[] pixels;
 

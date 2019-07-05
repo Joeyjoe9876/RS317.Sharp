@@ -11,14 +11,14 @@ public sealed class Player : Entity
 
 	bool preventRotation;
 
-	int[] bodyPartColour;
+	public int[] bodyPartColour { get; private set; }
 
 	public int team;
 
 	private int gender;
 
 	public String name;
-	static Cache mruNodes = new Cache(260);
+	public static Cache mruNodes = new Cache(260);
 	public int combatLevel;
 	public int headIcon;
 	public int modifiedAppearanceStartTime;
@@ -35,7 +35,7 @@ public sealed class Player : Entity
 	int localY;
 	int playerTileHeight;
 	int playerTileWidth;
-	int skill;
+	public int skill { get; private set; }
 
 	Player()
 	{

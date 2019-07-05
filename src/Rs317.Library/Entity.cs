@@ -22,7 +22,7 @@ public class Entity : Animable
 	public String overheadTextMessage;
 	public int height;
 	public int turnDirection;
-	protected int standAnimationId { get; set; }
+	public int standAnimationId { get; protected set; }
 	protected int standTurnAnimationId { get; set; }
 	int chatColour;
 	int[] hitArray;
@@ -30,7 +30,7 @@ public class Entity : Animable
 	int[] hitsLoopCycle;
 	public int queuedAnimationId { get; private set; }
 	protected int queuedAnimationFrame { get; private set; }
-	int queuedAnimationDuration;
+	public int queuedAnimationDuration;
 	protected int graphicId { get; private set; }
 	protected int currentAnimationId { get; private set; }
 	int currentAnimationTimeRemaining;
@@ -46,7 +46,7 @@ public class Entity : Animable
 	public int loopCycleStatus;
 	public int currentHealth;
 	public int maxHealth;
-	int textCycle;
+	public int textCycle { get; set; }
 	int lastUpdateTick;
 	int faceTowardX;
 	int faceTowardY;

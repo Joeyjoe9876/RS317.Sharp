@@ -17,7 +17,7 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 
 	private long[] otims;
 
-	int fps;
+	public int fps { get; private set; }
 
 	bool debugRequested;
 
@@ -25,9 +25,9 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 
 	int height;
 
-	Graphics gameGraphics;
+	protected Graphics gameGraphics { get; private set; }
 
-	RSImageProducer fullGameScreen;
+	protected RSImageProducer fullGameScreen { get; set; }
 
 	private bool clearScreen;
 
@@ -51,13 +51,13 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 
 	int clickType;
 
-	int clickX;
+	protected int clickX { get; private set; }
 
-	int clickY;
+	protected int clickY { get; private set; }
 
 	long clickTime;
 
-	int[] keyStatus;
+	protected int[] keyStatus { get; private set; }
 
 	private int[] inputBuffer;
 
@@ -77,7 +77,7 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 		inputBuffer = new int[128];
 	}
 
-	void cleanUpForQuit()
+	protected virtual void cleanUpForQuit()
 	{
 	}
 
@@ -85,8 +85,8 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 	{
 		this.width = width;
 		this.height = height;
-		//gameFrame = new RSFrame(this, this.width, this.height);
 
+		signlink.applet = this;
 		this.DoubleBuffered = true;
 		this.ClientSize = new System.Drawing.Size(width, height);
 		gameGraphics = CreateGraphics();
@@ -95,7 +95,7 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 		Application.Run(this);
 	}
 
-	void drawLoadingText(int percentage, String s)
+	protected virtual void drawLoadingText(int percentage, String s)
 	{
 		while(gameGraphics == null)
 		{
@@ -532,7 +532,7 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 		Task.Factory.StartNew(runnable.run);
 	}
 
-	void startUp()
+	public virtual void startUp()
 	{
 	}
 }

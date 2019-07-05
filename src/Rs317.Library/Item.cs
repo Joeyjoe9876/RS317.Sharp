@@ -1,5 +1,5 @@
 
-sealed class Item : Animable
+public sealed class Item : Animable
 {
 	public int itemId;
 

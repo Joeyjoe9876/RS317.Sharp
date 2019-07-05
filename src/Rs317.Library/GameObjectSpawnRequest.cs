@@ -1,5 +1,5 @@
 
-sealed class GameObjectSpawnRequest : Linkable
+public sealed class GameObjectSpawnRequest : Linkable
 {
 	public int id2;
 
@@ -15,7 +15,7 @@ sealed class GameObjectSpawnRequest : Linkable
 	public int type;
 	public int delayUntilSpawn;
 
-	GameObjectSpawnRequest()
+	public GameObjectSpawnRequest()
 	{
 		delayUntilRespawn = -1;
 	}
