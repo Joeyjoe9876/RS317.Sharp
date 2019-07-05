@@ -1027,8 +1027,8 @@ private void build3dScreenMenu()
 	{
 		menuActionName[menuActionRow] = "Walk here";
 		menuActionId[menuActionRow] = 516;
-		menuActionData2[menuActionRow] = super.mouseX;
-		menuActionData3[menuActionRow] = super.mouseY;
+		menuActionData2[menuActionRow] = base.mouseX;
+		menuActionData3[menuActionRow] = base.mouseY;
 		menuActionRow++;
 	}
 	int originalHash = -1;
@@ -1791,12 +1791,12 @@ private void buildSplitPrivateChatMenu()
 					|| privateChatMode == 1 && isFriendOrSelf(chatName)))
 			{
 				int height = 329 - line * 13;
-				if(super.mouseX > 4 && super.mouseY - 4 > height - 10 && super.mouseY - 4 <= height + 3)
+				if(base.mouseX > 4 && base.mouseY - 4 > height - 10 && base.mouseY - 4 <= height + 3)
 				{
 					int width = fontPlain.getTextDisplayedWidth("From:  " + chatName + chatMessages[c]) + 25;
 					if(width > 450)
 						width = 450;
-					if(super.mouseX < 4 + width)
+					if(base.mouseX < 4 + width)
 					{
 						if(playerRights >= 1)
 						{
@@ -2086,7 +2086,7 @@ public override void cleanUpForQuit()
 	SpotAnimation.cache = null;
 	SpotAnimation.modelCache = null;
 	Varp.values = null;
-	super.fullGameScreen = null;
+	base.fullGameScreen = null;
 	Player.mruNodes = null;
 	Rasterizer.nullLoader();
 	WorldController.nullLoader();
@@ -2163,8 +2163,8 @@ private boolean clickInteractiveObject(int hash, int y, int x)
 	{
 		doWalkTo(2, rotation, 0, type + 1, localPlayer.waypointY[0], 0, 0, y, localPlayer.waypointX[0], false, x);
 	}
-	crossX = super.clickX;
-	crossY = super.clickY;
+	crossX = base.clickX;
+	crossY = base.clickY;
 	crossType = 2;
 	crossIndex = 0;
 	return true;
@@ -2427,8 +2427,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, npc.waypointY[0], localPlayer.waypointX[0], false,
 					npc.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(57);
@@ -2445,8 +2445,8 @@ private void doAction(int row)
 		if(!flag1)
 			flag1 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
 					localPlayer.waypointX[0], false, actionInformation2);
-		crossX = super.clickX;
-		crossY = super.clickY;
+		crossX = base.clickX;
+		crossY = base.clickY;
 		crossType = 2;
 		crossIndex = 0;
 		stream.putOpcode(236);
@@ -2471,8 +2471,8 @@ private void doAction(int row)
 		if(!flag2)
 			flag2 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
 					localPlayer.waypointX[0], false, actionInformation2);
-		crossX = super.clickX;
-		crossY = super.clickY;
+		crossX = base.clickX;
+		crossY = base.clickY;
 		crossType = 2;
 		crossIndex = 0;
 		stream.putOpcode(25);
@@ -2517,8 +2517,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, player.waypointY[0], localPlayer.waypointX[0],
 					false, player.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(128);
@@ -2532,8 +2532,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, npc.waypointY[0], localPlayer.waypointX[0], false,
 					npc.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(155);
@@ -2547,8 +2547,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, player.waypointY[0], localPlayer.waypointX[0],
 					false, player.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(153);
@@ -2557,7 +2557,7 @@ private void doAction(int row)
 	}
 	if(menuAction == 516)
 		if(!menuOpen)
-			worldController.request2DTrace(super.clickX - 4, super.clickY - 4);
+			worldController.request2DTrace(base.clickX - 4, base.clickY - 4);
 		else
 			worldController.request2DTrace(actionInformation2 - 4, actionInformation1 - 4);
 	if(menuAction == 1062)
@@ -2750,8 +2750,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, player.waypointY[0], localPlayer.waypointX[0],
 					false, player.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(73);
@@ -2765,8 +2765,8 @@ private void doAction(int row)
 		if(!flag3)
 			flag3 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
 					localPlayer.waypointX[0], false, actionInformation2);
-		crossX = super.clickX;
-		crossY = super.clickY;
+		crossX = base.clickX;
+		crossY = base.clickY;
 		crossType = 2;
 		crossIndex = 0;
 		stream.putOpcode(79);
@@ -2811,8 +2811,8 @@ private void doAction(int row)
 		if(!flag4)
 			flag4 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
 					localPlayer.waypointX[0], false, actionInformation2);
-		crossX = super.clickX;
-		crossY = super.clickY;
+		crossX = base.clickX;
+		crossY = base.clickY;
 		crossType = 2;
 		crossIndex = 0;
 		stream.putOpcode(156);
@@ -2827,8 +2827,8 @@ private void doAction(int row)
 		if(!flag5)
 			flag5 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
 					localPlayer.waypointX[0], false, actionInformation2);
-		crossX = super.clickX;
-		crossY = super.clickY;
+		crossX = base.clickX;
+		crossY = base.clickY;
 		crossType = 2;
 		crossIndex = 0;
 		stream.putOpcode(181);
@@ -2860,8 +2860,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, npc.waypointY[0], localPlayer.waypointX[0], false,
 					npc.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(17);
@@ -2875,8 +2875,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, npc.waypointY[0], localPlayer.waypointX[0], false,
 					npc.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(21);
@@ -2890,8 +2890,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, npc.waypointY[0], localPlayer.waypointX[0], false,
 					npc.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(131);
@@ -2935,8 +2935,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, npc.waypointY[0], localPlayer.waypointX[0], false,
 					npc.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(72);
@@ -2950,8 +2950,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, player.waypointY[0], localPlayer.waypointX[0],
 					false, player.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(249);
@@ -2966,8 +2966,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, player.waypointY[0], localPlayer.waypointX[0],
 					false, player.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(39);
@@ -2981,8 +2981,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, player.waypointY[0], localPlayer.waypointX[0],
 					false, player.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(139);
@@ -3004,8 +3004,8 @@ private void doAction(int row)
 		if(!flag6)
 			flag6 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
 					localPlayer.waypointX[0], false, actionInformation2);
-		crossX = super.clickX;
-		crossY = super.clickY;
+		crossX = base.clickX;
+		crossY = base.clickY;
 		crossType = 2;
 		crossIndex = 0;
 		stream.putOpcode(23);
@@ -3075,8 +3075,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, player.waypointY[0], localPlayer.waypointX[0],
 					false, player.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(14);
@@ -3136,8 +3136,8 @@ private void doAction(int row)
 		{
 			doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, npc.waypointY[0], localPlayer.waypointX[0], false,
 					npc.waypointX[0]);
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 2;
 			crossIndex = 0;
 			stream.putOpcode(18);
@@ -3223,8 +3223,8 @@ private void doAction(int row)
 		if(!flag7)
 			flag7 = doWalkTo(2, 0, 1, 0, localPlayer.waypointY[0], 1, 0, actionInformation1,
 					localPlayer.waypointX[0], false, actionInformation2);
-		crossX = super.clickX;
-		crossY = super.clickY;
+		crossX = base.clickX;
+		crossY = base.clickY;
 		crossType = 2;
 		crossIndex = 0;
 		stream.putOpcode(253);
@@ -3309,7 +3309,7 @@ private void doFlamesDrawing()
 		j1 += j2;
 	}
 
-	flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
+	flameLeftBackground.drawGraphics(0, base.gameGraphics, 0);
 	System.arraycopy(flameRightBackground2.pixels, 0, flameRightBackground.pixels, 0, 33920);
 
 	i1 = 0;
@@ -3341,7 +3341,7 @@ private void doFlamesDrawing()
 		j1 += 128 - k3 - i3;
 	}
 
-	flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
+	flameRightBackground.drawGraphics(0, base.gameGraphics, 637);
 }
 
 private boolean doWalkTo(int clickType, int objectRotation, int objectSizeY, int objectType, int startY,
@@ -3550,7 +3550,7 @@ currentWalkingQueueSize += maxPathSize;
 			}
 
 			stream.putLEShort(y + baseY);
-			stream.putByteC(super.keyStatus[5] != 1 ? 0 : 1);
+			stream.putByteC(base.keyStatus[5] != 1 ? 0 : 1);
 			return true;
 		}
 		return clickType != 1;
@@ -3590,9 +3590,9 @@ currentWalkingQueueSize += maxPathSize;
 		int x = 507;
 		int y = 20;
 		int colour = 0xFFFF00;
-		if(super.fps < 15)
+		if(base.fps < 15)
 			colour = 0xFF0000;
-		fontPlain.drawTextLeft("Fps:" + super.fps, x, y, colour);
+		fontPlain.drawTextLeft("Fps:" + base.fps, x, y, colour);
 		y += 15;
 		Runtime runtime = Runtime.getRuntime();
 		int memory = (int)((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
@@ -3766,7 +3766,7 @@ private void drawChatArea()
 	}
 	if(menuOpen && menuScreenArea == 2)
 		drawMenu();
-	chatboxImageProducer.drawGraphics(357, super.gameGraphics, 17);
+	chatboxImageProducer.drawGraphics(357, base.gameGraphics, 17);
 	gameScreenImageProducer.initDrawingArea();
 	Rasterizer.lineOffsets = viewportOffsets;
 }
@@ -4130,23 +4130,23 @@ private void drawGameScreen()
 	if(welcomeScreenRaised)
 	{
 		welcomeScreenRaised = false;
-		backLeftIP1.drawGraphics(4, super.gameGraphics, 0);
-		backLeftIP2.drawGraphics(357, super.gameGraphics, 0);
-		backRightIP1.drawGraphics(4, super.gameGraphics, 722);
-		backRightIP2.drawGraphics(205, super.gameGraphics, 743);
-		backTopIP1.drawGraphics(0, super.gameGraphics, 0);
-		backVmidIP1.drawGraphics(4, super.gameGraphics, 516);
-		backVmidIP2.drawGraphics(205, super.gameGraphics, 516);
-		backVmidIP3.drawGraphics(357, super.gameGraphics, 496);
-		backVmidIP2_2.drawGraphics(338, super.gameGraphics, 0);
+		backLeftIP1.drawGraphics(4, base.gameGraphics, 0);
+		backLeftIP2.drawGraphics(357, base.gameGraphics, 0);
+		backRightIP1.drawGraphics(4, base.gameGraphics, 722);
+		backRightIP2.drawGraphics(205, base.gameGraphics, 743);
+		backTopIP1.drawGraphics(0, base.gameGraphics, 0);
+		backVmidIP1.drawGraphics(4, base.gameGraphics, 516);
+		backVmidIP2.drawGraphics(205, base.gameGraphics, 516);
+		backVmidIP3.drawGraphics(357, base.gameGraphics, 496);
+		backVmidIP2_2.drawGraphics(338, base.gameGraphics, 0);
 		redrawTab = true;
 		redrawChatbox = true;
 		drawTabIcons = true;
 		updateChatSettings = true;
 		if(loadingStage != 2)
 		{
-			gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
-			minimapImageProducer.drawGraphics(4, super.gameGraphics, 550);
+			gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
+			minimapImageProducer.drawGraphics(4, base.gameGraphics, 550);
 		}
 	}
 	if(loadingStage == 2)
@@ -4171,8 +4171,8 @@ private void drawGameScreen()
 	if(chatboxInterfaceId == -1)
 	{
 		chatboxInterface.scrollPosition = chatboxScrollMax - anInt1089 - 77;
-		if(super.mouseX > 448 && super.mouseX < 560 && super.mouseY > 332)
-			scrollInterface(463, 77, super.mouseX - 17, super.mouseY - 357, chatboxInterface, 0, false,
+		if(base.mouseX > 448 && base.mouseX < 560 && base.mouseY > 332)
+			scrollInterface(463, 77, base.mouseX - 17, base.mouseY - 357, chatboxInterface, 0, false,
 					chatboxScrollMax);
 		int i = chatboxScrollMax - 77 - chatboxInterface.scrollPosition;
 		if(i < 0)
@@ -4207,7 +4207,7 @@ private void drawGameScreen()
 	if(loadingStage == 2)
 	{
 		drawMinimap();
-		minimapImageProducer.drawGraphics(4, super.gameGraphics, 550);
+		minimapImageProducer.drawGraphics(4, base.gameGraphics, 550);
 	}
 	if(flashingSidebar != -1)
 		drawTabIcons = true;
@@ -4256,7 +4256,7 @@ private void drawGameScreen()
 			if(tabInterfaceIDs[6] != -1 && (flashingSidebar != 6 || tick % 20 < 10))
 				sideIconImage[6].draw(208, 13);
 		}
-		topSideIconImageProducer.drawGraphics(160, super.gameGraphics, 516);
+		topSideIconImageProducer.drawGraphics(160, base.gameGraphics, 516);
 		bottomSideIconImageProducer.initDrawingArea();
 		backBase2Image.draw(0, 0);
 		if(inventoryOverlayInterfaceID == -1)
@@ -4291,7 +4291,7 @@ private void drawGameScreen()
 			if(tabInterfaceIDs[13] != -1 && (flashingSidebar != 13 || tick % 20 < 10))
 				sideIconImage[12].draw(226, 2);
 		}
-		bottomSideIconImageProducer.drawGraphics(466, super.gameGraphics, 496);
+		bottomSideIconImageProducer.drawGraphics(466, base.gameGraphics, 496);
 		gameScreenImageProducer.initDrawingArea();
 	}
 	if(updateChatSettings)
@@ -4323,7 +4323,7 @@ private void drawGameScreen()
 		if(tradeMode == 2)
 			fontPlain.drawCentredTextWithPotentialShadow("Off", 324, 41, 0xFF0000, true);
 		fontPlain.drawCentredTextWithPotentialShadow("Report abuse", 458, 33, 0xFFFFFF, true);
-		chatSettingImageProducer.drawGraphics(453, super.gameGraphics, 0);
+		chatSettingImageProducer.drawGraphics(453, base.gameGraphics, 0);
 		gameScreenImageProducer.initDrawingArea();
 	}
 	animationTimePassed = 0;
@@ -4407,8 +4407,8 @@ private void drawInterface(int j, int x, RSInterface rsInterface, int y)
 									if(activeInterfaceType != 0 && moveItemSlotStart == item
 											&& moveItemInterfaceId == childInterface.id)
 									{
-										differenceX = super.mouseX - lastMouseX;
-										differenceY = super.mouseY - lastMouseY;
+										differenceX = base.mouseX - lastMouseX;
+										differenceY = base.mouseY - lastMouseY;
 										if(differenceX < 5 && differenceX > -5)
 											differenceX = 0;
 										if(differenceY < 5 && differenceY > -5)
@@ -4694,7 +4694,7 @@ void override drawLoadingText(int percentage, String text)
 	setupLoginScreen();
 	if(archiveTitle == null)
 	{
-		super.drawLoadingText(percentage, text);
+		base.drawLoadingText(percentage, text);
 		return;
 	}
 	loginBoxLeftBackgroundTile.initDrawingArea();
@@ -4712,21 +4712,21 @@ void override drawLoadingText(int percentage, String text)
 	DrawingArea.drawFilledRectangle((horizontalOffset / 2 - 150) + percentage * 3, loadingBarHeight + 2,
 			300 - percentage * 3, 30, 0);
 	fontBold.drawCentredText(text, horizontalOffset / 2, (verticalOffset1 / 2 + 5) - verticalOffset2, 0xFFFFFF);
-	loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
+	loginBoxLeftBackgroundTile.drawGraphics(171, base.gameGraphics, 202);
 	if(welcomeScreenRaised)
 	{
 		welcomeScreenRaised = false;
 		if(!currentlyDrawingFlames)
 		{
-			flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
-			flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
+			flameLeftBackground.drawGraphics(0, base.gameGraphics, 0);
+			flameRightBackground.drawGraphics(0, base.gameGraphics, 637);
 		}
-		topCentreBackgroundTile.drawGraphics(0, super.gameGraphics, 128);
-		bottomCentreBackgroundTile.drawGraphics(371, super.gameGraphics, 202);
-		bottomLeftBackgroundTile.drawGraphics(265, super.gameGraphics, 0);
-		bottomRightBackgroundTile.drawGraphics(265, super.gameGraphics, 562);
-		middleLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 128);
-		middleRightBackgroundTile.drawGraphics(171, super.gameGraphics, 562);
+		topCentreBackgroundTile.drawGraphics(0, base.gameGraphics, 128);
+		bottomCentreBackgroundTile.drawGraphics(371, base.gameGraphics, 202);
+		bottomLeftBackgroundTile.drawGraphics(265, base.gameGraphics, 0);
+		bottomRightBackgroundTile.drawGraphics(265, base.gameGraphics, 562);
+		middleLeftBackgroundTile.drawGraphics(171, base.gameGraphics, 128);
+		middleRightBackgroundTile.drawGraphics(171, base.gameGraphics, 562);
 	}
 }
 
@@ -4807,16 +4807,16 @@ private void drawLoginScreen(boolean originalLoginScreen)
 		titleButtonImage.draw(_x - 73, __y - 20);
 		fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
 	}
-	loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
+	loginBoxLeftBackgroundTile.drawGraphics(171, base.gameGraphics, 202);
 	if(welcomeScreenRaised)
 	{
 		welcomeScreenRaised = false;
-		topCentreBackgroundTile.drawGraphics(0, super.gameGraphics, 128);
-		bottomCentreBackgroundTile.drawGraphics(371, super.gameGraphics, 202);
-		bottomLeftBackgroundTile.drawGraphics(265, super.gameGraphics, 0);
-		bottomRightBackgroundTile.drawGraphics(265, super.gameGraphics, 562);
-		middleLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 128);
-		middleRightBackgroundTile.drawGraphics(171, super.gameGraphics, 562);
+		topCentreBackgroundTile.drawGraphics(0, base.gameGraphics, 128);
+		bottomCentreBackgroundTile.drawGraphics(371, base.gameGraphics, 202);
+		bottomLeftBackgroundTile.drawGraphics(265, base.gameGraphics, 0);
+		bottomRightBackgroundTile.drawGraphics(265, base.gameGraphics, 562);
+		middleLeftBackgroundTile.drawGraphics(171, base.gameGraphics, 128);
+		middleRightBackgroundTile.drawGraphics(171, base.gameGraphics, 562);
 	}
 }
 
@@ -4889,8 +4889,8 @@ private void drawMenu()
 	DrawingArea.drawFilledRectangle(offsetX + 1, offsetY + 1, width - 2, 16, 0);
 	DrawingArea.drawUnfilledRectangle(offsetX + 1, width - 2, height - 19, 0, offsetY + 18);
 	fontBold.drawText("Choose Option", offsetX + 3, offsetY + 14, colour);
-	int x = super.mouseX;
-	int y = super.mouseY;
+	int x = base.mouseX;
+	int y = base.mouseY;
 	if(menuScreenArea == 0)
 	{
 		x -= 4;
@@ -5305,7 +5305,7 @@ private void drawTabArea()
 		drawInterface(0, 0, RSInterface.cache[tabInterfaceIDs[currentTabId]], 0);
 	if(menuOpen && menuScreenArea == 1)
 		drawMenu();
-	tabImageProducer.drawGraphics(205, super.gameGraphics, 553);
+	tabImageProducer.drawGraphics(205, base.gameGraphics, 553);
 	gameScreenImageProducer.initDrawingArea();
 	Rasterizer.lineOffsets = viewportOffsets;
 }
@@ -5338,7 +5338,7 @@ private void dropClient()
 	fontPlain.drawCentredText("Connection lost", 256, 143, 0xFFFFFF);
 	fontPlain.drawCentredText("Please wait - attempting to reestablish", 257, 159, 0);
 	fontPlain.drawCentredText("Please wait - attempting to reestablish", 256, 158, 0xFFFFFF);
-	gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
+	gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
 	minimapState = 0;
 	destinationX = 0;
 	RSSocket rsSocket = socket;
@@ -5361,7 +5361,7 @@ public override AppletContext getAppletContext()
 	if(signlink.applet != null)
 		return signlink.applet.getAppletContext();
 	else
-		return super.getAppletContext();
+		return base.getAppletContext();
 }
 
 private int getCameraPlaneCutscene()
@@ -5380,23 +5380,23 @@ public override URL getCodeBase()
 		return signlink.applet.getCodeBase();
 	try
 	{
-		if(super.gameFrame != null)
+		if(base.gameFrame != null)
 			return new URL("http://127.0.0.1:" + (80 + portOffset));
 	}
 	catch(Exception _ex)
 	{
 	}
-	return super.getCodeBase();
+	return base.getCodeBase();
 }
 
 private String getDocumentBaseHost()
 {
 	if(signlink.applet != null)
 		return signlink.applet.getDocumentBase().getHost().toLowerCase();
-	if(super.gameFrame != null)
+	if(base.gameFrame != null)
 		return "runescape.com";
 	else
-		return super.getDocumentBase().getHost().toLowerCase();
+		return base.getDocumentBase().getHost().toLowerCase();
 }
 
 private int getFloorDrawHeight(int z, int y, int x)
@@ -5422,8 +5422,8 @@ override Component getGameComponent()
 {
 	if(signlink.applet != null)
 		return signlink.applet;
-	if(super.gameFrame != null)
-		return super.gameFrame;
+	if(base.gameFrame != null)
+		return base.gameFrame;
 	else
 		return this;
 }
@@ -5434,7 +5434,7 @@ public override String getParameter(String s)
 	if(signlink.applet != null)
 		return signlink.applet.getParameter(s);
 	else
-		return super.getParameter(s);
+		return base.getParameter(s);
 }
 
 private int getWorldDrawPlane()
@@ -5814,7 +5814,7 @@ private boolean handleIncomingData()
 			gameScreenImageProducer.initDrawingArea();
 			fontPlain.drawCentredText("Loading - please wait.", 257, 151, 0);
 			fontPlain.drawCentredText("Loading - please wait.", 256, 150, 0xFFFFFF);
-			gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
+			gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
 			if(packetOpcode == 73)
 			{
 				int r = 0;
@@ -7073,7 +7073,7 @@ private void loadingStages()
 		gameScreenImageProducer.initDrawingArea();
 		fontPlain.drawCentredText("Loading - please wait.", 257, 151, 0);
 		fontPlain.drawCentredText("Loading - please wait.", 256, 150, 0xFFFFFF);
-		gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
+		gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
 		loadingStage = 1;
 		loadRegionTime = System.currentTimeMillis();
 	}
@@ -7279,7 +7279,7 @@ private void loadRegion()
 	{
 	}
 	GameObjectDefinition.modelCache.clear();
-	if(super.gameFrame != null)
+	if(base.gameFrame != null)
 	{
 		stream.putOpcode(210);
 		stream.putInt(0x3F008EDD);
@@ -7494,7 +7494,7 @@ private void login(String playerUsername, String playerPassword, boolean recover
 			lastClickTime = 0L;
 			sameClickPositionCounter = 0;
 			mouseDetection.coordsIndex = 0;
-			super.awtFocus = true;
+			base.awtFocus = true;
 			windowFocused = true;
 			loggedIn = true;
 			stream.position = 0;
@@ -7510,7 +7510,7 @@ private void login(String playerUsername, String playerPassword, boolean recover
 			hintIconType = 0;
 			menuActionRow = 0;
 			menuOpen = false;
-			super.idleTime = 0;
+			base.idleTime = 0;
 			for(int m = 0; m < 100; m++)
 				chatMessages[m] = null;
 
@@ -7800,7 +7800,7 @@ private void updateGame()
 	synchronized(mouseDetection.syncObject) {
 		if(flagged)
 		{
-			if(super.clickType != 0 || mouseDetection.coordsIndex >= 40)
+			if(base.clickType != 0 || mouseDetection.coordsIndex >= 40)
 			{
 				stream.putOpcode(45);
 				stream.put(0);
@@ -7882,25 +7882,25 @@ private void updateGame()
 			mouseDetection.coordsIndex = 0;
 		}
 	}
-	if(super.clickType != 0)
+	if(base.clickType != 0)
 	{
-		long timeBetweenClicks = (super.clickTime - lastClickTime) / 50L;
+		long timeBetweenClicks = (base.clickTime - lastClickTime) / 50L;
 		if(timeBetweenClicks > 4095L)
 			timeBetweenClicks = 4095L;
-		lastClickTime = super.clickTime;
-		int y = super.clickY;
+		lastClickTime = base.clickTime;
+		int y = base.clickY;
 		if(y < 0)
 			y = 0;
 		else if(y > 502)
 			y = 502;
-		int x = super.clickX;
+		int x = base.clickX;
 		if(x < 0)
 			x = 0;
 		else if(x > 764)
 			x = 764;
 		int pixelOffset = y * 765 + x;
 		int rightClick = 0;
-		if(super.clickType == 2)
+		if(base.clickType == 2)
 			rightClick = 1;
 		int timeDifference = (int)timeBetweenClicks;
 		stream.putOpcode(241);
@@ -7908,7 +7908,7 @@ private void updateGame()
 	}
 	if(cameraMovedWriteDelay > 0)
 		cameraMovedWriteDelay--;
-	if(super.keyStatus[1] == 1 || super.keyStatus[2] == 1 || super.keyStatus[3] == 1 || super.keyStatus[4] == 1)
+	if(base.keyStatus[1] == 1 || base.keyStatus[2] == 1 || base.keyStatus[3] == 1 || base.keyStatus[4] == 1)
 		cameraMovedWrite = true;
 	if(cameraMovedWrite && cameraMovedWriteDelay <= 0)
 	{
@@ -7918,13 +7918,13 @@ private void updateGame()
 		stream.putShort(cameraVertical);
 		stream.putShortA(cameraHorizontal);
 	}
-	if(super.awtFocus && !windowFocused)
+	if(base.awtFocus && !windowFocused)
 	{
 		windowFocused = true;
 		stream.putOpcode(3);
 		stream.put(1);
 	}
-	if(!super.awtFocus && windowFocused)
+	if(!base.awtFocus && windowFocused)
 	{
 		windowFocused = false;
 		stream.putOpcode(3);
@@ -7961,10 +7961,10 @@ private void updateGame()
 	if(activeInterfaceType != 0)
 	{
 		lastItemDragTime++;
-		if(super.mouseX > lastMouseX + 5 || super.mouseX < lastMouseX - 5 || super.mouseY > lastMouseY + 5
-				|| super.mouseY < lastMouseY - 5)
+		if(base.mouseX > lastMouseX + 5 || base.mouseX < lastMouseX - 5 || base.mouseY > lastMouseY + 5
+				|| base.mouseY < lastMouseY - 5)
 			lastItemDragged = true;
-		if(super.mouseButton == 0)
+		if(base.mouseButton == 0)
 		{
 			if(activeInterfaceType == 2)
 				redrawTab = true;
@@ -8024,7 +8024,7 @@ private void updateGame()
 			else if(menuActionRow > 0)
 				doAction(menuActionRow - 1);
 			atInventoryLoopCycle = 10;
-			super.clickType = 0;
+			base.clickType = 0;
 		}
 	}
 	if(WorldController.clickedTileX != -1)
@@ -8036,23 +8036,23 @@ private void updateGame()
 		WorldController.clickedTileX = -1;
 		if(walkable)
 		{
-			crossX = super.clickX;
-			crossY = super.clickY;
+			crossX = base.clickX;
+			crossY = base.clickY;
 			crossType = 1;
 			crossIndex = 0;
 		}
 	}
-	if(super.clickType == 1 && clickToContinueString != null)
+	if(base.clickType == 1 && clickToContinueString != null)
 	{
 		clickToContinueString = null;
 		redrawChatbox = true;
-		super.clickType = 0;
+		base.clickType = 0;
 	}
 	processMenuClick();
 	processMinimapClick();
 	processTabClick();
 	processChatModeClick();
-	if(super.mouseButton == 1 || super.clickType == 1)
+	if(base.mouseButton == 1 || base.clickType == 1)
 		anInt1213++;
 	if(loadingStage == 2)
 		setStandardCameraPosition();
@@ -8062,11 +8062,11 @@ private void updateGame()
 		unknownCameraVariable[camera]++;
 
 	manageTextInput();
-	super.idleTime++;
-	if(super.idleTime > 4500)
+	base.idleTime++;
+	if(base.idleTime > 4500)
 	{
 		idleLogout = 250;
-		super.idleTime -= 500;
+		base.idleTime -= 500;
 		stream.putOpcode(202);
 	}
 	cameraRandomisationCounter++;
@@ -9013,14 +9013,14 @@ private void printDebug()
 	System.out.println("psize:" + packetSize);
 	if(socket != null)
 		socket.printDebug();
-	super.debugRequested = true;
+	base.debugRequested = true;
 }
 
 private void processChatModeClick()
 {
-	if(super.clickType == 1)
+	if(base.clickType == 1)
 	{
-		if(super.clickX >= 6 && super.clickX <= 106 && super.clickY >= 467 && super.clickY <= 499)
+		if(base.clickX >= 6 && base.clickX <= 106 && base.clickY >= 467 && base.clickY <= 499)
 		{
 			publicChatMode = (publicChatMode + 1) % 4;
 			updateChatSettings = true;
@@ -9030,7 +9030,7 @@ private void processChatModeClick()
 			stream.put(privateChatMode);
 			stream.put(tradeMode);
 		}
-		if(super.clickX >= 135 && super.clickX <= 235 && super.clickY >= 467 && super.clickY <= 499)
+		if(base.clickX >= 135 && base.clickX <= 235 && base.clickY >= 467 && base.clickY <= 499)
 		{
 			privateChatMode = (privateChatMode + 1) % 3;
 			updateChatSettings = true;
@@ -9040,7 +9040,7 @@ private void processChatModeClick()
 			stream.put(privateChatMode);
 			stream.put(tradeMode);
 		}
-		if(super.clickX >= 273 && super.clickX <= 373 && super.clickY >= 467 && super.clickY <= 499)
+		if(base.clickX >= 273 && base.clickX <= 373 && base.clickY >= 467 && base.clickY <= 499)
 		{
 			tradeMode = (tradeMode + 1) % 3;
 			updateChatSettings = true;
@@ -9050,7 +9050,7 @@ private void processChatModeClick()
 			stream.put(privateChatMode);
 			stream.put(tradeMode);
 		}
-		if(super.clickX >= 412 && super.clickX <= 512 && super.clickY >= 467 && super.clickY <= 499)
+		if(base.clickX >= 412 && base.clickX <= 512 && base.clickY >= 467 && base.clickY <= 499)
 			if(openInterfaceId == -1)
 			{
 				clearTopInterfaces();
@@ -9124,18 +9124,18 @@ private void updateLogin()
 {
 	if(loginScreenState == 0)
 	{
-		int x = super.width / 2 - 80;
-		int y = super.height / 2 + 20;
+		int x = base.width / 2 - 80;
+		int y = base.height / 2 + 20;
 		y += 20;
-		if(super.clickType == 1 && super.clickX >= x - 75 && super.clickX <= x + 75 && super.clickY >= y - 20
-				&& super.clickY <= y + 20)
+		if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= y - 20
+				&& base.clickY <= y + 20)
 		{
 			loginScreenState = 3;
 			loginScreenFocus = 0;
 		}
-		x = super.width / 2 + 80;
-		if(super.clickType == 1 && super.clickX >= x - 75 && super.clickX <= x + 75 && super.clickY >= y - 20
-				&& super.clickY <= y + 20)
+		x = base.width / 2 + 80;
+		if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= y - 20
+				&& base.clickY <= y + 20)
 		{
 			loginMessage1 = "";
 			loginMessage2 = "Enter your username & password.";
@@ -9147,29 +9147,29 @@ private void updateLogin()
 	{
 		if(loginScreenState == 2)
 		{
-			int y = super.height / 2 - 40;
+			int y = base.height / 2 - 40;
 			y += 30;
 			y += 25;
-			if(super.clickType == 1 && super.clickY >= y - 15 && super.clickY < y)
+			if(base.clickType == 1 && base.clickY >= y - 15 && base.clickY < y)
 				loginScreenFocus = 0;
 			y += 15;
-			if(super.clickType == 1 && super.clickY >= y - 15 && super.clickY < y)
+			if(base.clickType == 1 && base.clickY >= y - 15 && base.clickY < y)
 				loginScreenFocus = 1;
 			y += 15;
-			int x = super.width / 2 - 80;
-			int _y = super.height / 2 + 50;
+			int x = base.width / 2 - 80;
+			int _y = base.height / 2 + 50;
 			_y += 20;
-			if(super.clickType == 1 && super.clickX >= x - 75 && super.clickX <= x + 75 && super.clickY >= _y - 20
-					&& super.clickY <= _y + 20)
+			if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= _y - 20
+					&& base.clickY <= _y + 20)
 			{
 				loginFailures = 0;
 				login(enteredUsername, enteredPassword, false);
 				if(loggedIn)
 					return;
 			}
-			x = super.width / 2 + 80;
-			if(super.clickType == 1 && super.clickX >= x - 75 && super.clickX <= x + 75 && super.clickY >= _y - 20
-					&& super.clickY <= _y + 20)
+			x = base.width / 2 + 80;
+			if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= _y - 20
+					&& base.clickY <= _y + 20)
 			{
 				loginScreenState = 0;
 				// myUsername = "";
@@ -9216,11 +9216,11 @@ private void updateLogin()
 		}
 		if(loginScreenState == 3)
 		{
-			int x = super.width / 2;
-			int y = super.height / 2 + 50;
+			int x = base.width / 2;
+			int y = base.height / 2 + 50;
 			y += 20;
-			if(super.clickType == 1 && super.clickX >= x - 75 && super.clickX <= x + 75 && super.clickY >= y - 20
-					&& super.clickY <= y + 20)
+			if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= y - 20
+					&& base.clickY <= y + 20)
 				loginScreenState = 0;
 		}
 	}
@@ -9230,15 +9230,15 @@ private void processMenuClick()
 {
 	if(activeInterfaceType != 0)
 		return;
-	int clickType = super.clickType;
-	if(spellSelected && super.clickX >= 516 && super.clickY >= 160 && super.clickX <= 765 && super.clickY <= 205)
+	int clickType = base.clickType;
+	if(spellSelected && base.clickX >= 516 && base.clickY >= 160 && base.clickX <= 765 && base.clickY <= 205)
 		clickType = 0;
 	if(menuOpen)
 	{
 		if(clickType != 1)
 		{
-			int x = super.mouseX;
-			int y = super.mouseY;
+			int x = base.mouseX;
+			int y = base.mouseY;
 			if(menuScreenArea == 0)
 			{
 				x -= 4;
@@ -9269,8 +9269,8 @@ private void processMenuClick()
 			int menuX = menuOffsetX;
 			int height = menuOffsetY;
 			int width = menuWidth;
-			int x = super.clickX;
-			int y = super.clickY;
+			int x = base.clickX;
+			int y = base.clickY;
 			if(menuScreenArea == 0)
 			{
 				x -= 4;
@@ -9324,8 +9324,8 @@ private void processMenuClick()
 					moveItemInterfaceId = interfaceId;
 					moveItemSlotStart = slot;
 					activeInterfaceType = 2;
-					lastMouseX = super.clickX;
-					lastMouseY = super.clickY;
+					lastMouseX = base.clickX;
+					lastMouseY = base.clickY;
 					if(RSInterface.cache[interfaceId].parentID == openInterfaceId)
 						activeInterfaceType = 1;
 					if(RSInterface.cache[interfaceId].parentID == chatboxInterfaceId)
@@ -9355,14 +9355,14 @@ private void processMenuHovering()
 
 	width += 8;
 	int height = 15 * menuActionRow + 21;
-	if(super.clickX > 4 && super.clickY > 4 && super.clickX < 516 && super.clickY < 338)
+	if(base.clickX > 4 && base.clickY > 4 && base.clickX < 516 && base.clickY < 338)
 	{
-		int x = super.clickX - 4 - width / 2;
+		int x = base.clickX - 4 - width / 2;
 		if(x + width > 512)
 			x = 512 - width;
 		if(x < 0)
 			x = 0;
-		int y = super.clickY - 4;
+		int y = base.clickY - 4;
 		if(y + height > 334)
 			y = 334 - height;
 		if(y < 0)
@@ -9374,14 +9374,14 @@ private void processMenuHovering()
 		menuWidth = width;
 		menuHeight = 15 * menuActionRow + 22;
 	}
-	if(super.clickX > 553 && super.clickY > 205 && super.clickX < 743 && super.clickY < 466)
+	if(base.clickX > 553 && base.clickY > 205 && base.clickX < 743 && base.clickY < 466)
 	{
-		int x = super.clickX - 553 - width / 2;
+		int x = base.clickX - 553 - width / 2;
 		if(x < 0)
 			x = 0;
 		else if(x + width > 190)
 			x = 190 - width;
-		int y = super.clickY - 205;
+		int y = base.clickY - 205;
 		if(y < 0)
 			y = 0;
 		else if(y + height > 261)
@@ -9393,14 +9393,14 @@ private void processMenuHovering()
 		menuWidth = width;
 		menuHeight = 15 * menuActionRow + 22;
 	}
-	if(super.clickX > 17 && super.clickY > 357 && super.clickX < 496 && super.clickY < 453)
+	if(base.clickX > 17 && base.clickY > 357 && base.clickX < 496 && base.clickY < 453)
 	{
-		int x = super.clickX - 17 - width / 2;
+		int x = base.clickX - 17 - width / 2;
 		if(x < 0)
 			x = 0;
 		else if(x + width > 479)
 			x = 479 - width;
-		int y = super.clickY - 357;
+		int y = base.clickY - 357;
 		if(y < 0)
 			y = 0;
 		else if(y + height > 96)
@@ -9418,10 +9418,10 @@ private void processMinimapClick()
 {
 	if(minimapState != 0)
 		return;
-	if(super.clickType == 1)
+	if(base.clickType == 1)
 	{
-		int i = super.clickX - 25 - 550;
-		int j = super.clickY - 5 - 4;
+		int i = base.clickX - 25 - 550;
+		int j = base.clickY - 5 - 4;
 		if(i >= 0 && j >= 0 && i < 146 && j < 151)
 		{
 			i -= 73;
@@ -9536,32 +9536,32 @@ private void processRightClick()
 	menuActionRow = 1;
 	buildSplitPrivateChatMenu();
 	anInt886 = 0;
-	if(super.mouseX > 4 && super.mouseY > 4 && super.mouseX < 516 && super.mouseY < 338)
+	if(base.mouseX > 4 && base.mouseY > 4 && base.mouseX < 516 && base.mouseY < 338)
 		if(openInterfaceId != -1)
-			buildInterfaceMenu(4, RSInterface.cache[openInterfaceId], super.mouseX, 4, super.mouseY, 0);
+			buildInterfaceMenu(4, RSInterface.cache[openInterfaceId], base.mouseX, 4, base.mouseY, 0);
 		else
 			build3dScreenMenu();
 	if(anInt886 != anInt1026)
 		anInt1026 = anInt886;
 	anInt886 = 0;
-	if(super.mouseX > 553 && super.mouseY > 205 && super.mouseX < 743 && super.mouseY < 466)
+	if(base.mouseX > 553 && base.mouseY > 205 && base.mouseX < 743 && base.mouseY < 466)
 		if(inventoryOverlayInterfaceID != -1)
-			buildInterfaceMenu(553, RSInterface.cache[inventoryOverlayInterfaceID], super.mouseX, 205, super.mouseY,
+			buildInterfaceMenu(553, RSInterface.cache[inventoryOverlayInterfaceID], base.mouseX, 205, base.mouseY,
 					0);
 		else if(tabInterfaceIDs[currentTabId] != -1)
-			buildInterfaceMenu(553, RSInterface.cache[tabInterfaceIDs[currentTabId]], super.mouseX, 205,
-					super.mouseY, 0);
+			buildInterfaceMenu(553, RSInterface.cache[tabInterfaceIDs[currentTabId]], base.mouseX, 205,
+					base.mouseY, 0);
 	if(anInt886 != anInt1048)
 	{
 		redrawTab = true;
 		anInt1048 = anInt886;
 	}
 	anInt886 = 0;
-	if(super.mouseX > 17 && super.mouseY > 357 && super.mouseX < 496 && super.mouseY < 453)
+	if(base.mouseX > 17 && base.mouseY > 357 && base.mouseX < 496 && base.mouseY < 453)
 		if(chatboxInterfaceId != -1)
-			buildInterfaceMenu(17, RSInterface.cache[chatboxInterfaceId], super.mouseX, 357, super.mouseY, 0);
-		else if(super.mouseY < 434 && super.mouseX < 426)
-			buildChatboxMenu(super.mouseY - 357);
+			buildInterfaceMenu(17, RSInterface.cache[chatboxInterfaceId], base.mouseX, 357, base.mouseY, 0);
+		else if(base.mouseY < 434 && base.mouseX < 426)
+			buildChatboxMenu(base.mouseY - 357);
 	if(chatboxInterfaceId != -1 && anInt886 != anInt1039)
 	{
 		redrawChatbox = true;
@@ -9597,100 +9597,100 @@ private void processRightClick()
 
 private void processTabClick()
 {
-	if(super.clickType == 1)
+	if(base.clickType == 1)
 	{
-		if(super.clickX >= 539 && super.clickX <= 573 && super.clickY >= 169 && super.clickY < 205
+		if(base.clickX >= 539 && base.clickX <= 573 && base.clickY >= 169 && base.clickY < 205
 				&& tabInterfaceIDs[0] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 0;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 569 && super.clickX <= 599 && super.clickY >= 168 && super.clickY < 205
+		if(base.clickX >= 569 && base.clickX <= 599 && base.clickY >= 168 && base.clickY < 205
 				&& tabInterfaceIDs[1] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 1;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 597 && super.clickX <= 627 && super.clickY >= 168 && super.clickY < 205
+		if(base.clickX >= 597 && base.clickX <= 627 && base.clickY >= 168 && base.clickY < 205
 				&& tabInterfaceIDs[2] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 2;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 625 && super.clickX <= 669 && super.clickY >= 168 && super.clickY < 203
+		if(base.clickX >= 625 && base.clickX <= 669 && base.clickY >= 168 && base.clickY < 203
 				&& tabInterfaceIDs[3] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 3;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 666 && super.clickX <= 696 && super.clickY >= 168 && super.clickY < 205
+		if(base.clickX >= 666 && base.clickX <= 696 && base.clickY >= 168 && base.clickY < 205
 				&& tabInterfaceIDs[4] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 4;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 694 && super.clickX <= 724 && super.clickY >= 168 && super.clickY < 205
+		if(base.clickX >= 694 && base.clickX <= 724 && base.clickY >= 168 && base.clickY < 205
 				&& tabInterfaceIDs[5] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 5;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 722 && super.clickX <= 756 && super.clickY >= 169 && super.clickY < 205
+		if(base.clickX >= 722 && base.clickX <= 756 && base.clickY >= 169 && base.clickY < 205
 				&& tabInterfaceIDs[6] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 6;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 540 && super.clickX <= 574 && super.clickY >= 466 && super.clickY < 502
+		if(base.clickX >= 540 && base.clickX <= 574 && base.clickY >= 466 && base.clickY < 502
 				&& tabInterfaceIDs[7] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 7;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 572 && super.clickX <= 602 && super.clickY >= 466 && super.clickY < 503
+		if(base.clickX >= 572 && base.clickX <= 602 && base.clickY >= 466 && base.clickY < 503
 				&& tabInterfaceIDs[8] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 8;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 599 && super.clickX <= 629 && super.clickY >= 466 && super.clickY < 503
+		if(base.clickX >= 599 && base.clickX <= 629 && base.clickY >= 466 && base.clickY < 503
 				&& tabInterfaceIDs[9] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 9;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 627 && super.clickX <= 671 && super.clickY >= 467 && super.clickY < 502
+		if(base.clickX >= 627 && base.clickX <= 671 && base.clickY >= 467 && base.clickY < 502
 				&& tabInterfaceIDs[10] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 10;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 669 && super.clickX <= 699 && super.clickY >= 466 && super.clickY < 503
+		if(base.clickX >= 669 && base.clickX <= 699 && base.clickY >= 466 && base.clickY < 503
 				&& tabInterfaceIDs[11] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 11;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 696 && super.clickX <= 726 && super.clickY >= 466 && super.clickY < 503
+		if(base.clickX >= 696 && base.clickX <= 726 && base.clickY >= 466 && base.clickY < 503
 				&& tabInterfaceIDs[12] != -1)
 		{
 			redrawTab = true;
 			currentTabId = 12;
 			drawTabIcons = true;
 		}
-		if(super.clickX >= 724 && super.clickX <= 758 && super.clickY >= 466 && super.clickY < 502
+		if(base.clickX >= 724 && base.clickX <= 758 && base.clickY >= 466 && base.clickY < 502
 				&& tabInterfaceIDs[13] != -1)
 		{
 			redrawTab = true;
@@ -9937,7 +9937,7 @@ private void pushMessage(String message, int type, String name)
 	if(type == 0 && dialogID != -1)
 	{
 		clickToContinueString = message;
-		super.clickType = 0;
+		base.clickType = 0;
 	}
 	if(chatboxInterfaceId == -1)
 		redrawChatbox = true;
@@ -10083,8 +10083,8 @@ private void renderGameView()
 	int textureId = Rasterizer.textureGetCount;
 	Model.aBoolean1684 = true;
 	Model.resourceCount = 0;
-	Model.cursorX = super.mouseX - 4;
-	Model.cursorY = super.mouseY - 4;
+	Model.cursorX = base.mouseX - 4;
+	Model.cursorY = base.mouseY - 4;
 	DrawingArea.clear();
 	worldController.render(cameraPositionX, cameraPositionY, cameraHorizontalRotation, cameraPositionZ, cameraPlane,
 			cameraVerticalRotation);
@@ -10093,7 +10093,7 @@ private void renderGameView()
 	drawHeadIcon();
 	animateTexture(textureId);
 	draw3dScreen();
-	gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
+	gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
 	cameraPositionX = x;
 	cameraPositionZ = y;
 	cameraPositionY = z;
@@ -10465,7 +10465,7 @@ private void setupLoginScreen()
 {
 	if(topCentreBackgroundTile != null)
 		return;
-	super.fullGameScreen = null;
+	base.fullGameScreen = null;
 	chatboxImageProducer = null;
 	minimapImageProducer = null;
 	tabImageProducer = null;
@@ -10504,7 +10504,7 @@ private void setupGameplayScreen()
 	if(chatboxImageProducer != null)
 		return;
 	nullLoader();
-	super.fullGameScreen = null;
+	base.fullGameScreen = null;
 	topCentreBackgroundTile = null;
 	bottomCentreBackgroundTile = null;
 	loginBoxLeftBackgroundTile = null;
@@ -10553,7 +10553,7 @@ public override void run()
 	}
 	else
 	{
-		super.run();
+		base.run();
 	}
 }
 
@@ -10744,15 +10744,15 @@ private void setStandardCameraPosition()
 			currentCameraPositionH += (x - currentCameraPositionH) / 16;
 		if(currentCameraPositionV != y)
 			currentCameraPositionV += (y - currentCameraPositionV) / 16;
-		if(super.keyStatus[1] == 1)
+		if(base.keyStatus[1] == 1)
 			cameraModificationH += (-24 - cameraModificationH) / 2;
-		else if(super.keyStatus[2] == 1)
+		else if(base.keyStatus[2] == 1)
 			cameraModificationH += (24 - cameraModificationH) / 2;
 		else
 			cameraModificationH /= 2;
-		if(super.keyStatus[3] == 1)
+		if(base.keyStatus[3] == 1)
 			cameraModificationV += (12 - cameraModificationV) / 2;
-		else if(super.keyStatus[4] == 1)
+		else if(base.keyStatus[4] == 1)
 			cameraModificationV += (-12 - cameraModificationV) / 2;
 		else
 			cameraModificationV /= 2;
@@ -10961,7 +10961,7 @@ public override void startRunnable(Runnable runnable, int priority)
 	}
 	else
 	{
-		super.startRunnable(runnable, priority);
+		base.startRunnable(runnable, priority);
 	}
 }
 
@@ -10969,7 +10969,7 @@ void override startUp()
 {
 	drawLoadingText(20, "Starting up");
 	if(signlink.sunjava)
-		super.minDelay = 5;
+		base.minDelay = 5;
 	if(clientRunning)
 	{
 		// rsAlreadyLoaded = true;

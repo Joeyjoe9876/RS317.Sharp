@@ -15,7 +15,7 @@ sealed class RSFrame : Frame
 
 	public override Graphics getGraphics()
 	{
-		Graphics graphics = super.getGraphics();
+		Graphics graphics = base.getGraphics();
 		graphics.translate(4, 24);
 		return graphics;
 	}

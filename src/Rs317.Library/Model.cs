@@ -377,10 +377,10 @@ public Model(boolean flag, boolean flag1, Model model)
 			System.arraycopy(model.triangleDrawType, 0, triangleDrawType, 0, triangleCount);
 
 		}
-		super.vertexNormals = new VertexNormal[vertexCount];
+		base.vertexNormals = new VertexNormal[vertexCount];
 		for(int vertex = 0; vertex < vertexCount; vertex++)
 		{
-			VertexNormal vertexNormalNew = super.vertexNormals[vertex] = new VertexNormal();
+			VertexNormal vertexNormalNew = base.vertexNormals[vertex] = new VertexNormal();
 			VertexNormal vertexNormalOld = model.vertexNormals[vertex];
 			vertexNormalNew.x = vertexNormalOld.x;
 			vertexNormalNew.y = vertexNormalOld.y;
@@ -409,7 +409,7 @@ public Model(boolean flag, boolean flag1, Model model)
 	texturedTrianglePointsX = model.texturedTrianglePointsX;
 	texturedTrianglePointsY = model.texturedTrianglePointsY;
 	texturedTrianglePointsZ = model.texturedTrianglePointsZ;
-	super.modelHeight = model.modelHeight;
+	base.modelHeight = model.modelHeight;
 	maxY = model.maxY;
 	diagonal2DAboveOrigin = model.diagonal2DAboveOrigin;
 	diagonal3DAboveOrigin = model.diagonal3DAboveOrigin;
@@ -814,11 +814,11 @@ public void applyLighting(int lightMod, int magnitudeMultiplier, int lightX, int
 		triangleHSLB = new int[triangleCount];
 		triangleHSLC = new int[triangleCount];
 	}
-	if(super.vertexNormals == null)
+	if(base.vertexNormals == null)
 	{
-		super.vertexNormals = new VertexNormal[vertexCount];
+		base.vertexNormals = new VertexNormal[vertexCount];
 		for(int vertex = 0; vertex < vertexCount; vertex++)
-			super.vertexNormals[vertex] = new VertexNormal();
+			base.vertexNormals[vertex] = new VertexNormal();
 
 	}
 	for(int triangle = 0; triangle < triangleCount; triangle++)
@@ -850,17 +850,17 @@ public void applyLighting(int lightMod, int magnitudeMultiplier, int lightX, int
 		normalZ = (normalZ * 256) / normalLength;
 		if(triangleDrawType == null || (triangleDrawType[triangle] & 1) == 0)
 		{
-			VertexNormal vertexNormal = super.vertexNormals[_triangleX];
+			VertexNormal vertexNormal = base.vertexNormals[_triangleX];
 			vertexNormal.x += normalX;
 			vertexNormal.y += normalY;
 			vertexNormal.z += normalZ;
 			vertexNormal.magnitude++;
-			vertexNormal = super.vertexNormals[_triangleY];
+			vertexNormal = base.vertexNormals[_triangleY];
 			vertexNormal.x += normalX;
 			vertexNormal.y += normalY;
 			vertexNormal.z += normalZ;
 			vertexNormal.magnitude++;
-			vertexNormal = super.vertexNormals[_triangleZ];
+			vertexNormal = base.vertexNormals[_triangleZ];
 			vertexNormal.x += normalX;
 			vertexNormal.y += normalY;
 			vertexNormal.z += normalZ;
@@ -883,7 +883,7 @@ public void applyLighting(int lightMod, int magnitudeMultiplier, int lightX, int
 		vertexNormalOffset = new VertexNormal[vertexCount];
 		for(int vertex = 0; vertex < vertexCount; vertex++)
 		{
-			VertexNormal vertexNormal = super.vertexNormals[vertex];
+			VertexNormal vertexNormal = base.vertexNormals[vertex];
 			VertexNormal shadowVertexNormal = vertexNormalOffset[vertex] = new VertexNormal();
 			shadowVertexNormal.x = vertexNormal.x;
 			shadowVertexNormal.y = vertexNormal.y;
@@ -925,7 +925,7 @@ public void applyTransformation(int frameId)
 
 public void calculateDiagonals()
 {
-	super.modelHeight = 0;
+	base.modelHeight = 0;
 	diagonal2DAboveOrigin = 0;
 	maxY = 0;
 	for(int vertex = 0; vertex < vertexCount; vertex++)
@@ -933,8 +933,8 @@ public void calculateDiagonals()
 		int x = verticesX[vertex];
 		int y = verticesY[vertex];
 		int z = verticesZ[vertex];
-		if(-y > super.modelHeight)
-			super.modelHeight = -y;
+		if(-y > base.modelHeight)
+			base.modelHeight = -y;
 		if(y > maxY)
 			maxY = y;
 		int bounds = x * x + z * z;
@@ -943,7 +943,7 @@ public void calculateDiagonals()
 	}
 	diagonal2DAboveOrigin = (int)(Math.sqrt(diagonal2DAboveOrigin) + 0.98999999999999999D);
 	diagonal3DAboveOrigin = (int)(Math
-			.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + super.modelHeight * super.modelHeight)
+			.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + base.modelHeight * base.modelHeight)
 			+ 0.98999999999999999D);
 	diagonal3D = diagonal3DAboveOrigin
 			+ (int)(Math.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + maxY * maxY) + 0.98999999999999999D);
@@ -951,7 +951,7 @@ public void calculateDiagonals()
 
 private void calculateDiagonalsAndBounds()
 {
-	super.modelHeight = 0;
+	base.modelHeight = 0;
 	diagonal2DAboveOrigin = 0;
 	maxY = 0;
 	minX = 0xf423f;
@@ -971,8 +971,8 @@ private void calculateDiagonalsAndBounds()
 			minZ = z;
 		if(z > maxZ)
 			maxZ = z;
-		if(-y > super.modelHeight)
-			super.modelHeight = -y;
+		if(-y > base.modelHeight)
+			base.modelHeight = -y;
 		if(y > maxY)
 			maxY = y;
 		int bounds = x * x + z * z;
@@ -982,7 +982,7 @@ private void calculateDiagonalsAndBounds()
 
 	diagonal2DAboveOrigin = (int)Math.sqrt(diagonal2DAboveOrigin);
 	diagonal3DAboveOrigin = (int)Math
-			.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + super.modelHeight * super.modelHeight);
+			.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + base.modelHeight * base.modelHeight);
 	diagonal3D = diagonal3DAboveOrigin
 			+ (int)Math.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + maxY * maxY);
 }
@@ -1081,16 +1081,16 @@ public void handleShading(int intensity, int falloff, int lightX, int lightY, in
 		if(triangleDrawType == null)
 		{
 			int colour = triangleColours[triangle];
-			VertexNormal vertexNormal = super.vertexNormals[x];
+			VertexNormal vertexNormal = base.vertexNormals[x];
 			int lightness = intensity
 					+ (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 							/ (falloff * vertexNormal.magnitude);
 			triangleHSLA[triangle] = mixLightness(colour, lightness, 0);
-			vertexNormal = super.vertexNormals[y];
+			vertexNormal = base.vertexNormals[y];
 			lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 					/ (falloff * vertexNormal.magnitude);
 			triangleHSLB[triangle] = mixLightness(colour, lightness, 0);
-			vertexNormal = super.vertexNormals[z];
+			vertexNormal = base.vertexNormals[z];
 			lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 					/ (falloff * vertexNormal.magnitude);
 			triangleHSLC[triangle] = mixLightness(colour, lightness, 0);
@@ -1099,23 +1099,23 @@ public void handleShading(int intensity, int falloff, int lightX, int lightY, in
 		{
 			int colour = triangleColours[triangle];
 			int drawType = triangleDrawType[triangle];
-			VertexNormal vertexNormal = super.vertexNormals[x];
+			VertexNormal vertexNormal = base.vertexNormals[x];
 			int lightness = intensity
 					+ (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 							/ (falloff * vertexNormal.magnitude);
 			triangleHSLA[triangle] = mixLightness(colour, lightness, drawType);
-			vertexNormal = super.vertexNormals[y];
+			vertexNormal = base.vertexNormals[y];
 			lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 					/ (falloff * vertexNormal.magnitude);
 			triangleHSLB[triangle] = mixLightness(colour, lightness, drawType);
-			vertexNormal = super.vertexNormals[z];
+			vertexNormal = base.vertexNormals[z];
 			lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 					/ (falloff * vertexNormal.magnitude);
 			triangleHSLC[triangle] = mixLightness(colour, lightness, drawType);
 		}
 	}
 
-	super.vertexNormals = null;
+	base.vertexNormals = null;
 	vertexNormalOffset = null;
 	vertexSkins = null;
 	triangleSkins = null;
@@ -1580,19 +1580,19 @@ public void mixAnimationFrames(int framesFrom2[], int frameId2, int frameId1)
 
 public void normalise()
 {
-	super.modelHeight = 0;
+	base.modelHeight = 0;
 	maxY = 0;
 	for(int vertex = 0; vertex < vertexCount; vertex++)
 	{
 		int y = verticesY[vertex];
-		if(-y > super.modelHeight)
-			super.modelHeight = -y;
+		if(-y > base.modelHeight)
+			base.modelHeight = -y;
 		if(y > maxY)
 			maxY = y;
 	}
 
 	diagonal3DAboveOrigin = (int)(Math
-			.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + super.modelHeight * super.modelHeight)
+			.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + base.modelHeight * base.modelHeight)
 			+ 0.98999999999999999D);
 	diagonal3D = diagonal3DAboveOrigin
 			+ (int)(Math.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + maxY * maxY) + 0.98999999999999999D);
@@ -1684,11 +1684,11 @@ public override void renderAtPoint(int i, int yCameraSine, int yCameraCosine, in
 	int k4 = i4 + j4 << 9;
 	if(k4 / i3 <= -DrawingArea.viewportCentreY)
 		return;
-	int l4 = j4 + (super.modelHeight * yCameraCosine >> 16);
+	int l4 = j4 + (base.modelHeight * yCameraCosine >> 16);
 	int i5 = i4 - l4 << 9;
 	if(i5 / i3 >= DrawingArea.viewportCentreY)
 		return;
-	int j5 = l2 + (super.modelHeight * yCameraSine >> 16);
+	int j5 = l2 + (base.modelHeight * yCameraSine >> 16);
 	boolean flag = false;
 	if(k2 - j5 <= 50)
 		flag = true;

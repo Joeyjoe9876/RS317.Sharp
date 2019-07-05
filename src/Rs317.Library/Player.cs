@@ -49,10 +49,10 @@ public sealed class Player : Entity
 		if(npcAppearance != null)
 		{
 			int frameId = -1;
-			if(super.animation >= 0 && super.animationDelay == 0)
-				frameId = AnimationSequence.animations[super.animation].primaryFrames[super.currentAnimationFrame];
-			else if(super.queuedAnimationId >= 0)
-				frameId = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
+			if(base.animation >= 0 && base.animationDelay == 0)
+				frameId = AnimationSequence.animations[base.animation].primaryFrames[base.currentAnimationFrame];
+			else if(base.queuedAnimationId >= 0)
+				frameId = AnimationSequence.animations[base.queuedAnimationId].primaryFrames[base.queuedAnimationFrame];
 			Model model = npcAppearance.getChildModel(-1, frameId, null);
 			return model;
 		}
@@ -61,12 +61,12 @@ public sealed class Player : Entity
 		int i1 = -1;
 		int j1 = -1;
 		int k1 = -1;
-		if(super.animation >= 0 && super.animationDelay == 0)
+		if(base.animation >= 0 && base.animationDelay == 0)
 		{
-			AnimationSequence animation = AnimationSequence.animations[super.animation];
-			k = animation.primaryFrames[super.currentAnimationFrame];
-			if(super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
-				i1 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
+			AnimationSequence animation = AnimationSequence.animations[base.animation];
+			k = animation.primaryFrames[base.currentAnimationFrame];
+			if(base.queuedAnimationId >= 0 && base.queuedAnimationId != base.standAnimationId)
+				i1 = AnimationSequence.animations[base.queuedAnimationId].primaryFrames[base.queuedAnimationFrame];
 			if(animation.playerReplacementShield >= 0)
 			{
 				j1 = animation.playerReplacementShield;
@@ -78,8 +78,8 @@ public sealed class Player : Entity
 				l += k1 - appearance[3] << 48;
 			}
 		}
-		else if(super.queuedAnimationId >= 0)
-			k = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
+		else if(base.queuedAnimationId >= 0)
+			k = AnimationSequence.animations[base.queuedAnimationId].primaryFrames[base.queuedAnimationFrame];
 		Model model_1 = (Model)mruNodes.get(l);
 		if(model_1 == null)
 		{
@@ -150,7 +150,7 @@ public sealed class Player : Entity
 		Model model_2 = Model.aModel_1621;
 		model_2.replaceWithModel(model_1, Animation.isNullFrame(k) & Animation.isNullFrame(i1));
 		if(k != -1 && i1 != -1)
-			model_2.mixAnimationFrames(AnimationSequence.animations[super.animation].flowControl, i1, k);
+			model_2.mixAnimationFrames(AnimationSequence.animations[base.animation].flowControl, i1, k);
 		else if(k != -1)
 			model_2.applyTransformation(k);
 		model_2.calculateDiagonals();
@@ -215,20 +215,20 @@ public sealed class Player : Entity
 		Model appearanceModel = getAnimatedModel();
 		if(appearanceModel == null)
 			return null;
-		super.height = appearanceModel.modelHeight;
+		base.height = appearanceModel.modelHeight;
 		appearanceModel.singleTile = true;
 		if(preventRotation)
 			return appearanceModel;
-		if(super.graphicId != -1 && super.currentAnimationId != -1)
+		if(base.graphicId != -1 && base.currentAnimationId != -1)
 		{
-			SpotAnimation animation = SpotAnimation.cache[super.graphicId];
+			SpotAnimation animation = SpotAnimation.cache[base.graphicId];
 			Model graphicModel = animation.getModel();
 			if(graphicModel != null)
 			{
-				Model model = new Model(true, Animation.isNullFrame(super.currentAnimationId), false, graphicModel);
-				model.translate(0, -super.graphicHeight, 0);
+				Model model = new Model(true, Animation.isNullFrame(base.currentAnimationId), false, graphicModel);
+				model.translate(0, -base.graphicHeight, 0);
 				model.createBones();
-				model.applyTransformation(animation.sequences.primaryFrames[super.currentAnimationId]);
+				model.applyTransformation(animation.sequences.primaryFrames[base.currentAnimationId]);
 				model.triangleSkin = null;
 				model.vertexSkin = null;
 				if(animation.scaleXY != 128 || animation.scaleZ != 128)
@@ -246,36 +246,36 @@ public sealed class Player : Entity
 			if(Client.tick >= modifiedAppearanceStartTime && Client.tick < modifiedAppearanceEndTime)
 			{
 				Model model = playerModel;
-				model.translate(anInt1711 - super.x, drawHeight - drawHeight2, anInt1713 - super.y);
-				if(super.turnDirection == 512)
+				model.translate(anInt1711 - base.x, drawHeight - drawHeight2, anInt1713 - base.y);
+				if(base.turnDirection == 512)
 				{
 					model.rotate90Degrees();
 					model.rotate90Degrees();
 					model.rotate90Degrees();
 				}
-				else if(super.turnDirection == 1024)
+				else if(base.turnDirection == 1024)
 				{
 					model.rotate90Degrees();
 					model.rotate90Degrees();
 				}
-				else if(super.turnDirection == 1536)
+				else if(base.turnDirection == 1536)
 					model.rotate90Degrees();
 				Model models[] = { appearanceModel, model };
 				appearanceModel = new Model(models);
-				if(super.turnDirection == 512)
+				if(base.turnDirection == 512)
 					model.rotate90Degrees();
-				else if(super.turnDirection == 1024)
+				else if(base.turnDirection == 1024)
 				{
 					model.rotate90Degrees();
 					model.rotate90Degrees();
 				}
-				else if(super.turnDirection == 1536)
+				else if(base.turnDirection == 1536)
 				{
 					model.rotate90Degrees();
 					model.rotate90Degrees();
 					model.rotate90Degrees();
 				}
-				model.translate(super.x - anInt1711, drawHeight2 - drawHeight, super.y - anInt1713);
+				model.translate(base.x - anInt1711, drawHeight2 - drawHeight, base.y - anInt1713);
 			}
 		}
 		appearanceModel.singleTile = true;
@@ -325,27 +325,27 @@ public sealed class Player : Entity
 			bodyPartColour[bodyPart] = colour;
 		}
 
-		super.standAnimationId = stream.getUnsignedLEShort();
-		if(super.standAnimationId == 65535)
-			super.standAnimationId = -1;
-		super.standTurnAnimationId = stream.getUnsignedLEShort();
-		if(super.standTurnAnimationId == 65535)
-			super.standTurnAnimationId = -1;
-		super.walkAnimationId = stream.getUnsignedLEShort();
-		if(super.walkAnimationId == 65535)
-			super.walkAnimationId = -1;
-		super.turnAboutAnimationId = stream.getUnsignedLEShort();
-		if(super.turnAboutAnimationId == 65535)
-			super.turnAboutAnimationId = -1;
-		super.turnRightAnimationId = stream.getUnsignedLEShort();
-		if(super.turnRightAnimationId == 65535)
-			super.turnRightAnimationId = -1;
-		super.turnLeftAnimationId = stream.getUnsignedLEShort();
-		if(super.turnLeftAnimationId == 65535)
-			super.turnLeftAnimationId = -1;
-		super.runAnimationId = stream.getUnsignedLEShort();
-		if(super.runAnimationId == 65535)
-			super.runAnimationId = -1;
+		base.standAnimationId = stream.getUnsignedLEShort();
+		if(base.standAnimationId == 65535)
+			base.standAnimationId = -1;
+		base.standTurnAnimationId = stream.getUnsignedLEShort();
+		if(base.standTurnAnimationId == 65535)
+			base.standTurnAnimationId = -1;
+		base.walkAnimationId = stream.getUnsignedLEShort();
+		if(base.walkAnimationId == 65535)
+			base.walkAnimationId = -1;
+		base.turnAboutAnimationId = stream.getUnsignedLEShort();
+		if(base.turnAboutAnimationId == 65535)
+			base.turnAboutAnimationId = -1;
+		base.turnRightAnimationId = stream.getUnsignedLEShort();
+		if(base.turnRightAnimationId == 65535)
+			base.turnRightAnimationId = -1;
+		base.turnLeftAnimationId = stream.getUnsignedLEShort();
+		if(base.turnLeftAnimationId == 65535)
+			base.turnLeftAnimationId = -1;
+		base.runAnimationId = stream.getUnsignedLEShort();
+		if(base.runAnimationId == 65535)
+			base.runAnimationId = -1;
 		name = TextClass.formatName(TextClass.longToName(stream.getLong()));
 		combatLevel = stream.getUnsignedByte();
 		skill = stream.getUnsignedLEShort();

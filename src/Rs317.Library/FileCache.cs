@@ -186,9 +186,11 @@ dataFile.write(buffer, 0, 8);
 		}
 	}
 
-	private synchronized void seek(RandomAccessFile file, int position) throws IOException
+
+	private synchronized void seek(RandomAccessFile file, int position)
 {
-		if (position < 0 || position > 0x3c00000) {
+	if(position < 0 || position > 0x3c00000)
+	{
 		System.out.println("Badseek - pos:" + position + " len:" + file.length());
 		position = 0x3c00000;
 		try
