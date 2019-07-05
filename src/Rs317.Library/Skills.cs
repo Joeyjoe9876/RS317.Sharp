@@ -1,7 +1,6 @@
-
 using System;
 
-sealed class Skills
+public sealed class Skills
 {
 	public static int skillsCount = 25;
 	public static String[] skillNames = { "attack", "defence", "strength", "hitpoints", "ranged", "prayer",

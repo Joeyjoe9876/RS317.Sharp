@@ -4,7 +4,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 
-sealed class RSSocket : IRunnable
+public sealed class RSSocket : IRunnable
 {
 	private NetworkStream inputStream;
 

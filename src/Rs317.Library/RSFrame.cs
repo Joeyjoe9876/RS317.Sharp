@@ -1,5 +1,5 @@
 
-sealed class RSFrame : Frame
+public sealed class RSFrame : Frame
 {
 	private RSApplet applet;
 

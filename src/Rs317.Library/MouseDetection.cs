@@ -2,7 +2,7 @@
 using System;
 using System.Threading;
 
-sealed class MouseDetection : IRunnable
+public sealed class MouseDetection : IRunnable
 {
 	private Client clientInstance;
 

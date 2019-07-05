@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-sealed class TextClass
+public sealed class TextClass
 {
 	public static String asterisksForString(String value)
 	{

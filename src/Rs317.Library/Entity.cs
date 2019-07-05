@@ -28,7 +28,7 @@ public class Entity : Animable
 	int[] hitArray;
 	int[] hitMarkTypes;
 	int[] hitsLoopCycle;
-	protected int queuedAnimationId { get; private set; }
+	public int queuedAnimationId { get; private set; }
 	protected int queuedAnimationFrame { get; private set; }
 	int queuedAnimationDuration;
 	protected int graphicId { get; private set; }
@@ -51,7 +51,7 @@ public class Entity : Animable
 	int faceTowardX;
 	int faceTowardY;
 	int boundaryDimension;
-	bool dynamic;
+	public bool dynamic { get; set; }
 	int stepsRemaining;
 	int startX;
 	int endX;

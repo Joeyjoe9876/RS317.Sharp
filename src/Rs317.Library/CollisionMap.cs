@@ -1,5 +1,5 @@
 
-sealed class CollisionMap
+public sealed class CollisionMap
 {
 	private int insetX;
 
