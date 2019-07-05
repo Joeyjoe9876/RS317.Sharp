@@ -1,4 +1,6 @@
 
+using System;
+
 sealed class TextInput
 {
 	public static String processText(String s)
@@ -63,15 +65,15 @@ sealed class TextInput
 
 	public static void writeToStream(String text, Buffer stream)
 	{
-		if(text.length() > 80)
-			text = text.substring(0, 80);
-		text = text.toLowerCase();
+		if(text.Length > 80)
+			text = text.Substring(0, 80);
+		text = text.ToLower();
 		int i = -1;
-		for(int c = 0; c < text.length(); c++)
+		for(int c = 0; c < text.Length; c++)
 		{
-			char character = text.charAt(c);
+			char character = text[c];
 			int characterCode = 0;
-			for(int l = 0; l < validChars.length; l++)
+			for(int l = 0; l < validChars.Length; l++)
 			{
 				if(character != validChars[l])
 					continue;
@@ -108,6 +110,6 @@ sealed class TextInput
 	private static char[] validChars = { ' ', 'e', 't', 'a', 'o', 'i', 'h', 'n', 's', 'r', 'd', 'l', 'u', 'm',
 			'w', 'c', 'y', 'f', 'g', 'p', 'b', 'v', 'k', 'x', 'j', 'q', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
 			'8', '9', ' ', '!', '?', '.', ',', ':', ';', '(', ')', '-', '&', '*', '\\', '\'', '@', '#', '+', '=',
-			'\243', '$', '%', '"', '[', ']' };
+			(char)243, '$', '%', '"', '[', ']' };
 
 }
