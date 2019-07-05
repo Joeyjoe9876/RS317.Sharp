@@ -1,12 +1,14 @@
 
+using System;
+using System.Text;
+
 sealed class TextClass
 {
-	public static String asterisksForString(String string)
+	public static String asterisksForString(String value)
 	{
-		StringBuffer asterisks = new StringBuffer();
-		for(int c = 0; c < string.length(); c++)
-			asterisks.append("*");
-		return asterisks.toString();
+		StringBuilder asterisks = new StringBuilder();
+		asterisks.Append('*', value.Length);
+		return asterisks.ToString();
 	}
 
 	public static String decodeDNS(int address)
@@ -17,14 +19,14 @@ sealed class TextClass
 
 	public static String formatName(String name)
 	{
-		if(name.length() > 0)
+		if(name.Length > 0)
 		{
-			char characters[] = name.toCharArray();
-			for(int c = 0; c < characters.length; c++)
+			char[] characters = name.ToCharArray();
+			for(int c = 0; c < characters.Length; c++)
 				if(characters[c] == '_')
 				{
 					characters[c] = ' ';
-					if(c + 1 < characters.length && characters[c + 1] >= 'a' && characters[c + 1] <= 'z')
+					if(c + 1 < characters.Length && characters[c + 1] >= 'a' && characters[c + 1] <= 'z')
 						characters[c + 1] = (char)((characters[c + 1] + 65) - 97);
 				}
 
@@ -47,7 +49,8 @@ sealed class TextClass
 			if(longName % 37L == 0L)
 				return "invalid_name";
 			int i = 0;
-			char name[] = new char[12];
+			//TODO: pool
+			char[] name = new char[12];
 			while(longName != 0L)
 			{
 				long n = longName;
@@ -56,19 +59,19 @@ sealed class TextClass
 			}
 			return new String(name, 12 - i, i);
 		}
-		catch(RuntimeException runtimeexception)
+		catch(Exception runtimeexception)
 		{
-			signlink.reporterror("81570, " + longName + ", " + (byte)-99 + ", " + runtimeexception.toString());
+			signlink.reporterror($"81570, {longName}, {unchecked((byte) -99)}, {runtimeexception.ToString()}");
+			throw;
 		}
-		throw new RuntimeException();
 	}
 
 	public static long nameToLong(String name)
 	{
 		long longName = 0L;
-		for(int c = 0; c < name.length() && c < 12; c++)
+		for(int c = 0; c < name.Length && c < 12; c++)
 		{
-			char character = name.charAt(c);
+			char character = name[c];
 			longName *= 37L;
 			if(character >= 'A' && character <= 'Z')
 				longName += (1 + character) - 65;
@@ -85,11 +88,11 @@ sealed class TextClass
 
 	public static long spriteNameToHash(String spriteName)
 	{
-		spriteName = spriteName.toUpperCase();
+		spriteName = spriteName.ToUpper();
 		long longSpriteName = 0L;
-		for(int c = 0; c < spriteName.length(); c++)
+		for(int c = 0; c < spriteName.Length; c++)
 		{
-			longSpriteName = (longSpriteName * 61L + spriteName.charAt(c)) - 32L;
+			longSpriteName = (longSpriteName * 61L + spriteName[c]) - 32L;
 			longSpriteName = longSpriteName + (longSpriteName >> 56) & 0xffffffffffffffL;
 		}
 		return longSpriteName;
