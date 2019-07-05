@@ -1,4 +1,6 @@
 
+using System;
+
 public sealed class RSInterface
 {
 	private static Sprite getImage(int spriteId, Archive streamLoader, String spriteName)
@@ -14,7 +16,7 @@ public sealed class RSInterface
 		}
 		catch(Exception _ex)
 		{
-			return null;
+			throw;
 		}
 		return sprite;
 	}
@@ -28,14 +30,14 @@ public sealed class RSInterface
 			modelCache.put(model, (modelType << 16) + modelId);
 	}
 
-	public static void unpack(Archive streamLoader, GameFont fonts[], Archive mediaArchive)
+	public static void unpack(Archive streamLoader, GameFont[] fonts, Archive mediaArchive)
 	{
 		spriteCache = new Cache(50000);
 		Buffer stream = new Buffer(streamLoader.decompressFile("data"));
 		int parentId = -1;
 		int interfaceCount = stream.getUnsignedLEShort();
 		cache = new RSInterface[interfaceCount];
-		while(stream.position < stream.buffer.length)
+		while(stream.position < stream.buffer.Length)
 		{
 			int id = stream.getUnsignedLEShort();
 			if(id == 65535)
@@ -125,11 +127,11 @@ public sealed class RSInterface
 						rsInterface.spritesX[sprite] = stream.getShort();
 						rsInterface.spritesY[sprite] = stream.getShort();
 						String name = stream.getString();
-						if(mediaArchive != null && name.length() > 0)
+						if(mediaArchive != null && name.Length > 0)
 						{
-							int spriteId = name.lastIndexOf(",");
-							rsInterface.sprites[sprite] = getImage(Integer.parseInt(name.substring(spriteId + 1)),
-									mediaArchive, name.substring(0, spriteId));
+							int spriteId = name.LastIndexOf(',');
+							rsInterface.sprites[sprite] = getImage(int.Parse(name.Substring(spriteId + 1)),
+									mediaArchive, name.Substring(0, spriteId));
 						}
 					}
 				}
@@ -138,7 +140,7 @@ public sealed class RSInterface
 				for(int action = 0; action < 5; action++)
 				{
 					rsInterface.actions[action] = stream.getString();
-					if(rsInterface.actions[action].length() == 0)
+					if(rsInterface.actions[action].Length == 0)
 						rsInterface.actions[action] = null;
 				}
 
@@ -169,18 +171,18 @@ public sealed class RSInterface
 			if(rsInterface.type == 5)
 			{
 				String spriteName = stream.getString();
-				if(mediaArchive != null && spriteName.length() > 0)
+				if(mediaArchive != null && spriteName.Length > 0)
 				{
-					int spriteId = spriteName.lastIndexOf(",");
-					rsInterface.spriteDefault = getImage(Integer.parseInt(spriteName.substring(spriteId + 1)),
-							mediaArchive, spriteName.substring(0, spriteId));
+					int spriteId = spriteName.LastIndexOf(",");
+					rsInterface.spriteDefault = getImage(int.Parse(spriteName.Substring(spriteId + 1)),
+							mediaArchive, spriteName.Substring(0, spriteId));
 				}
 				spriteName = stream.getString();
-				if(mediaArchive != null && spriteName.length() > 0)
+				if(mediaArchive != null && spriteName.Length > 0)
 				{
-					int spriteId = spriteName.lastIndexOf(",");
-					rsInterface.spriteActive = getImage(Integer.parseInt(spriteName.substring(spriteId + 1)),
-							mediaArchive, spriteName.substring(0, spriteId));
+					int spriteId = spriteName.LastIndexOf(",");
+					rsInterface.spriteActive = getImage(int.Parse(spriteName.Substring(spriteId + 1)),
+							mediaArchive, spriteName.Substring(0, spriteId));
 				}
 			}
 			if(rsInterface.type == 6)
@@ -228,7 +230,7 @@ public sealed class RSInterface
 				for(int active = 0; active < 5; active++)
 				{
 					rsInterface.actions[active] = stream.getString();
-					if(rsInterface.actions[active].length() == 0)
+					if(rsInterface.actions[active].Length == 0)
 						rsInterface.actions[active] = null;
 				}
 
@@ -247,7 +249,7 @@ public sealed class RSInterface
 					|| rsInterface.actionType == 6)
 			{
 				rsInterface.tooltip = stream.getString();
-				if(rsInterface.tooltip.length() == 0)
+				if(rsInterface.tooltip.Length == 0)
 				{
 					if(rsInterface.actionType == 1)
 						rsInterface.tooltip = "Ok";
@@ -267,13 +269,13 @@ public sealed class RSInterface
 
 	public int animationDuration;
 
-	public Sprite sprites[];
+	public Sprite[] sprites;
 
-	public static RSInterface cache[];
+	public static RSInterface[] cache;
 
-	public int conditionValue[];
+	public int[] conditionValue;
 	public int contentType;
-	public int spritesX[];
+	public int[] spritesX;
 	public int colourDefaultHover;
 	public int actionType;
 	public String spellName;
@@ -283,8 +285,8 @@ public sealed class RSInterface
 	public String selectedActionName;
 	public bool textCentred;
 	public int scrollPosition;
-	public String actions[];
-	public int opcodes[][];
+	public String[] actions;
+	public int[][] opcodes;
 	public bool filled;
 	public String textActive;
 	public int hoveredPopup;
@@ -297,19 +299,19 @@ public sealed class RSInterface
 	public int spellUsableOn;
 	private static Cache spriteCache;
 	public int colourActiveHover;
-	public int children[];
-	public int childX[];
+	public int[] children;
+	public int[] childX;
 	public bool usableItemInterface;
 	public GameFont textDrawingAreas;
 	public int inventorySpritePaddingRow;
-	public int conditionType[];
+	public int[] conditionType;
 	public int animationFrame;
-	public int spritesY[];
+	public int[] spritesY;
 	public String textDefault;
 	public bool inventory;
 	public int id;
-	public int inventoryStackSize[];
-	public int inventoryItemId[];
+	public int[] inventoryStackSize;
+	public int[] inventoryItemId;
 	public byte alpha;
 	private int modelTypeActive;
 	private int modelIdActive;
@@ -328,7 +330,7 @@ public sealed class RSInterface
 	public int modelZoom;
 	public int modelRotationX;
 	public int modelRotationY;
-	public int childY[];
+	public int[] childY;
 
 	public RSInterface()
 	{
