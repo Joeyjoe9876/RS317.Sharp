@@ -1,7 +1,9 @@
 
+using System;
+
 public sealed class Varp
 {
-	public static Varp values[];
+	public static Varp[] values;
 	public int type;
 
 	public static void load(Archive archive)
@@ -24,9 +26,9 @@ public sealed class Varp
 			values[i].load(stream);
 		}
 
-		if(stream.position != stream.buffer.length)
+		if(stream.position != stream.buffer.Length)
 		{
-			System.out.println("varptype load mismatch");
+			throw new InvalidOperationException("varptype load mismatch");
 		}
 	}
 
@@ -68,7 +70,7 @@ public sealed class Varp
 			{
 			} // dummy
 			else
-				System.out.println("Error unrecognised config code: " + opcode);
+				throw new InvalidOperationException($"Error unrecognized config code: {opcode}");
 		} while(true);
 	}
 
