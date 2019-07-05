@@ -1,10 +1,18 @@
 
-public sealed class signlink : Runnable
+using System;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+
+public sealed class signlink
 {
-	public static synchronized void dnslookup(String s)
+	[MethodImpl(MethodImplOptions.Synchronized)]
+	public static void dnslookup(String s)
 	{
-		dns = s;
-		dnsreq = s;
+		throw new NotImplementedException($"TODO: DNS requests are temporarily disabled.");
 	}
 
 	private static String findcachedir()
@@ -12,65 +20,71 @@ public sealed class signlink : Runnable
 		return "./cache/";
 	}
 
+	//Pulled from R2Sharp
 	public static String findcachedirORIG()
 	{
-		String as[] = {
+		String[] locations = {
 			"c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/", "e:/windows/", "e:/winnt/",
 				"f:/windows/", "f:/winnt/", "c:/", "~/", "/tmp/", "", "c:/rscache", "/rscache" };
 		if(storeid < 32 || storeid > 34)
 			storeid = 32;
 		String s = ".file_store_" + storeid;
-		for(int i = 0; i < as.length; i++)
+		for(int i = 0; i < locations.Length; i++)
 			try
-		{
-			String s1 = as[i];
-			if(s1.length() > 0)
 			{
-				File file = new File(s1);
-				if(!file.exists())
-					continue;
+				String s1 = locations[i];
+				if (s1.Length > 0)
+				{
+					if (!Directory.Exists(s1))
+						continue;
+				}
+
+				if (File.Exists(s1 + s) || Directory.Exists(s1 + s))
+					return s1 + s + "/";
 			}
-			File file1 = new File(s1 + s);
-			if(file1.exists() || file1.mkdir())
-				return s1 + s + "/";
-		}
-		catch(Exception _ex)
-		{
-		}
+			catch (Exception _ex)
+			{
+				throw new InvalidOperationException($"Failed: {nameof(findcachedirORIG)}");
+			}
 
 		return null;
-
 	}
 
 	private static int getuid(String s)
 	{
 		try
 		{
-			File file = new File(s + "uid.dat");
-			if(!file.exists() || file.length() < 4L)
+			bool exists = File.Exists(s + "uid.dat");
+			FileStream file = null;
+			if (exists)
+				file = File.Open(s + "uid.dat", FileMode.Open);
+			if (!exists || file.Length < 4L)
 			{
-				DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(s + "uid.dat"));
-				dataoutputstream.writeInt((int)(Math.random() * 99999999D));
-				dataoutputstream.close();
+				BinaryWriter dataoutputstream = new BinaryWriter(File.OpenRead(s + "uid.dat"));
+				dataoutputstream.Write((int) (StaticRandomGenerator.Next() * 99999999D));
+				dataoutputstream.Close();
 			}
 		}
-		catch(Exception _ex)
+		catch (Exception _ex)
 		{
+			throw new InvalidOperationException($"Failed to generate and write uid.");
 		}
+
 		try
 		{
-			DataInputStream datainputstream = new DataInputStream(new FileInputStream(s + "uid.dat"));
-			int i = datainputstream.readInt();
-			datainputstream.close();
+			BinaryReader datainputstream = new BinaryReader(File.OpenRead(s + "uid.dat"));
+			int i = datainputstream.ReadInt32();
+			datainputstream.Close();
 			return i + 1;
 		}
 		catch(Exception _ex)
 		{
-			return 0;
+			throw new InvalidOperationException($"Failed to read uid.");
 		}
 	}
 
-	public static synchronized void midisave(byte abyte0[], int i)
+	[MethodImpl(MethodImplOptions.Synchronized)]
+	public static void midisave(byte[] abyte0, int i)
 	{
 		if(i > 0x1e8480)
 			return;
@@ -87,27 +101,21 @@ public sealed class signlink : Runnable
 		}
 	}
 
-	//TODO: Add exception documentation
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <exception cref=""></exception>
-	/// <returns></returns>
-	public static synchronized Socket openSocket(int port)
+	//TODO: Do we need to re-add the syncronization?
+	public static async Task<TcpClient> openSocket(int port)
 	{
-		for(socketreq = port; socketreq != 0;)
-			try
-			{
-				Thread.sleep(50L);
-			}
-			catch(Exception _ex)
-			{
-			}
+		if(port < 0) throw new ArgumentOutOfRangeException(nameof(port));
 
-		if(socket == null)
-			throw new IOException("could not open socket");
-		else
-			return socket;
+		//I think the rest of the codebase assumes we DON'T actually
+		//mantain a single tcp client state.
+
+		TcpClient client = new TcpClient();
+
+		await client.ConnectAsync(socketip, port)
+			.ConfigureAwait(false);
+
+		//TODO: Should we check if it's connected??
+		return client;
 	}
 
 	//TODO: Add exception documentation
@@ -116,9 +124,13 @@ public sealed class signlink : Runnable
 	/// </summary>
 	/// <exception cref=""></exception>
 	/// <returns></returns>
-	public static synchronized DataInputStream openurl(String s)
+	[MethodImpl(MethodImplOptions.Synchronized)]
+	public static Task<MemoryStream> openurl(String s)
 	{
-		for(urlreq = s; urlreq != null;)
+		if (string.IsNullOrEmpty(s)) throw new ArgumentException("Value cannot be null or empty.", nameof(s));
+
+		throw new NotImplementedException($"TODO: Whenever 317refactor reimplements this in openJagGrabInputStream then implement");
+		/*for(urlreq = s; urlreq != null;)
 			try
 			{
 				Thread.sleep(50L);
@@ -130,54 +142,43 @@ public sealed class signlink : Runnable
 		if(urlstream == null)
 			throw new IOException("could not open: " + s);
 		else
-			return urlstream;
+			return urlstream;*/
 	}
 
 	public static void reporterror(String s)
 	{
-		System.out.println("Error: " + s);
+		Console.WriteLine($"Error: {s}");
 	}
 
-	public static void startpriv(InetAddress inetaddress)
+	public static Task startpriv(IPAddress inetaddress)
 	{
-		threadliveid = (int)(Math.random() * 99999999D);
 		if(active)
-		{
-			try
-			{
-				Thread.sleep(500L);
-			}
-			catch(Exception _ex)
-			{
-			}
-			active = false;
-		}
-		socketreq = 0;
-		threadreq = null;
-		dnsreq = null;
+			throw new InvalidOperationException($"Cannot call this method when thread is active.");
+
 		savereq = null;
 		urlreq = null;
 		socketip = inetaddress;
-		Thread thread = new Thread(new signlink());
-		thread.setDaemon(true);
-		thread.start();
-		while(!active)
-			try
-			{
-				Thread.sleep(50L);
-			}
-			catch(Exception _ex)
-			{
-			}
+
+		//TODO: This design is so shit, why would anyone do this.
+		return Task.Factory.StartNew(async () =>
+		{
+			new signlink().run();
+		}, TaskCreationOptions.LongRunning);
 	}
 
-	public static synchronized void startThread(Runnable runnable, int priority)
+	[MethodImpl(MethodImplOptions.Synchronized)]
+	public static void startThread(IRunnable runnable, int priority)
 	{
-		threadreqpri = priority;
-		threadreq = runnable;
+		ThreadPool.QueueUserWorkItem(new WaitCallback(s => runnable.run()));
+
+		/*Thread newThread = new Thread(new ThreadStart(runnable.run));
+		newThread.IsBackground = true;
+		newThread.Priority = priority;
+		newThread.Start();*/
 	}
 
-	public static synchronized bool wavereplay()
+	[MethodImpl(MethodImplOptions.Synchronized)]
+	public static bool wavereplay()
 	{
 		if(savereq != null)
 		{
@@ -192,7 +193,8 @@ public sealed class signlink : Runnable
 		}
 	}
 
-	public static synchronized bool wavesave(byte abyte0[], int i)
+	[MethodImpl(MethodImplOptions.Synchronized)]
+	public static bool wavesave(byte[] abyte0, int i)
 	{
 		if(i > 0x1e8480)
 			return false;
@@ -216,21 +218,17 @@ public sealed class signlink : Runnable
 	public static int uid;
 
 	public static int storeid = 32;
-	public static RandomAccessFile cache_dat = null;
-	public static RandomAccessFile[] cache_idx = new RandomAccessFile[5];
+	public static FileStream cache_dat = null;
+	public static FileStream[] cache_idx = new FileStream[5];
 	public static bool sunjava;
 	public static Applet applet = null;
 	private static bool active;
 	private static int threadliveid;
-	private static InetAddress socketip;
+	private static IPAddress socketip;
 	private static int socketreq;
-	private static Socket socket = null;
-	private static int threadreqpri = 1;
-	private static Runnable threadreq = null;
-	private static String dnsreq = null;
+	private static TcpClient socket = null;
 	public static String dns = null;
 	private static String urlreq = null;
-	private static DataInputStream urlstream = null;
 	private static int savelen;
 	private static String savereq = null;
 	private static byte[] savebuf = null;
@@ -242,84 +240,62 @@ public sealed class signlink : Runnable
 	private static bool waveplay;
 	private static int wavepos;
 	public static int wavevol;
-	public static bool reporterror = true;
+	public static bool shouldReportErrors = true;
 	public static String errorname = "";
 
 	private signlink()
 	{
 	}
 
-	public override void run()
+	public void run()
 	{
 		active = true;
 		String s = findcachedir();
 		uid = getuid(s);
 		try
 		{
-			File file = new File(s + "main_file_cache.dat");
-			if(file.exists() && file.length() > 0x3200000L)
-				file.delete();
-			cache_dat = new RandomAccessFile(s + "main_file_cache.dat", "rw");
+			if (File.Exists($"{s}main_file_cache.dat"))
+			{
+				//Just like RS2Sharp we skip the part where
+				//it checks if the cache is too large.
+				/*if(file.exists() && file.length() > 0x3200000L)
+					file.delete();*/
+			}
+			
+			cache_dat = new FileStream($"{s}main_file_cache.dat", FileMode.Open);
 			for(int j = 0; j < 5; j++)
-				cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx" + j, "rw");
+				cache_idx[j] = new FileStream($"{s}main_file_cache.idx{j}", FileMode.Open);
 
 		}
 		catch(Exception exception)
 		{
-			exception.printStackTrace();
+			throw new InvalidOperationException($"Failed to load cache. \n StackTrack: {exception.StackTrace}", exception);
 		}
-		for(int i = threadliveid; threadliveid == i;)
+
+		while (true)
 		{
-			if(socketreq != 0)
+			if (savereq != null)
 			{
-				try
-				{
-					socket = new Socket(socketip, socketreq);
-				}
-				catch(Exception _ex)
-				{
-					socket = null;
-				}
-				socketreq = 0;
-			}
-			else if(threadreq != null)
-			{
-				Thread thread = new Thread(threadreq);
-				thread.setDaemon(true);
-				thread.start();
-				thread.setPriority(threadreqpri);
-				threadreq = null;
-			}
-			else if(dnsreq != null)
-			{
-				try
-				{
-					dns = InetAddress.getByName(dnsreq).getHostName();
-				}
-				catch(Exception _ex)
-				{
-					dns = "unknown";
-				}
-				dnsreq = null;
-			}
-			else if(savereq != null)
-			{
-				if(savebuf != null)
+				if (savebuf != null)
 					try
 					{
-						FileOutputStream fileoutputstream = new FileOutputStream(s + savereq);
-						fileoutputstream.write(savebuf, 0, savelen);
-						fileoutputstream.close();
+						using (FileStream fileoutputstream = new FileStream(s + savereq, FileMode.Open))
+						{
+							fileoutputstream.Write(savebuf, 0, savelen);
+
+						}
 					}
-					catch(Exception _ex)
+					catch (Exception _ex)
 					{
+
 					}
-				if(waveplay)
+
+				if (waveplay)
 				{
 					waveplay = false;
 				}
 
-				if(midiplay)
+				if (midiplay)
 				{
 					midi = s + savereq;
 					midiplay = false;
@@ -327,28 +303,6 @@ public sealed class signlink : Runnable
 
 				savereq = null;
 			}
-			else if(urlreq != null)
-			{
-				try
-				{
-					System.out.println("urlstream");
-					urlstream = new DataInputStream((new URL(applet.getCodeBase(), urlreq)).openStream());
-				}
-				catch(Exception _ex)
-				{
-					urlstream = null;
-				}
-				urlreq = null;
-			}
-			try
-			{
-				Thread.sleep(50L);
-			}
-			catch(Exception _ex)
-			{
-			}
 		}
-
 	}
-
 }
