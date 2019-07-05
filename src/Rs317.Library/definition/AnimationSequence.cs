@@ -1,4 +1,6 @@
 
+using System;
+
 public sealed class AnimationSequence
 {
 	public static void unpackConfig(Archive streamLoader)
@@ -15,16 +17,16 @@ public sealed class AnimationSequence
 		}
 	}
 
-	public static AnimationSequence animations[];
+	public static AnimationSequence[] animations;
 
 	public int frameCount;
 
-	public int primaryFrames[];
+	public int[] primaryFrames;
 
-	public int secondaryFrames[];
+	public int[] secondaryFrames;
 	private int[] frameLengths;
 	public int frameStep;
-	public int flowControl[];
+	public int[] flowControl;
 	public bool dynamic;
 	public int priority;
 	public int playerReplacementShield;
@@ -122,8 +124,9 @@ public sealed class AnimationSequence
 			else if(opcode == 12)
 				stream.getInt();
 			else
-				System.out.println("Error unrecognised seq config code: " + opcode);
+				throw new InvalidOperationException($"Error unrecognized seq config code: {opcode}");
 		} while(true);
+
 		if(frameCount == 0)
 		{
 			frameCount = 1;
