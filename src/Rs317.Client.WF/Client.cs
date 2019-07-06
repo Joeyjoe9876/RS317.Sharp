@@ -7779,8 +7779,8 @@ namespace Rs317
 					inStream.position = 0;
 					serverSessionKey = inStream.getLong();
 					int[] seed = new int[4];
-					seed[0] = (int)(StaticRandomGenerator.Next() * 99999999D);
-					seed[1] = (int)(StaticRandomGenerator.Next() * 99999999D);
+					seed[0] = (int)(StaticRandomGenerator.NextInt() * 99999999D);
+					seed[1] = (int)(StaticRandomGenerator.NextInt() * 99999999D);
 					seed[2] = (int)(serverSessionKey >> 32);
 					seed[3] = (int)serverSessionKey;
 					stream.position = 0;
