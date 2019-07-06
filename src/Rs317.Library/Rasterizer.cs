@@ -1580,6 +1580,8 @@ public sealed class Rasterizer : DrawingArea
 				texelCache[textureId, 49152 + texelPointer] = texelValue - ((int)((uint)texelValue >> 2)) - ((int)((uint)texelValue >> 3)) & 0xf8f8ff;
 			}
 		}
+
+		texelCacheMask.Set(textureId, true);
 	}
 
 	private static void method375(int[] ai, int i, int l, int i1, int j1, int k1)
