@@ -157,9 +157,9 @@ public class RSApplet : Form, IRunnable, IRunnableStarter, IMouseInputQueryable 
 		int j = e.Y;
 
 		idleTime = 0;
-		clickX = i;
-		clickY = j;
-		clickTime = TimeService.CurrentTimeInMilliseconds();
+		eventClickX = i;
+		eventClickY = j;
+		eventClickTime = TimeService.CurrentTimeInMilliseconds();
 		if(e.Button == System.Windows.Forms.MouseButtons.Right)
 		{
 			eventMouseButton = 2;
@@ -170,6 +170,8 @@ public class RSApplet : Form, IRunnable, IRunnableStarter, IMouseInputQueryable 
 			eventMouseButton = 1;
 			mouseButton = 1;
 		}
+
+		Console.WriteLine($"Mouse Process");
 	}
 
 	public void mouseReleased(object sender, MouseEventArgs e)
