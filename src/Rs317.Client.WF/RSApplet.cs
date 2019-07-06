@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Rs317;
 
-public class RSApplet : Form, IRunnable //Instead of that Java stuff we just implement Windows form.
+public class RSApplet : Form, IRunnable, IRunnableStarter, IMouseInputQueryable //Instead of that Java stuff we just implement Windows form.
 {
 	private int gameState;
 
@@ -19,11 +19,11 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 
 	public int fps { get; private set; }
 
-	bool debugRequested;
+	public bool debugRequested { get; set; }
 
-	int width;
+	protected int width { get; private set; }
 
-	int height;
+	protected int height { get; private set; }
 
 	protected Graphics gameGraphics { get; private set; }
 
@@ -31,15 +31,16 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 
 	private bool clearScreen;
 
-	bool awtFocus;
+	protected bool awtFocus { get; set; }
 
-	int idleTime;
+	protected int idleTime { get; set; }
 
-	int mouseButton;
+	protected int mouseButton { get; private set; }
 
-	public int mouseX;
+	//IMouseInputQueryable
+	public int mouseX { get; private set; }
 
-	public int mouseY;
+	public int mouseY { get; private set; }
 
 	private int eventMouseButton;
 
@@ -49,13 +50,13 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 
 	private long eventClickTime;
 
-	int clickType;
+	public int clickType { get; protected set; }
 
 	protected int clickX { get; private set; }
 
 	protected int clickY { get; private set; }
 
-	long clickTime;
+	protected long clickTime { get; private set; }
 
 	protected int[] keyStatus { get; private set; }
 
@@ -91,7 +92,7 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 		this.ClientSize = new System.Drawing.Size(width, height);
 		gameGraphics = CreateGraphics();
 		fullGameScreen = new RSImageProducer(this.width, height, this);
-		startRunnable(this, 1);
+		StartRunnable(this, 1);
 		Application.Run(this);
 	}
 
@@ -398,7 +399,7 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 	{
 	}
 
-	void redraw()
+	public virtual void redraw()
 	{
 	}
 
@@ -526,13 +527,14 @@ public class RSApplet : Form, IRunnable //Instead of that Java stuff we just imp
 		delayTime = 1000 / frameRate;
 	}
 
-	public void startRunnable(IRunnable runnable, int priority)
+	public void StartRunnable(IRunnable runnable, int priority)
 	{
 		//Run it on the threadpool instead.
-		Task.Factory.StartNew(runnable.run);
+		Task.Factory.StartNew(runnable.run, priority < 1 ? TaskCreationOptions.LongRunning : TaskCreationOptions.None);
 	}
 
 	public virtual void startUp()
 	{
+
 	}
 }
