@@ -11909,7 +11909,7 @@ namespace Rs317
 			}
 			catch(Exception exception)
 			{
-				signlink.reporterror("loaderror " + loadingBarText + " " + loadingBarPercentage);
+				signlink.reporterror($"Error loading. During: {loadingBarText} State: {loadingBarPercentage}% Reason: {exception.Message} \n\n Stack: {exception.StackTrace}");
 			}
 
 			loadingError = true;
