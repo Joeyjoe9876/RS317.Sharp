@@ -118,13 +118,47 @@ public sealed class WorldController
 	private int[] anIntArray486;
 	private int[] anIntArray487;
 	private int anInt488;
-	private int[,] tileShapePoints = { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1 }, { 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 },
-			{ 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1 }, { 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 }, { 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 }, { 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1 },
-			{ 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1 } };
+	private int[][] tileShapePoints = new int[][] {
+		new int[16], new int[]{
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			1, 1, 1, 1, 1, 1
+		}, new int[]{
+			1, 0, 0, 0, 1, 1, 0, 0, 1, 1,
+			1, 0, 1, 1, 1, 1
+		}, new int[]{
+			1, 1, 0, 0, 1, 1, 0, 0, 1, 0,
+			0, 0, 1, 0, 0, 0
+		}, new int[]{
+			0, 0, 1, 1, 0, 0, 1, 1, 0, 0,
+			0, 1, 0, 0, 0, 1
+		}, new int[]{
+			0, 1, 1, 1, 0, 1, 1, 1, 1, 1,
+			1, 1, 1, 1, 1, 1
+		}, new int[]{
+			1, 1, 1, 0, 1, 1, 1, 0, 1, 1,
+			1, 1, 1, 1, 1, 1
+		}, new int[]{
+			1, 1, 0, 0, 1, 1, 0, 0, 1, 1,
+			0, 0, 1, 1, 0, 0
+		}, new int[]{
+			0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+			0, 0, 1, 1, 0, 0
+		}, new int[]{
+			1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+			1, 1, 0, 0, 1, 1
+		},
+		new int[]{
+			1, 1, 1, 1, 1, 1, 0, 0, 1, 0,
+			0, 0, 1, 0, 0, 0
+		}, new int[]{
+			0, 0, 0, 0, 0, 0, 1, 1, 0, 1,
+			1, 1, 0, 1, 1, 1
+		},new int[] {
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 0, 1, 1, 1, 1
+		}
+	};
+
 	private int[,] tileShapeIndices = { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
 			{ 12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3 },
 			{ 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
@@ -570,10 +604,14 @@ public sealed class WorldController
 		{
 			for(int line = 0; line < 4; line++)
 			{
-				pixels[pixelPointer] = tileShapePoints[shape, tileShapeIndices[rotation, shapePointer++]] != 0 ? overlayRGB : underlayRGB;
-				pixels[pixelPointer + 1] = tileShapePoints[shape, tileShapeIndices[rotation, shapePointer++]] != 0 ? overlayRGB : underlayRGB;
-				pixels[pixelPointer + 2] = tileShapePoints[shape, tileShapeIndices[rotation, shapePointer++]] != 0 ? overlayRGB : underlayRGB;
-				pixels[pixelPointer + 3] = tileShapePoints[shape, tileShapeIndices[rotation, shapePointer++]] != 0 ? overlayRGB : underlayRGB;
+				/*pixels[pixelPointer] = shapePoints[shapeIndices[shapePointer++]] != 0 ? overlayRGB : underlayRGB;
+				pixels[pixelPointer + 1] = shapePoints[shapeIndices[shapePointer++]] != 0 ? overlayRGB : underlayRGB;
+				pixels[pixelPointer + 2] = shapePoints[shapeIndices[shapePointer++]] != 0 ? overlayRGB : underlayRGB;
+				pixels[pixelPointer + 3] = shapePoints[shapeIndices[shapePointer++]] != 0 ? overlayRGB : underlayRGB;*/
+				pixels[pixelPointer] = tileShapePoints[shape][tileShapeIndices[rotation, shapePointer++]] != 0 ? overlayRGB : underlayRGB;
+				pixels[pixelPointer + 1] = tileShapePoints[shape][tileShapeIndices[rotation, shapePointer++]] != 0 ? overlayRGB : underlayRGB;
+				pixels[pixelPointer + 2] = tileShapePoints[shape][tileShapeIndices[rotation, shapePointer++]] != 0 ? overlayRGB : underlayRGB;
+				pixels[pixelPointer + 3] = tileShapePoints[shape][tileShapeIndices[rotation, shapePointer++]] != 0 ? overlayRGB : underlayRGB;
 				pixelPointer += scanLength;
 			}
 
@@ -581,13 +619,13 @@ public sealed class WorldController
 		}
 		for(int line = 0; line < 4; line++)
 		{
-			if(tileShapePoints[shape, tileShapeIndices[rotation, shapePointer++]] != 0)
+			if(tileShapePoints[shape][tileShapeIndices[rotation, shapePointer++]] != 0)
 				pixels[pixelPointer] = overlayRGB;
-			if(tileShapePoints[shape, tileShapeIndices[rotation, shapePointer++]] != 0)
+			if(tileShapePoints[shape][tileShapeIndices[rotation, shapePointer++]] != 0)
 				pixels[pixelPointer + 1] = overlayRGB;
-			if(tileShapePoints[shape, tileShapeIndices[rotation, shapePointer++]] != 0)
+			if(tileShapePoints[shape][tileShapeIndices[rotation, shapePointer++]] != 0)
 				pixels[pixelPointer + 2] = overlayRGB;
-			if(tileShapePoints[shape, tileShapeIndices[rotation, shapePointer++]] != 0)
+			if(tileShapePoints[shape][tileShapeIndices[rotation, shapePointer++]] != 0)
 				pixels[pixelPointer + 3] = overlayRGB;
 			pixelPointer += scanLength;
 		}
