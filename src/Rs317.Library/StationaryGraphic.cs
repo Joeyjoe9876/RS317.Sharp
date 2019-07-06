@@ -1,5 +1,5 @@
 
-sealed class StationaryGraphic : Animable
+public sealed class StationaryGraphic : Animable
 {
 	public int z;
 

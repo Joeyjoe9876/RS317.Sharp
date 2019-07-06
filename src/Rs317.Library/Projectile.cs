@@ -1,7 +1,7 @@
 
 using System;
 
-sealed class Projectile : Animable
+public sealed class Projectile : Animable
 {
 	public int delay;
 

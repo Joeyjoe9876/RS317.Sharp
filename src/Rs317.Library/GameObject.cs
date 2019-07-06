@@ -1,5 +1,5 @@
 
-sealed class GameObject : Animable
+public sealed class GameObject : Animable
 {
 	private int frame;
 

@@ -1,7 +1,7 @@
 
 using System;
 
-sealed class TextInput
+public sealed class TextInput
 {
 	public static String processText(String s)
 	{
