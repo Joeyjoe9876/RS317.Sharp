@@ -516,10 +516,12 @@ public sealed class OnDemandFetcher : IRunnable
 
 	public void request(int i, int j)
 	{
-		if(i < 0 || i > versions.Rank || j < 0 || j > versions[i].Length)
-			return;
+		if(i < 0 || i > versions.Length || j < 0 || j > versions[i].Length)
+			throw new InvalidOperationException($"Failed to request map chunk: {i},{j}");
+
 		if(versions[i][j] == 0)
-			return;
+			throw new InvalidOperationException($"Failed to request map chunk: {i},{j} Versions are 0");
+
 		lock(nodeSubList)
 		{
 			for(OnDemandData onDemandData = (OnDemandData)nodeSubList
