@@ -70,7 +70,7 @@ public sealed class EntityDefinition
 	public long id;
 	public int degreesToTurn;
 	private static EntityDefinition[] cache;
-	public static Client clientInstance;
+	public static IBaseClient clientInstance;
 	public int turnRightAnimationId;
 	public bool clickable;
 	private int brightness;
@@ -117,10 +117,10 @@ public sealed class EntityDefinition
 
 			//TODO: Make this config stuff, not something in Client.
 			int bit = ConstantData.GetBitfieldMaxValue(msb - lsb);
-			childId = clientInstance.interfaceSettings[configId] >> lsb & bit;
+			childId = clientInstance.GetInterfaceSettings(configId) >> lsb & bit;
 		}
 		else if(settingId != -1)
-			childId = clientInstance.interfaceSettings[settingId];
+			childId = clientInstance.GetInterfaceSettings(settingId);
 		if(childId < 0 || childId >= childrenIDs.Length || childrenIDs[childId] == -1)
 			return null;
 		else

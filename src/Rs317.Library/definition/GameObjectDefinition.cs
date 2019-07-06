@@ -79,7 +79,7 @@ public sealed class GameObjectDefinition
 	public int sizeY;
 	public bool adjustToTerrain;
 	public bool wall;
-	public static Client clientInstance;
+	public static IBaseClient clientInstance;
 	private bool unwalkableSolid;
 	public bool solid;
 	public int face;
@@ -218,10 +218,10 @@ public sealed class GameObjectDefinition
 			int lsb = varBit.leastSignificantBit;
 			int msb = varBit.mostSignificantBit;
 			int bit = ConstantData.GetBitfieldMaxValue(msb - lsb);
-			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
+			child = clientInstance.GetInterfaceSettings(configId) >> lsb & bit;
 		}
 		else if(configIds != -1)
-			child = clientInstance.interfaceSettings[configIds];
+			child = clientInstance.GetInterfaceSettings(configIds);
 		if(child < 0 || child >= childIds.Length || childIds[child] == -1)
 			return null;
 		else

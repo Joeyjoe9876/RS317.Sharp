@@ -16,7 +16,7 @@ public sealed class GameObject : Animable
 	private int vertexHeightTopLeft;
 	private AnimationSequence animation;
 	private int nextFrameTime;
-	public static Client clientInstance;
+	public static IBaseClient clientInstance;
 	private int objectId;
 	private int type;
 	private int orientation;
@@ -35,7 +35,7 @@ public sealed class GameObject : Animable
 		{
 			animation = AnimationSequence.animations[animationId];
 			frame = 0;
-			nextFrameTime = Client.tick;
+			nextFrameTime = clientInstance.CurrentTick;
 			if(animating && animation.frameStep != -1)
 			{
 				frame = (int)(StaticRandomGenerator.Next() * animation.frameCount);
@@ -58,10 +58,10 @@ public sealed class GameObject : Animable
 			int lsb = varBit.leastSignificantBit;
 			int msb = varBit.mostSignificantBit;
 			int bit = ConstantData.GetBitfieldMaxValue(msb - lsb);
-			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
+			child = clientInstance.GetInterfaceSettings(configId) >> lsb & bit;
 		}
 		else if(configId != -1)
-			child = clientInstance.interfaceSettings[configId];
+			child = clientInstance.GetInterfaceSettings(configId);
 		if(child < 0 || child >= childrenIds.Length || childrenIds[child] == -1)
 			return null;
 		else
@@ -73,7 +73,7 @@ public sealed class GameObject : Animable
 		int animationId = -1;
 		if(animation != null)
 		{
-			int step = Client.tick - nextFrameTime;
+			int step = clientInstance.CurrentTick - nextFrameTime;
 			if(step > 100 && animation.frameStep > 0)
 				step = 100;
 			while(step > animation.getFrameLength(frame))
@@ -88,7 +88,7 @@ public sealed class GameObject : Animable
 				animation = null;
 				break;
 			}
-			nextFrameTime = Client.tick - step;
+			nextFrameTime = clientInstance.CurrentTick - step;
 			if(animation != null)
 				animationId = animation.primaryFrames[frame];
 		}

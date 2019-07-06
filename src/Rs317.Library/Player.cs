@@ -1,5 +1,6 @@
 
 using System;
+using Rs317;
 
 public sealed class Player : Entity
 {
@@ -9,7 +10,7 @@ public sealed class Player : Entity
 
 	public EntityDefinition npcAppearance;
 
-	bool preventRotation;
+	public bool preventRotation { get; set; }
 
 	public int[] bodyPartColour { get; private set; }
 
@@ -22,22 +23,24 @@ public sealed class Player : Entity
 	public int combatLevel;
 	public int headIcon;
 	public int modifiedAppearanceStartTime;
-	int modifiedAppearanceEndTime;
-	int drawHeight2;
-	bool visible;
-	int anInt1711;
-	int drawHeight;
-	int anInt1713;
-	Model playerModel;
+	public int modifiedAppearanceEndTime { get; set; }
+	public int drawHeight2 { get; set; }
+	public bool visible { get; private set; }
+	public int anInt1711 { get; set; }
+	public int drawHeight { get; set; }
+	public int anInt1713 { get; set; }
+	public Model playerModel { get; set; }
 	public int[] appearance;
 	private long appearanceOffset;
-	int localX;
-	int localY;
-	int playerTileHeight;
-	int playerTileWidth;
+	public int localX { get; set; }
+	public int localY { get; set; }
+	public int playerTileHeight { get; set; }
+	public int playerTileWidth { get; set; }
 	public int skill { get; private set; }
 
-	Player()
+	public static IBaseClient clientInstance;
+
+	public Player()
 	{
 		aLong1697 = -1L;
 		preventRotation = false;
@@ -136,10 +139,10 @@ public sealed class Player : Entity
 			for(int part = 0; part < 5; part++)
 				if(bodyPartColour[part] != 0)
 				{
-					model_1.recolour(Client.APPEARANCE_COLOURS[part][0],
-							Client.APPEARANCE_COLOURS[part][bodyPartColour[part]]);
+					model_1.recolour(ConstantData.GetAppearanceColor(part, 0),
+						ConstantData.GetAppearanceColor(part, bodyPartColour[part]));
 					if(part == 1)
-						model_1.recolour(Client.BEARD_COLOURS[0], Client.BEARD_COLOURS[bodyPartColour[part]]);
+						model_1.recolour(ConstantData.GetBeardColor(0), ConstantData.GetBeardColor(bodyPartColour[part]));
 				}
 
 			model_1.createBones();
@@ -202,9 +205,9 @@ public sealed class Player : Entity
 		for(int j1 = 0; j1 < 5; j1++)
 			if(bodyPartColour[j1] != 0)
 			{
-				model.recolour(Client.APPEARANCE_COLOURS[j1][0], Client.APPEARANCE_COLOURS[j1][bodyPartColour[j1]]);
+				model.recolour(ConstantData.GetAppearanceColor(j1, 0), ConstantData.GetAppearanceColor(j1, bodyPartColour[j1]));
 				if(j1 == 1)
-					model.recolour(Client.BEARD_COLOURS[0], Client.BEARD_COLOURS[bodyPartColour[j1]]);
+					model.recolour(ConstantData.GetBeardColor(0), ConstantData.GetBeardColor(bodyPartColour[j1]));
 			}
 
 		return model;
@@ -243,9 +246,9 @@ public sealed class Player : Entity
 		}
 		if(playerModel != null)
 		{
-			if(Client.tick >= modifiedAppearanceEndTime)
+			if(clientInstance.CurrentTick >= modifiedAppearanceEndTime)
 				playerModel = null;
-			if(Client.tick >= modifiedAppearanceStartTime && Client.tick < modifiedAppearanceEndTime)
+			if(clientInstance.CurrentTick >= modifiedAppearanceStartTime && clientInstance.CurrentTick < modifiedAppearanceEndTime)
 			{
 				Model model = playerModel;
 				model.translate(anInt1711 - base.x, drawHeight - drawHeight2, anInt1713 - base.y);
@@ -322,7 +325,7 @@ public sealed class Player : Entity
 		for(int bodyPart = 0; bodyPart < 5; bodyPart++)
 		{
 			int colour = stream.getUnsignedByte();
-			if(colour < 0 || colour >= Client.APPEARANCE_COLOURS[bodyPart].Length)
+			if(colour < 0 || colour >= ConstantData.GetAppearanceColorRowLength(bodyPart))
 				colour = 0;
 			bodyPartColour[bodyPart] = colour;
 		}
