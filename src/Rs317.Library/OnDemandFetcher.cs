@@ -103,7 +103,7 @@ public sealed class OnDemandFetcher : IRunnable
 			waiting = true;
 			byte[] data = null;
 			if(clientInstance.caches[0] != null)
-				data = clientInstance.caches[request.dataType + 1].decompress(request.id);
+				data = clientInstance.caches[request.dataType + 1].decompress((int)request.id);
 			if(!crcMatches(versions[request.dataType][request.id],
 					crcs[request.dataType][request.id], data))
 				data = null;
@@ -476,7 +476,7 @@ public sealed class OnDemandFetcher : IRunnable
 				if(expectedSize + completedSize >= abyte0.Length && current != null)
 				{
 					if(clientInstance.caches[0] != null)
-						clientInstance.caches[current.dataType + 1].put(abyte0.Length, abyte0, current.id);
+						clientInstance.caches[current.dataType + 1].put(abyte0.Length, abyte0, (int)current.id);
 					if(!current.incomplete && current.dataType == 3)
 					{
 						current.incomplete = true;
