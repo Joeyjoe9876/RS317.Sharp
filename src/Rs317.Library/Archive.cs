@@ -55,6 +55,8 @@ public sealed class Archive
 
 	public byte[] decompressFile(String name)
 	{
+		if (string.IsNullOrEmpty(name)) throw new ArgumentException("Value cannot be null or empty.", nameof(name));
+
 		int hash = 0;
 		name = name.ToUpper();
 		for(int c = 0; c < name.Length; c++)
@@ -75,6 +77,7 @@ public sealed class Archive
 				}
 				return output;
 			}
-		return null;
+
+		throw new InvalidOperationException($"Failed to decompress Archive: {name} Expected Hash: {hash}");
 	}
 }
