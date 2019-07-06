@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -4228,7 +4229,7 @@ namespace Rs317
 						s = "yesterday";
 					else
 						s = daysSinceLogin + " days ago";
-					rsInterface.textDefault = "You last logged in " + s + " from: " + signlink.dns;
+					rsInterface.textDefault = "You last logged in " + s + " from: " + "DNS.Turned.Off"; //TODO: DNS is disabled.
 				}
 				else
 				{
@@ -5794,7 +5795,8 @@ namespace Rs317
 					daysSinceLogin = inStream.getUnsignedLEShort();
 					if(lastAddress != 0 && openInterfaceId == -1)
 					{
-						signlink.dnslookup(TextClass.decodeDNS(lastAddress));
+						//TODO: Disabled DNS lookup.
+						//signlink.dnslookup(TextClass.decodeDNS(lastAddress));
 						clearTopInterfaces();
 						int contentType = 650;
 						if(daysSinceRecoveryChange != 201 || membership == 1)
@@ -9548,6 +9550,7 @@ namespace Rs317
 			anInt1213 = 0;
 		}
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public override void processGameLoop()
 		{
 			if(rsAlreadyLoaded || loadingError || genericLoadingError)
