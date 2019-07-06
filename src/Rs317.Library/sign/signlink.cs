@@ -280,38 +280,5 @@ public sealed class signlink
 			//Always indicate we are running, even if we're about to fail.
 			IsSignLinkThreadActive = true;
 		}
-
-		while (true)
-		{
-			if (savereq != null)
-			{
-				if (savebuf != null)
-					try
-					{
-						using (FileStream fileoutputstream = new FileStream(cacheDirectoryPath + savereq, FileMode.Open))
-						{
-							fileoutputstream.Write(savebuf, 0, savelen);
-
-						}
-					}
-					catch (Exception _ex)
-					{
-
-					}
-
-				if (waveplay)
-				{
-					waveplay = false;
-				}
-
-				if (midiplay)
-				{
-					midi = cacheDirectoryPath + savereq;
-					midiplay = false;
-				}
-
-				savereq = null;
-			}
-		}
 	}
 }
