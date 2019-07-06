@@ -1,13 +1,18 @@
+
 using System;
 using Rs317;
 
-public sealed class GameObjectDefinition
+public class GameObjectDefinition
 {
 	public static GameObjectDefinition getDefinition(int objectId)
 	{
 		for(int c = 0; c < 20; c++)
+		{
 			if(cache[c].id == objectId)
+			{
 				return cache[c];
+			}
+		}
 
 		cacheIndex = (cacheIndex + 1) % 20;
 		GameObjectDefinition definition = cache[cacheIndex];
@@ -20,20 +25,22 @@ public sealed class GameObjectDefinition
 
 	public static void load(Archive archive)
 	{
-		stream = new Buffer(archive.decompressFile("loc.dat"));
-		Buffer index = new Buffer(archive.decompressFile("loc.idx"));
-		int objectCount = stream.getUnsignedLEShort();
+		GameObjectDefinition.stream = new Buffer(archive.decompressFile("loc.dat"));
+		Buffer indexStream = new Buffer(archive.decompressFile("loc.idx"));
+		int objectCount = indexStream.getUnsignedLEShort();
 		streamOffsets = new int[objectCount];
 		int offset = 2;
-		for(int j = 0; j < objectCount; j++)
+		for(int index = 0; index < objectCount; index++)
 		{
-			streamOffsets[j] = offset;
-			offset += index.getUnsignedLEShort();
+			streamOffsets[index] = offset;
+			offset += indexStream.getUnsignedLEShort();
 		}
 
 		cache = new GameObjectDefinition[20];
 		for(int c = 0; c < 20; c++)
+		{
 			cache[c] = new GameObjectDefinition();
+		}
 	}
 
 	public static void nullLoader()
@@ -113,36 +120,52 @@ public sealed class GameObjectDefinition
 		if(modelTypes == null)
 		{
 			if(type != 10)
+			{
 				return null;
+			}
 			hash = (id << 6) + face + ((long)(animationId + 1) << 32);
 			Model cachedModel = (Model)animatedModelCache.get(hash);
 			if(cachedModel != null)
+			{
 				return cachedModel;
+			}
 			if(modelIds == null)
+			{
 				return null;
+			}
 			bool mirror = rotated ^ (face > 3);
 			int modelCount = modelIds.Length;
 			for(int m = 0; m < modelCount; m++)
 			{
 				int subModelId = modelIds[m];
 				if(mirror)
+				{
 					subModelId += 0x10000;
+				}
 				subModel = (Model)modelCache.get(subModelId);
 				if(subModel == null)
 				{
 					subModel = Model.getModel(subModelId & 0xffff);
 					if(subModel == null)
+					{
 						return null;
+					}
 					if(mirror)
+					{
 						subModel.mirror();
+					}
 					modelCache.put(subModel, subModelId);
 				}
 				if(modelCount > 1)
+				{
 					models[m] = subModel;
+				}
 			}
 
 			if(modelCount > 1)
+			{
 				subModel = new Model(modelCount, models);
+			}
 		}
 		else
 		{
@@ -150,29 +173,41 @@ public sealed class GameObjectDefinition
 			for(int t = 0; t < modelTypes.Length; t++)
 			{
 				if(modelTypes[t] != type)
+				{
 					continue;
+				}
 				modelType = t;
 				break;
 			}
 
 			if(modelType == -1)
+			{
 				return null;
+			}
 			hash = (id << 6) + (modelType << 3) + face + ((long)(animationId + 1) << 32);
 			Model model = (Model)animatedModelCache.get(hash);
 			if(model != null)
+			{
 				return model;
+			}
 			int modelId = modelIds[modelType];
 			bool mirror = rotated ^ (face > 3);
 			if(mirror)
+			{
 				modelId += 0x10000;
+			}
 			subModel = (Model)modelCache.get(modelId);
 			if(subModel == null)
 			{
 				subModel = Model.getModel(modelId & 0xffff);
 				if(subModel == null)
+				{
 					return null;
+				}
 				if(mirror)
+				{
 					subModel.mirror();
+				}
 				modelCache.put(subModel, modelId);
 			}
 		}
@@ -181,7 +216,7 @@ public sealed class GameObjectDefinition
 		bool translate;
 		translate = translateX != 0 || translateY != 0 || translateZ != 0;
 		Model animatedModel = new Model(modifiedModelColors == null, Animation.isNullFrame(animationId),
-				face == 0 && animationId == -1 && !scale && !translate, subModel);
+			   face == 0 && animationId == -1 && !scale && !translate, subModel);
 		if(animationId != -1)
 		{
 			animatedModel.createBones();
@@ -190,20 +225,30 @@ public sealed class GameObjectDefinition
 			animatedModel.vertexSkin = null;
 		}
 		while(face-- > 0)
+		{
 			animatedModel.rotate90Degrees();
+		}
 		if(modifiedModelColors != null)
 		{
 			for(int c = 0; c < modifiedModelColors.Length; c++)
+			{
 				animatedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
+			}
 
 		}
 		if(scale)
+		{
 			animatedModel.scaleT(scaleX, scaleZ, scaleY);
+		}
 		if(translate)
+		{
 			animatedModel.translate(translateX, translateY, translateZ);
+		}
 		animatedModel.applyLighting(64 + ambient, 768 + diffuse * 5, -50, -10, -50, !delayShading);
 		if(_solid == 1)
+		{
 			animatedModel.anInt1654 = animatedModel.modelHeight;
+		}
 		animatedModelCache.put(animatedModel, hash);
 		return animatedModel;
 	}
@@ -221,20 +266,30 @@ public sealed class GameObjectDefinition
 			child = clientInstance.GetInterfaceSettings(configId) >> lsb & bit;
 		}
 		else if(configIds != -1)
+		{
 			child = clientInstance.GetInterfaceSettings(configIds);
+		}
 		if(child < 0 || child >= childIds.Length || childIds[child] == -1)
+		{
 			return null;
+		}
 		else
+		{
 			return getDefinition(childIds[child]);
+		}
 	}
 
 	public Model getModelAt(int i, int j, int k, int l, int i1, int j1, int k1)
 	{
 		Model model = getAnimatedModel(i, k1, j);
 		if(model == null)
+		{
 			return null;
+		}
 		if(adjustToTerrain || delayShading)
+		{
 			model = new Model(adjustToTerrain, delayShading, model);
+		}
 		if(adjustToTerrain)
 		{
 			int l1 = (k + l + i1 + j1) / 4;
@@ -263,11 +318,13 @@ public sealed class GameObjectDefinition
 			{
 				opcode = stream.getUnsignedByte();
 				if(opcode == 0)
-					goto label0; //what the fuck
+					goto label0;
+
 				if(opcode == 1)
 				{
 					int modelCount = stream.getUnsignedByte();
 					if(modelCount > 0)
+					{
 						if(modelIds == null || lowMemory)
 						{
 							modelTypes = new int[modelCount];
@@ -283,67 +340,104 @@ public sealed class GameObjectDefinition
 						{
 							stream.position += modelCount * 3;
 						}
+					}
 				}
 				else if(opcode == 2)
+				{
 					name = stream.getString();
+				}
 				else if(opcode == 3)
+				{
 					description = stream.readBytes();
+				}
 				else if(opcode == 5)
 				{
 					int modelCount = stream.getUnsignedByte();
 					if(modelCount > 0)
+					{
 						if(modelIds == null || lowMemory)
 						{
 							modelTypes = null;
 							modelIds = new int[modelCount];
 							for(int m = 0; m < modelCount; m++)
+							{
 								modelIds[m] = stream.getUnsignedLEShort();
+							}
 
 						}
 						else
 						{
 							stream.position += modelCount * 2;
 						}
+					}
 				}
 				else if(opcode == 14)
+				{
 					sizeX = stream.getUnsignedByte();
+				}
 				else if(opcode == 15)
+				{
 					sizeY = stream.getUnsignedByte();
+				}
 				else if(opcode == 17)
+				{
 					solid = false;
+				}
 				else if(opcode == 18)
+				{
 					walkable = false;
+				}
 				else if(opcode == 19)
 				{
 					_actions = stream.getUnsignedByte();
 					if(_actions == 1)
+					{
 						hasActions = true;
+					}
 				}
 				else if(opcode == 21)
+				{
 					adjustToTerrain = true;
+				}
 				else if(opcode == 22)
+				{
 					delayShading = true;
+				}
 				else if(opcode == 23)
+				{
 					wall = true;
+				}
 				else if(opcode == 24)
 				{
 					animationId = stream.getUnsignedLEShort();
 					if(animationId == 65535)
+					{
 						animationId = -1;
+					}
 				}
 				else if(opcode == 28)
+				{
 					offsetAmplifier = stream.getUnsignedByte();
+				}
 				else if(opcode == 29)
+				{
 					ambient = stream.get();
+				}
 				else if(opcode == 39)
+				{
 					diffuse = stream.get();
+				}
 				else if(opcode >= 30 && opcode < 39)
 				{
 					if(actions == null)
+					{
 						actions = new String[5];
+					}
 					actions[opcode - 30] = stream.getString();
 					if(actions[opcode - 30].Equals("hidden", StringComparison.InvariantCultureIgnoreCase))
+					{
 						actions[opcode - 30] = null;
+					}
 				}
 				else if(opcode == 40)
 				{
@@ -358,29 +452,53 @@ public sealed class GameObjectDefinition
 
 				}
 				else if(opcode == 60)
+				{
 					icon = stream.getUnsignedLEShort();
+				}
 				else if(opcode == 62)
+				{
 					rotated = true;
+				}
 				else if(opcode == 64)
+				{
 					castsShadow = false;
+				}
 				else if(opcode == 65)
+				{
 					scaleX = stream.getUnsignedLEShort();
+				}
 				else if(opcode == 66)
+				{
 					scaleY = stream.getUnsignedLEShort();
+				}
 				else if(opcode == 67)
+				{
 					scaleZ = stream.getUnsignedLEShort();
+				}
 				else if(opcode == 68)
+				{
 					mapScene = stream.getUnsignedLEShort();
+				}
 				else if(opcode == 69)
+				{
 					face = stream.getUnsignedByte();
+				}
 				else if(opcode == 70)
+				{
 					translateX = stream.getShort();
+				}
 				else if(opcode == 71)
+				{
 					translateY = stream.getShort();
+				}
 				else if(opcode == 72)
+				{
 					translateZ = stream.getShort();
+				}
 				else if(opcode == 73)
+				{
 					unknownAttribute = true;
+				}
 				else if(opcode == 74)
 				{
 					unwalkableSolid = true;
@@ -388,24 +506,32 @@ public sealed class GameObjectDefinition
 				else
 				{
 					if(opcode != 75)
+					{
 						continue;
+					}
 					_solid = stream.getUnsignedByte();
 				}
 				continue;
 			} while(opcode != 77);
 			varBitId = stream.getUnsignedLEShort();
 			if(varBitId == 65535)
+			{
 				varBitId = -1;
+			}
 			configIds = stream.getUnsignedLEShort();
 			if(configIds == 65535)
+			{
 				configIds = -1;
+			}
 			int childCount = stream.getUnsignedByte();
 			childIds = new int[childCount + 1];
 			for(int c = 0; c <= childCount; c++)
 			{
 				childIds[c] = stream.getUnsignedLEShort();
 				if(childIds[c] == 65535)
+				{
 					childIds[c] = -1;
+				}
 			}
 
 		} while(true);
@@ -414,7 +540,9 @@ public sealed class GameObjectDefinition
 		{
 			hasActions = modelIds != null && (modelTypes == null || modelTypes[0] == 10);
 			if(actions != null)
+			{
 				hasActions = true;
+			}
 		}
 		if(unwalkableSolid)
 		{
@@ -422,16 +550,22 @@ public sealed class GameObjectDefinition
 			walkable = false;
 		}
 		if(_solid == -1)
+		{
 			_solid = solid ? 1 : 0;
+		}
 	}
 
 	public bool modelCached()
 	{
 		if(modelIds == null)
+		{
 			return true;
+		}
 		bool cached = true;
 		for(int m = 0; m < modelIds.Length; m++)
+		{
 			cached &= Model.isCached(modelIds[m] & 0xffff);
+		}
 		return cached;
 	}
 
@@ -440,18 +574,28 @@ public sealed class GameObjectDefinition
 		if(modelTypes == null)
 		{
 			if(modelIds == null)
+			{
 				return true;
+			}
 			if(modelType != 10)
+			{
 				return true;
+			}
 			bool cached = true;
 			for(int id = 0; id < modelIds.Length; id++)
+			{
 				cached &= Model.isCached(modelIds[id] & 0xffff);
+			}
 
 			return cached;
 		}
 		for(int type = 0; type < modelTypes.Length; type++)
+		{
 			if(modelTypes[type] == modelType)
+			{
 				return Model.isCached(modelIds[type] & 0xffff);
+			}
+		}
 
 		return true;
 	}
@@ -459,9 +603,13 @@ public sealed class GameObjectDefinition
 	public void passivelyRequestModels(OnDemandFetcher requester)
 	{
 		if(modelIds == null)
+		{
 			return;
+		}
 		for(int modelId = 0; modelId < modelIds.Length; modelId++)
+		{
 			requester.passiveRequest(modelIds[modelId] & 0xffff, 0);
+		}
 	}
 
 	private void setDefaults()
