@@ -370,7 +370,8 @@ public sealed class RSInterface
 		if(modelType == 2)
 			model = EntityDefinition.getDefinition(modelId).getHeadModel();
 		if(modelType == 3)
-			model = Client.localPlayer.getHeadModel();
+			throw new NotImplementedException($"TODO: Reimplement the head model!!");
+			//model = Client.localPlayer.getHeadModel();
 		if(modelType == 4)
 			model = ItemDefinition.getDefinition(modelId).getInventoryModel(50);
 		if(modelType == 5)
