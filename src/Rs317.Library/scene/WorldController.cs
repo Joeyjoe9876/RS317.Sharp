@@ -1,5 +1,6 @@
 
 using System;
+using System.Runtime.CompilerServices;
 
 public sealed class WorldController
 {
@@ -11,7 +12,7 @@ public sealed class WorldController
 
 	private int mapSizeY;
 
-	private int[][][] heightMap;
+	private int[,,] heightMap;
 
 	private Tile[,,] groundArray;
 
@@ -271,7 +272,7 @@ public sealed class WorldController
 		cullingClusters = new CullingCluster[anInt472, 500];
 	}
 
-	public WorldController(int[][][] heightMap)
+	public WorldController(int[,,] heightMap)
 	{
 		int length = 104;// was parameter
 		int width = 104;// was parameter
@@ -807,10 +808,10 @@ public sealed class WorldController
 								Tile tile = groundArray[_z, _x, _y];
 								if(tile != null)
 								{
-									int i3 = (heightMap[_z][_x][_y] + heightMap[_z][_x + 1][_y]
-											+ heightMap[_z][_x][_y + 1] + heightMap[_z][_x + 1][_y + 1]) / 4
-											- (heightMap[z][x][y] + heightMap[z][x + 1][y] + heightMap[z][x][y + 1]
-													+ heightMap[z][x + 1][y + 1]) / 4;
+									int i3 = (ComputeHeightAtPoint(_z, _x, _y) + ComputeHeightAtPoint(_z, _x + 1, _y)
+											+ ComputeHeightAtPoint(_z, _x, _y + 1) + ComputeHeightAtPoint(_z, _x + 1, _y + 1)) / 4
+											- (ComputeHeightAtPoint(z, x, y) + ComputeHeightAtPoint(z, x + 1, y) + ComputeHeightAtPoint(z, x, y + 1)
+													+ ComputeHeightAtPoint(z, x + 1, y + 1)) / 4;
 									Wall wallObject = tile.wall;
 									if(wallObject != null && wallObject.primary != null
 											&& wallObject.primary.vertexNormals != null)
@@ -843,6 +844,12 @@ public sealed class WorldController
 				flag = false;
 			}
 
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private int ComputeHeightAtPoint(int _z, int _x, int _y)
+	{
+		return heightMap[_z, _x, _y];
 	}
 
 	private void mergeNormals(Model model, Model secondModel, int posX, int posY, int posZ, bool flag)
@@ -920,10 +927,10 @@ public sealed class WorldController
 			return true;
 		int worldX = x << 7;
 		int worldY = y << 7;
-		if(method324(worldX + 1, worldY + 1, heightMap[z][x][y])
-				&& method324((worldX + 128) - 1, worldY + 1, heightMap[z][x + 1][y])
-				&& method324((worldX + 128) - 1, (worldY + 128) - 1, heightMap[z][x + 1][y + 1])
-				&& method324(worldX + 1, (worldY + 128) - 1, heightMap[z][x][y + 1]))
+		if(method324(worldX + 1, worldY + 1, ComputeHeightAtPoint(z, x, y))
+				&& method324((worldX + 128) - 1, worldY + 1, ComputeHeightAtPoint(z, x + 1, y))
+				&& method324((worldX + 128) - 1, (worldY + 128) - 1, ComputeHeightAtPoint(z, x + 1, y + 1))
+				&& method324(worldX + 1, (worldY + 128) - 1, ComputeHeightAtPoint(z, x, y + 1)))
 		{
 			anIntArrayArrayArray445[z, x, y] = anInt448;
 			return true;
@@ -941,7 +948,7 @@ public sealed class WorldController
 			return false;
 		int posX = x << 7;
 		int posY = y << 7;
-		int posZ = heightMap[z][x][y] - 1;
+		int posZ = ComputeHeightAtPoint(z, x, y) - 1;
 		int z1 = posZ - 120;
 		int z2 = posZ - 230;
 		int z3 = posZ - 238;
@@ -1045,10 +1052,10 @@ public sealed class WorldController
 			return false;
 		int _x = x << 7;
 		int _y = y << 7;
-		return method324(_x + 1, _y + 1, heightMap[z][x][y] - offsetZ)
-				&& method324((_x + 128) - 1, _y + 1, heightMap[z][x + 1][y] - offsetZ)
-				&& method324((_x + 128) - 1, (_y + 128) - 1, heightMap[z][x + 1][y + 1] - offsetZ)
-				&& method324(_x + 1, (_y + 128) - 1, heightMap[z][x][y + 1] - offsetZ);
+		return method324(_x + 1, _y + 1, ComputeHeightAtPoint(z, x, y) - offsetZ)
+				&& method324((_x + 128) - 1, _y + 1, ComputeHeightAtPoint(z, x + 1, y) - offsetZ)
+				&& method324((_x + 128) - 1, (_y + 128) - 1, ComputeHeightAtPoint(z, x + 1, y + 1) - offsetZ)
+				&& method324(_x + 1, (_y + 128) - 1, ComputeHeightAtPoint(z, x, y + 1) - offsetZ);
 	}
 
 	private bool method323(int minimumX, int maximumX, int minimumY, int maximumY, int z, int offsetZ)
@@ -1059,10 +1066,10 @@ public sealed class WorldController
 				return false;
 			int _x1 = minimumX << 7;
 			int _y1 = minimumY << 7;
-			return method324(_x1 + 1, _y1 + 1, heightMap[z][minimumX][minimumY] - offsetZ)
-					&& method324((_x1 + 128) - 1, _y1 + 1, heightMap[z][minimumX + 1][minimumY] - offsetZ)
-					&& method324((_x1 + 128) - 1, (_y1 + 128) - 1, heightMap[z][minimumX + 1][minimumY + 1] - offsetZ)
-					&& method324(_x1 + 1, (_y1 + 128) - 1, heightMap[z][minimumX][minimumY + 1] - offsetZ);
+			return method324(_x1 + 1, _y1 + 1, ComputeHeightAtPoint(z, minimumX, minimumY) - offsetZ)
+					&& method324((_x1 + 128) - 1, _y1 + 1, ComputeHeightAtPoint(z, minimumX + 1, minimumY) - offsetZ)
+					&& method324((_x1 + 128) - 1, (_y1 + 128) - 1, ComputeHeightAtPoint(z, minimumX + 1, minimumY + 1) - offsetZ)
+					&& method324(_x1 + 1, (_y1 + 128) - 1, ComputeHeightAtPoint(z, minimumX, minimumY + 1) - offsetZ);
 		}
 
 		for(int xItr = minimumX; xItr <= maximumX; xItr++)
@@ -1074,7 +1081,7 @@ public sealed class WorldController
 
 		int _x = (minimumX << 7) + 1;
 		int _y = (minimumY << 7) + 2;
-		int _z = heightMap[z][minimumX][minimumY] - offsetZ;
+		int _z = ComputeHeightAtPoint(z, minimumX, minimumY) - offsetZ;
 		if(!method324(_x, _y, _z))
 			return false;
 		int x = (maximumX << 7) - 1;
@@ -1456,7 +1463,7 @@ public sealed class WorldController
 					if(tile != null)
 						if(tile.logicHeight > plane
 								|| !GetVisibility((x - cameraPositionTileX) + 25, (y - cameraPositionTileY) + 25)
-										&& heightMap[z][x][y] - cameraPosZ < 2000)
+										&& ComputeHeightAtPoint(z, x, y) - cameraPosZ < 2000)
 						{
 							tile.abool1322 = false;
 							tile.abool1323 = false;
@@ -1597,10 +1604,10 @@ public sealed class WorldController
 		int xB = xD = xA + 128;
 		int yC;
 		int yD = yC = yA + 128;
-		int zA = heightMap[tileZ][tileX][tileY] - cameraPosZ;
-		int zB = heightMap[tileZ][tileX + 1][tileY] - cameraPosZ;
-		int zC = heightMap[tileZ][tileX + 1][tileY + 1] - cameraPosZ;
-		int zD = heightMap[tileZ][tileX][tileY + 1] - cameraPosZ;
+		int zA = ComputeHeightAtPoint(tileZ, tileX, tileY) - cameraPosZ;
+		int zB = ComputeHeightAtPoint(tileZ, tileX + 1, tileY) - cameraPosZ;
+		int zC = ComputeHeightAtPoint(tileZ, tileX + 1, tileY + 1) - cameraPosZ;
+		int zD = ComputeHeightAtPoint(tileZ, tileX, tileY + 1) - cameraPosZ;
 		int temp = yA * sinX + xA * cosineX >> 16;
 		yA = yA * cosineX - xA * sinX >> 16;
 		xA = temp;
