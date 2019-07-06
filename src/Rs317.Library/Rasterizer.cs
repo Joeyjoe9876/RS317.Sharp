@@ -1575,9 +1575,9 @@ public sealed class Rasterizer : DrawingArea
 				if(texelValue == 0)
 					transparent[textureId] = true;
 
-				texelCache[textureId, 16384 + texelPointer] = texelValue - (texelValue >> 3) & 0xf8f8ff;
-				texelCache[textureId, 32768 + texelPointer] = texelValue - (texelValue >> 2) & 0xf8f8ff;
-				texelCache[textureId, 49152 + texelPointer] = texelValue - (texelValue >> 2) - (texelValue >> 3) & 0xf8f8ff;
+				texelCache[textureId, 16384 + texelPointer] = texelValue - ((int)((uint)texelValue >> 3)) & 0xf8f8ff;
+				texelCache[textureId, 32768 + texelPointer] = texelValue - ((int)((uint)texelValue >> 2)) & 0xf8f8ff;
+				texelCache[textureId, 49152 + texelPointer] = texelValue - ((int)((uint)texelValue >> 2)) - ((int)((uint)texelValue >> 3)) & 0xf8f8ff;
 			}
 		}
 	}
@@ -1824,28 +1824,28 @@ public sealed class Rasterizer : DrawingArea
 		{
 			while(k3-- > 0)
 			{
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i += j7;
 				j += l7;
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i += j7;
 				j += l7;
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i += j7;
 				j += l7;
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i += j7;
 				j += l7;
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i += j7;
 				j += l7;
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i += j7;
 				j += l7;
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i += j7;
 				j += l7;
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i = j4;
 				j = l4;
 				l1 += k2;
@@ -1869,7 +1869,7 @@ public sealed class Rasterizer : DrawingArea
 			}
 			for(k3 = i1 - l & 7; k3-- > 0;)
 			{
-				ai[k++] = texture[(j & 0x3f80) + (i >> 7)] >> j8;
+				ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
 				i += j7;
 				j += l7;
 			}
@@ -1879,42 +1879,42 @@ public sealed class Rasterizer : DrawingArea
 		while(k3-- > 0)
 		{
 			int i9;
-			if((i9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = i9;
 			k++;
 			i += j7;
 			j += l7;
-			if((i9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = i9;
 			k++;
 			i = j4;
@@ -1941,7 +1941,7 @@ public sealed class Rasterizer : DrawingArea
 		for(int l3 = i1 - l & 7; l3-- > 0;)
 		{
 			int j9;
-			if((j9 = texture[(j & 0x3f80) + (i >> 7)] >> j8) != 0)
+			if((j9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
 				ai[k] = j9;
 			k++;
 			i += j7;
