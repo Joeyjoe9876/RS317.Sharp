@@ -54,7 +54,7 @@ public sealed class Buffer : Cacheable
 
 	public Buffer(byte[] buf)
 	{
-		buffer = buf;
+		buffer = buf ?? throw new ArgumentNullException(nameof(buf));
 		position = 0;
 	}
 
