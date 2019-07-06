@@ -26,6 +26,9 @@ public sealed class Sprite : DrawingArea
 
 	public Sprite(Archive streamLoader, String target, int archiveId)
 	{
+		if (target.ToLower() == "headicons")
+			return;
+
 		Buffer dataStream = new Buffer(streamLoader.decompressFile(target + ".dat"));
 		Buffer indexStream = new Buffer(streamLoader.decompressFile("index.dat"));
 		indexStream.position = dataStream.getUnsignedLEShort();
