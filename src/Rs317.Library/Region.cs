@@ -439,7 +439,7 @@ namespace Rs317
 
 		private static int randomiserLightness = (int)(StaticRandomGenerator.Next() * 33D) - 16;
 
-		private byte[,,] tileShadowIntensity;
+		private byte[][][] tileShadowIntensity;
 
 		private int[,,] tileCullingBitsets;
 
@@ -469,7 +469,7 @@ namespace Rs317
 			overlayClippingPaths = new byte[4, regionSizeX, regionSizeY];
 			overlayOrientations = new byte[4, regionSizeX, regionSizeY];
 			tileCullingBitsets = new int[4, regionSizeX + 1, regionSizeY + 1];
-			tileShadowIntensity = new byte[4, regionSizeX + 1, regionSizeY + 1];
+			tileShadowIntensity = CollectionUtilities.Create3DJaggedArray<byte>(4, regionSizeX + 1, regionSizeY + 1);
 			tileLightIntensity = new int[regionSizeX + 1, regionSizeY + 1];
 			blendedHue = new int[regionSizeY];
 			blendedSaturation = new int[regionSizeY];
@@ -481,65 +481,77 @@ namespace Rs317
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public byte GetShadowIntensity(int _plane, int x, int y)
 		{
-			return tileShadowIntensity[_plane, x, y];
+			return tileShadowIntensity[_plane][x][y];
 		}
 
 		public void createRegion(CollisionMap[] collisionMap, WorldController worldController)
 		{
-			for(int plane = 0; plane < 4; plane++)
+			for(int zPlane = 0; zPlane < 4; zPlane++)
 			{
 				for(int x = 0; x < 104; x++)
 				{
 					for(int y = 0; y < 104; y++)
 					{
-						if((renderRuleFlags[plane, x, y] & 1) == 1)
+						if((renderRuleFlags[zPlane, x, y] & 1) == 1)
 						{
-							int markingPlane = plane;
+							int markingPlane = zPlane;
 							if((renderRuleFlags[1, x, y] & 2) == 2)
+							{
 								markingPlane--;
+							}
 							if(markingPlane >= 0)
+							{
 								collisionMap[markingPlane].markBlocked(x, y);
+							}
 						}
 					}
 				}
 			}
-
-			randomiserHue += (int)(StaticRandomGenerator.Next() * 5D) - 2;
+			randomiserHue += (int)StaticRandomGenerator.Next(5) - 2;
 			if(randomiserHue < -8)
+			{
 				randomiserHue = -8;
+			}
 			if(randomiserHue > 8)
+			{
 				randomiserHue = 8;
-			randomiserLightness += (int)(StaticRandomGenerator.Next() * 5D) - 2;
+			}
+			randomiserLightness += (int)(StaticRandomGenerator.Next(5)) - 2;
 			if(randomiserLightness < -16)
+			{
 				randomiserLightness = -16;
+			}
 			if(randomiserLightness > 16)
+			{
 				randomiserLightness = 16;
+			}
 			for(int _plane = 0; _plane < 4; _plane++)
 			{
+				byte[][] shadowIntensity = tileShadowIntensity[_plane];
 				int directionalLightIntensityInitial = 96;
 				int specularDistributionFactor = 768;
 				int directionalLightX = -50;
 				int directionalLightZ = -10;
 				int directionalLightY = -50;
 				int directionalLightLength = (int)Math.Sqrt(directionalLightX * directionalLightX
-															 + directionalLightZ * directionalLightZ + directionalLightY * directionalLightY);
+						+ directionalLightZ * directionalLightZ + directionalLightY * directionalLightY);
 				int specularDistribution = specularDistributionFactor * directionalLightLength >> 8;
 				for(int y = 1; y < regionSizeY - 1; y++)
 				{
 					for(int x = 1; x < regionSizeX - 1; x++)
 					{
-						int heightDifferenceX = ComputeVertexHeight(_plane, x + 1, y) - ComputeVertexHeight(_plane, x - 1, y);
-						int heightDifferenceY = ComputeVertexHeight(_plane, x, y + 1) - ComputeVertexHeight(_plane, x, y - 1);
+						int heightDifferenceX = vertexHeights[_plane][x + 1][y] - vertexHeights[_plane][x - 1][y];
+						int heightDifferenceY = vertexHeights[_plane][x][y + 1] - vertexHeights[_plane][x][y - 1];
 						int normalisedLength = (int)Math.Sqrt(
-							heightDifferenceX * heightDifferenceX + 0x10000 + heightDifferenceY * heightDifferenceY);
+								heightDifferenceX * heightDifferenceX + 0x10000 + heightDifferenceY * heightDifferenceY);
 						int normalisedX = (heightDifferenceX << 8) / normalisedLength;
 						int normalisedZ = 0x10000 / normalisedLength;
 						int normalisedY = (heightDifferenceY << 8) / normalisedLength;
 						int directionalLightIntensity = directionalLightIntensityInitial + (directionalLightX * normalisedX
-																							+ directionalLightZ * normalisedZ + directionalLightY * normalisedY) / specularDistribution;
-						int weightedShadowIntensity = (GetShadowIntensity(_plane, x - 1, y) >> 2) + (GetShadowIntensity(_plane, x + 1, y) >> 3)
-																								  + (GetShadowIntensity(_plane, x, y - 1) >> 2) + (GetShadowIntensity(_plane, x, y + 1) >> 3)
-																								  + (GetShadowIntensity(_plane, x, y) >> 1);
+								+ directionalLightZ * normalisedZ + directionalLightY * normalisedY) / specularDistribution;
+						int weightedShadowIntensity = (shadowIntensity[x - 1][y] >> 2) + (shadowIntensity[x + 1][y] >> 3)
+								+ (shadowIntensity[x][y - 1] >> 2) + (shadowIntensity[x][y + 1] >> 3)
+								+ (shadowIntensity[x][y] >> 1);
 						tileLightIntensity[x, y] = directionalLightIntensity - weightedShadowIntensity;
 					}
 				}
@@ -560,7 +572,7 @@ namespace Rs317
 						int positiveX = x + 5;
 						if(positiveX >= 0 && positiveX < regionSizeX)
 						{
-							int floorId = ComputeUnderlayFloorId(_plane, positiveX, y);
+							int floorId = underlayFloorIds[_plane, positiveX, y] & 0xff;
 							if(floorId > 0)
 							{
 								FloorDefinition definition = FloorDefinition.cache[floorId - 1];
@@ -571,11 +583,10 @@ namespace Rs317
 								blendDirectionTracker[y]++;
 							}
 						}
-
 						int negativeX = x - 5;
 						if(negativeX >= 0 && negativeX < regionSizeX)
 						{
-							int floorId = ComputeUnderlayFloorId(_plane, negativeX, y);
+							int floorId = underlayFloorIds[_plane, negativeX, y] & 0xff;
 							if(floorId > 0)
 							{
 								FloorDefinition definition = FloorDefinition.cache[floorId - 1];
@@ -606,7 +617,6 @@ namespace Rs317
 								hueDivisor += blendedHueDivisor[positiveY];
 								direction += blendDirectionTracker[positiveY];
 							}
-
 							int negativeY = y - 5;
 							if(negativeY >= 0 && negativeY < regionSizeY)
 							{
@@ -616,22 +626,23 @@ namespace Rs317
 								hueDivisor -= blendedHueDivisor[negativeY];
 								direction -= blendDirectionTracker[negativeY];
 							}
-
 							if(y >= 1 && y < regionSizeY - 1
-									   && (!lowMemory || (renderRuleFlags[0, x, y] & 2) != 0
-													  || (renderRuleFlags[_plane, x, y] & 0x10) == 0
-													  && getVisibilityPlane(y, _plane, x) == plane))
+									&& (!lowMemory || (renderRuleFlags[0, x, y] & 2) != 0
+											|| (renderRuleFlags[_plane, x, y] & 0x10) == 0
+													&& getVisibilityPlane(y, _plane, x) == plane))
 							{
 								if(_plane < lowestPlane)
+								{
 									lowestPlane = _plane;
-								int underlayFloorId = ComputeUnderlayFloorId(_plane, x, y);
-								int overlayFloorId = ComputeUnderlayFloorId(_plane, x, y);
+								}
+								int underlayFloorId = underlayFloorIds[_plane, x, y] & 0xff;
+								int overlayFloorId = overlayFloorIds[_plane, x, y] & 0xff;
 								if(underlayFloorId > 0 || overlayFloorId > 0)
 								{
-									int vertexHeightSW = ComputeVertexHeight(_plane, x, y);
-									int vertexHeightSE = ComputeVertexHeight(_plane, x + 1, y);
-									int vertexHeightNE = ComputeVertexHeight(_plane, x + 1, y + 1);
-									int vertexHeightNW = ComputeVertexHeight(_plane, x, y + 1);
+									int vertexHeightSW = vertexHeights[_plane][x][y];
+									int vertexHeightSE = vertexHeights[_plane][x + 1][y];
+									int vertexHeightNE = vertexHeights[_plane][x + 1][y + 1];
+									int vertexHeightNW = vertexHeights[_plane][x][y + 1];
 									int lightIntensitySW = tileLightIntensity[x, y];
 									int lightIntensitySE = tileLightIntensity[x + 1, y];
 									int lightIntensityNE = tileLightIntensity[x + 1, y + 1];
@@ -647,37 +658,46 @@ namespace Rs317
 										h = h + randomiserHue & 0xff;
 										l += randomiserLightness;
 										if(l < 0)
+										{
 											l = 0;
+										}
 										else if(l > 255)
+										{
 											l = 255;
+										}
 										hslBitsetRandomised = generateHSLBitset(h, s, l);
 									}
-
 									if(_plane > 0)
 									{
 										bool hideUnderlay = true;
 										if(underlayFloorId == 0 && overlayClippingPaths[_plane, x, y] != 0)
+										{
 											hideUnderlay = false;
+										}
 										if(overlayFloorId > 0 && !FloorDefinition.cache[overlayFloorId - 1].occlude)
+										{
 											hideUnderlay = false;
+										}
 										if(hideUnderlay && vertexHeightSW == vertexHeightSE
-														 && vertexHeightSW == vertexHeightNE && vertexHeightSW == vertexHeightNW)
+												&& vertexHeightSW == vertexHeightNE && vertexHeightSW == vertexHeightNW)
+										{
 											tileCullingBitsets[_plane, x, y] |= 0x924;
+										}
 									}
-
 									int underlayMinimapColour = 0;
 									if(hslBitsetOriginal != -1)
-										underlayMinimapColour = Rasterizer.HSL_TO_RGB[mixLightness(hslBitsetRandomised,
-											96)];
+									{
+										underlayMinimapColour = Rasterizer.HSL_TO_RGB[mixLightness(hslBitsetRandomised, 96)];
+									}
 									if(overlayFloorId == 0)
 									{
 										worldController.renderTile(_plane, x, y, 0, 0, -1, vertexHeightSW, vertexHeightSE,
-											vertexHeightNE, vertexHeightNW,
-											mixLightness(hslBitsetOriginal, lightIntensitySW),
-											mixLightness(hslBitsetOriginal, lightIntensitySE),
-											mixLightness(hslBitsetOriginal, lightIntensityNE),
-											mixLightness(hslBitsetOriginal, lightIntensityNW), 0, 0, 0, 0,
-											underlayMinimapColour, 0);
+												vertexHeightNE, vertexHeightNW,
+												mixLightness(hslBitsetOriginal, lightIntensitySW),
+												mixLightness(hslBitsetOriginal, lightIntensitySE),
+												mixLightness(hslBitsetOriginal, lightIntensityNE),
+												mixLightness(hslBitsetOriginal, lightIntensityNW), 0, 0, 0, 0,
+												underlayMinimapColour, 0);
 									}
 									else
 									{
@@ -701,22 +721,21 @@ namespace Rs317
 										else
 										{
 											hslBitset = generateHSLBitset(definition.hue2, definition.saturation,
-												definition.lightness);
+													definition.lightness);
 											overlayMinimapColour = Rasterizer.HSL_TO_RGB[mixLightnessSigned(definition.hsl,
-												96)];
+													96)];
 										}
-
 										worldController.renderTile(_plane, x, y, clippingPath, clippingPathRotation,
-											textureId, vertexHeightSW, vertexHeightSE, vertexHeightNE, vertexHeightNW,
-											mixLightness(hslBitsetOriginal, lightIntensitySW),
-											mixLightness(hslBitsetOriginal, lightIntensitySE),
-											mixLightness(hslBitsetOriginal, lightIntensityNE),
-											mixLightness(hslBitsetOriginal, lightIntensityNW),
-											mixLightnessSigned(hslBitset, lightIntensitySW),
-											mixLightnessSigned(hslBitset, lightIntensitySE),
-											mixLightnessSigned(hslBitset, lightIntensityNE),
-											mixLightnessSigned(hslBitset, lightIntensityNW), underlayMinimapColour,
-											overlayMinimapColour);
+												textureId, vertexHeightSW, vertexHeightSE, vertexHeightNE, vertexHeightNW,
+												mixLightness(hslBitsetOriginal, lightIntensitySW),
+												mixLightness(hslBitsetOriginal, lightIntensitySE),
+												mixLightness(hslBitsetOriginal, lightIntensityNE),
+												mixLightness(hslBitsetOriginal, lightIntensityNW),
+												mixLightnessSigned(hslBitset, lightIntensitySW),
+												mixLightnessSigned(hslBitset, lightIntensitySE),
+												mixLightnessSigned(hslBitset, lightIntensityNE),
+												mixLightnessSigned(hslBitset, lightIntensityNW), underlayMinimapColour,
+												overlayMinimapColour);
 									}
 								}
 							}
@@ -728,19 +747,24 @@ namespace Rs317
 				for(int y = 1; y < regionSizeY - 1; y++)
 				{
 					for(int x = 1; x < regionSizeX - 1; x++)
+					{
 						worldController.setTileLogicHeight(x, y, _plane, getVisibilityPlane(y, _plane, x));
+					}
 
 				}
 
 			}
 
 			worldController.shadeModels(-10, -50, -50);
-			for(int x = 0; x < regionSizeX; x++)
+			for(int x = 0; x < this.regionSizeX; x++)
 			{
-				for(int y = 0; y < regionSizeY; y++)
-					if((renderRuleFlags[1, x, y] & 2) == 2)
+				for(int y = 0; y < this.regionSizeY; y++)
+				{
+					if((this.renderRuleFlags[1, x, y] & 2) == 2)
+					{
 						worldController.applyBridgeMode(x, y);
-
+					}
+				}
 			}
 
 			int renderRule1 = 1;
@@ -754,178 +778,205 @@ namespace Rs317
 					renderRule2 <<= 3;
 					renderRule3 <<= 3;
 				}
-
 				for(int _plane = 0; _plane <= plane; _plane++)
 				{
-					for(int y = 0; y <= regionSizeY; y++)
+					for(int y = 0; y <= this.regionSizeY; y++)
 					{
-						for(int x = 0; x <= regionSizeX; x++)
+						for(int x = 0; x <= this.regionSizeX; x++)
 						{
-							if((tileCullingBitsets[_plane, x, y] & renderRule1) != 0)
+							if((this.tileCullingBitsets[_plane, x, y] & renderRule1) != 0)
 							{
 								int lowestOcclusionY = y;
 								int highestOcclusionY = y;
 								int lowestOcclusionPlane = _plane;
 								int highestOcclusionPlane = _plane;
-
-								for(;
-									lowestOcclusionY > 0 && (tileCullingBitsets[_plane, x, lowestOcclusionY - 1]
-															 & renderRule1) != 0;
-									lowestOcclusionY--)
-									;
-
-								for(;
-									highestOcclusionY < regionSizeY
-									&& (tileCullingBitsets[_plane, x, highestOcclusionY + 1]
-										& renderRule1) != 0;
-									highestOcclusionY++)
-									;
-
+								for(; lowestOcclusionY > 0 && (this.tileCullingBitsets[_plane, x, lowestOcclusionY - 1]
+										& renderRule1) != 0; lowestOcclusionY--)
+								{
+								}
+								for(; highestOcclusionY < this.regionSizeY
+										&& (this.tileCullingBitsets[_plane, x, highestOcclusionY + 1]
+												& renderRule1) != 0; highestOcclusionY++)
+								{
+								}
 								for(; lowestOcclusionPlane > 0; lowestOcclusionPlane--)
 								{
 									for(int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++)
-										if((tileCullingBitsets[lowestOcclusionPlane - 1, x, occludedY] & renderRule1) == 0)
+									{
+										if((this.tileCullingBitsets[lowestOcclusionPlane - 1, x, occludedY] & renderRule1) == 0)
+										{
 											goto findLowestOcclusionPlane;
+										}
+									}
 								}
-
 								findLowestOcclusionPlane:
 
 								for(; highestOcclusionPlane < plane; highestOcclusionPlane++)
 								{
 									for(int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++)
-										if((tileCullingBitsets[highestOcclusionPlane + 1, x, occludedY] & renderRule1) == 0)
+									{
+										if((this.tileCullingBitsets[highestOcclusionPlane + 1, x, occludedY]
+												& renderRule1) == 0)
+										{
 											goto findHighestOcclusionPlane;
+										}
+									}
 								}
-
 								findHighestOcclusionPlane:
 
 								int occlusionSurface = ((highestOcclusionPlane + 1) - lowestOcclusionPlane)
-													   * ((highestOcclusionY - lowestOcclusionY) + 1);
+										* ((highestOcclusionY - lowestOcclusionY) + 1);
 								if(occlusionSurface >= 8)
 								{
 									int highestOcclusionVertexHeightOffset = 240;
-									int highestOcclusionVertexHeight = ComputeVertexHeight(highestOcclusionPlane, x, lowestOcclusionY)
-																	   - highestOcclusionVertexHeightOffset;
-									int lowestOcclusionVertexHeight = ComputeVertexHeight(lowestOcclusionPlane, x, lowestOcclusionY);
+									int highestOcclusionVertexHeight = this.vertexHeights[highestOcclusionPlane][x][lowestOcclusionY]
+											- highestOcclusionVertexHeightOffset;
+									int lowestOcclusionVertexHeight = this.vertexHeights[lowestOcclusionPlane][x][lowestOcclusionY];
 									WorldController.createCullingCluster(plane, x * 128, x * 128,
-										highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
-										highestOcclusionVertexHeight, lowestOcclusionVertexHeight, 1);
+											highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
+											highestOcclusionVertexHeight, lowestOcclusionVertexHeight, 1);
 									for(int occludedPlane = lowestOcclusionPlane; occludedPlane <= highestOcclusionPlane; occludedPlane++)
 									{
 										for(int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++)
-											tileCullingBitsets[occludedPlane, x, occludedY] &= ~renderRule1;
+										{
+											this.tileCullingBitsets[occludedPlane, x, occludedY] &= ~renderRule1;
+										}
 
 									}
 
 								}
 							}
 
-							if((tileCullingBitsets[plane, x, y] & renderRule2) != 0)
+							if((this.tileCullingBitsets[plane, x, y] & renderRule2) != 0)
 							{
 								int lowestOcclusionX = x;
 								int highestOcclusionX = x;
 								int lowestocclusionPlane = plane;
 								int highestocclusionPlane = plane;
-								for(;
-									lowestOcclusionX > 0 && (tileCullingBitsets[plane, lowestOcclusionX - 1, y]
-															 & renderRule2) != 0;
-									lowestOcclusionX--)
-									;
-								for(;
-									highestOcclusionX < regionSizeX
-									&& (tileCullingBitsets[plane, highestOcclusionX + 1, y]
-										& renderRule2) != 0;
-									highestOcclusionX++)
-									;
+								for(; lowestOcclusionX > 0 && (this.tileCullingBitsets[plane, lowestOcclusionX - 1, y]
+										& renderRule2) != 0; lowestOcclusionX--)
+								{
+								}
+								for(; highestOcclusionX < this.regionSizeX
+										&& (this.tileCullingBitsets[plane, highestOcclusionX + 1, y]
+												& renderRule2) != 0; highestOcclusionX++)
+								{
+								}
 								for(; lowestocclusionPlane > 0; lowestocclusionPlane--)
 								{
 									for(int occludedX = lowestOcclusionX; occludedX <= highestOcclusionX; occludedX++)
-										if((tileCullingBitsets[lowestocclusionPlane - 1, occludedX, y] & renderRule2) == 0)
+									{
+										if((this.tileCullingBitsets[lowestocclusionPlane - 1, occludedX, y] & renderRule2) == 0)
+										{
 											goto findLowestocclusionPlane;
+										}
+									}
 								}
-
 								findLowestocclusionPlane:
 
 								for(; highestocclusionPlane < plane; highestocclusionPlane++)
 								{
 									for(int occludedX = lowestOcclusionX; occludedX <= highestOcclusionX; occludedX++)
-										if((tileCullingBitsets[highestocclusionPlane + 1, occludedX, y] & renderRule2) == 0)
+									{
+										if((this.tileCullingBitsets[highestocclusionPlane + 1, occludedX, y]
+												& renderRule2) == 0)
+										{
 											goto findHighestocclusionPlane;
-								}
+										}
+									}
 
+								}
 								findHighestocclusionPlane:
 
 								int occlusionSurface = ((highestocclusionPlane + 1) - lowestocclusionPlane)
-													   * ((highestOcclusionX - lowestOcclusionX) + 1);
+										* ((highestOcclusionX - lowestOcclusionX) + 1);
 								if(occlusionSurface >= 8)
 								{
 									int highestOcclusionVertexHeightOffset = 240;
-									int highestOcclusionVertexHeight = ComputeVertexHeight(highestocclusionPlane, lowestOcclusionX, y)
-																	   - highestOcclusionVertexHeightOffset;
-									int lowestOcclusionVertexHeight = ComputeVertexHeight(lowestocclusionPlane, lowestOcclusionX, y);
+									int highestOcclusionVertexHeight = this.vertexHeights[highestocclusionPlane][lowestOcclusionX][y]
+											- highestOcclusionVertexHeightOffset;
+									int lowestOcclusionVertexHeight = this.vertexHeights[lowestocclusionPlane][lowestOcclusionX][y];
 									WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
-										lowestOcclusionX * 128, y * 128, y * 128, highestOcclusionVertexHeight,
-										lowestOcclusionVertexHeight, 2);
+											lowestOcclusionX * 128, y * 128, y * 128, highestOcclusionVertexHeight,
+											lowestOcclusionVertexHeight, 2);
 									for(int occludedPlane = lowestocclusionPlane; occludedPlane <= highestocclusionPlane; occludedPlane++)
 									{
 										for(int occludedX = lowestOcclusionX; occludedX <= highestOcclusionX; occludedX++)
-											tileCullingBitsets[occludedPlane, occludedX, y] &= ~renderRule2;
+										{
+											this.tileCullingBitsets[occludedPlane, occludedX, y] &= ~renderRule2;
+										}
+
 									}
 
 								}
 							}
-
-							if((tileCullingBitsets[plane, x, y] & renderRule3) != 0)
+							if((this.tileCullingBitsets[plane, x, y] & renderRule3) != 0)
 							{
 								int lowestOcclusionX = x;
 								int highestOcclusionX = x;
 								int lowestOcclusionY = y;
 								int highestOcclusionY = y;
-
-								for(;
-									lowestOcclusionY > 0 && (tileCullingBitsets[plane, x, lowestOcclusionY - 1]
-															 & renderRule3) != 0;
-									lowestOcclusionY--)
-									;
-
-								for(; highestOcclusionY < regionSizeY && (tileCullingBitsets[plane, x, highestOcclusionY + 1] & renderRule3) != 0; highestOcclusionY++)
-									;
-
+								for(; lowestOcclusionY > 0 && (this.tileCullingBitsets[plane, x, lowestOcclusionY - 1]
+										& renderRule3) != 0; lowestOcclusionY--)
+								{
+								}
+								for(; highestOcclusionY < this.regionSizeY
+										&& (this.tileCullingBitsets[plane, x, highestOcclusionY + 1]
+												& renderRule3) != 0; highestOcclusionY++)
+								{
+								}
 								for(; lowestOcclusionX > 0; lowestOcclusionX--)
 								{
 									for(int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++)
-										if((tileCullingBitsets[plane, lowestOcclusionX - 1, occludedY] & renderRule3) == 0)
+									{
+										if((this.tileCullingBitsets[plane, lowestOcclusionX - 1, occludedY] & renderRule3) == 0)
+										{
 											goto findLowestOcclusionX;
-								}
+										}
+									}
 
+								}
 								findLowestOcclusionX:
 
-								for(; highestOcclusionX < regionSizeX; highestOcclusionX++)
+								for(; highestOcclusionX < this.regionSizeX; highestOcclusionX++)
 								{
 									for(int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++)
-										if((tileCullingBitsets[plane, highestOcclusionX + 1, occludedY] & renderRule3) == 0)
+									{
+										if((this.tileCullingBitsets[plane, highestOcclusionX + 1, occludedY]
+												& renderRule3) == 0)
+										{
 											goto findHighestOcclusionX;
-								}
+										}
+									}
 
+								}
 								findHighestOcclusionX:
 
 								if(((highestOcclusionX - lowestOcclusionX) + 1)
-									* ((highestOcclusionY - lowestOcclusionY) + 1) >= 4)
+										* ((highestOcclusionY - lowestOcclusionY) + 1) >= 4)
 								{
-									int lowestOcclusionVertexHeight = ComputeVertexHeight(plane, lowestOcclusionX, lowestOcclusionY);
+									int lowestOcclusionVertexHeight = this.vertexHeights[plane][lowestOcclusionX][lowestOcclusionY];
 									WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
-										lowestOcclusionX * 128, highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
-										lowestOcclusionVertexHeight, lowestOcclusionVertexHeight, 4);
+											lowestOcclusionX * 128, highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
+											lowestOcclusionVertexHeight, lowestOcclusionVertexHeight, 4);
 									for(int occludedX = lowestOcclusionX; occludedX <= highestOcclusionX; occludedX++)
 									{
 										for(int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++)
-											tileCullingBitsets[plane, occludedX, occludedY] &= ~renderRule3;
+										{
+											this.tileCullingBitsets[plane, occludedX, occludedY] &= ~renderRule3;
+										}
+
 									}
+
 								}
+
 							}
 						}
+
 					}
+
 				}
+
 			}
 		}
 
@@ -970,7 +1021,7 @@ namespace Rs317
 				for(int x = startX; x <= startX + countX; x++)
 					if(x >= 0 && x < regionSizeX && y >= 0 && y < regionSizeY)
 					{
-						tileShadowIntensity[0, x, y] = 127;
+						tileShadowIntensity[0][x][y] = 127;
 						if(x == startX && x > 0)
 							vertexHeights[0][x][y] = vertexHeights[0][x - 1][y];
 						if(x == startX + countX && x < regionSizeX - 1)
@@ -1303,8 +1354,8 @@ namespace Rs317
 									int intensity = model.diagonal2DAboveOrigin / 4;
 									if(intensity > 30)
 										intensity = 30;
-									if(intensity > tileShadowIntensity[plane, x + _x, y + _y])
-										tileShadowIntensity[plane, x + _x, y + _y] = (byte)intensity;
+									if(intensity > tileShadowIntensity[plane][x + _x][y + _y])
+										tileShadowIntensity[plane][x + _x][y + _y] = (byte)intensity;
 								}
 
 							}
@@ -1352,8 +1403,8 @@ namespace Rs317
 				{
 					if(objectDefinition.castsShadow)
 					{
-						tileShadowIntensity[plane, x, y] = 50;
-						tileShadowIntensity[plane, x, y + 1] = 50;
+						tileShadowIntensity[plane][x][y] = 50;
+						tileShadowIntensity[plane][x][y + 1] = 50;
 					}
 
 					if(objectDefinition.wall)
@@ -1363,8 +1414,8 @@ namespace Rs317
 				{
 					if(objectDefinition.castsShadow)
 					{
-						tileShadowIntensity[plane, x, y + 1] = 50;
-						tileShadowIntensity[plane, x + 1, y + 1] = 50;
+						tileShadowIntensity[plane][x][y + 1] = 50;
+						tileShadowIntensity[plane][x + 1][y + 1] = 50;
 					}
 
 					if(objectDefinition.wall)
@@ -1374,8 +1425,8 @@ namespace Rs317
 				{
 					if(objectDefinition.castsShadow)
 					{
-						tileShadowIntensity[plane, x + 1, y] = 50;
-						tileShadowIntensity[plane, x + 1, y + 1] = 50;
+						tileShadowIntensity[plane][x + 1][y] = 50;
+						tileShadowIntensity[plane][x + 1][y + 1] = 50;
 					}
 
 					if(objectDefinition.wall)
@@ -1385,8 +1436,8 @@ namespace Rs317
 				{
 					if(objectDefinition.castsShadow)
 					{
-						tileShadowIntensity[plane, x, y] = 50;
-						tileShadowIntensity[plane, x + 1, y] = 50;
+						tileShadowIntensity[plane][x][y] = 50;
+						tileShadowIntensity[plane][x + 1][y] = 50;
 					}
 
 					if(objectDefinition.wall)
@@ -1413,13 +1464,13 @@ namespace Rs317
 					null, config);
 				if(objectDefinition.castsShadow)
 					if(face == 0)
-						tileShadowIntensity[plane, x, y + 1] = 50;
+						tileShadowIntensity[plane][x][y + 1] = 50;
 					else if(face == 1)
-						tileShadowIntensity[plane, x + 1, y + 1] = 50;
+						tileShadowIntensity[plane][x + 1][y + 1] = 50;
 					else if(face == 2)
-						tileShadowIntensity[plane, x + 1, y] = 50;
+						tileShadowIntensity[plane][x + 1][y] = 50;
 					else if(face == 3)
-						tileShadowIntensity[plane, x, y] = 50;
+						tileShadowIntensity[plane][x][y] = 50;
 				if(objectDefinition.solid && collisionMap != null)
 					collisionMap.markWall(y, face, x, type, objectDefinition.walkable);
 				return;
@@ -1489,13 +1540,13 @@ namespace Rs317
 					null, config);
 				if(objectDefinition.castsShadow)
 					if(face == 0)
-						tileShadowIntensity[plane, x, y + 1] = 50;
+						tileShadowIntensity[plane][x][y + 1] = 50;
 					else if(face == 1)
-						tileShadowIntensity[plane, x + 1, y + 1] = 50;
+						tileShadowIntensity[plane][x + 1][y + 1] = 50;
 					else if(face == 2)
-						tileShadowIntensity[plane, x + 1, y] = 50;
+						tileShadowIntensity[plane][x + 1][y] = 50;
 					else if(face == 3)
-						tileShadowIntensity[plane, x, y] = 50;
+						tileShadowIntensity[plane][x][y] = 50;
 				if(objectDefinition.solid && collisionMap != null)
 					collisionMap.markWall(y, face, x, type, objectDefinition.walkable);
 				return;
