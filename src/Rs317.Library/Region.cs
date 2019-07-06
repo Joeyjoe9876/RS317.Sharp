@@ -28,12 +28,12 @@ namespace Rs317
 		}
 
 		public static void forceRenderObject(WorldController worldController, int face, int y, int type, int plane,
-			CollisionMap collisionMap, int[,,] groundArray, int x, int objectId, int z)
+			CollisionMap collisionMap, int[][][] groundArray, int x, int objectId, int z)
 		{
-			int vertexHeightSW = groundArray[plane, x, y];
-			int vertexHeightSE = groundArray[plane, x + 1, y];
-			int vertexHeightNE = groundArray[plane, x + 1, y + 1];
-			int vertexHeightNW = groundArray[plane, x, y + 1];
+			int vertexHeightSW = groundArray[plane][x][y];
+			int vertexHeightSE = groundArray[plane][x + 1][y];
+			int vertexHeightNE = groundArray[plane][x + 1][y + 1];
+			int vertexHeightNW = groundArray[plane][x][y + 1];
 			int drawHeight = vertexHeightSW + vertexHeightSE + vertexHeightNE + vertexHeightNW >> 2;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 			int hash = x + (y << 7) + (objectId << 14) + 0x40000000;
@@ -431,7 +431,7 @@ namespace Rs317
 
 		private int[] blendDirectionTracker;
 
-		private int[,,] vertexHeights;
+		private int[][][] vertexHeights;
 
 		private byte[,,] overlayFloorIds;
 
@@ -457,7 +457,7 @@ namespace Rs317
 		public static bool lowMemory = true;
 		private static int[] POWERS_OF_TWO = { 1, 2, 4, 8 };
 
-		public Region(byte[,,] renderRuleFlags, int[,,] vertexHeights)
+		public Region(byte[,,] renderRuleFlags, int[][][] vertexHeights)
 		{
 			lowestPlane = 99;
 			regionSizeX = 104;
@@ -932,7 +932,7 @@ namespace Rs317
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private int ComputeVertexHeight(int z, int x, int y)
 		{
-			return vertexHeights[z, x, y];
+			return vertexHeights[z][x][y];
 		}
 
 		private int ComputeUnderlayFloorId(int _plane, int positiveX, int y)
@@ -972,13 +972,13 @@ namespace Rs317
 					{
 						tileShadowIntensity[0, x, y] = 127;
 						if(x == startX && x > 0)
-							vertexHeights[0, x, y] = vertexHeights[0, x - 1, y];
+							vertexHeights[0][x][y] = vertexHeights[0][x - 1][y];
 						if(x == startX + countX && x < regionSizeX - 1)
-							vertexHeights[0, x, y] = vertexHeights[0, x + 1, y];
+							vertexHeights[0][x][y] = vertexHeights[0][x + 1][y];
 						if(y == startY && y > 0)
-							vertexHeights[0, x, y] = vertexHeights[0, x, y - 1];
+							vertexHeights[0][x][y] = vertexHeights[0][x][y - 1];
 						if(y == startY + countY && y < regionSizeY - 1)
-							vertexHeights[0, x, y] = vertexHeights[0, x, y + 1];
+							vertexHeights[0][x][y] = vertexHeights[0][x][y + 1];
 					}
 
 			}
@@ -1140,13 +1140,13 @@ namespace Rs317
 					if(value == 0)
 						if(tileZ == 0)
 						{
-							vertexHeights[0, tileX, tileY] = -calculateVertexHeight(0xe3b7b + tileX + offsetX,
+							vertexHeights[0][tileX][tileY] = -calculateVertexHeight(0xe3b7b + tileX + offsetX,
 																 0x87cce + tileY + offsetY) * 8;
 							return;
 						}
 						else
 						{
-							vertexHeights[tileZ, tileX, tileY] = vertexHeights[tileZ - 1, tileX, tileY] - 240;
+							vertexHeights[tileZ][tileX][tileY] = vertexHeights[tileZ - 1][tileX][tileY] - 240;
 							return;
 						}
 
@@ -1157,12 +1157,12 @@ namespace Rs317
 							height = 0;
 						if(tileZ == 0)
 						{
-							vertexHeights[0, tileX, tileY] = -height * 8;
+							vertexHeights[0][tileX][tileY] = -height * 8;
 							return;
 						}
 						else
 						{
-							vertexHeights[tileZ, tileX, tileY] = vertexHeights[tileZ - 1, tileX, tileY] - height * 8;
+							vertexHeights[tileZ][tileX][tileY] = vertexHeights[tileZ - 1][tileX][tileY] - height * 8;
 							return;
 						}
 					}

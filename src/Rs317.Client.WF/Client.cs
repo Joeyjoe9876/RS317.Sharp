@@ -428,7 +428,7 @@ namespace Rs317
 		private int chatboxScrollMax;
 		private String promptInput;
 		private int anInt1213;
-		private int[,,] intGroundArray;
+		private int[][][] intGroundArray;
 		private long serverSessionKey;
 		private int loginScreenFocus;
 		private IndexedImage[] modIcons;
@@ -5631,10 +5631,10 @@ namespace Rs317
 				groundZ++;
 			int _x = x & 0x7F;
 			int _y = y & 0x7F;
-			int i2 = intGroundArray[groundZ, groundX, groundY] * (128 - _x)
-					 + intGroundArray[groundZ, groundX + 1, groundY] * _x >> 7;
-			int j2 = intGroundArray[groundZ, groundX, groundY + 1] * (128 - _x)
-					 + intGroundArray[groundZ, groundX + 1, groundY + 1] * _x >> 7;
+			int i2 = intGroundArray[groundZ][groundX][groundY] * (128 - _x)
+					 + intGroundArray[groundZ][groundX + 1][groundY] * _x >> 7;
+			int j2 = intGroundArray[groundZ][groundX][groundY + 1] * (128 - _x)
+					 + intGroundArray[groundZ][groundX + 1][groundY + 1] * _x >> 7;
 
 			return i2 * (128 - _y) + j2 * _y >> 7;
 		}
@@ -7860,12 +7860,12 @@ namespace Rs317
 					spellSelected = false;
 					loadingStage = 0;
 					trackCount = 0;
-					cameraRandomisationH = (int)(StaticRandomGenerator.Next() * 100D) - 50;
-					cameraRandomisationV = (int)(StaticRandomGenerator.Next() * 110D) - 55;
-					cameraRandomisationA = (int)(StaticRandomGenerator.Next() * 80D) - 40;
-					minimapRotation = (int)(StaticRandomGenerator.Next() * 120D) - 60;
-					minimapZoom = (int)(StaticRandomGenerator.Next() * 30D) - 20;
-					cameraHorizontal = (int)(StaticRandomGenerator.Next() * 20D) - 10 & 0x7FF;
+					cameraRandomisationH = (int)(StaticRandomGenerator.Next(100)) - 50;
+					cameraRandomisationV = (int)(StaticRandomGenerator.Next(110)) - 55;
+					cameraRandomisationA = (int)(StaticRandomGenerator.Next(80)) - 40;
+					minimapRotation = (int)(StaticRandomGenerator.Next(120)) - 60;
+					minimapZoom = (int)(StaticRandomGenerator.Next(30)) - 20;
+					cameraHorizontal = (int)(StaticRandomGenerator.Next(20)) - 10 & 0x7FF;
 					minimapState = 0;
 					lastRegionId = -1;
 					destinationX = 0;
@@ -9077,10 +9077,10 @@ namespace Rs317
 				int animationId = stream.getUnsignedLEShortA();
 				if(x >= 0 && y >= 0 && x < 103 && y < 103)
 				{
-					int tileHeightX0Y0 = intGroundArray[plane, x, y];
-					int tileHeightX1Y0 = intGroundArray[plane, x + 1, y];
-					int tileHeightX1Y1 = intGroundArray[plane, x + 1, y + 1];
-					int tileHeightX0Y1 = intGroundArray[plane, x, y + 1];
+					int tileHeightX0Y0 = intGroundArray[plane][x][y];
+					int tileHeightX1Y0 = intGroundArray[plane][x + 1][y];
+					int tileHeightX1Y1 = intGroundArray[plane][x + 1][y + 1];
+					int tileHeightX0Y1 = intGroundArray[plane][x][y + 1];
 					if(type == 0)
 					{
 						Wall wallObject = worldController.getWallObject(x, y, plane);
@@ -9158,10 +9158,10 @@ namespace Rs317
 				if(player != null)
 				{
 					GameObjectDefinition gObject = GameObjectDefinition.getDefinition(objectId);
-					int tileHeightX0Y0 = intGroundArray[plane, x, y];
-					int tileHeightX1Y0 = intGroundArray[plane, x + 1, y];
-					int tileHeightX1Y1 = intGroundArray[plane, x + 1, y + 1];
-					int tileHeightX0Y1 = intGroundArray[plane, x, y + 1];
+					int tileHeightX0Y0 = intGroundArray[plane][x][y];
+					int tileHeightX1Y0 = intGroundArray[plane][x + 1][y];
+					int tileHeightX1Y1 = intGroundArray[plane][x + 1][y + 1];
+					int tileHeightX0Y1 = intGroundArray[plane][x][y + 1];
 					Model model = gObject.getModelAt(objectType, objectOrientation, tileHeightX0Y0, tileHeightX1Y0,
 						tileHeightX1Y1, tileHeightX0Y1, -1);
 					if(model != null)
@@ -11311,7 +11311,7 @@ namespace Rs317
 							int _z = plane;
 							if(_z < 3 && (tileFlags[1, _x, _y] & 2) == 2)
 								_z++;
-							int h1 = drawHeight - intGroundArray[_z, _x, _y];
+							int h1 = drawHeight - intGroundArray[_z][_x][_y];
 							if(h1 > maximumDrawHeight)
 								maximumDrawHeight = h1;
 						}
@@ -11521,7 +11521,7 @@ namespace Rs317
 				Archive archiveWord = requestArchive(7, "chat system", "wordenc", expectedCRCs[7], 50);
 				Archive archiveSounds = requestArchive(8, "sound effects", "sounds", expectedCRCs[8], 55);
 				tileFlags = new byte[4, 104, 104];
-				intGroundArray = new int[4, 105, 105];
+				intGroundArray = CollectionUtilities.Create3DJaggedArray<int>(4, 105, 105);
 				worldController = new WorldController(intGroundArray);
 				for(int z = 0; z < 4; z++)
 					currentCollisionMap[z] = new CollisionMap();
