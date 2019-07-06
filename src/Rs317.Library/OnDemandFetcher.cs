@@ -255,12 +255,12 @@ public sealed class OnDemandFetcher : IRunnable
 				if(i == gzipInputBuffer.Length)
 					throw new Exception("buffer overflow!");
 				int k = gzipinputstream.Read(gzipInputBuffer, i, gzipInputBuffer.Length - i);
-				if(k == -1)
+				if(k == -1 || k == 0) //This was causing a hang here, different return value in C#. RS2Sharp made this change, but did not document it.
 					break;
 				i += k;
 			} while(true);
 		}
-		catch(IOException _ex)
+		catch(Exception _ex)
 		{
 			throw new Exception("error unzipping", _ex);
 		}
