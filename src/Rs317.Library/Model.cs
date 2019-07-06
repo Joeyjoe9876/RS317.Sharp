@@ -27,6 +27,13 @@ public sealed class Model : Animable
 
 	public static bool isCached(int model)
 	{
+		if (model >= modelHeaders.Length)
+		{
+			string error = $"Cannot check cache for {model} as it exceeds the metadata container's length.";
+			signlink.reporterror(error);
+			throw new ArgumentException($"Cannot check cache for {model} as it exceeds the metadata container's length.");
+		}
+
 		if(modelHeaders == null)
 			return false;
 		ModelHeader modelHeader = modelHeaders[model];
