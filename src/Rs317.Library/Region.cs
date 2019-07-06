@@ -336,7 +336,7 @@ namespace Rs317
 			return definition.modelTypeCached(type);
 		}
 
-		/*public static void passivelyRequestGameObjectModels(Buffer stream, OnDemandFetcher onDemandFetcher)
+		public static void passivelyRequestGameObjectModels(Buffer stream, OnDemandFetcher onDemandFetcher)
 		{
 			start:
 			{
@@ -345,7 +345,7 @@ namespace Rs317
 				{
 					int objectIdOffset = stream.getSmartB();
 					if(objectIdOffset == 0)
-						break start;
+						return; //TODO: I think this is correct? RS2Sharp does this.
 					objectId += objectIdOffset;
 					GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 					definition.passivelyRequestModels(onDemandFetcher);
@@ -358,7 +358,7 @@ namespace Rs317
 					} while(true);
 				} while(true);
 			}
-		}*/
+		}
 
 		private static int randomNoiseWeighedSum(int x, int y)
 		{
