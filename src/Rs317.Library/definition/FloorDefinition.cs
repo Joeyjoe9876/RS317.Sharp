@@ -146,17 +146,17 @@ public sealed class FloorDefinition
 		if(hueDivisor < 1)
 			hueDivisor = 1;
 		hue = (int)(h * hueDivisor);
-		int randomHue = (hue2 + (int)(StaticRandomGenerator.Next() * 16D)) - 8;
+		int randomHue = (hue2 + (int)(StaticRandomGenerator.Next(16))) - 8;
 		if(randomHue < 0)
 			randomHue = 0;
 		else if(randomHue > 255)
 			randomHue = 255;
-		int randomSaturation = (saturation + (int)(StaticRandomGenerator.Next() * 48D)) - 24;
+		int randomSaturation = (saturation + (int)(StaticRandomGenerator.Next(48))) - 24;
 		if(randomSaturation < 0)
 			randomSaturation = 0;
 		else if(randomSaturation > 255)
 			randomSaturation = 255;
-		int randomLightness = (lightness + (int)(StaticRandomGenerator.Next() * 48D)) - 24;
+		int randomLightness = (lightness + (int)(StaticRandomGenerator.Next(48))) - 24;
 		if(randomLightness < 0)
 			randomLightness = 0;
 		else if(randomLightness > 255)
