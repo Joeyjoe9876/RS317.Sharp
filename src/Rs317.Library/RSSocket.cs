@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
+using Rs317;
 
 public sealed class RSSocket : IRunnable
 {
@@ -14,7 +15,7 @@ public sealed class RSSocket : IRunnable
 
 	private bool closed;
 
-	private RSApplet rsApplet;
+	private IRunnableStarter RunnableStarterService { get; }
 
 	private byte[] buffer;
 
@@ -31,12 +32,12 @@ public sealed class RSSocket : IRunnable
 	/// </summary>
 	/// <exception cref=""></exception>
 	/// <returns></returns>
-	public RSSocket(RSApplet RSApplet_, TcpClient socket1)
+	public RSSocket(IRunnableStarter runnablerStarter, TcpClient socket1)
 	{
 		closed = false;
 		isWriter = false;
 		hasIOError = false;
-		rsApplet = RSApplet_;
+		RunnableStarterService = runnablerStarter;
 		socket = socket1;
 		socket.SendTimeout = 30000;
 		socket.NoDelay = true;
@@ -215,7 +216,7 @@ public sealed class RSSocket : IRunnable
 			if(!isWriter)
 			{
 				isWriter = true;
-				rsApplet.startRunnable(this, 3);
+				RunnableStarterService.StartRunnable(this, 3);
 			}
 			Monitor.PulseAll(this);
 		}
