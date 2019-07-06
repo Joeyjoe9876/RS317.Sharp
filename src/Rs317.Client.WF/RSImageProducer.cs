@@ -1,6 +1,7 @@
 
 using System;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 public sealed class RSImageProducer
@@ -33,18 +34,21 @@ public sealed class RSImageProducer
 
 	public void drawGraphics(int y, Graphics g, int x)
 	{
-		method239();
-		while(true)
+		lock (image)
 		{
-			try
+			method239();
+			while(true)
 			{
-				g.DrawImageUnscaled(image, x, y);
-				break;
-			}
-			catch(Exception e)
-			{
-				//TODO: This is a remanent of the dude who ported this. It shouldn't happen in a good threading model.
-				System.Threading.Thread.Sleep(1);
+				try
+				{
+					g.DrawImageUnscaled(image, x, y);
+					break;
+				}
+				catch(Exception e)
+				{
+					//TODO: This is a remanent of the dude who ported this. It shouldn't happen in a good threading model.
+					System.Threading.Thread.Sleep(1);
+				}
 			}
 		}
 	}
