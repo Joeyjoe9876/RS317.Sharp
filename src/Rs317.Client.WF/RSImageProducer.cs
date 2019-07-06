@@ -52,9 +52,9 @@ public sealed class RSImageProducer
 	private void method239()
 	{
 		fastPixel.Lock();
-		for(int y = 0; y < width; y++)
+		for(int y = 0; y < height; y++)
 		{
-			for(int x = 0; x < height; x++)
+			for(int x = 0; x < width; x++)
 			{
 				int value = pixels[x + y * width];
 				fastPixel.SetPixel(x, y, Color.FromArgb((value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF));
