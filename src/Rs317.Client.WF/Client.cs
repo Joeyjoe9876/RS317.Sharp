@@ -7091,13 +7091,12 @@ namespace Rs317
 			}
 			catch(Exception exception)
 			{
-				String s2 = "T2 - " + packetOpcode + "," + secondMostRecentOpcode + "," + thirdMostRecentOpcode + " - "
-							+ packetSize + "," + (baseX + localPlayer.waypointX[0]) + "," + (baseY + localPlayer.waypointY[0])
-							+ " - ";
+				String s2 = $"T2 - {packetOpcode},{secondMostRecentOpcode},{thirdMostRecentOpcode} - {packetSize},{(baseX + localPlayer.waypointX[0])},{(baseY + localPlayer.waypointY[0])} - ";
 				for(int j15 = 0; j15 < packetSize && j15 < 50; j15++)
 					s2 = s2 + inStream.buffer[j15] + ",";
 
 				signlink.reporterror(s2);
+				signlink.reporterror($"T2 eror caused by: {exception.Message} \n\n StackTrace: {exception.StackTrace}");
 				logout();
 			}
 
