@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -53,25 +54,26 @@ public sealed class signlink
 	{
 		try
 		{
-			bool exists = File.Exists(s + "uid.dat");
-			FileStream file = null;
-			if (exists)
-				file = File.Open(s + "uid.dat", FileMode.Open);
-			if (!exists || file.Length < 4L)
+			string uidPath = Path.Combine(s, "uid.dat");
+			bool exists = File.Exists(uidPath);
+			using (FileStream uidFile = File.Open(uidPath, FileMode.OpenOrCreate))
 			{
-				BinaryWriter dataoutputstream = new BinaryWriter(File.OpenRead(s + "uid.dat"));
-				dataoutputstream.Write((int) (StaticRandomGenerator.Next() * 99999999D));
-				dataoutputstream.Close();
+				if(!exists || uidFile.Length < 4L)
+				{
+					BinaryWriter dataoutputstream = new BinaryWriter(uidFile);
+					dataoutputstream.Write((int)(StaticRandomGenerator.Next() * 99999999D));
+					dataoutputstream.Close();
+				}
 			}
 		}
 		catch (Exception _ex)
 		{
-			throw new InvalidOperationException($"Failed to generate and write uid.");
+			throw new InvalidOperationException($"Failed to generate and write uid. Reason: {_ex.Message}", _ex);
 		}
 
 		try
 		{
-			BinaryReader datainputstream = new BinaryReader(File.OpenRead(s + "uid.dat"));
+			BinaryReader datainputstream = new BinaryReader(File.OpenRead(s + "uid.dat"), Encoding.Default, false);
 			int i = datainputstream.ReadInt32();
 			datainputstream.Close();
 			return i + 1;
@@ -152,7 +154,7 @@ public sealed class signlink
 
 	public static Task startpriv(IPAddress inetaddress)
 	{
-		if(active)
+		if(IsSignLinkThreadActive)
 			throw new InvalidOperationException($"Cannot call this method when thread is active.");
 
 		savereq = null;
@@ -222,7 +224,7 @@ public sealed class signlink
 	public static FileStream[] cache_idx = new FileStream[5];
 	public static bool sunjava;
 	public static Object applet = null;
-	private static bool active;
+	public static bool IsSignLinkThreadActive { get; private set; }
 	private static int threadliveid;
 	private static IPAddress socketip;
 	private static int socketreq;
@@ -249,27 +251,34 @@ public sealed class signlink
 
 	public void run()
 	{
-		active = true;
-		String s = findcachedir();
-		uid = getuid(s);
+		String cacheDirectoryPath;
 		try
 		{
-			if (File.Exists($"{s}main_file_cache.dat"))
+			cacheDirectoryPath = findcachedir();
+			uid = getuid(cacheDirectoryPath);
+
+			if (File.Exists($"{cacheDirectoryPath}main_file_cache.dat"))
 			{
 				//Just like RS2Sharp we skip the part where
 				//it checks if the cache is too large.
 				/*if(file.exists() && file.length() > 0x3200000L)
 					file.delete();*/
 			}
-			
-			cache_dat = new FileStream($"{s}main_file_cache.dat", FileMode.Open);
-			for(int j = 0; j < 5; j++)
-				cache_idx[j] = new FileStream($"{s}main_file_cache.idx{j}", FileMode.Open);
+
+			cache_dat = new FileStream($"{cacheDirectoryPath}main_file_cache.dat", FileMode.Open);
+			for (int j = 0; j < 5; j++)
+				cache_idx[j] = new FileStream($"{cacheDirectoryPath}main_file_cache.idx{j}", FileMode.Open);
 
 		}
-		catch(Exception exception)
+		catch (Exception exception)
 		{
-			throw new InvalidOperationException($"Failed to load cache. \n StackTrack: {exception.StackTrace}", exception);
+			signlink.reporterror($"Failed to load cache. Reason: {exception.Message} \n StackTrack: {exception.StackTrace}");
+			throw new InvalidOperationException($"Failed to load cache. Reason: {exception.Message} \n StackTrack: {exception.StackTrace}", exception);
+		}
+		finally
+		{
+			//Always indicate we are running, even if we're about to fail.
+			IsSignLinkThreadActive = true;
 		}
 
 		while (true)
@@ -279,7 +288,7 @@ public sealed class signlink
 				if (savebuf != null)
 					try
 					{
-						using (FileStream fileoutputstream = new FileStream(s + savereq, FileMode.Open))
+						using (FileStream fileoutputstream = new FileStream(cacheDirectoryPath + savereq, FileMode.Open))
 						{
 							fileoutputstream.Write(savebuf, 0, savelen);
 
@@ -297,7 +306,7 @@ public sealed class signlink
 
 				if (midiplay)
 				{
-					midi = s + savereq;
+					midi = cacheDirectoryPath + savereq;
 					midiplay = false;
 				}
 
