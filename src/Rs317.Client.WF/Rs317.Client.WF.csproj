@@ -55,7 +55,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RSImageProducer.cs" />
-    <Compile Include="TimeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
