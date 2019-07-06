@@ -77,7 +77,7 @@ public sealed class Sprite : DrawingArea
 	{
 		try
 		{
-			/*using(Image<Rgba32> loadedImage = Image.Load(new MemoryStream(abyte0)))
+			using(Image<Rgba32> loadedImage = Image.Load(new MemoryStream(abyte0)))
 			{
 				width = loadedImage.Width;
 				height = loadedImage.Height;
@@ -87,8 +87,8 @@ public sealed class Sprite : DrawingArea
 				offsetY = 0;
 
 				//TODO: Let's try to avoid an allocation here.
-				pixels = loadedImage.GetPixelSpan().ToArray().Select(p => );
-			}*/
+				pixels = loadedImage.GetPixelSpan().ToArray().Select(p => (int)p.PackedValue).ToArray();
+			}
 		}
 		catch(Exception _ex)
 		{
