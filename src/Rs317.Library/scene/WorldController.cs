@@ -1449,14 +1449,11 @@ public sealed class WorldController
 	public bool GetVisibility(int x, int y)
 	{
 		//TODO: Don't recompute index each call.
-		return TILE_VISIBILITY_MAPS[(CurrentCurveX - 128) / 32, CurrentCurveY / 64, x, y];
+		return TILE_VISIBILITY_MAPS[(CurrentCurveY - 128) / 32, CurrentCurveX / 64, x, y];
 	}
 
 	public void render(int cameraPosX, int cameraPosY, int curveX, int cameraPosZ, int plane, int curveY)
 	{
-		CurrentCurveX = curveX;
-		currentPositionY = curveY;
-
 		if(cameraPosX < 0)
 			cameraPosX = 0;
 		else if(cameraPosX >= mapSizeX * 128)
@@ -1470,6 +1467,9 @@ public sealed class WorldController
 		curveCosineY = Model.COSINE[curveY];
 		curveSineX = Model.SINE[curveX];
 		curveCosineX = Model.COSINE[curveX];
+
+		CurrentCurveX = curveX;
+		CurrentCurveY = curveY;
 
 		WorldController.cameraPosX = cameraPosX;
 		WorldController.cameraPosZ = cameraPosZ;
