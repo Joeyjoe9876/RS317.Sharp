@@ -9981,6 +9981,7 @@ namespace Rs317
 					}
 				} while(onDemandData.dataType != 93 || !onDemandFetcher.method564((int)onDemandData.id));
 
+				Console.WriteLine($"Debug: Spinning demand fetcher outer loop.");
 				Rs317.Region.passivelyRequestGameObjectModels(new Buffer(onDemandData.buffer), onDemandFetcher);
 			} while(true);
 		}
@@ -11065,7 +11066,7 @@ namespace Rs317
 						  + ((r & 0xFF00) * alpha + (g & 0xFF00) * b & 0xFF0000) >> 8);
 		}
 
-		public void run()
+		public override void run()
 		{
 			if(shouldDrawFlames)
 			{
@@ -11453,8 +11454,15 @@ namespace Rs317
 			}
 		}
 
+		private static bool wasClientStartupCalled = false;
+
 		public override void startUp()
 		{
+			if (!wasClientStartupCalled)
+				wasClientStartupCalled = true;
+			else
+				throw new InvalidOperationException($"Failed. Cannot call startup on Client multiple times.");
+
 			drawLoadingText(20, "Starting up");
 
 			if(clientRunning)
@@ -11565,14 +11573,19 @@ namespace Rs317
 					int remaining = fileRequestCount - onDemandFetcher.immediateRequestCount();
 					if(remaining > 0)
 						drawLoadingText(65, "Loading animations - " + (remaining * 100) / fileRequestCount + "%");
-					processOnDemandQueue();
+
 					try
 					{
-						Thread.Sleep(100);
+						processOnDemandQueue();
 					}
-					catch(Exception _ex)
+					catch (Exception e)
 					{
+						Console.WriteLine($"Failed to process animation demand queue. Reason: {e.Message} \n Stack: {e.StackTrace}");
+						signlink.reporterror($"Failed to process animation demand queue. Reason: {e.Message} \n Stack: {e.StackTrace}");
+						throw;
 					}
+
+					Thread.Sleep(100);
 
 					if(onDemandFetcher.failedRequests > 3)
 					{

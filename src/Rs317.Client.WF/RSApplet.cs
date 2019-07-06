@@ -410,7 +410,7 @@ public class RSApplet : Form, IRunnable, IRunnableStarter, IMouseInputQueryable 
 		Application.Exit();
 	}
 
-	public void run()
+	public virtual void run()
 	{
 		this.MouseDown += new MouseEventHandler(mousePressed);
 		this.DragDrop += new DragEventHandler(mouseDragged);
