@@ -15,5 +15,9 @@ namespace Rs317
 		Task<TcpClient> openSocket(int port);
 
 		bool isLoggedIn { get; }
+
+		int CurrentTick { get; }
+
+		int GetInterfaceSettings(int index);
 	}
 }
