@@ -3,7 +3,7 @@ public sealed class NPC : Entity
 {
 	public EntityDefinition npcDefinition;
 
-	private NPC()
+	public NPC()
 	{
 	}
 
