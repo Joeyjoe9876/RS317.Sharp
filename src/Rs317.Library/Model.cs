@@ -1964,7 +1964,7 @@ public sealed class Model : Animable
 			for(int skinListId = 0; skinListId < skinListCount; skinListId++)
 			{
 				int skinId = skinList[skinListId];
-				if(skinId < vertexSkin.Rank) //WARNING: Rank is a lot less ambigious
+				if(skinId < vertexSkin.Length)
 				{
 					int[] vertexSkins = vertexSkin[skinId];
 					for(int skin = 0; skin < vertexSkins.Length; skin++)
@@ -1999,7 +1999,7 @@ public sealed class Model : Animable
 			for(int skinListId = 0; skinListId < skinListCount; skinListId++)
 			{
 				int skinId = skinList[skinListId];
-				if(skinId < vertexSkin.Rank) //WARNING: Rank is a lot less ambigious
+				if(skinId < vertexSkin.Length) //WARNING: Rank is a lot less ambigious
 				{
 					int[] vertexSkins = vertexSkin[skinId];
 					for(int skin = 0; skin < vertexSkins.Length; skin++)
@@ -2020,7 +2020,7 @@ public sealed class Model : Animable
 			for(int skinListId = 0; skinListId < skinListCount; skinListId++)
 			{
 				int skinId = skinList[skinListId];
-				if(skinId < vertexSkin.Rank) //WARNING: Rank is a lot less ambigious
+				if(skinId < vertexSkin.Length) //WARNING: Rank is a lot less ambigious
 				{
 					int[] vertexSkins = vertexSkin[skinId];
 					for(int skin = 0; skin < vertexSkins.Length; skin++)
@@ -2071,7 +2071,7 @@ public sealed class Model : Animable
 			for(int skinListId = 0; skinListId < skinListCount; skinListId++)
 			{
 				int skinId = skinList[skinListId];
-				if(skinId < vertexSkin.Rank) //Rank is less ambigious
+				if(skinId < vertexSkin.Length) //Rank is less ambigious
 				{
 					int[] vertexSkins = vertexSkin[skinId];
 					for(int skin = 0; skin < vertexSkins.Length; skin++)
@@ -2098,7 +2098,7 @@ public sealed class Model : Animable
 			for(int skinListId = 0; skinListId < skinListCount; skinListId++)
 			{
 				int skinId = skinList[skinListId];
-				if(skinId < triangleSkin.Rank) //Rank is less ambigious
+				if(skinId < triangleSkin.Length) //Rank is less ambigious
 				{
 					int[] triangleSkins = triangleSkin[skinId];
 					for(int skin = 0; skin < triangleSkins.Length; skin++)
