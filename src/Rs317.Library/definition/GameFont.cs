@@ -440,7 +440,7 @@ public sealed class GameFont : DrawingArea
 	{
 		strikethrough = false;
 		int originalX = x;
-		if(text == null)
+		if(String.IsNullOrWhiteSpace(text))
 			return;
 
 		/*
@@ -459,7 +459,7 @@ public sealed class GameFont : DrawingArea
 			 */
 			if(text[c] == '@' && c + 4 < text.Length && text[c + 4] == '@')
 			{
-				int colour = handleEmbeddedEffect(text.Substring(c + 1, c + 4));
+				int colour = handleEmbeddedEffect(text.Substring(c + 1, 3));
 				if(colour != -1)
 					currentColour = colour;
 				c += 4;
@@ -564,7 +564,7 @@ public sealed class GameFont : DrawingArea
 			 */
 			if(text[c] == '@' && c + 4 < text.Length && text[c + 4] == '@')
 			{
-				int colour = handleEmbeddedEffect(text.Substring(c + 1, c + 4));
+				int colour = handleEmbeddedEffect(text.Substring(c + 1, 3));
 				if(colour != -1)
 					currentColour = colour;
 				c += 4;
