@@ -13,61 +13,61 @@ public class Entity : Animable
 
 	public int[] waypointY;
 	public int interactingEntity;
-	int stepsDelayed;
+	public int stepsDelayed { get; set; }
 
-	int degreesToTurn;
+	public int degreesToTurn { get; set; }
 
-	protected int runAnimationId { get; set; }
+	public int runAnimationId { get; protected set; }
 
 	public String overheadTextMessage;
 	public int height;
 	public int turnDirection;
-	public int standAnimationId { get; protected set; }
-	protected int standTurnAnimationId { get; set; }
-	int chatColour;
-	int[] hitArray;
-	int[] hitMarkTypes;
-	int[] hitsLoopCycle;
-	public int queuedAnimationId { get; private set; }
-	protected int queuedAnimationFrame { get; private set; }
+	public int standAnimationId { get; set; }
+	public int standTurnAnimationId { get; set; }
+	public int chatColour { get; set; }
+	public int[] hitArray { get; private set; }
+	public int[] hitMarkTypes { get; private set; }
+	public int[] hitsLoopCycle { get; private set; }
+	public int queuedAnimationId { get; set; }
+	public int queuedAnimationFrame { get; set; }
 	public int queuedAnimationDuration;
-	protected int graphicId { get; private set; }
-	protected int currentAnimationId { get; private set; }
-	int currentAnimationTimeRemaining;
-	int graphicEndCycle;
-	protected int graphicHeight { get; private set; }
-	int waypointCount;
+	public int graphicId { get; set; }
+	public int currentAnimationId { get; set; }
+	public int currentAnimationTimeRemaining { get; set; }
+	public int graphicEndCycle { get; set; }
+	public int graphicHeight { get; set; }
+	public int waypointCount { get; set; }
 	public int animation;
-	protected int currentAnimationFrame { get; private set; }
-	int currentAnimationDuration;
-	protected int animationDelay { get; private set; }
-	int currentAnimationLoopCount;
-	int chatEffect;
+	public int currentAnimationFrame { get; set; }
+	public int currentAnimationDuration { get; set; }
+	public int animationDelay { get; set; }
+	public int currentAnimationLoopCount { get; set; }
+	public int chatEffect { get; set; }
 	public int loopCycleStatus;
 	public int currentHealth;
 	public int maxHealth;
 	public int textCycle { get; set; }
-	int lastUpdateTick;
-	int faceTowardX;
-	int faceTowardY;
-	int boundaryDimension;
+	public int lastUpdateTick { get; set; }
+	public int faceTowardX { get; set; }
+	public int faceTowardY { get; set; }
+	public int boundaryDimension { get; set; }
 	public bool dynamic { get; set; }
-	int stepsRemaining;
-	int startX;
-	int endX;
-	int startY;
-	int endY;
-	int tickStart;
-	int tickEnd;
-	int direction;
+	public int stepsRemaining { get; set; }
+	public int startX { get; set; }
+	public int endX { get; set; }
+	public int startY { get; set; }
+	public int endY { get; set; }
+	public int tickStart { get; set; }
+	public int tickEnd { get; set; }
+	public int direction { get; set; }
 	public int x;
 	public int y;
-	int currentRotation;
-	bool[] waypointRan;
-	protected int walkAnimationId { get; set; }
-	protected int turnAboutAnimationId { get; set; }
-	protected int turnRightAnimationId { get; set; }
-	protected int turnLeftAnimationId { get; set; }
+	public int currentRotation { get; set; }
+	public bool[] waypointRan { get; private set; }
+	public int walkAnimationId { get; set; }
+	public int turnAboutAnimationId { get; set; }
+	public int turnLeftAnimationId { get; set; }
+	public int turnRightAnimationId { get; set; }
 
 	protected Entity()
 	{
