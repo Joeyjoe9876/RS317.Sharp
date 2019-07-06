@@ -1,5 +1,6 @@
 
 using System;
+using Rs317;
 
 public sealed class EntityDefinition
 {
@@ -115,7 +116,7 @@ public sealed class EntityDefinition
 			int msb = varBit.mostSignificantBit;
 
 			//TODO: Make this config stuff, not something in Client.
-			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
+			int bit = ConstantData.GetBitfieldMaxValue(msb - lsb);
 			childId = clientInstance.interfaceSettings[configId] >> lsb & bit;
 		}
 		else if(settingId != -1)

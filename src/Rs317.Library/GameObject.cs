@@ -1,4 +1,6 @@
 
+using Rs317;
+
 public sealed class GameObject : Animable
 {
 	private int frame;
@@ -55,7 +57,7 @@ public sealed class GameObject : Animable
 			int configId = varBit.configId;
 			int lsb = varBit.leastSignificantBit;
 			int msb = varBit.mostSignificantBit;
-			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
+			int bit = ConstantData.GetBitfieldMaxValue(msb - lsb);
 			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
 		}
 		else if(configId != -1)
