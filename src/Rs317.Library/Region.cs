@@ -28,12 +28,12 @@ namespace Rs317
 		}
 
 		public static void forceRenderObject(WorldController worldController, int face, int y, int type, int plane,
-			CollisionMap collisionMap, int[][][] groundArray, int x, int objectId, int z)
+			CollisionMap collisionMap, int[,,] groundArray, int x, int objectId, int z)
 		{
-			int vertexHeightSW = groundArray[plane][x][y];
-			int vertexHeightSE = groundArray[plane][x + 1][y];
-			int vertexHeightNE = groundArray[plane][x + 1][y + 1];
-			int vertexHeightNW = groundArray[plane][x][y + 1];
+			int vertexHeightSW = groundArray[plane, x, y];
+			int vertexHeightSE = groundArray[plane, x + 1, y];
+			int vertexHeightNE = groundArray[plane, x + 1, y + 1];
+			int vertexHeightNW = groundArray[plane, x, y + 1];
 			int drawHeight = vertexHeightSW + vertexHeightSE + vertexHeightNE + vertexHeightNW >> 2;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 			int hash = x + (y << 7) + (objectId << 14) + 0x40000000;
@@ -431,11 +431,11 @@ namespace Rs317
 
 		private int[] blendDirectionTracker;
 
-		private int[][][] vertexHeights;
+		private int[,,] vertexHeights;
 
 		private byte[,,] overlayFloorIds;
 
-		static int plane;
+		public static int plane { get; set; }
 
 		private static int randomiserLightness = (int)(StaticRandomGenerator.Next() * 33D) - 16;
 
@@ -449,7 +449,7 @@ namespace Rs317
 		private static int[] WALL_CORNER_ORIENTATION = { 16, 32, 64, 128 };
 		private byte[,,] underlayFloorIds;
 		private static int[] FACE_OFFSET_Y = { 0, -1, 0, 1 };
-		static int lowestPlane = 99;
+		public static int lowestPlane = 99;
 		private int regionSizeX;
 		private int regionSizeY;
 		private byte[,,] overlayOrientations;
@@ -457,7 +457,7 @@ namespace Rs317
 		public static bool lowMemory = true;
 		private static int[] POWERS_OF_TWO = { 1, 2, 4, 8 };
 
-		public Region(byte[,,] renderRuleFlags, int[][][] vertexHeights)
+		public Region(byte[,,] renderRuleFlags, int[,,] vertexHeights)
 		{
 			lowestPlane = 99;
 			regionSizeX = 104;
@@ -528,8 +528,8 @@ namespace Rs317
 				{
 					for(int x = 1; x < regionSizeX - 1; x++)
 					{
-						int heightDifferenceX = vertexHeights[_plane][x + 1][y] - vertexHeights[_plane][x - 1][y];
-						int heightDifferenceY = vertexHeights[_plane][x][y + 1] - vertexHeights[_plane][x][y - 1];
+						int heightDifferenceX = ComputeVertexHeight(_plane, x + 1, y) - ComputeVertexHeight(_plane, x - 1, y);
+						int heightDifferenceY = ComputeVertexHeight(_plane, x, y + 1) - ComputeVertexHeight(_plane, x, y - 1);
 						int normalisedLength = (int)Math.Sqrt(
 							heightDifferenceX * heightDifferenceX + 0x10000 + heightDifferenceY * heightDifferenceY);
 						int normalisedX = (heightDifferenceX << 8) / normalisedLength;
@@ -628,10 +628,10 @@ namespace Rs317
 								int overlayFloorId = ComputeUnderlayFloorId(_plane, x, y);
 								if(underlayFloorId > 0 || overlayFloorId > 0)
 								{
-									int vertexHeightSW = vertexHeights[_plane][x][y];
-									int vertexHeightSE = vertexHeights[_plane][x + 1][y];
-									int vertexHeightNE = vertexHeights[_plane][x + 1][y + 1];
-									int vertexHeightNW = vertexHeights[_plane][x][y + 1];
+									int vertexHeightSW = ComputeVertexHeight(_plane, x, y);
+									int vertexHeightSE = ComputeVertexHeight(_plane, x + 1, y);
+									int vertexHeightNE = ComputeVertexHeight(_plane, x + 1, y + 1);
+									int vertexHeightNW = ComputeVertexHeight(_plane, x, y + 1);
 									int lightIntensitySW = tileLightIntensity[x, y];
 									int lightIntensitySE = tileLightIntensity[x + 1, y];
 									int lightIntensityNE = tileLightIntensity[x + 1, y + 1];
@@ -804,9 +804,9 @@ namespace Rs317
 								if(occlusionSurface >= 8)
 								{
 									int highestOcclusionVertexHeightOffset = 240;
-									int highestOcclusionVertexHeight = vertexHeights[highestOcclusionPlane][x][lowestOcclusionY]
+									int highestOcclusionVertexHeight = ComputeVertexHeight(highestOcclusionPlane, x, lowestOcclusionY)
 																	   - highestOcclusionVertexHeightOffset;
-									int lowestOcclusionVertexHeight = vertexHeights[lowestOcclusionPlane][x][lowestOcclusionY];
+									int lowestOcclusionVertexHeight = ComputeVertexHeight(lowestOcclusionPlane, x, lowestOcclusionY);
 									WorldController.createCullingCluster(plane, x * 128, x * 128,
 										highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
 										highestOcclusionVertexHeight, lowestOcclusionVertexHeight, 1);
@@ -860,9 +860,9 @@ namespace Rs317
 								if(occlusionSurface >= 8)
 								{
 									int highestOcclusionVertexHeightOffset = 240;
-									int highestOcclusionVertexHeight = vertexHeights[highestocclusionPlane][lowestOcclusionX][y]
+									int highestOcclusionVertexHeight = ComputeVertexHeight(highestocclusionPlane, lowestOcclusionX, y)
 																	   - highestOcclusionVertexHeightOffset;
-									int lowestOcclusionVertexHeight = vertexHeights[lowestocclusionPlane][lowestOcclusionX][y];
+									int lowestOcclusionVertexHeight = ComputeVertexHeight(lowestocclusionPlane, lowestOcclusionX, y);
 									WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
 										lowestOcclusionX * 128, y * 128, y * 128, highestOcclusionVertexHeight,
 										lowestOcclusionVertexHeight, 2);
@@ -912,7 +912,7 @@ namespace Rs317
 								if(((highestOcclusionX - lowestOcclusionX) + 1)
 									* ((highestOcclusionY - lowestOcclusionY) + 1) >= 4)
 								{
-									int lowestOcclusionVertexHeight = vertexHeights[plane][lowestOcclusionX][lowestOcclusionY];
+									int lowestOcclusionVertexHeight = ComputeVertexHeight(plane, lowestOcclusionX, lowestOcclusionY);
 									WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
 										lowestOcclusionX * 128, highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
 										lowestOcclusionVertexHeight, lowestOcclusionVertexHeight, 4);
@@ -927,6 +927,12 @@ namespace Rs317
 					}
 				}
 			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private int ComputeVertexHeight(int z, int x, int y)
+		{
+			return vertexHeights[z, x, y];
 		}
 
 		private int ComputeUnderlayFloorId(int _plane, int positiveX, int y)
@@ -966,13 +972,13 @@ namespace Rs317
 					{
 						tileShadowIntensity[0, x, y] = 127;
 						if(x == startX && x > 0)
-							vertexHeights[0][x][y] = vertexHeights[0][x - 1][y];
+							vertexHeights[0, x, y] = vertexHeights[0, x - 1, y];
 						if(x == startX + countX && x < regionSizeX - 1)
-							vertexHeights[0][x][y] = vertexHeights[0][x + 1][y];
+							vertexHeights[0, x, y] = vertexHeights[0, x + 1, y];
 						if(y == startY && y > 0)
-							vertexHeights[0][x][y] = vertexHeights[0][x][y - 1];
+							vertexHeights[0, x, y] = vertexHeights[0, x, y - 1];
 						if(y == startY + countY && y < regionSizeY - 1)
-							vertexHeights[0][x][y] = vertexHeights[0][x][y + 1];
+							vertexHeights[0, x, y] = vertexHeights[0, x, y + 1];
 					}
 
 			}
@@ -1134,13 +1140,13 @@ namespace Rs317
 					if(value == 0)
 						if(tileZ == 0)
 						{
-							vertexHeights[0][tileX][tileY] = -calculateVertexHeight(0xe3b7b + tileX + offsetX,
+							vertexHeights[0, tileX, tileY] = -calculateVertexHeight(0xe3b7b + tileX + offsetX,
 																 0x87cce + tileY + offsetY) * 8;
 							return;
 						}
 						else
 						{
-							vertexHeights[tileZ][tileX][tileY] = vertexHeights[tileZ - 1][tileX][tileY] - 240;
+							vertexHeights[tileZ, tileX, tileY] = vertexHeights[tileZ - 1, tileX, tileY] - 240;
 							return;
 						}
 
@@ -1151,12 +1157,12 @@ namespace Rs317
 							height = 0;
 						if(tileZ == 0)
 						{
-							vertexHeights[0][tileX][tileY] = -height * 8;
+							vertexHeights[0, tileX, tileY] = -height * 8;
 							return;
 						}
 						else
 						{
-							vertexHeights[tileZ][tileX][tileY] = vertexHeights[tileZ - 1][tileX][tileY] - height * 8;
+							vertexHeights[tileZ, tileX, tileY] = vertexHeights[tileZ - 1, tileX, tileY] - height * 8;
 							return;
 						}
 					}
@@ -1225,10 +1231,10 @@ namespace Rs317
 
 			if(plane < lowestPlane)
 				lowestPlane = plane;
-			int vertexHeightSW = vertexHeights[plane][x][y];
-			int vertexHeightSE = vertexHeights[plane][x + 1][y];
-			int vertexHeightNE = vertexHeights[plane][x + 1][y + 1];
-			int vertexHeightNW = vertexHeights[plane][x][y + 1];
+			int vertexHeightSW = ComputeVertexHeight(plane, x, y);
+			int vertexHeightSE = ComputeVertexHeight(plane, x + 1, y);
+			int vertexHeightNE = ComputeVertexHeight(plane, x + 1, y + 1);
+			int vertexHeightNW = ComputeVertexHeight(plane, x, y + 1);
 			int drawHeight = vertexHeightSW + vertexHeightSE + vertexHeightNE + vertexHeightNW >> 2;
 			GameObjectDefinition objectDefinition = GameObjectDefinition.getDefinition(objectId);
 			int hash = x + (y << 7) + (objectId << 14) + 0x40000000;
