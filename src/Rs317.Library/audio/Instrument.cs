@@ -9,7 +9,7 @@ sealed class Instrument
 	{
 		noise = new int[32768];
 		for(int noiseId = 0; noiseId < 32768; noiseId++)
-			if(StaticRandomGenerator.NextDouble() > 0.5D)
+			if(StaticRandomGenerator.Next() > 0.5D)
 				noise[noiseId] = 1;
 			else
 				noise[noiseId] = -1;
