@@ -603,8 +603,8 @@ namespace Rs317.Sharp
 					 * 
 					 * Not sure why.
 					 */
-					if((random.Next() & 3) == 0)
-						x++;
+					/*if((random.Next() & 3) == 0)
+						x++;*/
 				}
 			}
 		}
