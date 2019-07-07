@@ -128,6 +128,30 @@ namespace Rs317.Sharp
 			this.SetPixel(location.X, location.Y, colour);
 		}
 
+		public void SetPixel(int x, int y, byte red, byte green, byte blue, byte alpha)
+		{
+			if(!this.locked)
+			{
+				throw new Exception("Bitmap not locked.");
+			}
+
+			if(this.IsAlphaBitmap)
+			{
+				int index = ((y * this.Width + x) * 4);
+				this.rgbValues[index] = blue;
+				this.rgbValues[index + 1] = green;
+				this.rgbValues[index + 2] = red;
+				this.rgbValues[index + 3] = alpha;
+			}
+			else
+			{
+				int index = ((y * this.Width + x) * 3);
+				this.rgbValues[index] = blue;
+				this.rgbValues[index + 1] = green;
+				this.rgbValues[index + 2] = red;
+			}
+		}
+
 		public void SetPixel(int x, int y, Color colour)
 		{
 			if(!this.locked)
