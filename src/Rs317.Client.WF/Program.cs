@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Rs317.Sharp
 {
@@ -13,6 +14,7 @@ namespace Rs317.Sharp
 		{
 			try
 			{
+				Application.SetCompatibleTextRenderingDefault(false);
 				Console.WriteLine($"RS2 user client - release #{317}");
 
 				args = new string[] { "0", "0", "highmem", "members", "0" };
