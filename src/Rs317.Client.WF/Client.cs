@@ -3965,11 +3965,13 @@ namespace Rs317.Sharp
 					}
 					catch(Exception _ex)
 					{
+						signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 					}
 				}
 			}
 			catch(Exception _ex)
 			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 			}
 
 			drawingFlames = false;
@@ -5596,6 +5598,7 @@ namespace Rs317.Sharp
 			}
 			catch(Exception _ex)
 			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 			}
 		}
 
@@ -7249,6 +7252,7 @@ namespace Rs317.Sharp
 					}
 					catch(Exception exception)
 					{
+						signlink.reporterror($"Unexpected Exception: {exception.Message} \n\n Stack: {exception.StackTrace}");
 					}
 
 					if(!moveToNextSong || trackDelay[track] == -5)
@@ -7541,6 +7545,7 @@ namespace Rs317.Sharp
 			}
 			catch(Exception exception)
 			{
+				signlink.reporterror($"Unexpected Exception: {exception.Message} \n\n Stack: {exception.StackTrace}");
 			}
 
 			GameObjectDefinition.modelCache.clear();
@@ -7673,6 +7678,7 @@ namespace Rs317.Sharp
 			}
 			catch(Exception _ex)
 			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 			}
 
 			if(icon == 0)
@@ -7822,6 +7828,7 @@ namespace Rs317.Sharp
 					}
 					catch(Exception _ex)
 					{
+						signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 					}
 
 					login(playerUsername, playerPassword, recoveredConnection);
@@ -8062,6 +8069,7 @@ namespace Rs317.Sharp
 						}
 						catch(Exception _ex)
 						{
+							signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 						}
 					}
 
@@ -8081,6 +8089,7 @@ namespace Rs317.Sharp
 							}
 							catch(Exception _ex)
 							{
+								signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 							}
 
 							loginFailures++;
@@ -8126,6 +8135,7 @@ namespace Rs317.Sharp
 			}
 			catch(Exception _ex)
 			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 			}
 
 			socket = null;
@@ -8623,6 +8633,7 @@ namespace Rs317.Sharp
 							}
 							catch(Exception _ex)
 							{
+								signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 							}
 
 							stream.putOpcode(208);
@@ -8894,6 +8905,7 @@ namespace Rs317.Sharp
 				}
 				catch(Exception _ex)
 				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 				}
 			}
 
@@ -8933,6 +8945,7 @@ namespace Rs317.Sharp
 				}
 				catch(Exception _ex)
 				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 				}
 
 				jaggrabSocket = null;
@@ -10967,6 +10980,7 @@ namespace Rs317.Sharp
 						}
 						catch(Exception _ex)
 						{
+							signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 						}
 					}
 
@@ -11541,6 +11555,7 @@ namespace Rs317.Sharp
 					}
 					catch(Exception _ex)
 					{
+						signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 					}
 
 					songChanging = true;
@@ -11554,6 +11569,7 @@ namespace Rs317.Sharp
 						}
 						catch(Exception _ex)
 						{
+							signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 						}
 
 						if(onDemandFetcher.failedRequests > 3)
@@ -11617,6 +11633,7 @@ namespace Rs317.Sharp
 					}
 					catch(Exception _ex)
 					{
+						signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 					}
 				}
 
@@ -11648,6 +11665,7 @@ namespace Rs317.Sharp
 						}
 						catch(Exception _ex)
 						{
+							signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 						}
 					}
 				}
@@ -11708,6 +11726,7 @@ namespace Rs317.Sharp
 				}
 				catch(Exception _ex)
 				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 				}
 
 				try
@@ -11718,6 +11737,7 @@ namespace Rs317.Sharp
 				}
 				catch(Exception _ex)
 				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 				}
 
 				try
@@ -11730,6 +11750,7 @@ namespace Rs317.Sharp
 				}
 				catch(Exception _ex)
 				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 				}
 
 				try
@@ -11741,6 +11762,7 @@ namespace Rs317.Sharp
 				}
 				catch(Exception _ex)
 				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 					throw;
 				}
 
@@ -12048,6 +12070,7 @@ namespace Rs317.Sharp
 						}
 						catch(Exception e)
 						{
+							signlink.reporterror($"Unexpected Exception: {e.Message} \n\n Stack: {e.StackTrace}");
 						}
 					}
 
