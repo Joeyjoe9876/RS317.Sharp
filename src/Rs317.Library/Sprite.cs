@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using Reinterpret.Net;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
@@ -91,8 +93,9 @@ namespace Rs317.Sharp
 					offsetX = 0;
 					offsetY = 0;
 
+					//RS2Sharp actually maps TO Argb and then back to get the color value of the titlescreen.
 					//TODO: Let's try to avoid an allocation here.
-					pixels = loadedImage.GetPixelSpan().ToArray().Select(p => (int)p.PackedValue).ToArray();
+					pixels = loadedImage.GetPixelSpan().ToArray().Select(p => Color.FromArgb(p.R, p.G, p.B).ToArgb()).ToArray();
 				}
 			}
 			catch(Exception _ex)
