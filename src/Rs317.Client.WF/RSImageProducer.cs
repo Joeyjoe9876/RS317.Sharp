@@ -61,7 +61,8 @@ namespace Rs317.Sharp
 				for (int x = 0; x < width; x++)
 				{
 					int value = pixels[x + y * width];
-					fastPixel.SetPixel(x, y, Color.FromArgb((value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF));
+					//fastPixel.SetPixel(x, y, Color.FromArgb((value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF));
+					fastPixel.SetPixel(x, y, (byte)(value >> 16), (byte)(value >> 8), (byte)value, 255);
 				}
 			}
 
