@@ -77,25 +77,25 @@ namespace Rs317.Sharp
 			y += drawOffsetY;
 			int l = x + y * DrawingArea.width;
 			int i1 = 0;
-			int height = this.height;
-			int width = this.width;
-			int l1 = DrawingArea.width - width;
+			int localHeight = this.height;
+			int localWidth = this.width;
+			int l1 = DrawingArea.width - localWidth;
 			int i2 = 0;
 			if(y < DrawingArea.topY)
 			{
 				int j2 = DrawingArea.topY - y;
-				height -= j2;
+				localHeight -= j2;
 				y = DrawingArea.topY;
-				i1 += j2 * width;
+				i1 += j2 * localWidth;
 				l += j2 * DrawingArea.width;
 			}
 
-			if(y + height > DrawingArea.bottomY)
-				height -= (y + height) - DrawingArea.bottomY;
+			if(y + localHeight > DrawingArea.bottomY)
+				localHeight -= (y + localHeight) - DrawingArea.bottomY;
 			if(x < DrawingArea.topX)
 			{
 				int k2 = DrawingArea.topX - x;
-				width -= k2;
+				localWidth -= k2;
 				x = DrawingArea.topX;
 				i1 += k2;
 				l += k2;
@@ -103,17 +103,17 @@ namespace Rs317.Sharp
 				l1 += k2;
 			}
 
-			if(x + width > DrawingArea.bottomX)
+			if(x + localWidth > DrawingArea.bottomX)
 			{
-				int l2 = (x + width) - DrawingArea.bottomX;
-				width -= l2;
+				int l2 = (x + localWidth) - DrawingArea.bottomX;
+				localWidth -= l2;
 				i2 += l2;
 				l1 += l2;
 			}
 
-			if(!(width <= 0 || height <= 0))
+			if(!(localWidth <= 0 || localHeight <= 0))
 			{
-				draw(height, DrawingArea.pixels, pixels, l1, l, width, i1, palette, i2);
+				draw(localHeight, DrawingArea.pixels, pixels, l1, l, localWidth, i1, palette, i2);
 			}
 		}
 
@@ -163,30 +163,29 @@ namespace Rs317.Sharp
 
 		public void flipHorizontally()
 		{
-			byte[] pixels = new byte[width * height];
+			byte[] tempPixels = new byte[width * height];
 			int i = 0;
 			for(int y = 0; y < height; y++)
 			{
 				for(int x = width - 1; x >= 0; x--)
 				{
-					pixels[i++] = pixels[x + y * width];
+					tempPixels[i++] = pixels[x + y * width]; //This is broken on 317Refactor. On stock 317Refactor it actually assigns to itself.
 				}
 			}
 
-			this.pixels = pixels;
+			this.pixels = tempPixels;
 			drawOffsetX = resizeWidth - width - drawOffsetX;
 		}
 
 		public void flipVertically()
 		{
-			//TODO: Might be able to save an allocation here.
 			byte[] tempPixels = new byte[width * height];
 			int i = 0;
 			for(int y = height - 1; y >= 0; y--)
 			{
 				for(int x = 0; x < width; x++)
 				{
-					tempPixels[i++] = tempPixels[x + y * width];
+					tempPixels[i++] = pixels[x + y * width]; //This is broken on 317Refactor. On stock 317Refactor it actually assigns to itself.
 				}
 			}
 
