@@ -1,13 +1,15 @@
-
-public sealed class VertexNormal
+namespace Rs317.Sharp
 {
-	public int x;
-
-	public int y;
-	public int z;
-	public int magnitude;
-
-	public VertexNormal()
+	public sealed class VertexNormal
 	{
+		public int x;
+
+		public int y;
+		public int z;
+		public int magnitude;
+
+		public VertexNormal()
+		{
+		}
 	}
 }

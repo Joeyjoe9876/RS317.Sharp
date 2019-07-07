@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rs317
+namespace Rs317.Sharp
 {
 	public interface IRunnableStarter
 	{

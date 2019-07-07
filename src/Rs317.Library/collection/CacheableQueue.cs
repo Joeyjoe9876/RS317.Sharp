@@ -1,77 +1,80 @@
 
-public sealed class CacheableQueue
+namespace Rs317.Sharp
 {
-	private Cacheable head;
-	private Cacheable current;
-
-	public CacheableQueue()
+	public sealed class CacheableQueue
 	{
-		head = new Cacheable();
-		head.nextCacheable = head;
-		head.previousCacheable = head;
-	}
+		private Cacheable head;
+		private Cacheable current;
 
-	public int getSize()
-	{
-		int count = 0;
-
-		for(Cacheable next = head.nextCacheable; next != head; next = next.nextCacheable)
-			count++;
-
-		return count;
-	}
-
-	public void push(Cacheable item)
-	{
-		if(item.previousCacheable != null)
+		public CacheableQueue()
 		{
-			item.unlinkCacheable();
+			head = new Cacheable();
+			head.nextCacheable = head;
+			head.previousCacheable = head;
 		}
 
-		item.previousCacheable = head.previousCacheable;
-		item.nextCacheable = head;
-		item.previousCacheable.nextCacheable = item;
-		item.nextCacheable.previousCacheable = item;
-	}
-
-	public Cacheable pop()
-	{
-		Cacheable next = head.nextCacheable;
-
-		if(next == head)
+		public int getSize()
 		{
-			return null;
+			int count = 0;
+
+			for(Cacheable next = head.nextCacheable; next != head; next = next.nextCacheable)
+				count++;
+
+			return count;
 		}
 
-		next.unlinkCacheable();
-		return next;
-	}
-
-	public Cacheable peek()
-	{
-		Cacheable next = head.nextCacheable;
-
-		if(next == head)
+		public void push(Cacheable item)
 		{
-			current = null;
-			return null;
+			if(item.previousCacheable != null)
+			{
+				item.unlinkCacheable();
+			}
+
+			item.previousCacheable = head.previousCacheable;
+			item.nextCacheable = head;
+			item.previousCacheable.nextCacheable = item;
+			item.nextCacheable.previousCacheable = item;
 		}
 
-		current = next.nextCacheable;
-		return next;
-	}
-
-	public Cacheable getNext()
-	{
-		Cacheable current = this.current;
-
-		if(current == head)
+		public Cacheable pop()
 		{
-			this.current = null;
-			return null;
+			Cacheable next = head.nextCacheable;
+
+			if(next == head)
+			{
+				return null;
+			}
+
+			next.unlinkCacheable();
+			return next;
 		}
 
-		this.current = current.nextCacheable;
-		return current;
+		public Cacheable peek()
+		{
+			Cacheable next = head.nextCacheable;
+
+			if(next == head)
+			{
+				current = null;
+				return null;
+			}
+
+			current = next.nextCacheable;
+			return next;
+		}
+
+		public Cacheable getNext()
+		{
+			Cacheable current = this.current;
+
+			if(current == head)
+			{
+				this.current = null;
+				return null;
+			}
+
+			this.current = current.nextCacheable;
+			return current;
+		}
 	}
 }

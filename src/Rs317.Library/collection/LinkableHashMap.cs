@@ -1,50 +1,53 @@
 
-public class LinkableHashMap
+namespace Rs317.Sharp
 {
-	private int size;
-	private Linkable[] entries;
-
-	public LinkableHashMap(int size)
+	public class LinkableHashMap
 	{
-		this.size = size;
-		this.entries = new Linkable[size];
+		private int size;
+		private Linkable[] entries;
 
-		for(int i = 0; i < size; i++)
+		public LinkableHashMap(int size)
 		{
-			Linkable entry = new Linkable();
-			entry.next = entry;
-			entry.previous = entry;
-			entries[i] = entry;
-		}
-	}
+			this.size = size;
+			this.entries = new Linkable[size];
 
-	public Linkable get(long key)
-	{
-		Linkable start = entries[(int)(key & size - 1)];
-
-		for(Linkable next = start.next; next != start; next = next.next)
-		{
-			if(next.id == key)
+			for(int i = 0; i < size; i++)
 			{
-				return next;
+				Linkable entry = new Linkable();
+				entry.next = entry;
+				entry.previous = entry;
+				entries[i] = entry;
 			}
 		}
 
-		return null;
-	}
-
-	public void put(long key, Linkable item)
-	{
-		if(item.previous != null)
+		public Linkable get(long key)
 		{
-			item.unlink();
+			Linkable start = entries[(int)(key & size - 1)];
+
+			for(Linkable next = start.next; next != start; next = next.next)
+			{
+				if(next.id == key)
+				{
+					return next;
+				}
+			}
+
+			return null;
 		}
 
-		Linkable current = entries[(int)(key & size - 1)];
-		item.previous = current.previous;
-		item.next = current;
-		item.previous.next = item;
-		item.next.previous = item;
-		item.id = key;
+		public void put(long key, Linkable item)
+		{
+			if(item.previous != null)
+			{
+				item.unlink();
+			}
+
+			Linkable current = entries[(int)(key & size - 1)];
+			item.previous = current.previous;
+			item.next = current;
+			item.previous.next = item;
+			item.next.previous = item;
+			item.id = key;
+		}
 	}
 }

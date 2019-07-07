@@ -1,20 +1,23 @@
-
-public sealed class PacketInformation
+namespace Rs317.Sharp
 {
-	/*
-	 * suspected to be a link between a "real" opcode and an "obfuscated" opcode.
-	 * 
-	 * in RS revision #317, the client -> server 'chat' packet
-	 * has opcode 4. in the array below, the element at index 4 is `254`
-	 * 
-	 * in RS revision #377, the array below is shuffled. however, the chat packet
-	 * in #377 has opcode 49. in the array for the #377 client, the element
-	 * at index 49 is also `254`
-	 * 
-	 * However, it is unclear how this would have been used. There are no references
-	 * to it in the code. 
-	 */
-	public static int[] PACKET_MAP = { 6, 21, 25, 33, 254, 127, 183, 87, 216, 215, 211, 48, 15, 195, 149, 233,
+	public sealed class PacketInformation
+	{
+		/*
+		 * suspected to be a link between a "real" opcode and an "obfuscated" opcode.
+		 * 
+		 * in RS revision #317, the client -> server 'chat' packet
+		 * has opcode 4. in the array below, the element at index 4 is `254`
+		 * 
+		 * in RS revision #377, the array below is shuffled. however, the chat packet
+		 * in #377 has opcode 49. in the array for the #377 client, the element
+		 * at index 49 is also `254`
+		 * 
+		 * However, it is unclear how this would have been used. There are no references
+		 * to it in the code. 
+		 */
+		public static int[] PACKET_MAP =
+		{
+			6, 21, 25, 33, 254, 127, 183, 87, 216, 215, 211, 48, 15, 195, 149, 233,
 			162, 102, 104, 179, 222, 103, 224, 81, 152, 89, 45, 11, 197, 187, 210, 37, 135, 220, 137, 128, 63, 188, 207,
 			144, 201, 161, 28, 192, 206, 32, 115, 57, 196, 22, 132, 226, 227, 169, 237, 105, 174, 109, 5, 55, 205, 156,
 			8, 34, 113, 176, 209, 3, 50, 117, 122, 189, 101, 142, 246, 163, 238, 76, 74, 84, 91, 217, 58, 23, 118, 66,
@@ -25,9 +28,12 @@ public sealed class PacketInformation
 			240, 159, 88, 158, 64, 221, 200, 1, 43, 252, 62, 40, 230, 129, 18, 111, 51, 17, 53, 136, 20, 60, 225, 30, 9,
 			239, 97, 234, 41, 203, 236, 36, 185, 212, 19, 245, 251, 208, 175, 243, 86, 2, 69, 181, 151, 14, 166, 70, 98,
 			124, 126, 67, 157, 199, 112, 123, 177, 82, 168, 71, 170, 95, 31, 92, 4, 231, 219, 73, 85, 244, 148, 173,
-			228, 121, 83, 133, 68, 0 };
+			228, 121, 83, 133, 68, 0
+		};
 
-	public static int[] PACKET_SIZES = { 0, 0, 0, 0, 6, 0, 0, 0, 4, 0, // 0
+		public static int[] PACKET_SIZES =
+		{
+			0, 0, 0, 0, 6, 0, 0, 0, 4, 0, // 0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 10
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 0, // 20
 			0, 0, 0, 0, -2, 4, 3, 0, 0, 0, // 30
@@ -53,6 +59,6 @@ public sealed class PacketInformation
 			8, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 230
 			2, -2, 0, 0, 0, 0, 6, 0, 4, 3, // 240
 			0, 0, 0, -1, 6, 0, 0 // 250
-	};
-
+		};
+	}
 }

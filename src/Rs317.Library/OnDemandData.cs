@@ -1,27 +1,29 @@
-
 using System;
 
-public sealed class OnDemandData : Cacheable
+namespace Rs317.Sharp
 {
-	public int dataType { get; set; }
-
-	public byte[] buffer { get; private set; }
-	int id;
-	public bool incomplete { get; set; }
-	public int loopCycle { get; set; }
-
-	public OnDemandData()
+	public sealed class OnDemandData : Cacheable
 	{
-		incomplete = true;
-	}
+		public int dataType { get; set; }
 
-	public void InitializeBuffer(byte[] bytes)
-	{
-		buffer = bytes ?? throw new ArgumentNullException(nameof(bytes));
-	}
+		public byte[] buffer { get; private set; }
+		int id;
+		public bool incomplete { get; set; }
+		public int loopCycle { get; set; }
 
-	public void ClearBuffer()
-	{
-		buffer = null;
+		public OnDemandData()
+		{
+			incomplete = true;
+		}
+
+		public void InitializeBuffer(byte[] bytes)
+		{
+			buffer = bytes ?? throw new ArgumentNullException(nameof(bytes));
+		}
+
+		public void ClearBuffer()
+		{
+			buffer = null;
+		}
 	}
 }

@@ -1,116 +1,120 @@
-
 using System;
 
-public sealed class Projectile : Animable
+namespace Rs317.Sharp
 {
-	public int delay;
+	public sealed class Projectile : Animable
+	{
+		public int delay;
 
-	public int endCycle;
+		public int endCycle;
 
-	private double speedVectorX;
+		private double speedVectorX;
 
-	private double speedVectorY;
+		private double speedVectorY;
 
-	private double speedScalar;
-	private double speedVectorZ;
-	private double offsetZ;
-	private bool moving;
-	private int startX;
-	private int startY;
-	private int startZ;
-	public int endZ;
-	public double currentX;
-	public double currentY;
-	public double currentZ;
-	private int startSlope;
-	private int startDistance;
-	public int targetId;
-	private SpotAnimation animation;
-	private int animationFrame;
-	private int duration;
-	public int rotationY;
-	private int rotationX;
-	public int plane;
+		private double speedScalar;
+		private double speedVectorZ;
+		private double offsetZ;
+		private bool moving;
+		private int startX;
+		private int startY;
+		private int startZ;
+		public int endZ;
+		public double currentX;
+		public double currentY;
+		public double currentZ;
+		private int startSlope;
+		private int startDistance;
+		public int targetId;
+		private SpotAnimation animation;
+		private int animationFrame;
+		private int duration;
+		public int rotationY;
+		private int rotationX;
+		public int plane;
 
-	public Projectile(int startSlope, int endZ, int delay, int endCycle, int startDistance, int plane, int startZ,
+		public Projectile(int startSlope, int endZ, int delay, int endCycle, int startDistance, int plane, int startZ,
 			int startY, int startX, int targetId, int l2)
-	{
-		moving = false;
-		this.animation = SpotAnimation.cache[l2];
-		this.plane = plane;
-		this.startX = startX;
-		this.startY = startY;
-		this.startZ = startZ;
-		this.delay = delay;
-		this.endCycle = endCycle;
-		this.startSlope = startSlope;
-		this.startDistance = startDistance;
-		this.targetId = targetId;
-		this.endZ = endZ;
-		this.moving = false;
-	}
-
-	public override Model getRotatedModel()
-	{
-		Model model = animation.getModel();
-		if(model == null)
-			return null;
-		int frameId = -1;
-		if(animation.sequences != null)
-			frameId = animation.sequences.primaryFrames[animationFrame];
-		Model rotatedModel = new Model(true, Animation.isNullFrame(frameId), false, model);
-		if(frameId != -1)
 		{
-			rotatedModel.createBones();
-			rotatedModel.applyTransformation(frameId);
-			rotatedModel.triangleSkin = null;
-			rotatedModel.vertexSkin = null;
+			moving = false;
+			this.animation = SpotAnimation.cache[l2];
+			this.plane = plane;
+			this.startX = startX;
+			this.startY = startY;
+			this.startZ = startZ;
+			this.delay = delay;
+			this.endCycle = endCycle;
+			this.startSlope = startSlope;
+			this.startDistance = startDistance;
+			this.targetId = targetId;
+			this.endZ = endZ;
+			this.moving = false;
 		}
-		if(animation.scaleXY != 128 || animation.scaleZ != 128)
-			rotatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
-		rotatedModel.rotateX(rotationX);
-		rotatedModel.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30,
-				true);
-		return rotatedModel;
-	}
 
-	public void move(int time)
-	{
-		moving = true;
-		currentX += speedVectorX * time;
-		currentY += speedVectorY * time;
-		currentZ += speedVectorZ * time + 0.5D * offsetZ * time * time;
-		speedVectorZ += offsetZ * time;
-		rotationY = (int)(Math.Atan2(speedVectorX, speedVectorY) * 325.94900000000001D) + 1024 & 0x7ff;
-		rotationX = (int)(Math.Atan2(speedVectorZ, speedScalar) * 325.94900000000001D) & 0x7ff;
-		if(animation.sequences != null)
-			for(duration += time; duration > animation.sequences.getFrameLength(animationFrame);)
+		public override Model getRotatedModel()
+		{
+			Model model = animation.getModel();
+			if (model == null)
+				return null;
+			int frameId = -1;
+			if (animation.sequences != null)
+				frameId = animation.sequences.primaryFrames[animationFrame];
+			Model rotatedModel = new Model(true, Animation.isNullFrame(frameId), false, model);
+			if (frameId != -1)
 			{
-				duration -= animation.sequences.getFrameLength(animationFrame) + 1;
-				animationFrame++;
-				if(animationFrame >= animation.sequences.frameCount)
-					animationFrame = 0;
+				rotatedModel.createBones();
+				rotatedModel.applyTransformation(frameId);
+				rotatedModel.triangleSkin = null;
+				rotatedModel.vertexSkin = null;
 			}
 
-	}
-
-	public void trackTarget(int currentCycle, int targetY, int targetZ, int targetX)
-	{
-		if(!moving)
-		{
-			double distanceX = targetX - startX;
-			double distanceY = targetY - startY;
-			double distanceScalar = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
-			currentX = startX + (distanceX * startDistance) / distanceScalar;
-			currentY = startY + (distanceY * startDistance) / distanceScalar;
-			currentZ = startZ;
+			if (animation.scaleXY != 128 || animation.scaleZ != 128)
+				rotatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
+			rotatedModel.rotateX(rotationX);
+			rotatedModel.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30,
+				true);
+			return rotatedModel;
 		}
-		double cyclesRemaining = (endCycle + 1) - currentCycle;
-		speedVectorX = (targetX - currentX) / cyclesRemaining;
-		speedVectorY = (targetY - currentY) / cyclesRemaining;
-		speedScalar = Math.Sqrt(speedVectorX * speedVectorX + speedVectorY * speedVectorY);
-		if(!moving)
-			speedVectorZ = -speedScalar * Math.Tan(startSlope * 0.02454369D);
-		offsetZ = (2D * (targetZ - currentZ - speedVectorZ * cyclesRemaining)) / (cyclesRemaining * cyclesRemaining);
+
+		public void move(int time)
+		{
+			moving = true;
+			currentX += speedVectorX * time;
+			currentY += speedVectorY * time;
+			currentZ += speedVectorZ * time + 0.5D * offsetZ * time * time;
+			speedVectorZ += offsetZ * time;
+			rotationY = (int) (Math.Atan2(speedVectorX, speedVectorY) * 325.94900000000001D) + 1024 & 0x7ff;
+			rotationX = (int) (Math.Atan2(speedVectorZ, speedScalar) * 325.94900000000001D) & 0x7ff;
+			if (animation.sequences != null)
+				for (duration += time; duration > animation.sequences.getFrameLength(animationFrame);)
+				{
+					duration -= animation.sequences.getFrameLength(animationFrame) + 1;
+					animationFrame++;
+					if (animationFrame >= animation.sequences.frameCount)
+						animationFrame = 0;
+				}
+
+		}
+
+		public void trackTarget(int currentCycle, int targetY, int targetZ, int targetX)
+		{
+			if (!moving)
+			{
+				double distanceX = targetX - startX;
+				double distanceY = targetY - startY;
+				double distanceScalar = Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
+				currentX = startX + (distanceX * startDistance) / distanceScalar;
+				currentY = startY + (distanceY * startDistance) / distanceScalar;
+				currentZ = startZ;
+			}
+
+			double cyclesRemaining = (endCycle + 1) - currentCycle;
+			speedVectorX = (targetX - currentX) / cyclesRemaining;
+			speedVectorY = (targetY - currentY) / cyclesRemaining;
+			speedScalar = Math.Sqrt(speedVectorX * speedVectorX + speedVectorY * speedVectorY);
+			if (!moving)
+				speedVectorZ = -speedScalar * Math.Tan(startSlope * 0.02454369D);
+			offsetZ = (2D * (targetZ - currentZ - speedVectorZ * cyclesRemaining)) / (cyclesRemaining * cyclesRemaining);
+		}
 	}
 }

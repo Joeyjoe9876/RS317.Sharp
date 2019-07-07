@@ -1,20 +1,22 @@
-
-public sealed class Item : Animable
+namespace Rs317.Sharp
 {
-	public int itemId;
-
-	public int x;
-
-	public int y;
-	public int itemCount;
-
-	public Item()
+	public sealed class Item : Animable
 	{
-	}
+		public int itemId;
 
-	public sealed override Model getRotatedModel()
-	{
-		ItemDefinition itemDef = ItemDefinition.getDefinition(itemId);
-		return itemDef.getAmountModel(itemCount);
+		public int x;
+
+		public int y;
+		public int itemCount;
+
+		public Item()
+		{
+		}
+
+		public sealed override Model getRotatedModel()
+		{
+			ItemDefinition itemDef = ItemDefinition.getDefinition(itemId);
+			return itemDef.getAmountModel(itemCount);
+		}
 	}
 }

@@ -1,19 +1,21 @@
-
-public class Cacheable : Linkable
+namespace Rs317.Sharp
 {
-	public Cacheable nextCacheable;
-	public Cacheable previousCacheable;
-
-	public void unlinkCacheable()
+	public class Cacheable : Linkable
 	{
-		if(previousCacheable == null)
-		{
-			return;
-		}
+		public Cacheable nextCacheable;
+		public Cacheable previousCacheable;
 
-		previousCacheable.nextCacheable = nextCacheable;
-		nextCacheable.previousCacheable = previousCacheable;
-		nextCacheable = null;
-		previousCacheable = null;
+		public void unlinkCacheable()
+		{
+			if(previousCacheable == null)
+			{
+				return;
+			}
+
+			previousCacheable.nextCacheable = nextCacheable;
+			nextCacheable.previousCacheable = previousCacheable;
+			nextCacheable = null;
+			previousCacheable = null;
+		}
 	}
 }

@@ -1,4 +1,3 @@
-
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -10,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Rs317
+namespace Rs317.Sharp
 {
 	public sealed class Client : RSApplet, IBaseClient, IMouseInputQueryable
 	{
@@ -73,7 +72,7 @@ namespace Rs317
 		{
 			WorldController.lowMemory = false;
 			lowMemory = false;
-			Rs317.Region.lowMemory = false;
+			Rs317.Sharp.Region.lowMemory = false;
 			GameObjectDefinition.lowMemory = false;
 		}
 
@@ -2441,7 +2440,7 @@ namespace Rs317
 					int height = z;
 					if(height < 3 && (tileFlags[1, x, y] & 2) == 2)
 						height++;
-					Rs317.Region.forceRenderObject(worldController, face, y, l, height, currentCollisionMap[z], intGroundArray, x,
+					Rs317.Sharp.Region.forceRenderObject(worldController, face, y, l, height, currentCollisionMap[z], intGroundArray, x,
 						objectId, z);
 				}
 			}
@@ -7312,7 +7311,7 @@ namespace Rs317
 						blockY = 10;
 					}
 
-					regionsCached &= Rs317.Region.regionCached(blockX, blockY, objects);
+					regionsCached &= Rs317.Sharp.Region.regionCached(blockX, blockY, objects);
 				}
 			}
 
@@ -7325,7 +7324,7 @@ namespace Rs317
 			else
 			{
 				loadingStage = 2;
-				Rs317.Region.plane = plane;
+				Rs317.Sharp.Region.plane = plane;
 				loadRegion();
 				stream.putOpcode(121);
 				return 0;
@@ -7387,7 +7386,7 @@ namespace Rs317
 
 		private void loadingStages()
 		{
-			if(lowMemory && loadingStage == 2 && Rs317.Region.plane != plane)
+			if(lowMemory && loadingStage == 2 && Rs317.Sharp.Region.plane != plane)
 			{
 				gameScreenImageProducer.initDrawingArea();
 				fontPlain.drawCentredText("Loading - please wait.", 257, 151, 0);
@@ -7454,7 +7453,7 @@ namespace Rs317
 
 				}
 
-				Rs317.Region objectManager = new Rs317.Region(tileFlags, intGroundArray);
+				Region objectManager = new Region(tileFlags, intGroundArray);
 				int dataLength = terrainData.Length;
 				stream.putOpcode(0);
 				if(!loadGeneratedMap)
@@ -7515,13 +7514,13 @@ namespace Rs317
 				objectManager.createRegion(currentCollisionMap, worldController);
 				gameScreenImageProducer.initDrawingArea();
 				stream.putOpcode(0);
-				int z = Rs317.Region.lowestPlane;
+				int z = Rs317.Sharp.Region.lowestPlane;
 				if(z > plane)
 					z = plane;
 				if(z < plane - 1)
 					z = plane - 1;
 				if(lowMemory)
-					worldController.setHeightLevel(Rs317.Region.lowestPlane);
+					worldController.setHeightLevel(Rs317.Sharp.Region.lowestPlane);
 				else
 					worldController.setHeightLevel(0);
 				for(int x = 0; x < 104; x++)
@@ -7600,7 +7599,7 @@ namespace Rs317
 				currentCollisionMap[z].reset();
 		}
 
-		private void LoadObjectSubblocks(Rs317.Region objectManager)
+		private void LoadObjectSubblocks(Region objectManager)
 		{
 			for(int z = 0; z < 4; z++)
 			{
@@ -7631,7 +7630,7 @@ namespace Rs317
 			}
 		}
 
-		private void LoadTerrainSubblocks(Rs317.Region objectManager)
+		private void LoadTerrainSubblocks(Region objectManager)
 		{
 			for(int z = 0; z < 4; z++)
 			{
@@ -9984,7 +9983,7 @@ namespace Rs317
 				} while(onDemandData.dataType != 93 || !onDemandFetcher.method564((int)onDemandData.id));
 
 				Console.WriteLine($"Debug: Spinning demand fetcher outer loop.");
-				Rs317.Region.passivelyRequestGameObjectModels(new Buffer(onDemandData.buffer), onDemandFetcher);
+				Rs317.Sharp.Region.passivelyRequestGameObjectModels(new Buffer(onDemandData.buffer), onDemandFetcher);
 			} while(true);
 		}
 
@@ -11366,7 +11365,7 @@ namespace Rs317
 						spawnRequest.delayUntilRespawn--;
 					if(spawnRequest.delayUntilRespawn == 0)
 					{
-						if(spawnRequest.id < 0 || Rs317.Region.modelTypeCached(spawnRequest.id, spawnRequest.type))
+						if(spawnRequest.id < 0 || Rs317.Sharp.Region.modelTypeCached(spawnRequest.id, spawnRequest.type))
 						{
 							despawnGameObject(spawnRequest.y, spawnRequest.z, spawnRequest.face, spawnRequest.type,
 								spawnRequest.x, spawnRequest.objectType, spawnRequest.id);
@@ -11379,7 +11378,7 @@ namespace Rs317
 							spawnRequest.delayUntilSpawn--;
 						if(spawnRequest.delayUntilSpawn == 0 && spawnRequest.x >= 1 && spawnRequest.y >= 1
 							&& spawnRequest.x <= 102 && spawnRequest.y <= 102
-							&& (spawnRequest.id2 < 0 || Rs317.Region.modelTypeCached(spawnRequest.id2, spawnRequest.type2)))
+							&& (spawnRequest.id2 < 0 || Rs317.Sharp.Region.modelTypeCached(spawnRequest.id2, spawnRequest.type2)))
 						{
 							despawnGameObject(spawnRequest.y, spawnRequest.z, spawnRequest.face2, spawnRequest.type2,
 								spawnRequest.x, spawnRequest.objectType, spawnRequest.id2);

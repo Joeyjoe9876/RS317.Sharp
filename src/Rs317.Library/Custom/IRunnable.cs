@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-//TODO: Create namespace.
-/// <summary>
-/// Based on the Java runnable.
-/// </summary>
-public interface IRunnable
+namespace Rs317.Sharp
 {
-	//Lowecase to match java.
+	//TODO: Create namespace.
 	/// <summary>
-	/// The run method of the runnable.
+	/// Based on the Java runnable.
 	/// </summary>
-	void run();
+	public interface IRunnable
+	{
+		//Lowecase to match java.
+		/// <summary>
+		/// The run method of the runnable.
+		/// </summary>
+		void run();
+	}
 }

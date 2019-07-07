@@ -1,10 +1,8 @@
-
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Rs317
+namespace Rs317.Sharp
 {
-
 	public sealed class Region
 	{
 		private static int calculateNoise(int x, int seed)

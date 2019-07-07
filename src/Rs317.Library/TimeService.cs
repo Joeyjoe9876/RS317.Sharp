@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rs317
+namespace Rs317.Sharp
 {
 	public static class TimeService
 	{

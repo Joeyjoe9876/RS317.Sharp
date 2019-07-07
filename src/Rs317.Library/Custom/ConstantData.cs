@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml.Schema;
 
-namespace Rs317
+namespace Rs317.Sharp
 {
 	public static class ConstantData
 	{

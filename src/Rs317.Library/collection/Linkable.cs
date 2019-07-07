@@ -1,20 +1,23 @@
 
-public class Linkable
+namespace Rs317.Sharp
 {
-	public long id;
-	public Linkable next;
-	public Linkable previous;
-
-	public void unlink()
+	public class Linkable
 	{
-		if(previous == null)
-		{
-			return;
-		}
+		public long id;
+		public Linkable next;
+		public Linkable previous;
 
-		previous.next = next;
-		next.previous = previous;
-		next = null;
-		previous = null;
+		public void unlink()
+		{
+			if(previous == null)
+			{
+				return;
+			}
+
+			previous.next = next;
+			next.previous = previous;
+			next = null;
+			previous = null;
+		}
 	}
 }

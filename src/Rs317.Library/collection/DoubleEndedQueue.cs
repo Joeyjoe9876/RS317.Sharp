@@ -1,127 +1,130 @@
 
-public sealed class DoubleEndedQueue
+namespace Rs317.Sharp
 {
-	private Linkable tail;
-	private Linkable current;
-
-	public DoubleEndedQueue()
+	public sealed class DoubleEndedQueue
 	{
-		tail = new Linkable();
-		tail.next = tail;
-		tail.previous = tail;
-	}
+		private Linkable tail;
+		private Linkable current;
 
-	public Linkable peekFront()
-	{
-		Linkable node = tail.next;
-
-		if(node == tail)
+		public DoubleEndedQueue()
 		{
-			current = null;
-			return null;
+			tail = new Linkable();
+			tail.next = tail;
+			tail.previous = tail;
 		}
 
-		current = node.next;
-		return node;
-	}
-
-	public Linkable peekBack()
-	{
-		Linkable node = tail.previous;
-		if(node == tail)
+		public Linkable peekFront()
 		{
-			current = null;
-			return null;
+			Linkable node = tail.next;
+
+			if(node == tail)
+			{
+				current = null;
+				return null;
+			}
+
+			current = node.next;
+			return node;
 		}
 
-		current = node.previous;
-		return node;
-	}
-
-	public Linkable getPrevious()
-	{
-		Linkable node = current;
-
-		if(node == tail)
+		public Linkable peekBack()
 		{
-			current = null;
-			return null;
+			Linkable node = tail.previous;
+			if(node == tail)
+			{
+				current = null;
+				return null;
+			}
+
+			current = node.previous;
+			return node;
 		}
 
-		current = node.previous;
-		return node;
-	}
-
-	public void pushBack(Linkable item)
-	{
-		if(item.previous != null)
+		public Linkable getPrevious()
 		{
-			item.unlink();
+			Linkable node = current;
+
+			if(node == tail)
+			{
+				current = null;
+				return null;
+			}
+
+			current = node.previous;
+			return node;
 		}
 
-		item.previous = tail.previous;
-		item.next = tail;
-		item.previous.next = item;
-		item.next.previous = item;
-	}
-
-	public void pushFront(Linkable item)
-	{
-		if(item.previous != null)
+		public void pushBack(Linkable item)
 		{
-			item.unlink();
+			if(item.previous != null)
+			{
+				item.unlink();
+			}
+
+			item.previous = tail.previous;
+			item.next = tail;
+			item.previous.next = item;
+			item.next.previous = item;
 		}
 
-		item.previous = tail;
-		item.next = tail.next;
-		item.previous.next = item;
-		item.next.previous = item;
-	}
-
-	public Linkable popFront()
-	{
-		Linkable next = tail.next;
-
-		if(next == tail)
+		public void pushFront(Linkable item)
 		{
-			return null;
+			if(item.previous != null)
+			{
+				item.unlink();
+			}
+
+			item.previous = tail;
+			item.next = tail.next;
+			item.previous.next = item;
+			item.next.previous = item;
 		}
 
-		next.unlink();
-		return next;
-	}
-
-	public void clear()
-	{
-		if(tail.next == tail)
-		{
-			return;
-		}
-
-		while(true)
+		public Linkable popFront()
 		{
 			Linkable next = tail.next;
 
 			if(next == tail)
 			{
-				return;
+				return null;
 			}
 
 			next.unlink();
+			return next;
 		}
-	}
 
-	public Linkable getNext()
-	{
-		Linkable node = current;
-
-		if(node == tail)
+		public void clear()
 		{
-			current = null;
-			return null;
+			if(tail.next == tail)
+			{
+				return;
+			}
+
+			while(true)
+			{
+				Linkable next = tail.next;
+
+				if(next == tail)
+				{
+					return;
+				}
+
+				next.unlink();
+			}
 		}
 
-		current = node.next;
-		return node;
+		public Linkable getNext()
+		{
+			Linkable node = current;
+
+			if(node == tail)
+			{
+				current = null;
+				return null;
+			}
+
+			current = node.next;
+			return node;
+		}
 	}
 }

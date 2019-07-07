@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rs317
+namespace Rs317.Sharp
 {
 	//Basically, this exists to seperate the MouseDetection class from a dependency on the Client Type.
 	/// <summary>

@@ -1,62 +1,66 @@
 
 using System;
 
-public sealed class VarBit
+namespace Rs317.Sharp
 {
-	public static VarBit[] values;
-	public int configId;
-	public int leastSignificantBit;
-	public int mostSignificantBit;
 
-	public static void load(Archive archive)
+	public sealed class VarBit
 	{
-		Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
-		int count = buffer.getUnsignedLEShort();
+		public static VarBit[] values;
+		public int configId;
+		public int leastSignificantBit;
+		public int mostSignificantBit;
 
-		if(values == null)
+		public static void load(Archive archive)
 		{
-			values = new VarBit[count];
-		}
+			Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
+			int count = buffer.getUnsignedLEShort();
 
-		for(int i = 0; i < count; i++)
-		{
-			if(values[i] == null)
+			if(values == null)
 			{
-				values[i] = new VarBit();
+				values = new VarBit[count];
 			}
 
-			values[i].load(buffer);
+			for(int i = 0; i < count; i++)
+			{
+				if(values[i] == null)
+				{
+					values[i] = new VarBit();
+				}
+
+				values[i].load(buffer);
+			}
+
+			if(buffer.position != buffer.buffer.Length)
+				throw new InvalidOperationException("varbit load mismatch");
+
 		}
 
-		if(buffer.position != buffer.buffer.Length)
-			throw new InvalidOperationException("varbit load mismatch");
-		
-	}
-
-	private void load(Buffer buffer)
-	{
-		do
+		private void load(Buffer buffer)
 		{
-			int opcode = buffer.getUnsignedByte();
-			if(opcode == 0)
-				return;
-			if(opcode == 1)
+			do
 			{
-				configId = buffer.getUnsignedLEShort();
-				leastSignificantBit = buffer.getUnsignedByte();
-				mostSignificantBit = buffer.getUnsignedByte();
-			}
-			else if(opcode == 10)
-				buffer.getString();
-			else if(opcode == 2)
-			{
-			} // dummy
-			else if(opcode == 3)
-				buffer.getInt();
-			else if (opcode == 4)
-				buffer.getInt();
-			else
-				throw new InvalidOperationException($"Error unrecognised config code: {opcode}");
-		} while(true);
+				int opcode = buffer.getUnsignedByte();
+				if(opcode == 0)
+					return;
+				if(opcode == 1)
+				{
+					configId = buffer.getUnsignedLEShort();
+					leastSignificantBit = buffer.getUnsignedByte();
+					mostSignificantBit = buffer.getUnsignedByte();
+				}
+				else if(opcode == 10)
+					buffer.getString();
+				else if(opcode == 2)
+				{
+				} // dummy
+				else if(opcode == 3)
+					buffer.getInt();
+				else if(opcode == 4)
+					buffer.getInt();
+				else
+					throw new InvalidOperationException($"Error unrecognised config code: {opcode}");
+			} while(true);
+		}
 	}
 }
