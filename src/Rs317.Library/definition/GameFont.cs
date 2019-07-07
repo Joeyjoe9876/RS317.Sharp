@@ -556,7 +556,8 @@ namespace Rs317.Sharp
 			 * Generate a random alpha value that is more opaque than the shadow (192 is the
 			 * alpha value for the shadow).
 			 */
-			int alpha = 192 + (random.Next() & 0x1f);
+			//This random value is causing flickers. I don't want to seed or constrain it. Waste of performance just to make something flicker, it shouldn't even flicker!!
+			int alpha = 192; //+ (random.Next() & 0x1f);
 
 			/*
 			 * Draw from the top-left instead of the bottom.
