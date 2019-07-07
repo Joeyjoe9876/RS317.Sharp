@@ -7888,6 +7888,7 @@ namespace Rs317.Sharp
 						npcs[n] = null;
 
 					localPlayer = players[LOCAL_PLAYER_ID] = new Player();
+					StaticLocalPlayerRepository.LocalPlayerInstance = localPlayer;
 					projectileQueue.clear();
 					stationaryGraphicQueue.clear();
 					for(int l2 = 0; l2 < 4; l2++)

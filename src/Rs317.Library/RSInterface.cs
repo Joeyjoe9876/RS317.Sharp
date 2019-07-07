@@ -388,8 +388,7 @@ namespace Rs317.Sharp
 			if (modelType == 2)
 				model = EntityDefinition.getDefinition(modelId).getHeadModel();
 			if (modelType == 3)
-				throw new NotImplementedException($"TODO: Reimplement the head model!!");
-			//model = Client.localPlayer.getHeadModel();
+				model = StaticLocalPlayerRepository.LocalPlayerInstance.getHeadModel();
 			if (modelType == 4)
 				model = ItemDefinition.getDefinition(modelId).getInventoryModel(50);
 			if (modelType == 5)
