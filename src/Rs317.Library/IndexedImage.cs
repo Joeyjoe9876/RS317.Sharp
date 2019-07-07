@@ -2,7 +2,6 @@ using System;
 
 namespace Rs317.Sharp
 {
-
 	public sealed class IndexedImage : DrawingArea
 	{
 		public byte[] pixels;
@@ -129,7 +128,7 @@ namespace Rs317.Sharp
 			{
 				for(int y = 0; y < width; y++)
 				{
-					tempPixels[(y + drawOffsetX >> 1) + (x + drawOffsetY >> 1) * resizeWidth] = tempPixels[i++];
+					tempPixels[(y + drawOffsetX >> 1) + (x + drawOffsetY >> 1) * resizeWidth] = pixels[i++];
 				}
 			}
 
@@ -151,7 +150,7 @@ namespace Rs317.Sharp
 			{
 				for(int x = 0; x < width; x++)
 				{
-					tempPixels[x + drawOffsetX + (y + drawOffsetY) * resizeWidth] = tempPixels[i++];
+					tempPixels[x + drawOffsetX + (y + drawOffsetY) * resizeWidth] = pixels[i++];
 				}
 			}
 
