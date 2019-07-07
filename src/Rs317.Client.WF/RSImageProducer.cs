@@ -36,20 +36,18 @@ namespace Rs317.Sharp
 
 		public void drawGraphics(int y, Graphics g, int x)
 		{
+			//This is a hacky workout to prevent multiple thread accessing.
+			//it was happening, I don't have time to investigate the entire client's threading model.
+			//Doing this hacky lock on both the resources IS perferable to the hacky exception catching and thread sleeping design.
 			lock (image)
 			{
-				method239();
-				while (true)
+				lock (g)
 				{
-					try
+					method239();
+					while(true)
 					{
 						g.DrawImageUnscaled(image, x, y);
 						break;
-					}
-					catch (Exception e)
-					{
-						//TODO: This is a remanent of the dude who ported this. It shouldn't happen in a good threading model.
-						System.Threading.Thread.Sleep(1);
 					}
 				}
 			}
