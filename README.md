@@ -1,4 +1,4 @@
-# RS317.CSharp
+# RS317.Sharp
 
 A fork of [317Refactor](https://github.com/Jameskmonger/317refactor) that is ported to C#/.NET.
 
