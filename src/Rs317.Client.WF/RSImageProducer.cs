@@ -44,11 +44,7 @@ namespace Rs317.Sharp
 				lock (g)
 				{
 					method239();
-					while(true)
-					{
-						g.DrawImageUnscaled(image, x, y);
-						break;
-					}
+					g.DrawImageUnscaled(image, x, y);
 				}
 			}
 		}
@@ -65,7 +61,6 @@ namespace Rs317.Sharp
 					fastPixel.SetPixel(x, y, (byte)(value >> 16), (byte)(value >> 8), (byte)value, 255);
 				}
 			}
-
 			fastPixel.Unlock(true);
 		}
 
