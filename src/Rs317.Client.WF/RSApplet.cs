@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Rs317.Sharp
 {
-	public abstract class RSApplet<TGraphicsType> : Form, IRunnable, IRunnableStarter, IMouseInputQueryable //Instead of that Java stuff we just implement Windows form.
+	public abstract class RSApplet<TGraphicsType> : IRunnable, IRunnableStarter, IMouseInputQueryable, IInputCallbackSubscriber //Instead of that Java stuff we just implement Windows form.
 	{
 		private int gameState;
 
@@ -87,44 +87,23 @@ namespace Rs317.Sharp
 			this.height = height;
 
 			signlink.applet = this;
-			this.DoubleBuffered = true;
-			this.ClientSize = new System.Drawing.Size(width, height);
 			gameGraphics = CreateGraphicsProvider();
 			fullGameScreen = new SystemDrawingRsImageProducer(this.width, height);
 			StartRunnable(this, 1);
-			Application.Run(this);
 		}
 
 		protected abstract IRSGraphicsProvider<TGraphicsType> CreateGraphicsProvider();
 
-		protected virtual void drawLoadingText(int percentage, String s)
+		public void mousePressed(object sender, RsMouseInputEventArgs e)
 		{
-			Invalidate();
-		}
-
-		public void update(object sender, InvalidateEventArgs e)
-		{
-			//if (graphics == null)
-			//	graphics = this.CreateGraphics();
-			clearScreen = true;
-			raiseWelcomeScreen();
-		}
-
-		public void paint(object sender, PaintEventArgs e)
-		{
-			raiseWelcomeScreen();
-		}
-
-		public void mousePressed(object sender, MouseEventArgs e)
-		{
-			int i = e.X;
-			int j = e.Y;
+			int i = e.ScreenCoordX;
+			int j = e.ScreenCoordY;
 
 			idleTime = 0;
 			eventClickX = i;
 			eventClickY = j;
 			eventClickTime = TimeService.CurrentTimeInMilliseconds();
-			if (e.Button == System.Windows.Forms.MouseButtons.Right)
+			if (e.IsRightClick)
 			{
 				eventMouseButton = 2;
 				mouseButton = 2;
@@ -134,11 +113,9 @@ namespace Rs317.Sharp
 				eventMouseButton = 1;
 				mouseButton = 1;
 			}
-
-			Console.WriteLine($"Mouse Process");
 		}
 
-		public void mouseReleased(object sender, MouseEventArgs e)
+		public void mouseReleased(object sender, RsMouseInputEventArgs e)
 		{
 			idleTime = 0;
 			mouseButton = 0;
@@ -159,58 +136,35 @@ namespace Rs317.Sharp
 			mouseY = -1;
 		}
 
-		public void mouseDragged(object sender, DragEventArgs e)
+		public void mouseDragged(object sender, RsMousePositionChangeEventArgs e)
 		{
-			int i = e.X;
-			int j = e.Y;
+			int i = e.ScreenCoordX;
+			int j = e.ScreenCoordY;
 
 			idleTime = 0;
 			mouseX = i;
 			mouseY = j;
 		}
 
-		public void mouseMoved(object sender, MouseEventArgs e)
+		public void mouseMoved(object sender, RsMousePositionChangeEventArgs e)
 		{
-			int i = e.X;
-			int j = e.Y;
+			int i = e.ScreenCoordX;
+			int j = e.ScreenCoordY;
 
 			idleTime = 0;
 			mouseX = i;
 			mouseY = j;
 		}
 
-		public void keyPressed(object sender, KeyEventArgs e)
+		protected virtual void drawLoadingText(int percentage, String s)
+		{
+
+		}
+
+		public void keyPressed(object sender, RsKeyEventArgs e)
 		{
 			idleTime = 0;
-			int i = (int) e.KeyValue;
-			if (e.KeyCode == Keys.Enter)
-				i = 10;
-			else if (e.KeyCode == Keys.Left)
-				i = 1;
-			else if (e.KeyCode == Keys.Right)
-				i = 2;
-			else if (e.KeyCode == Keys.Up)
-				i = 3;
-			else if (e.KeyCode == Keys.Down)
-				i = 4;
-			else if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
-				i = 8;
-			else if (e.KeyCode == Keys.Control)
-				i = 5;
-			else if (e.KeyCode == Keys.Tab)
-				i = 9;
-			else if (e.KeyValue >= (int) Keys.F1 && e.KeyValue <= (int) Keys.F12)
-				i = 1008 + e.KeyValue - (int) Keys.F1;
-			else if (e.KeyCode == Keys.Home)
-				i = 1000;
-			else if (e.KeyCode == Keys.End)
-				i = 1001;
-			else if (e.KeyCode == Keys.PageUp)
-				i = 1002;
-			else if (e.KeyCode == Keys.PageDown)
-				i = 1003;
-			else
-				return;
+			int i = (int) e.RsKeyCode;
 
 			if (i > 0 && i < 128)
 				keyStatus[i] = 1;
@@ -221,71 +175,83 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private KeysConverter kc = new KeysConverter();
-
-		public void keyReleased(object sender, KeyEventArgs e)
+		public void keyReleased(object sender, RsKeyEventArgs e)
 		{
 			idleTime = 0;
-			int i = (int) e.KeyValue;
-			if (e.KeyCode == Keys.Enter)
-				i = 10;
-			else if (e.KeyCode == Keys.Left)
-				i = 37;
-			else if (e.KeyCode == Keys.Right)
-				i = 39;
-			else if (e.KeyCode == Keys.Up)
-				i = 38;
-			else if (e.KeyCode == Keys.Down)
-				i = 40;
-			else if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
-				i = 8;
-			else if (e.KeyCode == Keys.Control)
-				i = 5;
-			else if (e.KeyCode == Keys.Tab)
-				i = 9;
-			else if (e.KeyValue >= (int) Keys.F1 && e.KeyValue <= (int) Keys.F12)
-				i = 1008 + e.KeyValue - (int) Keys.F1;
-			else if (e.KeyCode == Keys.Home)
-				i = 1000;
-			else if (e.KeyCode == Keys.End)
-				i = 1001;
-			else if (e.KeyCode == Keys.PageUp)
-				i = 1002;
-			else if (e.KeyCode == Keys.PageDown)
-				i = 1003;
-			else
+			int keyCode = e.RsKeyCode;
+			int keyChar = e.RsKeyCode;
+			if(keyCode < 30)
 			{
-				string s = kc.ConvertToString(e.KeyCode);
-				if (s.Length > 0)
-					i = s[0];
+				keyChar = 0;
+			}
+			else if(keyCode == 37) // Left
+			{
+				keyChar = 1;
+			}
+			else if(keyCode == 39) // Right
+			{
+				keyChar = 2;
+			}
+			else if(keyCode == 38) // Up
+			{
+				keyChar = 3;
+			}
+			else if(keyCode == 40) // Down
+			{
+				keyChar = 4;
+			}
+			else if(keyCode == 17) // CTRL
+			{
+				keyChar = 5;
+			}
+			else if(keyCode == 8) // Backspace
+			{
+				keyChar = 8;
+			}
+			else if(keyCode == 127) // Delete
+			{
+				keyChar = 8;
+			}
+			else if(keyCode == 9) // Meant to be tab but doesn't work
+			{
+				keyChar = 9;
+			}
+			else if(keyCode == 10) // Enter / return
+			{
+				keyChar = 10;
+			}
+			else if(keyCode >= 112 && keyCode <= 123) // F keys
+			{
+				keyChar = (1008 + keyCode) - 112;
+			}
+			else if(keyCode == 36) // Home
+			{
+				keyChar = 1000;
+			}
+			else if(keyCode == 35) // End
+			{
+				keyChar = 1001;
+			}
+			else if(keyCode == 33) // Page up
+			{
+				keyChar = 1002;
+			}
+			else if(keyCode == 34) // Page down
+			{
+				keyChar = 1003;
+			}
+			else if(keyChar > 0 && keyChar < 128)
+			{
+				keyStatus[keyChar] = 1;
 			}
 
-			char c = (char) i;
-			if (c < (char) 36)
-				c = (char) 0;
-			if (i == 37)
-				c = (char) 1;
-			if (i == 39)
-				c = (char) 2;
-			if (i == 38)
-				c = (char) 3;
-			if (i == 40)
-				c = (char) 4;
-			if (i == 17)
-				c = (char) 5;
-			if (i == 8)
-				c = '\b';
-			if (i == 127)
-				c = '\b';
-			if (i == 9)
-				c = '\t';
-			if (i == 10)
-				c = '\n';
-			if (c > 0 && c < (char) 200)
-				keyStatus[c] = 0;
+			if(keyChar > 0 && keyChar < (char)200)
+			{
+				this.keyStatus[keyChar] = 0;
+			}
 		}
 
-		public void keyTyped(object sender, KeyPressEventArgs e)
+		public void keyTyped(object sender, RsKeyEventArgs e)
 		{
 			idleTime = 0;
 			int i = (int) e.KeyChar;
@@ -335,12 +301,6 @@ namespace Rs317.Sharp
 		{
 		}
 
-		public void windowClosing(object sender, FormClosingEventArgs e)
-		{
-			Application.Exit();
-			//destroy();
-		}
-
 		public void windowDeactivated(object sender, EventArgs e)
 		{
 		}
@@ -382,20 +342,6 @@ namespace Rs317.Sharp
 
 		public virtual void run()
 		{
-			this.MouseDown += new MouseEventHandler(mousePressed);
-			this.DragDrop += new DragEventHandler(mouseDragged);
-			this.MouseUp += new MouseEventHandler(mouseReleased);
-			this.MouseMove += new MouseEventHandler(mouseMoved);
-			this.MouseEnter += new EventHandler(mouseEntered);
-			this.MouseLeave += new EventHandler(mouseExited);
-			this.KeyDown += new KeyEventHandler(keyPressed);
-			this.KeyUp += new KeyEventHandler(keyReleased);
-			this.KeyPress += new KeyPressEventHandler(keyTyped);
-			this.GotFocus += new EventHandler(focusGained);
-			this.LostFocus += new EventHandler(focusLost);
-			this.FormClosing += new FormClosingEventHandler(windowClosing);
-			this.Paint += new PaintEventHandler(paint);
-			this.Invalidated += new InvalidateEventHandler(update);
 			drawLoadingText(0, "Loading...");
 			startUp();
 			int opos = 0;

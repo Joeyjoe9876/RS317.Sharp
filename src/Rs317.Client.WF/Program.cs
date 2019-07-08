@@ -14,7 +14,6 @@ namespace Rs317.Sharp
 		{
 			try
 			{
-				Application.SetCompatibleTextRenderingDefault(false);
 				Console.WriteLine($"RS2 user client - release #{317}");
 
 				args = new string[] { "0", "0", "highmem", "members", "0" };
@@ -35,24 +34,34 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				signlink.storeid = int.Parse(args[4]);
-				Task clientRunningAwaitable = signlink.startpriv(IPAddress.Parse("127.0.0.1"));
-
-				//Wait for signlink
-				while (!signlink.IsSignLinkThreadActive)
-					await Task.Delay(50)
-						.ConfigureAwait(false);
-
-				Client client1 = new Client(new ClientConfiguration(localWorldId, portOffset, membersWorld));
-				client1.createClientFrame(765, 503);
-
-				await clientRunningAwaitable
-					.ConfigureAwait(false);
+				await StartClient(localWorldId, portOffset, membersWorld);
 			}
 			catch(Exception exception)
 			{
 				throw new InvalidOperationException($"Erorr: {exception.Message} \n\n Stack: {exception.StackTrace}");
 			}
+		}
+
+		private static async Task StartClient(int localWorldId, short portOffset, bool membersWorld)
+		{
+			Application.SetCompatibleTextRenderingDefault(false);
+
+			Task clientRunningAwaitable = signlink.startpriv(IPAddress.Parse("127.0.0.1"));
+			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
+
+			//Wait for signlink
+			while (!signlink.IsSignLinkThreadActive)
+				await Task.Delay(50)
+					.ConfigureAwait(false);
+			RsWinForm windowsFormApplication = new RsWinForm(765, 503);
+			RsWinFormsClient client1 = new RsWinFormsClient(configuration, windowsFormApplication.CreateGraphics());
+			windowsFormApplication.RegisterInputSubscriber(client1);
+			client1.createClientFrame(765, 503);
+
+			Application.Run(windowsFormApplication);
+
+			await clientRunningAwaitable
+				.ConfigureAwait(false);
 		}
 	}
 }

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Rs317.Sharp
 {
-	public sealed class Client : RSApplet<Graphics>, IBaseClient, IMouseInputQueryable
+	public abstract class Client : RSApplet<Graphics>, IBaseClient, IMouseInputQueryable
 	{
 		//TODO: Optimize formating
 		private static String formatAmount(int amount)
@@ -4911,11 +4911,6 @@ namespace Rs317.Sharp
 			}
 
 			DrawingArea.setDrawingArea(clipBottom, clipLeft, clipRight, clipTop);
-		}
-
-		protected override IRSGraphicsProvider<Graphics> CreateGraphicsProvider()
-		{
-			return new SystemDrawingRsGraphicsAdapter(CreateGraphics());
 		}
 
 		protected override void drawLoadingText(int percentage, String text)

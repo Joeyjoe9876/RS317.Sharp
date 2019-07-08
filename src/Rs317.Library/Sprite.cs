@@ -80,7 +80,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public Sprite(byte[] abyte0, Component component)
+		public Sprite(byte[] abyte0, object component) //not referenced.
 		{
 			try
 			{
