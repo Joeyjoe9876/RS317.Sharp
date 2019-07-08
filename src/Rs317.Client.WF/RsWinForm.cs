@@ -147,22 +147,22 @@ namespace Rs317.Sharp
 
 		private void mouseMoved(object sender, MouseEventArgs e)
 		{
-			InputSubscriber.mouseMoved(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
+			InputSubscriber?.mouseMoved(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
 		}
 
 		private void mouseReleased(object sender, MouseEventArgs e)
 		{
-			InputSubscriber.mouseReleased(sender, new RsMouseInputEventArgs(e.X, e.Y, e.Button == MouseButtons.Right));
+			InputSubscriber?.mouseReleased(sender, new RsMouseInputEventArgs(e.X, e.Y, e.Button == MouseButtons.Right));
 		}
 
 		private void mouseDragged(object sender, DragEventArgs e)
 		{
-			InputSubscriber.mouseDragged(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
+			InputSubscriber?.mouseDragged(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
 		}
 
 		private void mousePressed(object sender, MouseEventArgs e)
 		{
-			InputSubscriber.mousePressed(sender, new RsMouseInputEventArgs(e.X, e.Y, e.Button == MouseButtons.Right));
+			InputSubscriber?.mousePressed(sender, new RsMouseInputEventArgs(e.X, e.Y, e.Button == MouseButtons.Right));
 		}
 	}
 }

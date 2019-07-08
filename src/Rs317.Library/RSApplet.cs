@@ -2,7 +2,6 @@ using System;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Rs317.Sharp
 {
@@ -26,7 +25,7 @@ namespace Rs317.Sharp
 
 		protected IRSGraphicsProvider<TGraphicsType> gameGraphics { get; private set; }
 
-		protected SystemDrawingRsImageProducer fullGameScreen { get; set; }
+		protected BaseRsImageProducer<TGraphicsType> fullGameScreen { get; set; }
 
 		private bool clearScreen;
 
@@ -88,7 +87,7 @@ namespace Rs317.Sharp
 
 			signlink.applet = this;
 			gameGraphics = CreateGraphicsProvider();
-			fullGameScreen = new SystemDrawingRsImageProducer(this.width, height);
+			fullGameScreen = CreateNewImageProducer(this.width, height);
 			StartRunnable(this, 1);
 		}
 
@@ -119,10 +118,6 @@ namespace Rs317.Sharp
 		{
 			idleTime = 0;
 			mouseButton = 0;
-		}
-
-		public void mouseClicked(object sender, MouseEventArgs e)
-		{
 		}
 
 		public void mouseEntered(object sender, EventArgs e)
@@ -293,30 +288,6 @@ namespace Rs317.Sharp
 				keyStatus[i] = 0;
 		}
 
-		public void windowActivated(object sender, EventArgs e)
-		{
-		}
-
-		public void windowClosed(object sender, FormClosedEventArgs e)
-		{
-		}
-
-		public void windowDeactivated(object sender, EventArgs e)
-		{
-		}
-
-		public void windowDeiconified(object sender, EventArgs e)
-		{
-		}
-
-		public void windowIconified(object sender, EventArgs e)
-		{
-		}
-
-		public void windowOpened(object sender, EventArgs e)
-		{
-		}
-
 		public virtual void processGameLoop()
 		{
 		}
@@ -337,7 +308,6 @@ namespace Rs317.Sharp
 		{
 			gameState = -2;
 			cleanUpForQuit();
-			Application.Exit();
 		}
 
 		public virtual void run()
@@ -459,5 +429,7 @@ namespace Rs317.Sharp
 		{
 
 		}
+
+		protected abstract BaseRsImageProducer<TGraphicsType> CreateNewImageProducer(int xSize, int ySize);
 	}
 }

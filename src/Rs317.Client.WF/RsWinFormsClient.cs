@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
-	public sealed class RsWinFormsClient : Client
+	public sealed class RsWinFormsClient : Client<Graphics>
 	{
 		public Graphics GraphicsObject { get; }
 
@@ -21,6 +21,11 @@ namespace Rs317.Sharp
 		protected override IRSGraphicsProvider<Graphics> CreateGraphicsProvider()
 		{
 			return new SystemDrawingRsGraphicsAdapter(GraphicsObject);
+		}
+
+		protected override BaseRsImageProducer<Graphics> CreateNewImageProducer(int xSize, int ySize)
+		{
+			return new SystemDrawingRsImageProducer(xSize, ySize);
 		}
 	}
 }
