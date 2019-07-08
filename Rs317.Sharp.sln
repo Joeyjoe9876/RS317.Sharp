@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Library", "src\Rs317.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Client.WF", "src\Rs317.Client.WF\Rs317.Client.WF.csproj", "{FF7872EA-BD70-4B2F-B2AC-D4B5EF0D2A8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Client.WF", "src\Rs317.Client.WF\Rs317.Client.WF.csproj", "{FF7872EA-BD70-4B2F-B2AC-D4B5EF0D2A8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Client.OpenTK", "src\Rs317.Client.OpenTK\Rs317.Client.OpenTK.csproj", "{7FAE6D96-BE19-4898-821A-67F5BFD1977E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{FF7872EA-BD70-4B2F-B2AC-D4B5EF0D2A8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF7872EA-BD70-4B2F-B2AC-D4B5EF0D2A8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF7872EA-BD70-4B2F-B2AC-D4B5EF0D2A8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FAE6D96-BE19-4898-821A-67F5BFD1977E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FAE6D96-BE19-4898-821A-67F5BFD1977E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FAE6D96-BE19-4898-821A-67F5BFD1977E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FAE6D96-BE19-4898-821A-67F5BFD1977E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +36,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{50C63723-2D0C-4B92-B1B3-52BB07C74142} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{FF7872EA-BD70-4B2F-B2AC-D4B5EF0D2A8C} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
+		{7FAE6D96-BE19-4898-821A-67F5BFD1977E} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D68657D2-EEFE-4C81-83F0-DDB62718EAB9}
