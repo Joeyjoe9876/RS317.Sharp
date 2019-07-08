@@ -160,6 +160,8 @@ namespace Rs317.Sharp
 			GL.BindTexture(TextureTarget.Texture2D, texture);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 			KnownBitmaps.Add(drawRequest.Image, texture);
 			ImageDrawCommands.Add(texture, drawRequest);
 
