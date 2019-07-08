@@ -11,7 +11,7 @@ namespace Rs317.Sharp
 
 		private FasterPixel FasterPixel { get; }
 
-		public bool isDirty { get; private set; } = true; //Always initially dirty.
+		public bool isDirty { get; private set; } = false;
 
 		public IntPtr ImageDataPointer { get; }
 
