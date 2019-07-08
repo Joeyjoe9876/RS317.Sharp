@@ -1636,9 +1636,8 @@ namespace Rs317.Sharp
 
 			fixed (int* texelCachePointer = texelCache)
 			{
-				ReadOnlySpan<int> span = new ReadOnlySpan<int>(texelCachePointer, sizeof(int) * TEXEL_POOL_MAX_SIZE * HIGH_MEMORY_TEXEL_WIDTH);
-				ReadOnlySpan<int> slice = span.Slice(textureId * HIGH_MEMORY_TEXEL_WIDTH, HIGH_MEMORY_TEXEL_WIDTH);
-				drawTexturedTriangleWithSpan(slice, yA, yB, yC, xA, xB, xC, zA, zB, zC, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
+				ReadOnlySpan<int> span = new ReadOnlySpan<int>(textureId * HIGH_MEMORY_TEXEL_WIDTH + texelCachePointer, HIGH_MEMORY_TEXEL_WIDTH);
+				drawTexturedTriangleWithSpan(span, yA, yB, yC, xA, xB, xC, zA, zB, zC, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
 			}
 		}
 
