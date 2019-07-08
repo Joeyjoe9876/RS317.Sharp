@@ -98,7 +98,6 @@ namespace Rs317.Sharp
 						UpdateTexture(drawRequest);
 				}
 			}
-
 			
 			foreach (KeyValuePair<int, DrawImageQueueable> imageRequest in ImageDrawCommands)
 			{
