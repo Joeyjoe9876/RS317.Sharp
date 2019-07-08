@@ -36,8 +36,6 @@ namespace Rs317.Sharp
 			ImageLocation = new Rectangle(0, 0, width, height);
 		}
 
-		
-
 		public void ConsumeDirty()
 		{
 			lock (SyncObject)
@@ -48,8 +46,7 @@ namespace Rs317.Sharp
 		{
 			get
 			{
-				lock (SyncObject)
-					accessedPixelBuffer = true;
+				accessedPixelBuffer = true;
 				return base.pixels;
 			}
 		}
@@ -81,7 +78,9 @@ namespace Rs317.Sharp
 			{
 				for(int x = 0; x < width; x++)
 				{
-					int value = pixels[x + y * width];
+					//Important to call base pixels here, 20% of time spent
+					//in this loop was due to locking on the child pixels.
+					int value = base.pixels[x + y * width];
 					//fastPixel.SetPixel(x, y, Color.FromArgb((value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF));
 					FasterPixel.SetPixel(x, y, (byte)(value >> 16), (byte)(value >> 8), (byte)value, 255);
 				}
