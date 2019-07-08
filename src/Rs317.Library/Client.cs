@@ -5165,7 +5165,6 @@ namespace Rs317.Sharp
 				gameScreenImageProducer.initDrawingArea();
 				return;
 			}
-
 			int angle = cameraHorizontal + minimapRotation & 0x7FF;
 			int centreX = 48 + localPlayer.x / 32;
 			int centreY = 464 - localPlayer.y / 32;
@@ -5250,14 +5249,12 @@ namespace Rs317.Sharp
 						drawMinimapTarget(mapMarker, mapY, mapX);
 					}
 				}
-
 				if(hintIconType == 2)
 				{
 					int mapX = ((hintIconX - baseX) * 4 + 2) - localPlayer.x / 32;
 					int mapY = ((hintIconY - baseY) * 4 + 2) - localPlayer.y / 32;
 					drawMinimapTarget(mapMarker, mapY, mapX);
 				}
-
 				if(hintIconType == 10 && hintIconPlayerId >= 0 && hintIconPlayerId < players.Length)
 				{
 					Player player = players[hintIconPlayerId];
@@ -5269,14 +5266,12 @@ namespace Rs317.Sharp
 					}
 				}
 			}
-
 			if(destinationX != 0)
 			{
 				int mapX = (destinationX * 4 + 2) - localPlayer.x / 32;
 				int mapY = (destinationY * 4 + 2) - localPlayer.y / 32;
 				markMinimap(mapFlag, mapX, mapY);
 			}
-
 			DrawingArea.drawFilledRectangle(97, 78, 3, 3, 0xFFFFFF);
 			gameScreenImageProducer.initDrawingArea();
 		}
@@ -5339,7 +5334,6 @@ namespace Rs317.Sharp
 							pixels[pixel + 1536 + 2] = colour;
 							pixels[pixel + 1536 + 3] = colour;
 						}
-
 					if(type == 3)
 						if(direction == 0)
 							pixels[pixel] = colour;
@@ -10636,9 +10630,9 @@ namespace Rs317.Sharp
 
 			}
 
-			int primaryColour = ((238 + (int)(StaticRandomGenerator.Next() * 20D)) - 10 << 16)
-								+ ((238 + (int)(StaticRandomGenerator.Next() * 20D)) - 10 << 8) + ((238 + (int)(StaticRandomGenerator.Next() * 20D)) - 10);
-			int secondaryColour = (238 + (int)(StaticRandomGenerator.Next() * 20D)) - 10 << 16;
+			int primaryColour = ((238 + (int)(StaticRandomGenerator.Next(20))) - 10 << 16)
+								+ ((238 + (int)(StaticRandomGenerator.Next(20))) - 10 << 8) + ((238 + (int)(StaticRandomGenerator.Next(20))) - 10);
+			int secondaryColour = (238 + (int)(StaticRandomGenerator.Next(20))) - 10 << 16;
 			minimapImage.initDrawingArea();
 			for(int y = 1; y < 103; y++)
 			{
@@ -10678,7 +10672,7 @@ namespace Rs317.Sharp
 								int[,] clippingFlags = currentCollisionMap[plane].clippingData;
 								for(int off = 0; off < 10; off++)
 								{
-									int randomDirection = (int)(StaticRandomGenerator.Next() * 4D);
+									int randomDirection = (int)(StaticRandomGenerator.Next(4));
 									if(randomDirection == 0 && drawPointX > 0 && drawPointX > x - 3
 										&& (clippingFlags[drawPointX - 1, drawPointY] & 0x1280108) == 0)
 										drawPointX--;
