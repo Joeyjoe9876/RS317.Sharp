@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
-	public class SystemDrawingRsGraphicsAdapter : IRSGraphicsProvider<Graphics>
+	public class SystemDrawingRsGraphicsProvider : IRSGraphicsProvider<Graphics>
 	{
 		/// <summary>
 		/// The system drawing GameGraphics object.
@@ -17,7 +17,7 @@ namespace Rs317.Sharp
 
 		public object SyncObj { get; } = new object();
 
-		public SystemDrawingRsGraphicsAdapter(Graphics gameGraphics)
+		public SystemDrawingRsGraphicsProvider(Graphics gameGraphics)
 		{
 			GameGraphics = gameGraphics ?? throw new ArgumentNullException(nameof(gameGraphics));
 		}

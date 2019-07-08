@@ -20,7 +20,7 @@ namespace Rs317.Sharp
 
 		protected override IRSGraphicsProvider<Graphics> CreateGraphicsProvider()
 		{
-			return new SystemDrawingRsGraphicsAdapter(GraphicsObject);
+			return new SystemDrawingRsGraphicsProvider(GraphicsObject);
 		}
 
 		protected override BaseRsImageProducer<Graphics> CreateNewImageProducer(int xSize, int ySize)
