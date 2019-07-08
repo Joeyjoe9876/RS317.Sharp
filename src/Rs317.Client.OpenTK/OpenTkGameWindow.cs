@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.CompilerServices;
 using System.Text;
 using OpenTK;
 using OpenTK.Graphics;
@@ -16,6 +17,8 @@ namespace Rs317.Sharp
 	/// </summary>
 	public sealed class OpenTKGameWindow : GameWindow
 	{
+		private bool ViewportSizeChanged = false;
+
 		public static ConcurrentQueue<DrawImageQueueable> DrawImageQueue { get; } = new ConcurrentQueue<DrawImageQueueable>();
 
 		private Dictionary<Bitmap, int> KnownBitmaps { get; }
@@ -71,16 +74,27 @@ namespace Rs317.Sharp
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-				while (DrawImageQueue.TryDequeue(out var drawRequest))
+			if(ViewportSizeChanged)
+			{
+				ViewportSizeChanged = false;
+
+				GL.Viewport(0, 0, Width, Height);
+
+				Matrix4 ortho_projection = Matrix4.CreateOrthographicOffCenter(0, Width, Height, 0, -1, 1);
+				GL.MatrixMode(MatrixMode.Projection);
+				GL.LoadMatrix(ref ortho_projection);
+			}
+
+			while (DrawImageQueue.TryDequeue(out var drawRequest))
+			{
+				lock (drawRequest.Image)
 				{
-					lock (drawRequest.Image)
-					{
-						if (!KnownBitmaps.ContainsKey(drawRequest.Image))
-							CreateTexture(drawRequest);
-						else
-							UpdateTexture(drawRequest);
-					}
+					if (!KnownBitmaps.ContainsKey(drawRequest.Image))
+						CreateTexture(drawRequest);
+					else
+						UpdateTexture(drawRequest);
 				}
+			}
 
 			foreach (KeyValuePair<int, DrawImageQueueable> imageRequest in ImageDrawCommands)
 			{
@@ -100,21 +114,30 @@ namespace Rs317.Sharp
 			GL.BindTexture(TextureTarget.Texture2D, textureId);
 		}
 
-		private static void DrawTexture(DrawImageQueueable drawRequest)
+		protected override void OnResize(EventArgs e)
+		{
+			base.OnResize(e);
+			ViewportSizeChanged = true;
+		}
+
+		private void DrawTexture(DrawImageQueueable drawRequest)
 		{
 			GL.Begin(PrimitiveType.Quads);
 
 			float xOffset = (float) drawRequest.XDrawOffset;
 			float yOffset = (float) drawRequest.XHeightOffset;
 
-			GL.TexCoord2(0, 0);
-			GL.Vertex2(xOffset, yOffset);
-			GL.TexCoord2(1, 0);
-			GL.Vertex2(drawRequest.Width + xOffset, yOffset);
-			GL.TexCoord2(1, 1);
-			GL.Vertex2(drawRequest.Width + xOffset, drawRequest.Height + yOffset);
-			GL.TexCoord2(0, 1);
-			GL.Vertex2(xOffset, drawRequest.Height + yOffset);
+			//Scaling code for resizable
+			//765, 503 default size.
+
+			//Get current size modifier
+			float widthModifier = (float)this.Width / 765.0f;
+			float heightModifier = (float)this.Height / 503.0f;
+
+			GL.TexCoord2(0, 0); GL.Vertex2(xOffset * widthModifier, yOffset * heightModifier);
+			GL.TexCoord2(1, 0); GL.Vertex2((drawRequest.Width + xOffset) * widthModifier, yOffset * heightModifier);
+			GL.TexCoord2(1, 1); GL.Vertex2((drawRequest.Width + xOffset) * widthModifier, (drawRequest.Height + yOffset) * heightModifier);
+			GL.TexCoord2(0, 1); GL.Vertex2(xOffset * widthModifier, (drawRequest.Height + yOffset) * heightModifier);
 
 			GL.End();
 		}
