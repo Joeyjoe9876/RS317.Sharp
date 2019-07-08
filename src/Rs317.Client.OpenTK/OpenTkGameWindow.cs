@@ -270,12 +270,12 @@ namespace Rs317.Sharp
 
 		private void mouseMoved(object sender, MouseEventArgs e)
 		{
-			InputSubscriber?.mouseMoved(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
+			InputSubscriber?.mouseMoved(sender, TransformMouseEventCoordinates(e));
 		}
 
 		private void mouseReleased(object sender, MouseEventArgs e)
 		{
-			InputSubscriber?.mouseReleased(sender, new RsMouseInputEventArgs(e.X, e.Y, e.Mouse.RightButton == ButtonState.Released));
+			InputSubscriber?.mouseReleased(sender, TransformMouseEventCoordinates(e));
 		}
 
 		//TODO: Reimplement the drag event.
@@ -286,7 +286,21 @@ namespace Rs317.Sharp
 
 		private void mousePressed(object sender, MouseEventArgs e)
 		{
-			InputSubscriber?.mousePressed(sender, new RsMouseInputEventArgs(e.X, e.Y, e.Mouse.RightButton == ButtonState.Pressed));
+			InputSubscriber?.mousePressed(sender, TransformMouseEventCoordinates(e));
+		}
+
+		private RsMouseInputEventArgs TransformMouseEventCoordinates(MouseEventArgs args)
+		{
+			if(this.Width == 765 && Height == 503)
+				return new RsMouseInputEventArgs(args.X, args.Y, args.Mouse.RightButton == ButtonState.Pressed);
+			else
+			{
+				//Get current size modifier
+				float widthModifier = (float)this.Width / 765.0f;
+				float heightModifier = (float)this.Height / 503.0f;
+
+				return new RsMouseInputEventArgs((int) ((float) args.X / widthModifier), (int) ((float) args.Y / heightModifier), args.Mouse.RightButton == ButtonState.Pressed);
+			}
 		}
 	}
 }
