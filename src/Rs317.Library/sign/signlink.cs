@@ -253,6 +253,8 @@ namespace Rs317.Sharp
 
 		public void run()
 		{
+			//Always indicate we are running, even if we're about to fail.
+			IsSignLinkThreadActive = true;
 			String cacheDirectoryPath;
 			try
 			{
@@ -276,11 +278,6 @@ namespace Rs317.Sharp
 			{
 				signlink.reporterror($"Failed to load cache. Reason: {exception.Message} \n StackTrack: {exception.StackTrace}");
 				throw new InvalidOperationException($"Failed to load cache. Reason: {exception.Message} \n StackTrack: {exception.StackTrace}", exception);
-			}
-			finally
-			{
-				//Always indicate we are running, even if we're about to fail.
-				IsSignLinkThreadActive = true;
 			}
 		}
 	}
