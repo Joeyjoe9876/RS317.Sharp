@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -11,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Rs317.Sharp
 {
-	public sealed class Client : RSApplet, IBaseClient, IMouseInputQueryable
+	public sealed class Client : RSApplet<Graphics>, IBaseClient, IMouseInputQueryable
 	{
 		//TODO: Optimize formating
 		private static String formatAmount(int amount)
@@ -145,15 +146,15 @@ namespace Rs317.Sharp
 		private int friendListStatus;
 		private int[,] wayPoints;
 		private int SCROLLBAR_GRIP_HIGHLIGHT;
-		private RSImageProducer backLeftIP1;
-		private RSImageProducer backLeftIP2;
-		private RSImageProducer backRightIP1;
-		private RSImageProducer backRightIP2;
-		private RSImageProducer backTopIP1;
-		private RSImageProducer backVmidIP1;
-		private RSImageProducer backVmidIP2;
-		private RSImageProducer backVmidIP3;
-		private RSImageProducer backVmidIP2_2;
+		private SystemDrawingRsImageProducer backLeftIP1;
+		private SystemDrawingRsImageProducer backLeftIP2;
+		private SystemDrawingRsImageProducer backRightIP1;
+		private SystemDrawingRsImageProducer backRightIP2;
+		private SystemDrawingRsImageProducer backTopIP1;
+		private SystemDrawingRsImageProducer backVmidIP1;
+		private SystemDrawingRsImageProducer backVmidIP2;
+		private SystemDrawingRsImageProducer backVmidIP3;
+		private SystemDrawingRsImageProducer backVmidIP2_2;
 		private byte[] animatedPixels;
 		private int bankInsertMode;
 		private int crossX;
@@ -333,22 +334,22 @@ namespace Rs317.Sharp
 		private int anInt1102;
 		private bool drawTabIcons;
 		private int systemUpdateTime;
-		private RSImageProducer topCentreBackgroundTile;
-		private RSImageProducer bottomCentreBackgroundTile;
-		private RSImageProducer loginBoxLeftBackgroundTile;
-		private RSImageProducer flameLeftBackground;
-		private RSImageProducer flameRightBackground;
-		private RSImageProducer bottomLeftBackgroundTile;
-		private RSImageProducer bottomRightBackgroundTile;
-		private RSImageProducer middleLeftBackgroundTile;
-		private RSImageProducer middleRightBackgroundTile;
+		private SystemDrawingRsImageProducer topCentreBackgroundTile;
+		private SystemDrawingRsImageProducer bottomCentreBackgroundTile;
+		private SystemDrawingRsImageProducer loginBoxLeftBackgroundTile;
+		private SystemDrawingRsImageProducer flameLeftBackground;
+		private SystemDrawingRsImageProducer flameRightBackground;
+		private SystemDrawingRsImageProducer bottomLeftBackgroundTile;
+		private SystemDrawingRsImageProducer bottomRightBackgroundTile;
+		private SystemDrawingRsImageProducer middleLeftBackgroundTile;
+		private SystemDrawingRsImageProducer middleRightBackgroundTile;
 		private static int mouseClickCounter;
 		private int membership;
 		private String chatboxInputNeededString;
 		private Sprite minimapCompassImage;
-		private RSImageProducer chatSettingImageProducer;
-		private RSImageProducer bottomSideIconImageProducer;
-		private RSImageProducer topSideIconImageProducer;
+		private SystemDrawingRsImageProducer chatSettingImageProducer;
+		private SystemDrawingRsImageProducer bottomSideIconImageProducer;
+		private SystemDrawingRsImageProducer topSideIconImageProducer;
 		public static Player localPlayer;
 		private String[] playerActionText;
 		private bool[] playerActionUnpinned;
@@ -382,10 +383,10 @@ namespace Rs317.Sharp
 		private bool cutsceneActive;
 		public static int tick { get; private set; }
 		private static String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"43$%^&*()-_=+[{]};:'@#~,<.>/?\\| " + (char)2;
-		private RSImageProducer tabImageProducer;
-		private RSImageProducer minimapImageProducer;
-		private RSImageProducer gameScreenImageProducer;
-		private RSImageProducer chatboxImageProducer;
+		private SystemDrawingRsImageProducer tabImageProducer;
+		private SystemDrawingRsImageProducer minimapImageProducer;
+		private SystemDrawingRsImageProducer gameScreenImageProducer;
+		private SystemDrawingRsImageProducer chatboxImageProducer;
 		private int daysSinceRecoveryChange;
 		private RSSocket socket;
 		private int privateMessagePointer;
@@ -4910,6 +4911,11 @@ namespace Rs317.Sharp
 			}
 
 			DrawingArea.setDrawingArea(clipBottom, clipLeft, clipRight, clipTop);
+		}
+
+		protected override IRSGraphicsProvider<Graphics> CreateGraphicsProvider()
+		{
+			return new SystemDrawingRsGraphicsAdapter(CreateGraphics());
 		}
 
 		protected override void drawLoadingText(int percentage, String text)
@@ -11012,23 +11018,23 @@ namespace Rs317.Sharp
 			chatSettingImageProducer = null;
 			bottomSideIconImageProducer = null;
 			topSideIconImageProducer = null;
-			flameLeftBackground = new RSImageProducer(128, 265, getGameComponent());
+			flameLeftBackground = new SystemDrawingRsImageProducer(128, 265);
 			DrawingArea.clear();
-			flameRightBackground = new RSImageProducer(128, 265, getGameComponent());
+			flameRightBackground = new SystemDrawingRsImageProducer(128, 265);
 			DrawingArea.clear();
-			topCentreBackgroundTile = new RSImageProducer(509, 171, getGameComponent());
+			topCentreBackgroundTile = new SystemDrawingRsImageProducer(509, 171);
 			DrawingArea.clear();
-			bottomCentreBackgroundTile = new RSImageProducer(360, 132, getGameComponent());
+			bottomCentreBackgroundTile = new SystemDrawingRsImageProducer(360, 132);
 			DrawingArea.clear();
-			loginBoxLeftBackgroundTile = new RSImageProducer(360, 200, getGameComponent());
+			loginBoxLeftBackgroundTile = new SystemDrawingRsImageProducer(360, 200);
 			DrawingArea.clear();
-			bottomLeftBackgroundTile = new RSImageProducer(202, 238, getGameComponent());
+			bottomLeftBackgroundTile = new SystemDrawingRsImageProducer(202, 238);
 			DrawingArea.clear();
-			bottomRightBackgroundTile = new RSImageProducer(203, 238, getGameComponent());
+			bottomRightBackgroundTile = new SystemDrawingRsImageProducer(203, 238);
 			DrawingArea.clear();
-			middleLeftBackgroundTile = new RSImageProducer(74, 94, getGameComponent());
+			middleLeftBackgroundTile = new SystemDrawingRsImageProducer(74, 94);
 			DrawingArea.clear();
-			middleRightBackgroundTile = new RSImageProducer(75, 94, getGameComponent());
+			middleRightBackgroundTile = new SystemDrawingRsImageProducer(75, 94);
 			DrawingArea.clear();
 			if(archiveTitle != null)
 			{
@@ -11054,16 +11060,16 @@ namespace Rs317.Sharp
 			bottomRightBackgroundTile = null;
 			middleLeftBackgroundTile = null;
 			middleRightBackgroundTile = null;
-			chatboxImageProducer = new RSImageProducer(479, 96, getGameComponent());
-			minimapImageProducer = new RSImageProducer(172, 156, getGameComponent());
+			chatboxImageProducer = new SystemDrawingRsImageProducer(479, 96);
+			minimapImageProducer = new SystemDrawingRsImageProducer(172, 156);
 			DrawingArea.clear();
 			minimapBackgroundImage.draw(0, 0);
-			tabImageProducer = new RSImageProducer(190, 261, getGameComponent());
-			gameScreenImageProducer = new RSImageProducer(512, 334, getGameComponent());
+			tabImageProducer = new SystemDrawingRsImageProducer(190, 261);
+			gameScreenImageProducer = new SystemDrawingRsImageProducer(512, 334);
 			DrawingArea.clear();
-			chatSettingImageProducer = new RSImageProducer(496, 50, getGameComponent());
-			bottomSideIconImageProducer = new RSImageProducer(269, 37, getGameComponent());
-			topSideIconImageProducer = new RSImageProducer(249, 45, getGameComponent());
+			chatSettingImageProducer = new SystemDrawingRsImageProducer(496, 50);
+			bottomSideIconImageProducer = new SystemDrawingRsImageProducer(269, 37);
+			topSideIconImageProducer = new SystemDrawingRsImageProducer(249, 45);
 			welcomeScreenRaised = true;
 		}
 
@@ -11805,31 +11811,31 @@ namespace Rs317.Sharp
 					modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i);
 
 				Sprite sprite = new Sprite(archiveMedia, "backleft1", 0);
-				backLeftIP1 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backLeftIP1 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				sprite = new Sprite(archiveMedia, "backleft2", 0);
-				backLeftIP2 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backLeftIP2 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				sprite = new Sprite(archiveMedia, "backright1", 0);
-				backRightIP1 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backRightIP1 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				sprite = new Sprite(archiveMedia, "backright2", 0);
-				backRightIP2 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backRightIP2 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				sprite = new Sprite(archiveMedia, "backtop1", 0);
-				backTopIP1 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backTopIP1 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				sprite = new Sprite(archiveMedia, "backvmid1", 0);
-				backVmidIP1 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backVmidIP1 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				sprite = new Sprite(archiveMedia, "backvmid2", 0);
-				backVmidIP2 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backVmidIP2 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				sprite = new Sprite(archiveMedia, "backvmid3", 0);
-				backVmidIP3 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backVmidIP3 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				sprite = new Sprite(archiveMedia, "backhmid2", 0);
-				backVmidIP2_2 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
+				backVmidIP2_2 = new SystemDrawingRsImageProducer(sprite.width, sprite.height);
 				sprite.drawInverse(0, 0);
 				int randomRed = (int)(StaticRandomGenerator.Next() * 21D) - 10;
 				int randomGreen = (int)(StaticRandomGenerator.Next() * 21D) - 10;

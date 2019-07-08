@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Rs317.Sharp
 {
-	public class RSApplet : Form, IRunnable, IRunnableStarter, IMouseInputQueryable //Instead of that Java stuff we just implement Windows form.
+	public abstract class RSApplet<TGraphicsType> : Form, IRunnable, IRunnableStarter, IMouseInputQueryable //Instead of that Java stuff we just implement Windows form.
 	{
 		private int gameState;
 
@@ -24,9 +24,9 @@ namespace Rs317.Sharp
 
 		protected int height { get; private set; }
 
-		protected Graphics gameGraphics { get; private set; }
+		protected IRSGraphicsProvider<TGraphicsType> gameGraphics { get; private set; }
 
-		protected RSImageProducer fullGameScreen { get; set; }
+		protected SystemDrawingRsImageProducer fullGameScreen { get; set; }
 
 		private bool clearScreen;
 
@@ -89,52 +89,17 @@ namespace Rs317.Sharp
 			signlink.applet = this;
 			this.DoubleBuffered = true;
 			this.ClientSize = new System.Drawing.Size(width, height);
-			gameGraphics = CreateGraphics();
-			fullGameScreen = new RSImageProducer(this.width, height, this);
+			gameGraphics = CreateGraphicsProvider();
+			fullGameScreen = new SystemDrawingRsImageProducer(this.width, height);
 			StartRunnable(this, 1);
 			Application.Run(this);
 		}
 
+		protected abstract IRSGraphicsProvider<TGraphicsType> CreateGraphicsProvider();
+
 		protected virtual void drawLoadingText(int percentage, String s)
 		{
-			while (gameGraphics == null)
-			{
-				gameGraphics = this.CreateGraphics();
-				try
-				{
-					Invalidate();
-				}
-				catch (Exception _ex)
-				{
-				}
-
-				try
-				{
-					Thread.Sleep(1000);
-				}
-				catch (Exception _ex)
-				{
-				}
-			}
-
-			Font helveticaBold = new Font("Helvetica", 13, FontStyle.Bold);
-			Font helvetica = new Font("Helvetica", 13, FontStyle.Regular);
-
-			if (clearScreen)
-			{
-				gameGraphics.FillRectangle(Brushes.Black, 0, 0, width, height);
-				clearScreen = false;
-			}
-
-			SolidBrush color = new SolidBrush(Color.FromArgb(140, 17, 17));
-			Pen penColor = new Pen(color);
-
-			int centerHeight = height / 2 - 18;
-
-			gameGraphics.DrawRectangle(penColor, width / 2 - 152, centerHeight, 304, 34);
-			gameGraphics.FillRectangle(color, width / 2 - 150, centerHeight + 2, percentage * 3, 30);
-			gameGraphics.FillRectangle(Brushes.Black, (width / 2 - 150) + percentage * 3, centerHeight + 2, 300 - percentage * 3, 30);
-			gameGraphics.DrawString(s, helveticaBold, Brushes.White, (width - gameGraphics.MeasureString(s, helveticaBold).Width) / 2, centerHeight + 22);
+			Invalidate();
 		}
 
 		public void update(object sender, InvalidateEventArgs e)
@@ -147,9 +112,6 @@ namespace Rs317.Sharp
 
 		public void paint(object sender, PaintEventArgs e)
 		{
-			if (gameGraphics == null)
-				gameGraphics = e.Graphics;
-			clearScreen = true;
 			raiseWelcomeScreen();
 		}
 

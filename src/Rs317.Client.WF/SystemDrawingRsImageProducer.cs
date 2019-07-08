@@ -1,4 +1,3 @@
-
 using System;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -6,39 +5,30 @@ using System.Windows.Forms;
 
 namespace Rs317.Sharp
 {
-	public sealed class RSImageProducer
+	public sealed class SystemDrawingRsImageProducer : BaseRsImageProducer<Graphics>
 	{
-		public int[] pixels;
+		private Bitmap image { get; }
 
-		public int width;
+		private FasterPixel fastPixel { get; }
 
-		public int height;
-
-		private Bitmap image;
-
-		private FasterPixel fastPixel;
-
-		public RSImageProducer(int width, int height, Form component)
+		public SystemDrawingRsImageProducer(int width, int height)
+			: base(width, height)
 		{
-			this.width = width;
-			this.height = height;
-			pixels = new int[width * height];
 			image = new Bitmap(width, height);
 			fastPixel = new FasterPixel(image);
 			initDrawingArea();
 		}
 
-		public void initDrawingArea()
-		{
-			DrawingArea.initDrawingArea(height, width, pixels);
-		}
-
-		public void drawGraphics(int y, Graphics g, int x)
+		protected override void OnBeforeInternalDrawGraphics(int x, int z)
 		{
 			method239();
-			lock (g)
+		}
+
+		protected override void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<Graphics> rsGraphicsProvider)
+		{
+			lock(rsGraphicsProvider.SyncObj)
 			{
-				g.DrawImageUnscaled(image, x, y);
+				rsGraphicsProvider.GameGraphics.DrawImageUnscaled(image, x, y);
 			}
 		}
 
@@ -55,11 +45,6 @@ namespace Rs317.Sharp
 				}
 			}
 			fastPixel.Unlock(true);
-		}
-
-		public bool imageUpdate(Image image, int i, int j, int k, int l, int i1)
-		{
-			return true;
 		}
 	}
 }
