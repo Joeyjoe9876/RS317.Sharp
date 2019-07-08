@@ -22,52 +22,59 @@ namespace Rs317.Sharp
 
 		public IndexedImage(Archive archive, String name, int id)
 		{
-			Buffer imageBuffer = new Buffer(archive.decompressFile(name + ".dat"));
-			Buffer metadataBuffer = new Buffer(archive.decompressFile("index.dat"));
-
-			metadataBuffer.position = imageBuffer.getUnsignedLEShort();
-			resizeWidth = metadataBuffer.getUnsignedLEShort();
-			resizeHeight = metadataBuffer.getUnsignedLEShort();
-
-			int colourCount = metadataBuffer.getUnsignedByte();
-			palette = new int[colourCount];
-			for(int c = 0; c < colourCount - 1; c++)
-				palette[c + 1] = metadataBuffer.get3Bytes();
-
-			for(int i = 0; i < id; i++)
+			try
 			{
-				metadataBuffer.position += 2;
-				imageBuffer.position += metadataBuffer.getUnsignedLEShort() * metadataBuffer.getUnsignedLEShort();
-				metadataBuffer.position++;
-			}
+				Buffer imageBuffer = new Buffer(archive.decompressFile(name + ".dat"));
+				Buffer metadataBuffer = new Buffer(archive.decompressFile("index.dat"));
 
-			drawOffsetX = metadataBuffer.getUnsignedByte();
-			drawOffsetY = metadataBuffer.getUnsignedByte();
-			width = metadataBuffer.getUnsignedLEShort();
-			height = metadataBuffer.getUnsignedLEShort();
-			int type = metadataBuffer.getUnsignedByte();
-			int pixelCount = width * height;
-			pixels = new byte[pixelCount];
+				metadataBuffer.position = imageBuffer.getUnsignedLEShort();
+				resizeWidth = metadataBuffer.getUnsignedLEShort();
+				resizeHeight = metadataBuffer.getUnsignedLEShort();
 
-			if(type == 0)
-			{
-				for(int i = 0; i < pixelCount; i++)
+				int colourCount = metadataBuffer.getUnsignedByte();
+				palette = new int[colourCount];
+				for(int c = 0; c < colourCount - 1; c++)
+					palette[c + 1] = metadataBuffer.get3Bytes();
+
+				for(int i = 0; i < id; i++)
 				{
-					pixels[i] = imageBuffer.get();
+					metadataBuffer.position += 2;
+					imageBuffer.position += metadataBuffer.getUnsignedLEShort() * metadataBuffer.getUnsignedLEShort();
+					metadataBuffer.position++;
 				}
 
-				return;
-			}
+				drawOffsetX = metadataBuffer.getUnsignedByte();
+				drawOffsetY = metadataBuffer.getUnsignedByte();
+				width = metadataBuffer.getUnsignedLEShort();
+				height = metadataBuffer.getUnsignedLEShort();
+				int type = metadataBuffer.getUnsignedByte();
+				int pixelCount = width * height;
+				pixels = new byte[pixelCount];
 
-			if(type == 1)
-			{
-				for(int x = 0; x < width; x++)
+				if(type == 0)
 				{
-					for(int y = 0; y < height; y++)
+					for(int i = 0; i < pixelCount; i++)
 					{
-						pixels[x + y * width] = imageBuffer.get();
+						pixels[i] = imageBuffer.get();
+					}
+
+					return;
+				}
+
+				if(type == 1)
+				{
+					for(int x = 0; x < width; x++)
+					{
+						for(int y = 0; y < height; y++)
+						{
+							pixels[x + y * width] = imageBuffer.get();
+						}
 					}
 				}
+			}
+			catch (Exception e)
+			{
+				throw new InvalidOperationException($"Failed to generate IndexedImage for: {name} id: {id}. Reason: {e.Message}\nStack: {e.StackTrace}", e);
 			}
 		}
 

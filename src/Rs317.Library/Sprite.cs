@@ -29,54 +29,61 @@ namespace Rs317.Sharp
 
 		public Sprite(Archive streamLoader, String target, int archiveId)
 		{
-			if(target.ToLower() == "headicons")
-				return;
-
-			Buffer dataStream = new Buffer(streamLoader.decompressFile(target + ".dat"));
-			Buffer indexStream = new Buffer(streamLoader.decompressFile("index.dat"));
-			indexStream.position = dataStream.getUnsignedLEShort();
-			maxWidth = indexStream.getUnsignedLEShort();
-			maxHeight = indexStream.getUnsignedLEShort();
-			int length = indexStream.getUnsignedByte();
-			int[] pixels = new int[length];
-			for(int p = 0; p < length - 1; p++)
+			try
 			{
-				pixels[p + 1] = indexStream.get3Bytes();
-				if(pixels[p + 1] == 0)
-					pixels[p + 1] = 1;
-			}
+				if(target.ToLower() == "headicons")
+					return;
 
-			for(int i = 0; i < archiveId; i++)
-			{
-				indexStream.position += 2;
-				dataStream.position += indexStream.getUnsignedLEShort() * indexStream.getUnsignedLEShort();
-				indexStream.position++;
-			}
-
-			offsetX = indexStream.getUnsignedByte();
-			offsetY = indexStream.getUnsignedByte();
-			width = indexStream.getUnsignedLEShort();
-			height = indexStream.getUnsignedLEShort();
-			int type = indexStream.getUnsignedByte();
-			int pixelCount = width * height;
-			this.pixels = new int[pixelCount];
-			if(type == 0)
-			{
-				for(int p = 0; p < pixelCount; p++)
-					this.pixels[p] = pixels[dataStream.getUnsignedByte()];
-
-				return;
-			}
-
-			if(type == 1)
-			{
-				for(int x = 0; x < width; x++)
+				Buffer dataStream = new Buffer(streamLoader.decompressFile(target + ".dat"));
+				Buffer indexStream = new Buffer(streamLoader.decompressFile("index.dat"));
+				indexStream.position = dataStream.getUnsignedLEShort();
+				maxWidth = indexStream.getUnsignedLEShort();
+				maxHeight = indexStream.getUnsignedLEShort();
+				int length = indexStream.getUnsignedByte();
+				int[] pixels = new int[length];
+				for(int p = 0; p < length - 1; p++)
 				{
-					for(int y = 0; y < height; y++)
-						this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
-
+					pixels[p + 1] = indexStream.get3Bytes();
+					if(pixels[p + 1] == 0)
+						pixels[p + 1] = 1;
 				}
 
+				for(int i = 0; i < archiveId; i++)
+				{
+					indexStream.position += 2;
+					dataStream.position += indexStream.getUnsignedLEShort() * indexStream.getUnsignedLEShort();
+					indexStream.position++;
+				}
+
+				offsetX = indexStream.getUnsignedByte();
+				offsetY = indexStream.getUnsignedByte();
+				width = indexStream.getUnsignedLEShort();
+				height = indexStream.getUnsignedLEShort();
+				int type = indexStream.getUnsignedByte();
+				int pixelCount = width * height;
+				this.pixels = new int[pixelCount];
+				if(type == 0)
+				{
+					for(int p = 0; p < pixelCount; p++)
+						this.pixels[p] = pixels[dataStream.getUnsignedByte()];
+
+					return;
+				}
+
+				if(type == 1)
+				{
+					for(int x = 0; x < width; x++)
+					{
+						for(int y = 0; y < height; y++)
+							this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
+
+					}
+
+				}
+			}
+			catch (Exception e)
+			{
+				throw new InvalidOperationException($"Failed to generate Sprite for: {target} id: {id}. Reason: {e.Message}\nStack: {e.StackTrace}", e);
 			}
 		}
 
