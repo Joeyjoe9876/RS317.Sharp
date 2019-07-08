@@ -7,6 +7,7 @@ using System.Text;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace Rs317.Sharp
 {
@@ -21,11 +22,35 @@ namespace Rs317.Sharp
 
 		private Dictionary<int, DrawImageQueueable> ImageDrawCommands { get; }
 
+		private IInputCallbackSubscriber InputSubscriber { get; set; }
+
 		public OpenTKGameWindow(int width, int height)
 			: base(width, height, GraphicsMode.Default, "Rs317.Sharp by Glader")
 		{
 			KnownBitmaps = new Dictionary<Bitmap, int>();
 			ImageDrawCommands = new Dictionary<int, DrawImageQueueable>();
+			SetupGameEventCallbacks();
+		}
+
+		public void RegisterInputSubscriber(IInputCallbackSubscriber subscriber)
+		{
+			InputSubscriber = subscriber ?? throw new ArgumentNullException(nameof(subscriber));
+		}
+
+		private void SetupGameEventCallbacks()
+		{
+			//TODO: Reimplement mousedrag somehow.
+			// this.DragDrop += new DragEventHandler(mouseDragged);
+
+			this.MouseDown += new EventHandler<MouseButtonEventArgs>(mousePressed);
+			this.MouseUp += new EventHandler<MouseButtonEventArgs>(mouseReleased);
+			this.MouseMove += new EventHandler<MouseMoveEventArgs>(mouseMoved);
+			this.KeyDown += new EventHandler<KeyboardKeyEventArgs>(keyPressed);
+			this.KeyUp += new EventHandler<KeyboardKeyEventArgs>(keyReleased);
+			this.KeyPress += new EventHandler<KeyPressEventArgs>(keyTyped);
+
+			this.MouseEnter += new EventHandler<EventArgs>(mouseEntered);
+			this.MouseLeave += new EventHandler<EventArgs>(mouseExited);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -120,6 +145,125 @@ namespace Rs317.Sharp
 				OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
 
 			drawRequest.Image.UnlockBits(bmpData); //Release the bitmap data from memory cause it is not needed anymore.
+		}
+
+		private void mouseExited(object sender, EventArgs e)
+		{
+			InputSubscriber?.mouseExited(sender, e);
+		}
+
+		private void mouseEntered(object sender, EventArgs e)
+		{
+			InputSubscriber?.mouseEntered(sender, e);
+		}
+
+		private void focusLost(object sender, EventArgs e)
+		{
+			InputSubscriber?.focusLost(sender, e);
+		}
+
+		private void focusGained(object sender, EventArgs e)
+		{
+			InputSubscriber?.focusGained(sender, e);
+		}
+
+		private void keyTyped(object sender, KeyPressEventArgs e)
+		{
+			InputSubscriber?.keyTyped(sender, new RsKeyEventArgs(e.KeyChar, e.KeyChar));
+		}
+
+		private void keyReleased(object sender, KeyboardKeyEventArgs e)
+		{
+			int i = (int)e.Key;
+			if(e.Key == Key.Enter)
+				i = 10;
+			else if(e.Key == Key.Left)
+				i = 37;
+			else if(e.Key == Key.Right)
+				i = 39;
+			else if(e.Key == Key.Up)
+				i = 38;
+			else if(e.Key == Key.Down)
+				i = 40;
+			else if(e.Key == Key.Back || e.Key == Key.Delete)
+				i = 8;
+			else if(e.Key == Key.ControlLeft || e.Key == Key.ControlRight)
+				i = 5;
+			else if(e.Key == Key.Tab)
+				i = 9;
+			else if((int)e.Key >= (int)Key.F1 && (int)e.Key <= (int)Key.F12)
+				i = 1008 + (int)e.Key - (int)Key.F1;
+			else if(e.Key == Key.Home)
+				i = 1000;
+			else if(e.Key == Key.End)
+				i = 1001;
+			else if(e.Key == Key.PageUp)
+				i = 1002;
+			else if(e.Key == Key.PageDown)
+				i = 1003;
+			else
+			{
+				//TODO: This is bad for performance.
+				i = (int) e.ScanCode;
+			}
+
+			InputSubscriber?.keyReleased(sender, new RsKeyEventArgs(i, (char)i));
+		}
+
+		private void keyPressed(object sender, KeyboardKeyEventArgs e)
+		{
+			int i = 0;
+			if(e.Key == Key.Enter)
+				i = 10;
+			else if(e.Key == Key.Left)
+				i = 1;
+			else if(e.Key == Key.Right)
+				i = 2;
+			else if(e.Key == Key.Up)
+				i = 3;
+			else if(e.Key == Key.Down)
+				i = 4;
+			else if(e.Key == Key.Back || e.Key == Key.Delete)
+				i = 8;
+			else if(e.Key == Key.ControlLeft || e.Key == Key.ControlRight)
+				i = 5;
+			else if(e.Key == Key.Tab)
+				i = 9;
+			else if((int)e.Key >= (int)Key.F1 && (int)e.Key <= (int)Key.F12)
+				i = 1008 + (int)e.Key - (int)Key.F1;
+			else if(e.Key == Key.Home)
+				i = 1000;
+			else if(e.Key == Key.End)
+				i = 1001;
+			else if(e.Key == Key.PageUp)
+				i = 1002;
+			else if(e.Key == Key.PageDown)
+				i = 1003;
+			else
+				return;
+
+			InputSubscriber?.keyPressed(sender, new RsKeyEventArgs(i, (char)i));
+		}
+
+		private void mouseMoved(object sender, MouseEventArgs e)
+		{
+			InputSubscriber?.mouseMoved(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
+		}
+
+		private void mouseReleased(object sender, MouseEventArgs e)
+		{
+			InputSubscriber?.mouseReleased(sender, new RsMouseInputEventArgs(e.X, e.Y, e.Mouse.RightButton == ButtonState.Released));
+		}
+
+		//TODO: Reimplement the drag event.
+		/*private void mouseDragged(object sender, DragEventArgs e)
+		{
+			InputSubscriber?.mouseDragged(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
+		}*/
+
+		private void mousePressed(object sender, MouseEventArgs e)
+		{
+			InputSubscriber?.mousePressed(sender, new RsMouseInputEventArgs(e.X, e.Y, e.Mouse.RightButton == ButtonState.Pressed));
 		}
 	}
 }
