@@ -26,8 +26,10 @@ namespace Rs317.Sharp
 			return new OpenTKRsGraphicsProvider(GraphicsObject);
 		}
 
-		protected override BaseRsImageProducer<OpenTKRsGraphicsContext> CreateNewImageProducer(int xSize, int ySize)
+		protected override BaseRsImageProducer<OpenTKRsGraphicsContext> CreateNewImageProducer(int xSize, int ySize, string producerName)
 		{
+			Console.WriteLine($"Created ImageProducer: {producerName}");
+
 			OpenTKImageProducer imageProducer = new OpenTKImageProducer(xSize, ySize);
 			ImagePaintListener.OnImageProducerCreated(imageProducer);
 

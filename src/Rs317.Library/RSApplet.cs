@@ -87,7 +87,7 @@ namespace Rs317.Sharp
 
 			signlink.applet = this;
 			gameGraphics = CreateGraphicsProvider();
-			fullGameScreen = CreateNewImageProducer(this.width, height);
+			fullGameScreen = CreateNewImageProducer(this.width, height, nameof(fullGameScreen));
 			StartRunnable(this, 1);
 		}
 
@@ -430,6 +430,6 @@ namespace Rs317.Sharp
 
 		}
 
-		protected abstract BaseRsImageProducer<TGraphicsType> CreateNewImageProducer(int xSize, int ySize);
+		protected abstract BaseRsImageProducer<TGraphicsType> CreateNewImageProducer(int xSize, int ySize, string producerName);
 	}
 }

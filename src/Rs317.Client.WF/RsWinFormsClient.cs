@@ -23,7 +23,7 @@ namespace Rs317.Sharp
 			return new SystemDrawingRsGraphicsProvider(GraphicsObject);
 		}
 
-		protected override BaseRsImageProducer<Graphics> CreateNewImageProducer(int xSize, int ySize)
+		protected override BaseRsImageProducer<Graphics> CreateNewImageProducer(int xSize, int ySize, string producerName)
 		{
 			return new SystemDrawingRsImageProducer(xSize, ySize);
 		}
