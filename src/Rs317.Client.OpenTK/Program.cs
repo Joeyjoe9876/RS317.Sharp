@@ -35,10 +35,6 @@ namespace Rs317.Sharp
 			client.createClientFrame(765, 503);
 			gameWindow.RegisterInputSubscriber(client);
 			gameWindow.Run(40, 40);
-			//RsWinForm windowsFormApplication = new RsWinForm(765, 503);
-			//RsWinFormsClient client1 = new RsWinFormsClient(configuration, windowsFormApplication.CreateGraphics());
-			//windowsFormApplication.RegisterInputSubscriber(client1);
-			//client1.createClientFrame(765, 503);
 
 			await clientRunningAwaitable
 				.ConfigureAwait(false);
