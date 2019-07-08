@@ -14,27 +14,8 @@ namespace Rs317.Sharp
 		{
 			try
 			{
-				Console.WriteLine($"RS2 user client - release #{317}");
-
-				args = new string[] { "0", "0", "highmem", "members", "0" };
-
-				int localWorldId = int.Parse(args[0]);
-				short portOffset = (short)int.Parse(args[1]);
-				bool membersWorld;
-
-				if(args[3] == "free")
-					membersWorld = false;
-				else if(args[3] == "members")
-				{
-					membersWorld = true;
-				}
-				else
-				{
-					Console.WriteLine("Usage: node-id, port-offset, [lowmem/highmem], [free/members], storeid");
-					return;
-				}
-
-				await StartClient(localWorldId, portOffset, membersWorld);
+				Console.WriteLine($"RS2 user client - release #{317} using Rs317.Sharp");
+				await StartClient(0, 0, true);
 			}
 			catch(Exception exception)
 			{
@@ -53,6 +34,7 @@ namespace Rs317.Sharp
 			while (!signlink.IsSignLinkThreadActive)
 				await Task.Delay(50)
 					.ConfigureAwait(false);
+
 			RsWinForm windowsFormApplication = new RsWinForm(765, 503);
 			RsWinFormsClient client1 = new RsWinFormsClient(configuration, windowsFormApplication.CreateGraphics());
 			windowsFormApplication.RegisterInputSubscriber(client1);
