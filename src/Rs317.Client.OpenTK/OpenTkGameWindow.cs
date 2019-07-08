@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using OpenTK;
@@ -76,10 +77,20 @@ namespace Rs317.Sharp
 			//All new image producers should have their OpenGL
 			//data initialized
 			//This should only be done ONCE per image producer, on creation.
-			while (ImageProducerCreationQueue.TryDequeue(out var imageProducer))
+			if (ImageProducerCreationQueue.TryDequeue(out var imageProducer))
 			{
-				int textureId = CreateTexture(imageProducer);
-				Renderables.Add(new OpenGlRegisteredOpenTKImageRenderable(imageProducer, textureId));
+				//So, some producers may be created but not actually ready
+				//for rendering purposes.
+				//To avoid this issue we check if they are dirty.
+				//If the queued image isn't dirty yet, then it's not ready to even be renderer.
+				//We can requeue it and maybe handle it later.
+				if (imageProducer.isDirty)
+				{
+					int textureId = CreateTexture(imageProducer);
+					Renderables.Add(new OpenGlRegisteredOpenTKImageRenderable(imageProducer, textureId));
+				}
+				else
+					ImageProducerCreationQueue.Enqueue(imageProducer);
 			}
 
 			//Now, for every renderable that we have registered
