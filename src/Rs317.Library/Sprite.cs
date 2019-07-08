@@ -571,7 +571,7 @@ namespace Rs317.Sharp
 			int[] targetPixels = new int[maxWidth * maxHeight];
 			for(int _y = 0; _y < height; _y++)
 			{
-				System.Buffer.BlockCopy(pixels, _y * width, targetPixels, _y + offsetY * maxWidth + offsetX, width);
+				System.Buffer.BlockCopy(pixels, _y * width * sizeof(int), targetPixels, (_y + offsetY * maxWidth + offsetX) * sizeof(int), width * sizeof(int));
 			}
 
 			pixels = targetPixels;
