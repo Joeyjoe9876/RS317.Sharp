@@ -19,10 +19,13 @@ namespace Rs317.Sharp
 
 		private Dictionary<Bitmap, int> KnownBitmaps { get; }
 
+		private Dictionary<int, DrawImageQueueable> ImageDrawCommands { get; }
+
 		public OpenTKGameWindow(int width, int height)
 			: base(width, height, GraphicsMode.Default, "Rs317.Sharp by Glader")
 		{
 			KnownBitmaps = new Dictionary<Bitmap, int>();
+			ImageDrawCommands = new Dictionary<int, DrawImageQueueable>();
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -43,7 +46,6 @@ namespace Rs317.Sharp
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			lock(OpenTKGameWindow.DrawImageQueue)
 				while (DrawImageQueue.TryDequeue(out var drawRequest))
 				{
 					lock (drawRequest.Image)
@@ -52,15 +54,25 @@ namespace Rs317.Sharp
 							CreateTexture(drawRequest);
 						else
 							UpdateTexture(drawRequest);
-
-						DrawTexture(drawRequest);
 					}
 				}
+
+			foreach (KeyValuePair<int, DrawImageQueueable> imageRequest in ImageDrawCommands)
+			{
+				BindTexture(imageRequest.Key);
+				DrawTexture(imageRequest.Value);
+			}
+				
 
 			SwapBuffers();
 
 			base.OnRenderFrame(e);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+		}
+
+		private void BindTexture(int textureId)
+		{
+			GL.BindTexture(TextureTarget.Texture2D, textureId);
 		}
 
 		private static void DrawTexture(DrawImageQueueable drawRequest)
@@ -73,11 +85,11 @@ namespace Rs317.Sharp
 			GL.TexCoord2(0, 0);
 			GL.Vertex2(xOffset, yOffset);
 			GL.TexCoord2(1, 0);
-			GL.Vertex2(drawRequest.Image.Width + xOffset, yOffset);
+			GL.Vertex2(drawRequest.Width + xOffset, yOffset);
 			GL.TexCoord2(1, 1);
-			GL.Vertex2(drawRequest.Image.Width + xOffset, drawRequest.Image.Height + yOffset);
+			GL.Vertex2(drawRequest.Width + xOffset, drawRequest.Height + yOffset);
 			GL.TexCoord2(0, 1);
-			GL.Vertex2(xOffset, drawRequest.Image.Height + yOffset);
+			GL.Vertex2(xOffset, drawRequest.Height + yOffset);
 
 			GL.End();
 		}
@@ -101,6 +113,7 @@ namespace Rs317.Sharp
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Linear);
 			KnownBitmaps.Add(drawRequest.Image, texture);
+			ImageDrawCommands.Add(texture, drawRequest);
 
 			BitmapData bmpData = drawRequest.Image.LockBits(new Rectangle(0, 0, drawRequest.Image.Width, drawRequest.Image.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0,

@@ -13,11 +13,18 @@ namespace Rs317.Sharp
 
 		public Bitmap Image { get; }
 
+		public int Height { get; }
+
+		public int Width { get; }
+
 		public DrawImageQueueable(int width, int height, Bitmap image)
 		{
 			XDrawOffset = width;
 			XHeightOffset = height;
 			Image = image ?? throw new ArgumentNullException(nameof(image));
+
+			Height = image.Height;
+			Width = image.Width;
 		}
 	}
 }

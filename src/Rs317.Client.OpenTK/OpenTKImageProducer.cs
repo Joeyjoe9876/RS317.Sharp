@@ -11,6 +11,8 @@ namespace Rs317.Sharp
 
 		private FasterPixel FasterPixel { get; }
 
+		public bool isDirty { get; private set; } = true; //Always initially dirty.
+
 		public OpenTKImageProducer(int width, int height)
 			: base(width, height)
 		{
@@ -19,18 +21,27 @@ namespace Rs317.Sharp
 			initDrawingArea();
 		}
 
+		public override int[] pixels
+		{
+			get
+			{
+				isDirty = true;
+				return base.pixels;
+			}
+		}
+
 		protected override void OnBeforeInternalDrawGraphics(int x, int z)
 		{
-
+			method239();
 		}
 
 		protected override void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<OpenTKRsGraphicsContext> rsGraphicsProvider)
 		{
-			lock(rsGraphicsProvider.SyncObj)
-			{
-				method239();
-				rsGraphicsProvider.GameGraphics.DrawImage(image, x, y);
-			}
+			if (!isDirty)
+				return;
+
+			isDirty = false;
+			rsGraphicsProvider.GameGraphics.DrawImage(image, x, y);
 		}
 
 		private void method239()

@@ -33,7 +33,7 @@ namespace Rs317.Sharp
 			OpenTKGameWindow gameWindow = new OpenTKGameWindow(765, 503);
 			OpenTKClient client = new OpenTKClient(configuration, new OpenTKRsGraphicsContext());
 			client.createClientFrame(765, 503);
-			gameWindow.Run(60, 0.1f);
+			gameWindow.Run(60);
 			//RsWinForm windowsFormApplication = new RsWinForm(765, 503);
 			//RsWinFormsClient client1 = new RsWinFormsClient(configuration, windowsFormApplication.CreateGraphics());
 			//windowsFormApplication.RegisterInputSubscriber(client1);
