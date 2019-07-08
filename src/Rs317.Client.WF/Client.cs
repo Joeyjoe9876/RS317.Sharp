@@ -10539,77 +10539,80 @@ namespace Rs317.Sharp
 
 		private void renderGameView()
 		{
-			renderCount++;
-			renderPlayers(true);
-			renderNPCs(true);
-			renderPlayers(false);
-			renderNPCs(false);
-			renderProjectiles();
-			renderStationaryGraphics();
-			if(!cutsceneActive)
+			unchecked
 			{
-				int vertical = cameraVertical;
-				if(secondaryCameraVertical / 256 > vertical)
-					vertical = secondaryCameraVertical / 256;
-				if(customCameraActive[4] && cameraAmplitude[4] + 128 > vertical)
-					vertical = cameraAmplitude[4] + 128;
-				int horizontal = cameraHorizontal + cameraRandomisationA & 0x7FF;
-				setCameraPosition(currentCameraPositionH, currentCameraPositionV,
-					getFloorDrawHeight(plane, localPlayer.y, localPlayer.x) - 50, horizontal, vertical);
-			}
-
-			int cameraPlane;
-			if(!cutsceneActive)
-				cameraPlane = getWorldDrawPlane();
-			else
-				cameraPlane = getCameraPlaneCutscene();
-			int x = cameraPositionX;
-			int y = cameraPositionZ;
-			int z = cameraPositionY;
-			int curveY = cameraVerticalRotation;
-			int curveZ = cameraHorizontalRotation;
-			for(int i = 0; i < 5; i++)
-				if(customCameraActive[i])
+				renderCount++;
+				renderPlayers(true);
+				renderNPCs(true);
+				renderPlayers(false);
+				renderNPCs(false);
+				renderProjectiles();
+				renderStationaryGraphics();
+				if (!cutsceneActive)
 				{
-					int randomisation = (int)((StaticRandomGenerator.Next() * (cameraJitter[i] * 2 + 1) - cameraJitter[i])
-											   + Math.Sin(unknownCameraVariable[i] * (cameraFrequency[i] / 100D)) * cameraAmplitude[i]);
-					if(i == 0)
-						cameraPositionX += randomisation;
-					if(i == 1)
-						cameraPositionZ += randomisation;
-					if(i == 2)
-						cameraPositionY += randomisation;
-					if(i == 3)
-						cameraHorizontalRotation = cameraHorizontalRotation + randomisation & 0x7FF;
-					if(i == 4)
-					{
-						cameraVerticalRotation += randomisation;
-						if(cameraVerticalRotation < 128)
-							cameraVerticalRotation = 128;
-						if(cameraVerticalRotation > 383)
-							cameraVerticalRotation = 383;
-					}
+					int vertical = cameraVertical;
+					if (secondaryCameraVertical / 256 > vertical)
+						vertical = secondaryCameraVertical / 256;
+					if (customCameraActive[4] && cameraAmplitude[4] + 128 > vertical)
+						vertical = cameraAmplitude[4] + 128;
+					int horizontal = cameraHorizontal + cameraRandomisationA & 0x7FF;
+					setCameraPosition(currentCameraPositionH, currentCameraPositionV,
+						getFloorDrawHeight(plane, localPlayer.y, localPlayer.x) - 50, horizontal, vertical);
 				}
 
-			int textureId = Rasterizer.textureGetCount;
-			Model.abool1684 = true;
-			Model.resourceCount = 0;
-			Model.cursorX = base.mouseX - 4;
-			Model.cursorY = base.mouseY - 4;
-			DrawingArea.clear();
-			worldController.render(cameraPositionX, cameraPositionY, cameraHorizontalRotation, cameraPositionZ, cameraPlane,
-				cameraVerticalRotation);
-			worldController.clearInteractiveObjectCache();
-			updateEntities();
-			drawHeadIcon();
-			animateTexture(textureId);
-			draw3dScreen();
-			gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
-			cameraPositionX = x;
-			cameraPositionZ = y;
-			cameraPositionY = z;
-			cameraVerticalRotation = curveY;
-			cameraHorizontalRotation = curveZ;
+				int cameraPlane;
+				if (!cutsceneActive)
+					cameraPlane = getWorldDrawPlane();
+				else
+					cameraPlane = getCameraPlaneCutscene();
+				int x = cameraPositionX;
+				int y = cameraPositionZ;
+				int z = cameraPositionY;
+				int curveY = cameraVerticalRotation;
+				int curveZ = cameraHorizontalRotation;
+				for (int i = 0; i < 5; i++)
+					if (customCameraActive[i])
+					{
+						int randomisation = (int) ((StaticRandomGenerator.Next() * (cameraJitter[i] * 2 + 1) - cameraJitter[i])
+						                           + Math.Sin(unknownCameraVariable[i] * (cameraFrequency[i] / 100D)) * cameraAmplitude[i]);
+						if (i == 0)
+							cameraPositionX += randomisation;
+						if (i == 1)
+							cameraPositionZ += randomisation;
+						if (i == 2)
+							cameraPositionY += randomisation;
+						if (i == 3)
+							cameraHorizontalRotation = cameraHorizontalRotation + randomisation & 0x7FF;
+						if (i == 4)
+						{
+							cameraVerticalRotation += randomisation;
+							if (cameraVerticalRotation < 128)
+								cameraVerticalRotation = 128;
+							if (cameraVerticalRotation > 383)
+								cameraVerticalRotation = 383;
+						}
+					}
+
+				int textureId = Rasterizer.textureGetCount;
+				Model.abool1684 = true;
+				Model.resourceCount = 0;
+				Model.cursorX = base.mouseX - 4;
+				Model.cursorY = base.mouseY - 4;
+				DrawingArea.clear();
+				worldController.render(cameraPositionX, cameraPositionY, cameraHorizontalRotation, cameraPositionZ, cameraPlane,
+					cameraVerticalRotation);
+				worldController.clearInteractiveObjectCache();
+				updateEntities();
+				drawHeadIcon();
+				animateTexture(textureId);
+				draw3dScreen();
+				gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
+				cameraPositionX = x;
+				cameraPositionZ = y;
+				cameraPositionY = z;
+				cameraVerticalRotation = curveY;
+				cameraHorizontalRotation = curveZ;
+			}
 		}
 
 		private void renderMinimap(int z)

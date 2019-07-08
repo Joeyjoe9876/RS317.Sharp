@@ -1465,189 +1465,192 @@ namespace Rs317.Sharp
 
 		public void render(int cameraPosX, int cameraPosY, int curveX, int cameraPosZ, int plane, int curveY)
 		{
-			if(cameraPosX < 0)
-				cameraPosX = 0;
-			else if(cameraPosX >= mapSizeX * 128)
-				cameraPosX = mapSizeX * 128 - 1;
-			if(cameraPosY < 0)
-				cameraPosY = 0;
-			else if(cameraPosY >= mapSizeY * 128)
-				cameraPosY = mapSizeY * 128 - 1;
-			anInt448++;
-			curveSineY = Model.SINE[curveY];
-			curveCosineY = Model.COSINE[curveY];
-			curveSineX = Model.SINE[curveX];
-			curveCosineX = Model.COSINE[curveX];
-			TILE_VISIBILITY_MAP = TILE_VISIBILITY_MAPS[(curveY - 128) / 32][curveX / 64];
-			WorldController.cameraPosX = cameraPosX;
-			WorldController.cameraPosZ = cameraPosZ;
-			WorldController.cameraPosY = cameraPosY;
-			cameraPositionTileX = cameraPosX / 128;
-			cameraPositionTileY = cameraPosY / 128;
-			WorldController.plane = plane;
-			currentPositionX = cameraPositionTileX - 25;
-			if(currentPositionX < 0)
-				currentPositionX = 0;
-			currentPositionY = cameraPositionTileY - 25;
-			if(currentPositionY < 0)
-				currentPositionY = 0;
-			mapBoundsX = cameraPositionTileX + 25;
-			if(mapBoundsX > mapSizeX)
-				mapBoundsX = mapSizeX;
-			mapBoundsY = cameraPositionTileY + 25;
-			if(mapBoundsY > mapSizeY)
-				mapBoundsY = mapSizeY;
-			processCulling();
-			anInt446 = 0;
-			for(int z = currentPositionZ; z < mapSizeZ; z++)
+			unchecked
 			{
-				Tile[][] tiles = groundArray[z];
-				for(int x = currentPositionX; x < mapBoundsX; x++)
+				if(cameraPosX < 0)
+					cameraPosX = 0;
+				else if(cameraPosX >= mapSizeX * 128)
+					cameraPosX = mapSizeX * 128 - 1;
+				if(cameraPosY < 0)
+					cameraPosY = 0;
+				else if(cameraPosY >= mapSizeY * 128)
+					cameraPosY = mapSizeY * 128 - 1;
+				anInt448++;
+				curveSineY = Model.SINE[curveY];
+				curveCosineY = Model.COSINE[curveY];
+				curveSineX = Model.SINE[curveX];
+				curveCosineX = Model.COSINE[curveX];
+				TILE_VISIBILITY_MAP = TILE_VISIBILITY_MAPS[(curveY - 128) / 32][curveX / 64];
+				WorldController.cameraPosX = cameraPosX;
+				WorldController.cameraPosZ = cameraPosZ;
+				WorldController.cameraPosY = cameraPosY;
+				cameraPositionTileX = cameraPosX / 128;
+				cameraPositionTileY = cameraPosY / 128;
+				WorldController.plane = plane;
+				currentPositionX = cameraPositionTileX - 25;
+				if(currentPositionX < 0)
+					currentPositionX = 0;
+				currentPositionY = cameraPositionTileY - 25;
+				if(currentPositionY < 0)
+					currentPositionY = 0;
+				mapBoundsX = cameraPositionTileX + 25;
+				if(mapBoundsX > mapSizeX)
+					mapBoundsX = mapSizeX;
+				mapBoundsY = cameraPositionTileY + 25;
+				if(mapBoundsY > mapSizeY)
+					mapBoundsY = mapSizeY;
+				processCulling();
+				anInt446 = 0;
+				for(int z = currentPositionZ; z < mapSizeZ; z++)
 				{
-					for(int y = currentPositionY; y < mapBoundsY; y++)
+					Tile[][] tiles = groundArray[z];
+					for(int x = currentPositionX; x < mapBoundsX; x++)
 					{
-						Tile tile = tiles[x][y];
-						if(tile != null)
-							if(tile.logicHeight > plane
-								|| !TILE_VISIBILITY_MAP[(x - cameraPositionTileX) + 25][(y - cameraPositionTileY) + 25]
-								&& heightMap[z][x][y] - cameraPosZ < 2000)
-							{
-								tile.abool1322 = false;
-								tile.abool1323 = false;
-								tile.anInt1325 = 0;
-							}
-							else
-							{
-								tile.abool1322 = true;
-								tile.abool1323 = true;
-								tile.abool1324 = tile.entityCount > 0;
-								anInt446++;
-							}
-					}
-
-				}
-
-			}
-
-			for(int z = currentPositionZ; z < mapSizeZ; z++)
-			{
-				Tile[][] tiles = groundArray[z];
-				for(int offsetX = -25; offsetX <= 0; offsetX++)
-				{
-					int x = cameraPositionTileX + offsetX;
-					int x2 = cameraPositionTileX - offsetX;
-					if(x >= currentPositionX || x2 < mapBoundsX)
-					{
-						for(int offsetY = -25; offsetY <= 0; offsetY++)
+						for(int y = currentPositionY; y < mapBoundsY; y++)
 						{
-							int y = cameraPositionTileY + offsetY;
-							int y2 = cameraPositionTileY - offsetY;
-							if(x >= currentPositionX)
-							{
-								if(y >= currentPositionY)
+							Tile tile = tiles[x][y];
+							if(tile != null)
+								if(tile.logicHeight > plane
+									|| !TILE_VISIBILITY_MAP[(x - cameraPositionTileX) + 25][(y - cameraPositionTileY) + 25]
+									&& heightMap[z][x][y] - cameraPosZ < 2000)
 								{
-									Tile tile = tiles[x][y];
-									if(tile != null && tile.abool1322)
-										renderTile(tile, true);
+									tile.abool1322 = false;
+									tile.abool1323 = false;
+									tile.anInt1325 = 0;
 								}
-
-								if(y2 < mapBoundsY)
+								else
 								{
-									Tile tile = tiles[x][y2];
-									if(tile != null && tile.abool1322)
-										renderTile(tile, true);
+									tile.abool1322 = true;
+									tile.abool1323 = true;
+									tile.abool1324 = tile.entityCount > 0;
+									anInt446++;
 								}
-							}
-
-							if(x2 < mapBoundsX)
-							{
-								if(y >= currentPositionY)
-								{
-									Tile tile = tiles[x2][y];
-									if(tile != null && tile.abool1322)
-										renderTile(tile, true);
-								}
-
-								if(y2 < mapBoundsY)
-								{
-									Tile tile = tiles[x2][y2];
-									if(tile != null && tile.abool1322)
-										renderTile(tile, true);
-								}
-							}
-
-							if(anInt446 == 0)
-							{
-								clicked = false;
-								return;
-							}
 						}
 
 					}
+
 				}
 
-			}
-
-			for(int z = currentPositionZ; z < mapSizeZ; z++)
-			{
-				Tile[][] tiles = groundArray[z];
-				for(int offsetX = -25; offsetX <= 0; offsetX++)
+				for(int z = currentPositionZ; z < mapSizeZ; z++)
 				{
-					int x = cameraPositionTileX + offsetX;
-					int x2 = cameraPositionTileX - offsetX;
-					if(x >= currentPositionX || x2 < mapBoundsX)
+					Tile[][] tiles = groundArray[z];
+					for(int offsetX = -25; offsetX <= 0; offsetX++)
 					{
-						for(int offsetY = -25; offsetY <= 0; offsetY++)
+						int x = cameraPositionTileX + offsetX;
+						int x2 = cameraPositionTileX - offsetX;
+						if(x >= currentPositionX || x2 < mapBoundsX)
 						{
-							int y = cameraPositionTileY + offsetY;
-							int y2 = cameraPositionTileY - offsetY;
-							if(x >= currentPositionX)
+							for(int offsetY = -25; offsetY <= 0; offsetY++)
 							{
-								if(y >= currentPositionY)
+								int y = cameraPositionTileY + offsetY;
+								int y2 = cameraPositionTileY - offsetY;
+								if(x >= currentPositionX)
 								{
-									Tile tile = tiles[x][y];
-									if(tile != null && tile.abool1322)
-										renderTile(tile, false);
+									if(y >= currentPositionY)
+									{
+										Tile tile = tiles[x][y];
+										if(tile != null && tile.abool1322)
+											renderTile(tile, true);
+									}
+
+									if(y2 < mapBoundsY)
+									{
+										Tile tile = tiles[x][y2];
+										if(tile != null && tile.abool1322)
+											renderTile(tile, true);
+									}
 								}
 
-								if(y2 < mapBoundsY)
+								if(x2 < mapBoundsX)
 								{
-									Tile tile = tiles[x][y2];
-									if(tile != null && tile.abool1322)
-										renderTile(tile, false);
+									if(y >= currentPositionY)
+									{
+										Tile tile = tiles[x2][y];
+										if(tile != null && tile.abool1322)
+											renderTile(tile, true);
+									}
+
+									if(y2 < mapBoundsY)
+									{
+										Tile tile = tiles[x2][y2];
+										if(tile != null && tile.abool1322)
+											renderTile(tile, true);
+									}
+								}
+
+								if(anInt446 == 0)
+								{
+									clicked = false;
+									return;
 								}
 							}
 
-							if(x2 < mapBoundsX)
-							{
-								if(y >= currentPositionY)
-								{
-									Tile tile = tiles[x2][y];
-									if(tile != null && tile.abool1322)
-										renderTile(tile, false);
-								}
-
-								if(y2 < mapBoundsY)
-								{
-									Tile tile = tiles[x2][y2];
-									if(tile != null && tile.abool1322)
-										renderTile(tile, false);
-								}
-							}
-
-							if(anInt446 == 0)
-							{
-								clicked = false;
-								return;
-							}
 						}
-
 					}
+
 				}
 
-			}
+				for(int z = currentPositionZ; z < mapSizeZ; z++)
+				{
+					Tile[][] tiles = groundArray[z];
+					for(int offsetX = -25; offsetX <= 0; offsetX++)
+					{
+						int x = cameraPositionTileX + offsetX;
+						int x2 = cameraPositionTileX - offsetX;
+						if(x >= currentPositionX || x2 < mapBoundsX)
+						{
+							for(int offsetY = -25; offsetY <= 0; offsetY++)
+							{
+								int y = cameraPositionTileY + offsetY;
+								int y2 = cameraPositionTileY - offsetY;
+								if(x >= currentPositionX)
+								{
+									if(y >= currentPositionY)
+									{
+										Tile tile = tiles[x][y];
+										if(tile != null && tile.abool1322)
+											renderTile(tile, false);
+									}
 
-			clicked = false;
+									if(y2 < mapBoundsY)
+									{
+										Tile tile = tiles[x][y2];
+										if(tile != null && tile.abool1322)
+											renderTile(tile, false);
+									}
+								}
+
+								if(x2 < mapBoundsX)
+								{
+									if(y >= currentPositionY)
+									{
+										Tile tile = tiles[x2][y];
+										if(tile != null && tile.abool1322)
+											renderTile(tile, false);
+									}
+
+									if(y2 < mapBoundsY)
+									{
+										Tile tile = tiles[x2][y2];
+										if(tile != null && tile.abool1322)
+											renderTile(tile, false);
+									}
+								}
+
+								if(anInt446 == 0)
+								{
+									clicked = false;
+									return;
+								}
+							}
+
+						}
+					}
+
+				}
+
+				clicked = false;
+			}
 		}
 
 		void renderPlainTile(PlainTile plainTile, int tileX, int tileY, int tileZ, int sinX, int cosineX, int sinY,
@@ -1872,561 +1875,564 @@ namespace Rs317.Sharp
 
 		private void renderTile(Tile _tile, bool flag)
 		{
-			tileList.pushBack(_tile);
-			do
+			unchecked
 			{
-				Tile groundTile;
+				tileList.pushBack(_tile);
 				do
 				{
-					groundTile = (Tile)tileList.popFront();
-					if(groundTile == null)
-						return;
-				} while(!groundTile.abool1323);
-
-				int x = groundTile.x;
-				int y = groundTile.y;
-				int z = groundTile.z;
-				int l = groundTile.anInt1310;
-				Tile[][] tiles = groundArray[z];
-				if(groundTile.abool1322)
-				{
-					if(flag)
+					Tile groundTile;
+					do
 					{
-						if(z > 0)
-						{
-							Tile tile = groundArray[z - 1][x][y];
-							if(tile != null && tile.abool1323)
-								continue;
-						}
+						groundTile = (Tile)tileList.popFront();
+						if(groundTile == null)
+							return;
+					} while(!groundTile.abool1323);
 
-						if(x <= cameraPositionTileX && x > currentPositionX)
-						{
-							Tile tile = tiles[x - 1][y];
-							if(tile != null && tile.abool1323
-											 && (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 1) == 0))
-								continue;
-						}
-
-						if(x >= cameraPositionTileX && x < mapBoundsX - 1)
-						{
-							Tile tile = tiles[x + 1][y];
-							if(tile != null && tile.abool1323
-											 && (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 4) == 0))
-								continue;
-						}
-
-						if(y <= cameraPositionTileY && y > currentPositionY)
-						{
-							Tile tile = tiles[x][y - 1];
-							if(tile != null && tile.abool1323
-											 && (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 8) == 0))
-								continue;
-						}
-
-						if(y >= cameraPositionTileY && y < mapBoundsY - 1)
-						{
-							Tile tile = tiles[x][y + 1];
-							if(tile != null && tile.abool1323
-											 && (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 2) == 0))
-								continue;
-						}
-					}
-					else
+					int x = groundTile.x;
+					int y = groundTile.y;
+					int z = groundTile.z;
+					int l = groundTile.anInt1310;
+					Tile[][] tiles = groundArray[z];
+					if(groundTile.abool1322)
 					{
-						flag = true;
-					}
-
-					groundTile.abool1322 = false;
-					if(groundTile.tileBelow != null)
-					{
-						Tile tile = groundTile.tileBelow;
-						if(tile.plainTile != null)
+						if(flag)
 						{
-							if(!method320(x, y, 0))
-								renderPlainTile(tile.plainTile, x, y, 0, curveSineX, curveCosineX, curveSineY,
-									curveCosineY);
-						}
-						else if(tile.shapedTile != null && !method320(x, y, 0))
-							renderShapedTile(tile.shapedTile, x, y, curveSineX, curveCosineX, curveSineY, curveCosineY);
-
-						if(tile.wall != null)
-							tile.wall.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-								tile.wall.x - cameraPosX, tile.wall.z - cameraPosZ, tile.wall.y - cameraPosY,
-								tile.wall.uid);
-						for(int e = 0; e < tile.entityCount; e++)
-						{
-							InteractiveObject entity = tile.interactiveObjects[e];
-							if(entity != null)
-								entity.renderable.renderAtPoint(entity.rotation, curveSineY, curveCosineY, curveSineX,
-									curveCosineX, entity.worldX - cameraPosX, entity.worldZ - cameraPosZ,
-									entity.worldY - cameraPosY, entity.uid);
-						}
-
-					}
-
-					bool flag1 = false;
-					if(groundTile.plainTile != null)
-					{
-						if(!method320(x, y, l))
-						{
-							flag1 = true;
-							renderPlainTile(groundTile.plainTile, x, y, l, curveSineX, curveCosineX, curveSineY,
-								curveCosineY);
-						}
-					}
-					else if(groundTile.shapedTile != null && !method320(x, y, l))
-					{
-						flag1 = true;
-						renderShapedTile(groundTile.shapedTile, x, y, curveSineX, curveCosineX, curveSineY, curveCosineY);
-					}
-
-					int j1 = 0;
-					int j2 = 0;
-					Wall wallObject = groundTile.wall;
-					WallDecoration wallDecoration = groundTile.wallDecoration;
-					if(wallObject != null || wallDecoration != null)
-					{
-						if(cameraPositionTileX == x)
-							j1++;
-						else if(cameraPositionTileX < x)
-							j1 += 2;
-						if(cameraPositionTileY == y)
-							j1 += 3;
-						else if(cameraPositionTileY > y)
-							j1 += 6;
-						j2 = anIntArray478[j1];
-						groundTile.anInt1328 = anIntArray480[j1];
-					}
-
-					if(wallObject != null)
-					{
-						if((wallObject.orientation & anIntArray479[j1]) != 0)
-						{
-							if(wallObject.orientation == 16)
+							if(z > 0)
 							{
-								groundTile.anInt1325 = 3;
-								groundTile.anInt1326 = anIntArray481[j1];
-								groundTile.anInt1327 = 3 - groundTile.anInt1326;
+								Tile tile = groundArray[z - 1][x][y];
+								if(tile != null && tile.abool1323)
+									continue;
 							}
-							else if(wallObject.orientation == 32)
+
+							if(x <= cameraPositionTileX && x > currentPositionX)
 							{
-								groundTile.anInt1325 = 6;
-								groundTile.anInt1326 = anIntArray482[j1];
-								groundTile.anInt1327 = 6 - groundTile.anInt1326;
+								Tile tile = tiles[x - 1][y];
+								if(tile != null && tile.abool1323
+												 && (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 1) == 0))
+									continue;
 							}
-							else if(wallObject.orientation == 64)
+
+							if(x >= cameraPositionTileX && x < mapBoundsX - 1)
 							{
-								groundTile.anInt1325 = 12;
-								groundTile.anInt1326 = anIntArray483[j1];
-								groundTile.anInt1327 = 12 - groundTile.anInt1326;
+								Tile tile = tiles[x + 1][y];
+								if(tile != null && tile.abool1323
+												 && (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 4) == 0))
+									continue;
 							}
-							else
+
+							if(y <= cameraPositionTileY && y > currentPositionY)
 							{
-								groundTile.anInt1325 = 9;
-								groundTile.anInt1326 = anIntArray484[j1];
-								groundTile.anInt1327 = 9 - groundTile.anInt1326;
+								Tile tile = tiles[x][y - 1];
+								if(tile != null && tile.abool1323
+												 && (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 8) == 0))
+									continue;
+							}
+
+							if(y >= cameraPositionTileY && y < mapBoundsY - 1)
+							{
+								Tile tile = tiles[x][y + 1];
+								if(tile != null && tile.abool1323
+												 && (tile.abool1322 || (groundTile.interactiveObjectsSizeOR & 2) == 0))
+									continue;
 							}
 						}
 						else
 						{
+							flag = true;
+						}
+
+						groundTile.abool1322 = false;
+						if(groundTile.tileBelow != null)
+						{
+							Tile tile = groundTile.tileBelow;
+							if(tile.plainTile != null)
+							{
+								if(!method320(x, y, 0))
+									renderPlainTile(tile.plainTile, x, y, 0, curveSineX, curveCosineX, curveSineY,
+										curveCosineY);
+							}
+							else if(tile.shapedTile != null && !method320(x, y, 0))
+								renderShapedTile(tile.shapedTile, x, y, curveSineX, curveCosineX, curveSineY, curveCosineY);
+
+							if(tile.wall != null)
+								tile.wall.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+									tile.wall.x - cameraPosX, tile.wall.z - cameraPosZ, tile.wall.y - cameraPosY,
+									tile.wall.uid);
+							for(int e = 0; e < tile.entityCount; e++)
+							{
+								InteractiveObject entity = tile.interactiveObjects[e];
+								if(entity != null)
+									entity.renderable.renderAtPoint(entity.rotation, curveSineY, curveCosineY, curveSineX,
+										curveCosineX, entity.worldX - cameraPosX, entity.worldZ - cameraPosZ,
+										entity.worldY - cameraPosY, entity.uid);
+							}
+
+						}
+
+						bool flag1 = false;
+						if(groundTile.plainTile != null)
+						{
+							if(!method320(x, y, l))
+							{
+								flag1 = true;
+								renderPlainTile(groundTile.plainTile, x, y, l, curveSineX, curveCosineX, curveSineY,
+									curveCosineY);
+							}
+						}
+						else if(groundTile.shapedTile != null && !method320(x, y, l))
+						{
+							flag1 = true;
+							renderShapedTile(groundTile.shapedTile, x, y, curveSineX, curveCosineX, curveSineY, curveCosineY);
+						}
+
+						int j1 = 0;
+						int j2 = 0;
+						Wall wallObject = groundTile.wall;
+						WallDecoration wallDecoration = groundTile.wallDecoration;
+						if(wallObject != null || wallDecoration != null)
+						{
+							if(cameraPositionTileX == x)
+								j1++;
+							else if(cameraPositionTileX < x)
+								j1 += 2;
+							if(cameraPositionTileY == y)
+								j1 += 3;
+							else if(cameraPositionTileY > y)
+								j1 += 6;
+							j2 = anIntArray478[j1];
+							groundTile.anInt1328 = anIntArray480[j1];
+						}
+
+						if(wallObject != null)
+						{
+							if((wallObject.orientation & anIntArray479[j1]) != 0)
+							{
+								if(wallObject.orientation == 16)
+								{
+									groundTile.anInt1325 = 3;
+									groundTile.anInt1326 = anIntArray481[j1];
+									groundTile.anInt1327 = 3 - groundTile.anInt1326;
+								}
+								else if(wallObject.orientation == 32)
+								{
+									groundTile.anInt1325 = 6;
+									groundTile.anInt1326 = anIntArray482[j1];
+									groundTile.anInt1327 = 6 - groundTile.anInt1326;
+								}
+								else if(wallObject.orientation == 64)
+								{
+									groundTile.anInt1325 = 12;
+									groundTile.anInt1326 = anIntArray483[j1];
+									groundTile.anInt1327 = 12 - groundTile.anInt1326;
+								}
+								else
+								{
+									groundTile.anInt1325 = 9;
+									groundTile.anInt1326 = anIntArray484[j1];
+									groundTile.anInt1327 = 9 - groundTile.anInt1326;
+								}
+							}
+							else
+							{
+								groundTile.anInt1325 = 0;
+							}
+
+							if((wallObject.orientation & j2) != 0 && !method321(x, y, l, wallObject.orientation))
+								wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+									wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
+									wallObject.uid);
+							if((wallObject.orientation2 & j2) != 0 && !method321(x, y, l, wallObject.orientation2))
+								wallObject.secondary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+									wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
+									wallObject.uid);
+						}
+
+						if(wallDecoration != null && !method322(l, x, y, wallDecoration.renderable.modelHeight))
+							if((wallDecoration.configBits & j2) != 0)
+								wallDecoration.renderable.renderAtPoint(wallDecoration.face, curveSineY, curveCosineY,
+									curveSineX, curveCosineX, wallDecoration.x - cameraPosX, wallDecoration.z - cameraPosZ,
+									wallDecoration.y - cameraPosY, wallDecoration.uid);
+							else if((wallDecoration.configBits & 0x300) != 0)
+							{
+								int j4 = wallDecoration.x - cameraPosX;
+								int l5 = wallDecoration.z - cameraPosZ;
+								int k6 = wallDecoration.y - cameraPosY;
+								int i8 = wallDecoration.face;
+								int k9;
+								if(i8 == 1 || i8 == 2)
+									k9 = -j4;
+								else
+									k9 = j4;
+								int k10;
+								if(i8 == 2 || i8 == 3)
+									k10 = -k6;
+								else
+									k10 = k6;
+								if((wallDecoration.configBits & 0x100) != 0 && k10 < k9)
+								{
+									int i11 = j4 + faceOffsetX2[i8];
+									int k11 = k6 + faceOffsetY2[i8];
+									wallDecoration.renderable.renderAtPoint(i8 * 512 + 256, curveSineY, curveCosineY,
+										curveSineX, curveCosineX, i11, l5, k11, wallDecoration.uid);
+								}
+
+								if((wallDecoration.configBits & 0x200) != 0 && k10 > k9)
+								{
+									int j11 = j4 + faceOffsetX3[i8];
+									int l11 = k6 + faceOffsetY3[i8];
+									wallDecoration.renderable.renderAtPoint(i8 * 512 + 1280 & 0x7ff, curveSineY, curveCosineY,
+										curveSineX, curveCosineX, j11, l5, l11, wallDecoration.uid);
+								}
+							}
+
+						if(flag1)
+						{
+							GroundDecoration groundDecoration = groundTile.groundDecoration;
+							if(groundDecoration != null)
+								groundDecoration.renderable.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+									groundDecoration.x - cameraPosX, groundDecoration.z - cameraPosZ,
+									groundDecoration.y - cameraPosY, groundDecoration.uid);
+
+							if(groundTile.groundItemTile != null && groundTile.groundItemTile.anInt52 == 0)
+							{
+								GroundItemTile groundItemTile1 = groundTile.groundItemTile;
+								if(groundItemTile1.secondGroundItem != null)
+									groundItemTile1.secondGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX,
+										curveCosineX, groundItemTile1.x - cameraPosX, groundItemTile1.z - cameraPosZ,
+										groundItemTile1.y - cameraPosY, groundItemTile1.uid);
+								if(groundItemTile1.thirdGroundItem != null)
+									groundItemTile1.thirdGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX,
+										curveCosineX, groundItemTile1.x - cameraPosX, groundItemTile1.z - cameraPosZ,
+										groundItemTile1.y - cameraPosY, groundItemTile1.uid);
+								if(groundItemTile1.firstGroundItem != null)
+									groundItemTile1.firstGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX,
+										curveCosineX, groundItemTile1.x - cameraPosX, groundItemTile1.z - cameraPosZ,
+										groundItemTile1.y - cameraPosY, groundItemTile1.uid);
+							}
+						}
+
+						int interactiveObjectsSizeOR = groundTile.interactiveObjectsSizeOR;
+						if(interactiveObjectsSizeOR != 0)
+						{
+							if(x < cameraPositionTileX && (interactiveObjectsSizeOR & 4) != 0)
+							{
+								Tile tile = tiles[x + 1][y];
+								if(tile != null && tile.abool1323)
+									tileList.pushBack(tile);
+							}
+
+							if(y < cameraPositionTileY && (interactiveObjectsSizeOR & 2) != 0)
+							{
+								Tile tile = tiles[x][y + 1];
+								if(tile != null && tile.abool1323)
+									tileList.pushBack(tile);
+							}
+
+							if(x > cameraPositionTileX && (interactiveObjectsSizeOR & 1) != 0)
+							{
+								Tile tile = tiles[x - 1][y];
+								if(tile != null && tile.abool1323)
+									tileList.pushBack(tile);
+							}
+
+							if(y > cameraPositionTileY && (interactiveObjectsSizeOR & 8) != 0)
+							{
+								Tile tile = tiles[x][y - 1];
+								if(tile != null && tile.abool1323)
+									tileList.pushBack(tile);
+							}
+						}
+					}
+
+					if(groundTile.anInt1325 != 0)
+					{
+						bool flag2 = true;
+						for(int e = 0; e < groundTile.entityCount; e++)
+						{
+							if(groundTile.interactiveObjects[e].anInt528 == anInt448
+								|| (groundTile.interactiveObjectsSize[e] & groundTile.anInt1325) != groundTile.anInt1326)
+								continue;
+							flag2 = false;
+							break;
+						}
+
+						if(flag2)
+						{
+							Wall wallObject = groundTile.wall;
+							if(!method321(x, y, l, wallObject.orientation))
+								wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+									wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
+									wallObject.uid);
 							groundTile.anInt1325 = 0;
 						}
-
-						if((wallObject.orientation & j2) != 0 && !method321(x, y, l, wallObject.orientation))
-							wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
-								wallObject.uid);
-						if((wallObject.orientation2 & j2) != 0 && !method321(x, y, l, wallObject.orientation2))
-							wallObject.secondary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
-								wallObject.uid);
 					}
 
-					if(wallDecoration != null && !method322(l, x, y, wallDecoration.renderable.modelHeight))
-						if((wallDecoration.configBits & j2) != 0)
-							wallDecoration.renderable.renderAtPoint(wallDecoration.face, curveSineY, curveCosineY,
-								curveSineX, curveCosineX, wallDecoration.x - cameraPosX, wallDecoration.z - cameraPosZ,
-								wallDecoration.y - cameraPosY, wallDecoration.uid);
-						else if((wallDecoration.configBits & 0x300) != 0)
+					if(groundTile.abool1324)
+						try
 						{
-							int j4 = wallDecoration.x - cameraPosX;
-							int l5 = wallDecoration.z - cameraPosZ;
-							int k6 = wallDecoration.y - cameraPosY;
-							int i8 = wallDecoration.face;
-							int k9;
-							if(i8 == 1 || i8 == 2)
-								k9 = -j4;
-							else
-								k9 = j4;
-							int k10;
-							if(i8 == 2 || i8 == 3)
-								k10 = -k6;
-							else
-								k10 = k6;
-							if((wallDecoration.configBits & 0x100) != 0 && k10 < k9)
+							int entityCount = groundTile.entityCount;
+							groundTile.abool1324 = false;
+							int l1 = 0;
+							for(int e = 0; e < entityCount; e++)
 							{
-								int i11 = j4 + faceOffsetX2[i8];
-								int k11 = k6 + faceOffsetY2[i8];
-								wallDecoration.renderable.renderAtPoint(i8 * 512 + 256, curveSineY, curveCosineY,
-									curveSineX, curveCosineX, i11, l5, k11, wallDecoration.uid);
-							}
-
-							if((wallDecoration.configBits & 0x200) != 0 && k10 > k9)
-							{
-								int j11 = j4 + faceOffsetX3[i8];
-								int l11 = k6 + faceOffsetY3[i8];
-								wallDecoration.renderable.renderAtPoint(i8 * 512 + 1280 & 0x7ff, curveSineY, curveCosineY,
-									curveSineX, curveCosineX, j11, l5, l11, wallDecoration.uid);
-							}
-						}
-
-					if(flag1)
-					{
-						GroundDecoration groundDecoration = groundTile.groundDecoration;
-						if(groundDecoration != null)
-							groundDecoration.renderable.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-								groundDecoration.x - cameraPosX, groundDecoration.z - cameraPosZ,
-								groundDecoration.y - cameraPosY, groundDecoration.uid);
-
-						if(groundTile.groundItemTile != null && groundTile.groundItemTile.anInt52 == 0)
-						{
-							GroundItemTile groundItemTile1 = groundTile.groundItemTile;
-							if(groundItemTile1.secondGroundItem != null)
-								groundItemTile1.secondGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX,
-									curveCosineX, groundItemTile1.x - cameraPosX, groundItemTile1.z - cameraPosZ,
-									groundItemTile1.y - cameraPosY, groundItemTile1.uid);
-							if(groundItemTile1.thirdGroundItem != null)
-								groundItemTile1.thirdGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX,
-									curveCosineX, groundItemTile1.x - cameraPosX, groundItemTile1.z - cameraPosZ,
-									groundItemTile1.y - cameraPosY, groundItemTile1.uid);
-							if(groundItemTile1.firstGroundItem != null)
-								groundItemTile1.firstGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX,
-									curveCosineX, groundItemTile1.x - cameraPosX, groundItemTile1.z - cameraPosZ,
-									groundItemTile1.y - cameraPosY, groundItemTile1.uid);
-						}
-					}
-
-					int interactiveObjectsSizeOR = groundTile.interactiveObjectsSizeOR;
-					if(interactiveObjectsSizeOR != 0)
-					{
-						if(x < cameraPositionTileX && (interactiveObjectsSizeOR & 4) != 0)
-						{
-							Tile tile = tiles[x + 1][y];
-							if(tile != null && tile.abool1323)
-								tileList.pushBack(tile);
-						}
-
-						if(y < cameraPositionTileY && (interactiveObjectsSizeOR & 2) != 0)
-						{
-							Tile tile = tiles[x][y + 1];
-							if(tile != null && tile.abool1323)
-								tileList.pushBack(tile);
-						}
-
-						if(x > cameraPositionTileX && (interactiveObjectsSizeOR & 1) != 0)
-						{
-							Tile tile = tiles[x - 1][y];
-							if(tile != null && tile.abool1323)
-								tileList.pushBack(tile);
-						}
-
-						if(y > cameraPositionTileY && (interactiveObjectsSizeOR & 8) != 0)
-						{
-							Tile tile = tiles[x][y - 1];
-							if(tile != null && tile.abool1323)
-								tileList.pushBack(tile);
-						}
-					}
-				}
-
-				if(groundTile.anInt1325 != 0)
-				{
-					bool flag2 = true;
-					for(int e = 0; e < groundTile.entityCount; e++)
-					{
-						if(groundTile.interactiveObjects[e].anInt528 == anInt448
-							|| (groundTile.interactiveObjectsSize[e] & groundTile.anInt1325) != groundTile.anInt1326)
-							continue;
-						flag2 = false;
-						break;
-					}
-
-					if(flag2)
-					{
-						Wall wallObject = groundTile.wall;
-						if(!method321(x, y, l, wallObject.orientation))
-							wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
-								wallObject.uid);
-						groundTile.anInt1325 = 0;
-					}
-				}
-
-				if(groundTile.abool1324)
-					try
-					{
-						int entityCount = groundTile.entityCount;
-						groundTile.abool1324 = false;
-						int l1 = 0;
-						for(int e = 0; e < entityCount; e++)
-						{
-							//Similar to a goto.
-							bool shouldOuterCountinue = false;
-							InteractiveObject entity = groundTile.interactiveObjects[e];
-							if(entity.anInt528 == anInt448)
-								continue;
-							for(int _x = entity.tileLeft; _x <= entity.tileRight; _x++)
-							{
-								for(int _y = entity.tileTop; _y <= entity.tileBottom; _y++)
+								//Similar to a goto.
+								bool shouldOuterCountinue = false;
+								InteractiveObject entity = groundTile.interactiveObjects[e];
+								if(entity.anInt528 == anInt448)
+									continue;
+								for(int _x = entity.tileLeft; _x <= entity.tileRight; _x++)
 								{
-									Tile tile = tiles[_x][_y];
-									if(tile.abool1322)
+									for(int _y = entity.tileTop; _y <= entity.tileBottom; _y++)
 									{
-										groundTile.abool1324 = true;
-									}
-									else
-									{
-										if(tile.anInt1325 == 0)
-											continue;
-										int l6 = 0;
-										if(_x > entity.tileLeft)
-											l6++;
-										if(_x < entity.tileRight)
-											l6 += 4;
-										if(_y > entity.tileTop)
-											l6 += 8;
-										if(_y < entity.tileBottom)
-											l6 += 2;
-										if((l6 & tile.anInt1325) != groundTile.anInt1327)
-											continue;
-										groundTile.abool1324 = true;
+										Tile tile = tiles[_x][_y];
+										if(tile.abool1322)
+										{
+											groundTile.abool1324 = true;
+										}
+										else
+										{
+											if(tile.anInt1325 == 0)
+												continue;
+											int l6 = 0;
+											if(_x > entity.tileLeft)
+												l6++;
+											if(_x < entity.tileRight)
+												l6 += 4;
+											if(_y > entity.tileTop)
+												l6 += 8;
+											if(_y < entity.tileBottom)
+												l6 += 2;
+											if((l6 & tile.anInt1325) != groundTile.anInt1327)
+												continue;
+											groundTile.abool1324 = true;
+										}
+
+										shouldOuterCountinue = true;
+										break;
 									}
 
-									shouldOuterCountinue = true;
-									break;
+									if(shouldOuterCountinue)
+										break;
 								}
 
 								if(shouldOuterCountinue)
-									break;
+									continue;
+
+								interactiveObjects[l1++] = entity;
+								int i5 = cameraPositionTileX - entity.tileLeft;
+								int i6 = entity.tileRight - cameraPositionTileX;
+								if(i6 > i5)
+									i5 = i6;
+								int i7 = cameraPositionTileY - entity.tileTop;
+								int j8 = entity.tileBottom - cameraPositionTileY;
+								if(j8 > i7)
+									entity.anInt527 = i5 + j8;
+								else
+									entity.anInt527 = i5 + i7;
 							}
 
-							if(shouldOuterCountinue)
-								continue;
-
-							interactiveObjects[l1++] = entity;
-							int i5 = cameraPositionTileX - entity.tileLeft;
-							int i6 = entity.tileRight - cameraPositionTileX;
-							if(i6 > i5)
-								i5 = i6;
-							int i7 = cameraPositionTileY - entity.tileTop;
-							int j8 = entity.tileBottom - cameraPositionTileY;
-							if(j8 > i7)
-								entity.anInt527 = i5 + j8;
-							else
-								entity.anInt527 = i5 + i7;
-						}
-
-						while(l1 > 0)
-						{
-							int i3 = -50;
-							int l3 = -1;
-							InteractiveObject entity;
-							for(int j5 = 0; j5 < l1; j5++)
+							while(l1 > 0)
 							{
-								entity = interactiveObjects[j5];
-								if(entity.anInt528 != anInt448)
-									if(entity.anInt527 > i3)
-									{
-										i3 = entity.anInt527;
-										l3 = j5;
-									}
-									else if(entity.anInt527 == i3)
-									{
-										int j7 = entity.worldX - cameraPosX;
-										int k8 = entity.worldY - cameraPosY;
-										int l9 = interactiveObjects[l3].worldX - cameraPosX;
-										int l10 = interactiveObjects[l3].worldY - cameraPosY;
-										if(j7 * j7 + k8 * k8 > l9 * l9 + l10 * l10)
-											l3 = j5;
-									}
-							}
-
-							if(l3 == -1)
-								break;
-							entity = interactiveObjects[l3];
-							entity.anInt528 = anInt448;
-
-							if(!method323(entity.tileLeft, entity.tileRight, entity.tileTop, entity.tileBottom, l,
-								entity.renderable.modelHeight))
-								entity.renderable.renderAtPoint(entity.rotation, curveSineY, curveCosineY, curveSineX,
-									curveCosineX, entity.worldX - cameraPosX, entity.worldZ - cameraPosZ,
-									entity.worldY - cameraPosY, entity.uid);
-
-							for(int _x = entity.tileLeft; _x <= entity.tileRight; _x++)
-							{
-								for(int _y = entity.tileTop; _y <= entity.tileBottom; _y++)
+								int i3 = -50;
+								int l3 = -1;
+								InteractiveObject entity;
+								for(int j5 = 0; j5 < l1; j5++)
 								{
-									Tile tile = tiles[_x][_y];
-									if(tile.anInt1325 != 0)
-										tileList.pushBack(tile);
-									else if((_x != x || _y != y) && tile.abool1323)
-										tileList.pushBack(tile);
+									entity = interactiveObjects[j5];
+									if(entity.anInt528 != anInt448)
+										if(entity.anInt527 > i3)
+										{
+											i3 = entity.anInt527;
+											l3 = j5;
+										}
+										else if(entity.anInt527 == i3)
+										{
+											int j7 = entity.worldX - cameraPosX;
+											int k8 = entity.worldY - cameraPosY;
+											int l9 = interactiveObjects[l3].worldX - cameraPosX;
+											int l10 = interactiveObjects[l3].worldY - cameraPosY;
+											if(j7 * j7 + k8 * k8 > l9 * l9 + l10 * l10)
+												l3 = j5;
+										}
+								}
+
+								if(l3 == -1)
+									break;
+								entity = interactiveObjects[l3];
+								entity.anInt528 = anInt448;
+
+								if(!method323(entity.tileLeft, entity.tileRight, entity.tileTop, entity.tileBottom, l,
+									entity.renderable.modelHeight))
+									entity.renderable.renderAtPoint(entity.rotation, curveSineY, curveCosineY, curveSineX,
+										curveCosineX, entity.worldX - cameraPosX, entity.worldZ - cameraPosZ,
+										entity.worldY - cameraPosY, entity.uid);
+
+								for(int _x = entity.tileLeft; _x <= entity.tileRight; _x++)
+								{
+									for(int _y = entity.tileTop; _y <= entity.tileBottom; _y++)
+									{
+										Tile tile = tiles[_x][_y];
+										if(tile.anInt1325 != 0)
+											tileList.pushBack(tile);
+										else if((_x != x || _y != y) && tile.abool1323)
+											tileList.pushBack(tile);
+									}
+
 								}
 
 							}
 
+							if(groundTile.abool1324)
+								continue;
+						}
+						catch(Exception ex)
+						{
+							signlink.reporterror($"Encountered error rendering tile. {ex.Message}");
+							groundTile.abool1324 = false;
 						}
 
-						if(groundTile.abool1324)
+					if(!groundTile.abool1323 || groundTile.anInt1325 != 0)
+						continue;
+					if(x <= cameraPositionTileX && x > currentPositionX)
+					{
+						Tile tile = tiles[x - 1][y];
+						if(tile != null && tile.abool1323)
 							continue;
 					}
-					catch(Exception ex)
+
+					if(x >= cameraPositionTileX && x < mapBoundsX - 1)
 					{
-						signlink.reporterror($"Encountered error rendering tile. {ex.Message}");
-						groundTile.abool1324 = false;
+						Tile tile = tiles[x + 1][y];
+						if(tile != null && tile.abool1323)
+							continue;
 					}
 
-				if(!groundTile.abool1323 || groundTile.anInt1325 != 0)
-					continue;
-				if(x <= cameraPositionTileX && x > currentPositionX)
-				{
-					Tile tile = tiles[x - 1][y];
-					if(tile != null && tile.abool1323)
-						continue;
-				}
+					if(y <= cameraPositionTileY && y > currentPositionY)
+					{
+						Tile tile = tiles[x][y - 1];
+						if(tile != null && tile.abool1323)
+							continue;
+					}
 
-				if(x >= cameraPositionTileX && x < mapBoundsX - 1)
-				{
-					Tile tile = tiles[x + 1][y];
-					if(tile != null && tile.abool1323)
-						continue;
-				}
+					if(y >= cameraPositionTileY && y < mapBoundsY - 1)
+					{
+						Tile tile = tiles[x][y + 1];
+						if(tile != null && tile.abool1323)
+							continue;
+					}
 
-				if(y <= cameraPositionTileY && y > currentPositionY)
-				{
-					Tile tile = tiles[x][y - 1];
-					if(tile != null && tile.abool1323)
-						continue;
-				}
+					groundTile.abool1323 = false;
+					anInt446--;
+					GroundItemTile groundItemTile = groundTile.groundItemTile;
+					if(groundItemTile != null && groundItemTile.anInt52 != 0)
+					{
+						if(groundItemTile.secondGroundItem != null)
+							groundItemTile.secondGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+								groundItemTile.x - cameraPosX, groundItemTile.z - cameraPosZ - groundItemTile.anInt52,
+								groundItemTile.y - cameraPosY, groundItemTile.uid);
+						if(groundItemTile.thirdGroundItem != null)
+							groundItemTile.thirdGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+								groundItemTile.x - cameraPosX, groundItemTile.z - cameraPosZ - groundItemTile.anInt52,
+								groundItemTile.y - cameraPosY, groundItemTile.uid);
+						if(groundItemTile.firstGroundItem != null)
+							groundItemTile.firstGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+								groundItemTile.x - cameraPosX, groundItemTile.z - cameraPosZ - groundItemTile.anInt52,
+								groundItemTile.y - cameraPosY, groundItemTile.uid);
+					}
 
-				if(y >= cameraPositionTileY && y < mapBoundsY - 1)
-				{
-					Tile tile = tiles[x][y + 1];
-					if(tile != null && tile.abool1323)
-						continue;
-				}
+					if(groundTile.anInt1328 != 0)
+					{
+						WallDecoration wallDecoration = groundTile.wallDecoration;
+						if(wallDecoration != null && !method322(l, x, y, wallDecoration.renderable.modelHeight))
+							if((wallDecoration.configBits & groundTile.anInt1328) != 0)
+								wallDecoration.renderable.renderAtPoint(wallDecoration.face, curveSineY, curveCosineY,
+									curveSineX, curveCosineX, wallDecoration.x - cameraPosX, wallDecoration.z - cameraPosZ,
+									wallDecoration.y - cameraPosY, wallDecoration.uid);
+							else if((wallDecoration.configBits & 0x300) != 0)
+							{
+								int l2 = wallDecoration.x - cameraPosX;
+								int j3 = wallDecoration.z - cameraPosZ;
+								int i4 = wallDecoration.y - cameraPosY;
+								int face = wallDecoration.face;
+								int j6;
+								if(face == 1 || face == 2)
+									j6 = -l2;
+								else
+									j6 = l2;
+								int l7;
+								if(face == 2 || face == 3)
+									l7 = -i4;
+								else
+									l7 = i4;
+								if((wallDecoration.configBits & 0x100) != 0 && l7 >= j6)
+								{
+									int i9 = l2 + faceOffsetX2[face];
+									int i10 = i4 + faceOffsetY2[face];
+									wallDecoration.renderable.renderAtPoint(face * 512 + 256, curveSineY, curveCosineY,
+										curveSineX, curveCosineX, i9, j3, i10, wallDecoration.uid);
+								}
 
-				groundTile.abool1323 = false;
-				anInt446--;
-				GroundItemTile groundItemTile = groundTile.groundItemTile;
-				if(groundItemTile != null && groundItemTile.anInt52 != 0)
-				{
-					if(groundItemTile.secondGroundItem != null)
-						groundItemTile.secondGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-							groundItemTile.x - cameraPosX, groundItemTile.z - cameraPosZ - groundItemTile.anInt52,
-							groundItemTile.y - cameraPosY, groundItemTile.uid);
-					if(groundItemTile.thirdGroundItem != null)
-						groundItemTile.thirdGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-							groundItemTile.x - cameraPosX, groundItemTile.z - cameraPosZ - groundItemTile.anInt52,
-							groundItemTile.y - cameraPosY, groundItemTile.uid);
-					if(groundItemTile.firstGroundItem != null)
-						groundItemTile.firstGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-							groundItemTile.x - cameraPosX, groundItemTile.z - cameraPosZ - groundItemTile.anInt52,
-							groundItemTile.y - cameraPosY, groundItemTile.uid);
-				}
+								if((wallDecoration.configBits & 0x200) != 0 && l7 <= j6)
+								{
+									int j9 = l2 + faceOffsetX3[face];
+									int j10 = i4 + faceOffsetY3[face];
+									wallDecoration.renderable.renderAtPoint(face * 512 + 1280 & 0x7ff, curveSineY, curveCosineY,
+										curveSineX, curveCosineX, j9, j3, j10, wallDecoration.uid);
+								}
+							}
 
-				if(groundTile.anInt1328 != 0)
-				{
-					WallDecoration wallDecoration = groundTile.wallDecoration;
-					if(wallDecoration != null && !method322(l, x, y, wallDecoration.renderable.modelHeight))
-						if((wallDecoration.configBits & groundTile.anInt1328) != 0)
-							wallDecoration.renderable.renderAtPoint(wallDecoration.face, curveSineY, curveCosineY,
-								curveSineX, curveCosineX, wallDecoration.x - cameraPosX, wallDecoration.z - cameraPosZ,
-								wallDecoration.y - cameraPosY, wallDecoration.uid);
-						else if((wallDecoration.configBits & 0x300) != 0)
+						Wall wallObject = groundTile.wall;
+						if(wallObject != null)
 						{
-							int l2 = wallDecoration.x - cameraPosX;
-							int j3 = wallDecoration.z - cameraPosZ;
-							int i4 = wallDecoration.y - cameraPosY;
-							int face = wallDecoration.face;
-							int j6;
-							if(face == 1 || face == 2)
-								j6 = -l2;
-							else
-								j6 = l2;
-							int l7;
-							if(face == 2 || face == 3)
-								l7 = -i4;
-							else
-								l7 = i4;
-							if((wallDecoration.configBits & 0x100) != 0 && l7 >= j6)
-							{
-								int i9 = l2 + faceOffsetX2[face];
-								int i10 = i4 + faceOffsetY2[face];
-								wallDecoration.renderable.renderAtPoint(face * 512 + 256, curveSineY, curveCosineY,
-									curveSineX, curveCosineX, i9, j3, i10, wallDecoration.uid);
-							}
-
-							if((wallDecoration.configBits & 0x200) != 0 && l7 <= j6)
-							{
-								int j9 = l2 + faceOffsetX3[face];
-								int j10 = i4 + faceOffsetY3[face];
-								wallDecoration.renderable.renderAtPoint(face * 512 + 1280 & 0x7ff, curveSineY, curveCosineY,
-									curveSineX, curveCosineX, j9, j3, j10, wallDecoration.uid);
-							}
+							if((wallObject.orientation2 & groundTile.anInt1328) != 0
+								&& !method321(x, y, l, wallObject.orientation2))
+								wallObject.secondary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+									wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
+									wallObject.uid);
+							if((wallObject.orientation & groundTile.anInt1328) != 0
+								&& !method321(x, y, l, wallObject.orientation))
+								wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+									wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
+									wallObject.uid);
 						}
-
-					Wall wallObject = groundTile.wall;
-					if(wallObject != null)
-					{
-						if((wallObject.orientation2 & groundTile.anInt1328) != 0
-							&& !method321(x, y, l, wallObject.orientation2))
-							wallObject.secondary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
-								wallObject.uid);
-						if((wallObject.orientation & groundTile.anInt1328) != 0
-							&& !method321(x, y, l, wallObject.orientation))
-							wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
-								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
-								wallObject.uid);
 					}
-				}
 
-				if(z < mapSizeZ - 1)
-				{
-					Tile tile = groundArray[z + 1][x][y];
-					if(tile != null && tile.abool1323)
-						tileList.pushBack(tile);
-				}
+					if(z < mapSizeZ - 1)
+					{
+						Tile tile = groundArray[z + 1][x][y];
+						if(tile != null && tile.abool1323)
+							tileList.pushBack(tile);
+					}
 
-				if(x < cameraPositionTileX)
-				{
-					Tile tile = tiles[x + 1][y];
-					if(tile != null && tile.abool1323)
-						tileList.pushBack(tile);
-				}
+					if(x < cameraPositionTileX)
+					{
+						Tile tile = tiles[x + 1][y];
+						if(tile != null && tile.abool1323)
+							tileList.pushBack(tile);
+					}
 
-				if(y < cameraPositionTileY)
-				{
-					Tile tile = tiles[x][y + 1];
-					if(tile != null && tile.abool1323)
-						tileList.pushBack(tile);
-				}
+					if(y < cameraPositionTileY)
+					{
+						Tile tile = tiles[x][y + 1];
+						if(tile != null && tile.abool1323)
+							tileList.pushBack(tile);
+					}
 
-				if(x > cameraPositionTileX)
-				{
-					Tile tile = tiles[x - 1][y];
-					if(tile != null && tile.abool1323)
-						tileList.pushBack(tile);
-				}
+					if(x > cameraPositionTileX)
+					{
+						Tile tile = tiles[x - 1][y];
+						if(tile != null && tile.abool1323)
+							tileList.pushBack(tile);
+					}
 
-				if(y > cameraPositionTileY)
-				{
-					Tile tile = tiles[x][y - 1];
-					if(tile != null && tile.abool1323)
-						tileList.pushBack(tile);
-				}
-			} while(true);
+					if(y > cameraPositionTileY)
+					{
+						Tile tile = tiles[x][y - 1];
+						if(tile != null && tile.abool1323)
+							tileList.pushBack(tile);
+					}
+				} while(true);
+			}
 		}
 
 		public void renderTile(int plane, int x, int y, int clippingPath, int clippingPathRotation, int textureId,

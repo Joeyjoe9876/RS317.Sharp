@@ -1724,127 +1724,130 @@ namespace Rs317.Sharp
 		public override void renderAtPoint(int i, int yCameraSine, int yCameraCosine, int xCameraSine, int xCameraCosine, int x,
 			int y, int z, int i2)
 		{
-			int j2 = z * xCameraCosine - x * xCameraSine >> 16;
-			int k2 = y * yCameraSine + j2 * yCameraCosine >> 16;
-			int l2 = diagonal2DAboveOrigin * yCameraCosine >> 16;
-			int i3 = k2 + l2;
-			if(i3 <= 50 || k2 >= 3500)
-				return;
-			int j3 = z * xCameraSine + x * xCameraCosine >> 16;
-			int k3 = j3 - diagonal2DAboveOrigin << 9;
-			if(k3 / i3 >= DrawingArea.viewportCentreX)
-				return;
-			int l3 = j3 + diagonal2DAboveOrigin << 9;
-			if(l3 / i3 <= -DrawingArea.viewportCentreX)
-				return;
-			int i4 = y * yCameraCosine - j2 * yCameraSine >> 16;
-			int j4 = diagonal2DAboveOrigin * yCameraSine >> 16;
-			int k4 = i4 + j4 << 9;
-			if(k4 / i3 <= -DrawingArea.viewportCentreY)
-				return;
-			int l4 = j4 + (base.modelHeight * yCameraCosine >> 16);
-			int i5 = i4 - l4 << 9;
-			if(i5 / i3 >= DrawingArea.viewportCentreY)
-				return;
-			int j5 = l2 + (base.modelHeight * yCameraSine >> 16);
-			bool flag = false;
-			if(k2 - j5 <= 50)
-				flag = true;
-			bool flag1 = false;
-			if(i2 > 0 && abool1684)
+			unchecked
 			{
-				int k5 = k2 - l2;
-				if(k5 <= 50)
-					k5 = 50;
-				if(j3 > 0)
+				int j2 = z * xCameraCosine - x * xCameraSine >> 16;
+				int k2 = y * yCameraSine + j2 * yCameraCosine >> 16;
+				int l2 = diagonal2DAboveOrigin * yCameraCosine >> 16;
+				int i3 = k2 + l2;
+				if(i3 <= 50 || k2 >= 3500)
+					return;
+				int j3 = z * xCameraSine + x * xCameraCosine >> 16;
+				int k3 = j3 - diagonal2DAboveOrigin << 9;
+				if(k3 / i3 >= DrawingArea.viewportCentreX)
+					return;
+				int l3 = j3 + diagonal2DAboveOrigin << 9;
+				if(l3 / i3 <= -DrawingArea.viewportCentreX)
+					return;
+				int i4 = y * yCameraCosine - j2 * yCameraSine >> 16;
+				int j4 = diagonal2DAboveOrigin * yCameraSine >> 16;
+				int k4 = i4 + j4 << 9;
+				if(k4 / i3 <= -DrawingArea.viewportCentreY)
+					return;
+				int l4 = j4 + (base.modelHeight * yCameraCosine >> 16);
+				int i5 = i4 - l4 << 9;
+				if(i5 / i3 >= DrawingArea.viewportCentreY)
+					return;
+				int j5 = l2 + (base.modelHeight * yCameraSine >> 16);
+				bool flag = false;
+				if(k2 - j5 <= 50)
+					flag = true;
+				bool flag1 = false;
+				if(i2 > 0 && abool1684)
 				{
-					k3 /= i3;
-					l3 /= k5;
-				}
-				else
-				{
-					l3 /= i3;
-					k3 /= k5;
-				}
-
-				if(i4 > 0)
-				{
-					i5 /= i3;
-					k4 /= k5;
-				}
-				else
-				{
-					k4 /= i3;
-					i5 /= k5;
-				}
-
-				int i6 = cursorX - Rasterizer.centreX;
-				int k6 = cursorY - Rasterizer.centreY;
-				if(i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4)
-					if(singleTile)
-						resourceId[resourceCount++] = i2;
+					int k5 = k2 - l2;
+					if(k5 <= 50)
+						k5 = 50;
+					if(j3 > 0)
+					{
+						k3 /= i3;
+						l3 /= k5;
+					}
 					else
-						flag1 = true;
-			}
+					{
+						l3 /= i3;
+						k3 /= k5;
+					}
 
-			int centreX = Rasterizer.centreX;
-			int centreY = Rasterizer.centreY;
-			int sine = 0;
-			int cosine = 0;
-			if(i != 0)
-			{
-				sine = SINE[i];
-				cosine = COSINE[i];
-			}
+					if(i4 > 0)
+					{
+						i5 /= i3;
+						k4 /= k5;
+					}
+					else
+					{
+						k4 /= i3;
+						i5 /= k5;
+					}
 
-			for(int vertex = 0; vertex < vertexCount; vertex++)
-			{
-				int x2 = verticesX[vertex];
-				int y2 = verticesY[vertex];
-				int z2 = verticesZ[vertex];
+					int i6 = cursorX - Rasterizer.centreX;
+					int k6 = cursorY - Rasterizer.centreY;
+					if(i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4)
+						if(singleTile)
+							resourceId[resourceCount++] = i2;
+						else
+							flag1 = true;
+				}
+
+				int centreX = Rasterizer.centreX;
+				int centreY = Rasterizer.centreY;
+				int sine = 0;
+				int cosine = 0;
 				if(i != 0)
 				{
-					int newX2 = z2 * sine + x2 * cosine >> 16;
-					z2 = z2 * cosine - x2 * sine >> 16;
-					x2 = newX2;
+					sine = SINE[i];
+					cosine = COSINE[i];
 				}
 
-				x2 += x;
-				y2 += y;
-				z2 += z;
-				int translation = z2 * xCameraSine + x2 * xCameraCosine >> 16;
-				z2 = z2 * xCameraCosine - x2 * xCameraSine >> 16;
-				x2 = translation;
-
-				translation = y2 * yCameraCosine - z2 * yCameraSine >> 16;
-				z2 = y2 * yCameraSine + z2 * yCameraCosine >> 16;
-				y2 = translation;
-				vertexScreenZ[vertex] = z2 - k2;
-				if(z2 >= 50)
+				for(int vertex = 0; vertex < vertexCount; vertex++)
 				{
-					vertexScreenX[vertex] = centreX + (x2 << 9) / z2;
-					vertexScreenY[vertex] = centreY + (y2 << 9) / z2;
-				}
-				else
-				{
-					vertexScreenX[vertex] = -5000;
-					flag = true;
+					int x2 = verticesX[vertex];
+					int y2 = verticesY[vertex];
+					int z2 = verticesZ[vertex];
+					if(i != 0)
+					{
+						int newX2 = z2 * sine + x2 * cosine >> 16;
+						z2 = z2 * cosine - x2 * sine >> 16;
+						x2 = newX2;
+					}
+
+					x2 += x;
+					y2 += y;
+					z2 += z;
+					int translation = z2 * xCameraSine + x2 * xCameraCosine >> 16;
+					z2 = z2 * xCameraCosine - x2 * xCameraSine >> 16;
+					x2 = translation;
+
+					translation = y2 * yCameraCosine - z2 * yCameraSine >> 16;
+					z2 = y2 * yCameraSine + z2 * yCameraCosine >> 16;
+					y2 = translation;
+					vertexScreenZ[vertex] = z2 - k2;
+					if(z2 >= 50)
+					{
+						vertexScreenX[vertex] = centreX + (x2 << 9) / z2;
+						vertexScreenY[vertex] = centreY + (y2 << 9) / z2;
+					}
+					else
+					{
+						vertexScreenX[vertex] = -5000;
+						flag = true;
+					}
+
+					if(flag || texturedTriangleCount > 0)
+					{
+						vertexMovedX[vertex] = x2;
+						vertexMovedY[vertex] = y2;
+						vertexMovedZ[vertex] = z2;
+					}
 				}
 
-				if(flag || texturedTriangleCount > 0)
+				try
 				{
-					vertexMovedX[vertex] = x2;
-					vertexMovedY[vertex] = y2;
-					vertexMovedZ[vertex] = z2;
+					method483(flag, flag1, i2);
 				}
-			}
-
-			try
-			{
-				method483(flag, flag1, i2);
-			}
-			catch(Exception _ex)
-			{
+				catch(Exception _ex)
+				{
+				}
 			}
 		}
 
