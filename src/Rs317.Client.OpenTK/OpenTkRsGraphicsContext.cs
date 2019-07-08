@@ -9,11 +9,11 @@ namespace Rs317.Sharp
 {
 	public sealed class OpenTKRsGraphicsContext
 	{
-		public void DrawImage(Bitmap image, int x, int y)
+		public void DrawImage(Bitmap image, int x, int y, int width, int height)
 		{
 			//TODO: This is a hacky lock, we need a better way to render.
 			lock(OpenTKGameWindow.DrawImageQueue)
-				OpenTKGameWindow.DrawImageQueue.Enqueue(new DrawImageQueueable(x, y, image));
+				OpenTKGameWindow.DrawImageQueue.Enqueue(new DrawImageQueueable(x, y, image, width, height));
 		}
 	}
 }

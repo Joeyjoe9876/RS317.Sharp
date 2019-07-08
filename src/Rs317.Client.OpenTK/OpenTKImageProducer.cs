@@ -41,7 +41,7 @@ namespace Rs317.Sharp
 				return;
 
 			isDirty = false;
-			rsGraphicsProvider.GameGraphics.DrawImage(image, x, y);
+			rsGraphicsProvider.GameGraphics.DrawImage(image, x, y, width, height);
 		}
 
 		private void method239()
