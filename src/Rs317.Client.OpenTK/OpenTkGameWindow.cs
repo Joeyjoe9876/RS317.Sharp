@@ -15,23 +15,21 @@ namespace Rs317.Sharp
 	/// <summary>
 	/// The Open GL through OpenTK game window for the game client.
 	/// </summary>
-	public sealed class OpenTKGameWindow : GameWindow
+	public sealed class OpenTKGameWindow : GameWindow, IImagePaintEventListener
 	{
 		private bool ViewportSizeChanged = false;
 
-		public static ConcurrentQueue<DrawImageQueueable> DrawImageQueue { get; } = new ConcurrentQueue<DrawImageQueueable>();
-
-		private ConcurrentDictionary<Bitmap, int> KnownBitmaps { get; }
-
-		private ConcurrentDictionary<int, DrawImageQueueable> ImageDrawCommands { get; }
+		private ConcurrentQueue<IOpenTKImageRenderable> ImageProducerCreationQueue { get; }
 
 		private IInputCallbackSubscriber InputSubscriber { get; set; }
+
+		private List<OpenGlRegisteredOpenTKImageRenderable> Renderables { get; }
 
 		public OpenTKGameWindow(int width, int height)
 			: base(width, height, new RsOpenTkGraphicsMocde(), "Rs317.Sharp by Glader")
 		{
-			KnownBitmaps = new ConcurrentDictionary<Bitmap, int>();
-			ImageDrawCommands = new ConcurrentDictionary<int, DrawImageQueueable>();
+			ImageProducerCreationQueue = new ConcurrentQueue<IOpenTKImageRenderable>();
+			Renderables = new List<OpenGlRegisteredOpenTKImageRenderable>(25);
 			SetupGameEventCallbacks();
 		}
 
@@ -62,51 +60,65 @@ namespace Rs317.Sharp
 			
 			GL.ClearColor(Color.MidnightBlue);
 			GL.Enable(EnableCap.Texture2D);
-			GL.Enable(EnableCap.Blend);
-			//GL.BlendFunc(BlendingFactor.One, BlendingFactor.OneMinusSrcColor);
 
+			RecalculateViewPort();
+		}
+
+		protected override void OnRenderFrame(FrameEventArgs e)
+		{
+			if(ViewportSizeChanged)
+			{
+				ViewportSizeChanged = false;
+
+				RecalculateViewPort();
+			}
+
+			//All new image producers should have their OpenGL
+			//data initialized
+			//This should only be done ONCE per image producer, on creation.
+			while (ImageProducerCreationQueue.TryDequeue(out var imageProducer))
+			{
+				int textureId = CreateTexture(imageProducer);
+				Renderables.Add(new OpenGlRegisteredOpenTKImageRenderable(imageProducer, textureId));
+			}
+
+			//Now, for every renderable that we have registered
+			//we just need to actually render it.
+			foreach (var renderable in Renderables)
+			{
+				//TODO: Double check locking on isDirty
+				//When the renderable is dirty, we must update
+				//its representation in OpenGL
+				if (renderable.Renderable.isDirty)
+				{
+					lock (renderable.Renderable.SyncObject)
+					{
+						//Renderable WILL still be dirty, definitely.
+						//But now anything that attempts to set the dirty bit will have to wait.
+						UpdateTexture(renderable);
+						renderable.Renderable.ConsumeDirty();
+					}
+				}
+
+				//TODO: Avoid calling beind again if we did update the texture. (it's already bound).
+				//Regardless of the result we need to now render the image
+				BindTexture(renderable.TextureId);
+				DrawTexture(renderable.Renderable);
+			}
+
+			SwapBuffers();
+
+			base.OnRenderFrame(e);
+			GL.ClearColor(Color.Black);
+		}
+
+		private void RecalculateViewPort()
+		{
 			GL.Viewport(0, 0, Width, Height);
 
 			Matrix4 ortho_projection = Matrix4.CreateOrthographicOffCenter(0, Width, Height, 0, -1, 1);
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadMatrix(ref ortho_projection);
-		}
-
-		protected override void OnRenderFrame(FrameEventArgs e)
-		{
-			base.OnRenderFrame(e);
-			//GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-			if(ViewportSizeChanged)
-			{
-				ViewportSizeChanged = false;
-
-				GL.Viewport(0, 0, Width, Height);
-
-				Matrix4 ortho_projection = Matrix4.CreateOrthographicOffCenter(0, Width, Height, 0, -1, 1);
-				GL.MatrixMode(MatrixMode.Projection);
-				GL.LoadMatrix(ref ortho_projection);
-			}
-
-			while (DrawImageQueue.TryDequeue(out var drawRequest))
-			{
-				lock (drawRequest.Image)
-				{
-					if (!KnownBitmaps.ContainsKey(drawRequest.Image))
-						CreateTexture(drawRequest);
-					else
-						UpdateTexture(drawRequest);
-				}
-			}
-			
-			foreach (KeyValuePair<int, DrawImageQueueable> imageRequest in ImageDrawCommands)
-			{
-				BindTexture(imageRequest.Key);
-				DrawTexture(imageRequest.Value);
-			}
-
-
-			SwapBuffers();
 		}
 
 		private void BindTexture(int textureId)
@@ -120,10 +132,10 @@ namespace Rs317.Sharp
 			ViewportSizeChanged = true;
 		}
 
-		private void DrawTexture(DrawImageQueueable drawRequest)
+		private void DrawTexture(IOpenTKImageRenderable renderable)
 		{
-			float xOffset = (float) drawRequest.XDrawOffset;
-			float yOffset = (float) drawRequest.XHeightOffset;
+			float xOffset = (float) renderable.ImageLocation.X;
+			float yOffset = (float) renderable.ImageLocation.Y;
 
 			//Scaling code for resizable
 			//765, 503 default size.
@@ -134,23 +146,26 @@ namespace Rs317.Sharp
 
 			GL.Begin(PrimitiveType.Quads);
 			GL.TexCoord2(0, 0); GL.Vertex2(xOffset * widthModifier, yOffset * heightModifier);
-			GL.TexCoord2(1, 0); GL.Vertex2((drawRequest.Width + xOffset) * widthModifier, yOffset * heightModifier);
-			GL.TexCoord2(1, 1); GL.Vertex2((drawRequest.Width + xOffset) * widthModifier, (drawRequest.Height + yOffset) * heightModifier);
-			GL.TexCoord2(0, 1); GL.Vertex2(xOffset * widthModifier, (drawRequest.Height + yOffset) * heightModifier);
+			GL.TexCoord2(1, 0); GL.Vertex2((renderable.ImageLocation.Width + xOffset) * widthModifier, yOffset * heightModifier);
+			GL.TexCoord2(1, 1); GL.Vertex2((renderable.ImageLocation.Width + xOffset) * widthModifier, (renderable.ImageLocation.Height + yOffset) * heightModifier);
+			GL.TexCoord2(0, 1); GL.Vertex2(xOffset * widthModifier, (renderable.ImageLocation.Height + yOffset) * heightModifier);
 			GL.End();
 		}
 
-		private void UpdateTexture(DrawImageQueueable drawRequest)
+		private void UpdateTexture(OpenGlRegisteredOpenTKImageRenderable renderable)
 		{
-			GL.BindTexture(TextureTarget.Texture2D, KnownBitmaps[drawRequest.Image]);
-			BitmapData bmpData = drawRequest.Image.LockBits(new Rectangle(0, 0, drawRequest.Image.Width, drawRequest.Image.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, bmpData.Width, bmpData.Height,
-				OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
-
-			drawRequest.Image.UnlockBits(bmpData); //Release the bitmap data from memory cause it is not needed anymore.
+			GL.BindTexture(TextureTarget.Texture2D, renderable.TextureId);
+			GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, renderable.Renderable.ImageLocation.Width, renderable.Renderable.ImageLocation.Height,
+				OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, renderable.Renderable.ImageDataPointer);
 		}
 
-		private void CreateTexture(DrawImageQueueable drawRequest)
+		/// <summary>
+		/// Creates the texture in OpenGL.
+		/// Returns the associated texture id.
+		/// </summary>
+		/// <param name="drawRequest"></param>
+		/// <returns></returns>
+		private int CreateTexture(IOpenTKImageRenderable drawRequest)
 		{
 			GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
 			int texture;
@@ -160,14 +175,11 @@ namespace Rs317.Sharp
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
-			KnownBitmaps.TryAdd(drawRequest.Image, texture);
-			ImageDrawCommands.TryAdd(texture, drawRequest);
 
-			BitmapData bmpData = drawRequest.Image.LockBits(new Rectangle(0, 0, drawRequest.Image.Width, drawRequest.Image.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0,
-				OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, drawRequest.ImageLocation.Width, drawRequest.ImageLocation.Height, 0,
+				OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, drawRequest.ImageDataPointer);
 
-			drawRequest.Image.UnlockBits(bmpData); //Release the bitmap data from memory cause it is not needed anymore.
+			return texture;
 		}
 
 		private void mouseExited(object sender, EventArgs e)
@@ -301,6 +313,11 @@ namespace Rs317.Sharp
 
 				return new RsMouseInputEventArgs((int) ((float) args.X / widthModifier), (int) ((float) args.Y / heightModifier), args.Mouse.RightButton == ButtonState.Pressed);
 			}
+		}
+
+		public void OnImageProducerCreated(IOpenTKImageRenderable imageProducer)
+		{
+			ImageProducerCreationQueue.Enqueue(imageProducer);
 		}
 	}
 }

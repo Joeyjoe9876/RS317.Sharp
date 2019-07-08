@@ -31,10 +31,10 @@ namespace Rs317.Sharp
 					.ConfigureAwait(false);
 
 			OpenTKGameWindow gameWindow = new OpenTKGameWindow(765, 503);
-			OpenTKClient client = new OpenTKClient(configuration, new OpenTKRsGraphicsContext());
+			OpenTKClient client = new OpenTKClient(configuration, new OpenTKRsGraphicsContext(), gameWindow);
 			client.createClientFrame(765, 503);
 			gameWindow.RegisterInputSubscriber(client);
-			gameWindow.Run(40, 40);
+			gameWindow.Run(50);
 
 			await clientRunningAwaitable
 				.ConfigureAwait(false);
