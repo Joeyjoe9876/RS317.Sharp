@@ -56,8 +56,7 @@ namespace Rs317.Sharp
 
 		protected override void OnBeforeInternalDrawGraphics(int x, int z)
 		{
-			lock(SyncObject)
-				method239();
+			method239();
 		}
 
 		protected override void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<OpenTKRsGraphicsContext> rsGraphicsProvider)
