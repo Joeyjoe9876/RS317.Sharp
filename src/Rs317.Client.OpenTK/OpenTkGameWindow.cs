@@ -21,17 +21,17 @@ namespace Rs317.Sharp
 
 		public static ConcurrentQueue<DrawImageQueueable> DrawImageQueue { get; } = new ConcurrentQueue<DrawImageQueueable>();
 
-		private Dictionary<Bitmap, int> KnownBitmaps { get; }
+		private ConcurrentDictionary<Bitmap, int> KnownBitmaps { get; }
 
-		private Dictionary<int, DrawImageQueueable> ImageDrawCommands { get; }
+		private ConcurrentDictionary<int, DrawImageQueueable> ImageDrawCommands { get; }
 
 		private IInputCallbackSubscriber InputSubscriber { get; set; }
 
 		public OpenTKGameWindow(int width, int height)
-			: base(width, height, GraphicsMode.Default, "Rs317.Sharp by Glader")
+			: base(width, height, new RsOpenTkGraphicsMocde(), "Rs317.Sharp by Glader")
 		{
-			KnownBitmaps = new Dictionary<Bitmap, int>();
-			ImageDrawCommands = new Dictionary<int, DrawImageQueueable>();
+			KnownBitmaps = new ConcurrentDictionary<Bitmap, int>();
+			ImageDrawCommands = new ConcurrentDictionary<int, DrawImageQueueable>();
 			SetupGameEventCallbacks();
 		}
 
@@ -74,6 +74,9 @@ namespace Rs317.Sharp
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
+			base.OnRenderFrame(e);
+			//GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
 			if(ViewportSizeChanged)
 			{
 				ViewportSizeChanged = false;
@@ -96,17 +99,15 @@ namespace Rs317.Sharp
 				}
 			}
 
+			
 			foreach (KeyValuePair<int, DrawImageQueueable> imageRequest in ImageDrawCommands)
 			{
 				BindTexture(imageRequest.Key);
 				DrawTexture(imageRequest.Value);
 			}
-				
+
 
 			SwapBuffers();
-
-			base.OnRenderFrame(e);
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 		}
 
 		private void BindTexture(int textureId)
@@ -122,8 +123,6 @@ namespace Rs317.Sharp
 
 		private void DrawTexture(DrawImageQueueable drawRequest)
 		{
-			GL.Begin(PrimitiveType.Quads);
-
 			float xOffset = (float) drawRequest.XDrawOffset;
 			float yOffset = (float) drawRequest.XHeightOffset;
 
@@ -134,11 +133,11 @@ namespace Rs317.Sharp
 			float widthModifier = (float)this.Width / 765.0f;
 			float heightModifier = (float)this.Height / 503.0f;
 
+			GL.Begin(PrimitiveType.Quads);
 			GL.TexCoord2(0, 0); GL.Vertex2(xOffset * widthModifier, yOffset * heightModifier);
 			GL.TexCoord2(1, 0); GL.Vertex2((drawRequest.Width + xOffset) * widthModifier, yOffset * heightModifier);
 			GL.TexCoord2(1, 1); GL.Vertex2((drawRequest.Width + xOffset) * widthModifier, (drawRequest.Height + yOffset) * heightModifier);
 			GL.TexCoord2(0, 1); GL.Vertex2(xOffset * widthModifier, (drawRequest.Height + yOffset) * heightModifier);
-
 			GL.End();
 		}
 
@@ -162,8 +161,8 @@ namespace Rs317.Sharp
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
-			KnownBitmaps.Add(drawRequest.Image, texture);
-			ImageDrawCommands.Add(texture, drawRequest);
+			KnownBitmaps.TryAdd(drawRequest.Image, texture);
+			ImageDrawCommands.TryAdd(texture, drawRequest);
 
 			BitmapData bmpData = drawRequest.Image.LockBits(new Rectangle(0, 0, drawRequest.Image.Width, drawRequest.Image.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0,
