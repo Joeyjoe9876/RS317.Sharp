@@ -16,7 +16,7 @@ namespace Rs317.Sharp
 
 		private Bitmap image;
 
-		private FastPixel fastPixel;
+		private FasterPixel fastPixel;
 
 		public RSImageProducer(int width, int height, Form component)
 		{
@@ -24,8 +24,7 @@ namespace Rs317.Sharp
 			this.height = height;
 			pixels = new int[width * height];
 			image = new Bitmap(width, height);
-			fastPixel = new FastPixel(image);
-			fastPixel.rgbValues = new byte[width * height * 4];
+			fastPixel = new FasterPixel(image);
 			initDrawingArea();
 		}
 
