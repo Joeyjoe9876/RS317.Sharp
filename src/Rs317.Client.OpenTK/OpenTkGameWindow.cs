@@ -67,6 +67,8 @@ namespace Rs317.Sharp
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
+			base.OnRenderFrame(e);
+
 			if(ViewportSizeChanged)
 			{
 				ViewportSizeChanged = false;
@@ -118,9 +120,6 @@ namespace Rs317.Sharp
 			}
 
 			SwapBuffers();
-
-			base.OnRenderFrame(e);
-			GL.ClearColor(Color.Black);
 		}
 
 		private void RecalculateViewPort()
