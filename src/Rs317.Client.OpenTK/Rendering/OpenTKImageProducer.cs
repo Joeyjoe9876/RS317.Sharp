@@ -2,14 +2,13 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Rs317.Sharp
 {
 	public sealed class OpenTKImageProducer : BaseRsImageProducer<OpenTKRsGraphicsContext>, IOpenTKImageRenderable
 	{
 		private Bitmap image { get; }
-
-		private FasterPixel FasterPixel { get; }
 
 		public bool isDirty { get; private set; } = false;
 
@@ -29,8 +28,6 @@ namespace Rs317.Sharp
 			BitmapData data = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, image.PixelFormat);
 			ImageDataPointer = data.Scan0;
 			image.UnlockBits(data);
-
-			FasterPixel = new FasterPixel(image);
 			initDrawingArea();
 
 			ImageLocation = new Rectangle(0, 0, width, height);
@@ -76,21 +73,9 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void method239()
+		private unsafe void method239()
 		{
-			FasterPixel.Lock();
-			for(int y = 0; y < height; y++)
-			{
-				for(int x = 0; x < width; x++)
-				{
-					//Important to call base pixels here, 20% of time spent
-					//in this loop was due to locking on the child pixels.
-					int value = base.pixels[x + y * width];
-					//fastPixel.SetPixel(x, y, Color.FromArgb((value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF));
-					FasterPixel.SetPixel(x, y, (byte)(value >> 16), (byte)(value >> 8), (byte)value, 255);
-				}
-			}
-			FasterPixel.Unlock(true);
+			Marshal.Copy(base.pixels, 0, ImageDataPointer, base.pixels.Length);
 		}
 	}
 }
