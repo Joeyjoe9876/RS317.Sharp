@@ -95,6 +95,7 @@ namespace Rs317.Sharp
 					ImageProducerCreationQueue.Enqueue(imageProducer);
 			}
 
+			int textureUploadCount = 0;
 			//Now, for every renderable that we have registered
 			//we just need to actually render it.
 			foreach (var renderable in Renderables)
@@ -104,12 +105,15 @@ namespace Rs317.Sharp
 				//its representation in OpenGL
 				if (renderable.Renderable.isDirty)
 				{
+					//For detecting which texture uploads are occuring.
+					//Console.WriteLine($"Producer: {renderable.Renderable.Name} is dirty.");
 					lock (renderable.Renderable.SyncObject)
 					{
 						//Renderable WILL still be dirty, definitely.
 						//But now anything that attempts to set the dirty bit will have to wait.
 						UpdateTexture(renderable);
 						renderable.Renderable.ConsumeDirty();
+						textureUploadCount++;
 					}
 				}
 
@@ -120,6 +124,10 @@ namespace Rs317.Sharp
 			}
 
 			SwapBuffers();
+
+			//For debugging texture uploads.
+			/*if(textureUploadCount != 0)
+				Console.WriteLine($"Texture Uploads this Frame: {textureUploadCount}");*/
 		}
 
 		private void RecalculateViewPort()
