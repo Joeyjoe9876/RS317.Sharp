@@ -9,6 +9,10 @@ namespace Rs317.Extended
 	/// </summary>
 	public enum RsNetworkOperationCode : byte
 	{
-
+		/// <summary>
+		/// Operation code of the packet that will set the an interface
+		/// that is walkable.
+		/// </summary>
+		SetClientWalkableInterface = 208,
 	}
 }
