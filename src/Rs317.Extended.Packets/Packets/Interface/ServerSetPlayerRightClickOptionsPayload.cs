@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 
 namespace Rs317.Extended
 {
+	[WireDataContract]
 	[GameClientPayload(RsNetworkOperationCode.SetPlayerRightClickOptions)]
 	public sealed class ServerSetPlayerRightClickOptionsPayload : BaseGameClientPayload
 	{
