@@ -33,7 +33,7 @@ namespace Rs317.Sharp
 			OpenTkImageProducerFactory imageProducerFactory = new OpenTkImageProducerFactory();
 			OpenTKClient client = new OpenTKClient(configuration, new OpenTKRsGraphicsContext(), imageProducerFactory);
 
-			using (OpenTKGameWindow gameWindow = new OpenTKGameWindow(765, 503, client, imageProducerFactory))
+			using (OpenTKGameWindow gameWindow = new OpenTKGameWindow(765, 503, client, imageProducerFactory, client))
 			{
 				client.createClientFrame(765, 503);
 				gameWindow.Run(20, 60);

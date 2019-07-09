@@ -24,7 +24,7 @@ namespace Rs317.Sharp
 			method239();
 		}
 
-		protected override void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<Graphics> rsGraphicsProvider)
+		protected override void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<Graphics> rsGraphicsProvider, bool force = false)
 		{
 			lock(rsGraphicsProvider.SyncObj)
 			{

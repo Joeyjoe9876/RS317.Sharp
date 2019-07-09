@@ -4327,15 +4327,17 @@ namespace Rs317.Sharp
 			if(welcomeScreenRaised)
 			{
 				welcomeScreenRaised = false;
-				backLeftIP1.drawGraphics(4, base.gameGraphics, 0);
-				backLeftIP2.drawGraphics(357, base.gameGraphics, 0);
-				backRightIP1.drawGraphics(4, base.gameGraphics, 722);
-				backRightIP2.drawGraphics(205, base.gameGraphics, 743);
-				backTopIP1.drawGraphics(0, base.gameGraphics, 0);
-				backVmidIP1.drawGraphics(4, base.gameGraphics, 516);
-				backVmidIP2.drawGraphics(205, base.gameGraphics, 516);
-				backVmidIP3.drawGraphics(357, base.gameGraphics, 496);
-				backVmidIP2_2.drawGraphics(338, base.gameGraphics, 0);
+
+				//Custom: The reason
+				backLeftIP1.drawGraphics(4, base.gameGraphics, 0, true);
+				backLeftIP2.drawGraphics(357, base.gameGraphics, 0, true);
+				backRightIP1.drawGraphics(4, base.gameGraphics, 722, true);
+				backRightIP2.drawGraphics(205, base.gameGraphics, 743, true);
+				backTopIP1.drawGraphics(0, base.gameGraphics, 0, true);
+				backVmidIP1.drawGraphics(4, base.gameGraphics, 516, true);
+				backVmidIP2.drawGraphics(205, base.gameGraphics, 516, true);
+				backVmidIP3.drawGraphics(357, base.gameGraphics, 496, true);
+				backVmidIP2_2.drawGraphics(338, base.gameGraphics, 0, true);
 				redrawTab = true;
 				redrawChatbox = true;
 				drawTabIcons = true;

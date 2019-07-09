@@ -57,7 +57,7 @@ namespace Rs317.Sharp
 			method239();
 		}
 
-		protected override void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<OpenTKRsGraphicsContext> rsGraphicsProvider)
+		protected override void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<OpenTKRsGraphicsContext> rsGraphicsProvider, bool force = false)
 		{
 			ImageLocation = new Rectangle(x, y, width, height);
 
@@ -65,12 +65,14 @@ namespace Rs317.Sharp
 			//TODO: We can optimize around this in the client itself.
 			lock (SyncObject)
 			{
-				//There is a race condition here. But it's for significant performance benefit.
-				if(accessedPixelBuffer)
+				if (accessedPixelBuffer)
+				{
+					//There is a race condition here. But it's for significant performance benefit.
+					accessedPixelBuffer = false;
 					isDirty = true;
-
-				//There is a race condition here. But it's for significant performance benefit.
-				accessedPixelBuffer = false;
+				}
+				else if(force)
+					isDirty = true;
 			}
 		}
 

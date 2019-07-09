@@ -37,12 +37,12 @@ namespace Rs317.Sharp
 		/// <param name="y"></param>
 		/// <param name="g"></param>
 		/// <param name="x"></param>
-		public void drawGraphics(int y, IRSGraphicsProvider<TGraphicsType> g, int x)
+		public void drawGraphics(int y, IRSGraphicsProvider<TGraphicsType> g, int x, bool force = false)
 		{
 			OnBeforeInternalDrawGraphics(y, x);
 			lock (g.SyncObj)
 			{
-				InternalDrawGraphics(x, y, g);
+				InternalDrawGraphics(x, y, g, force);
 			}
 		}
 
@@ -60,6 +60,6 @@ namespace Rs317.Sharp
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <param name="graphicsObject"></param>
-		protected abstract void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<TGraphicsType> graphicsObject);
+		protected abstract void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<TGraphicsType> graphicsObject, bool force = false);
 	}
 }

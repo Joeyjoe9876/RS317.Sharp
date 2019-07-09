@@ -24,21 +24,47 @@ namespace Rs317.Sharp
 
 		private IInputCallbackSubscriber InputSubscriber { get; set; }
 
+		/// <summary>
+		/// Collection of renderables that NEVER recreate themselves.
+		/// </summary>
+		private List<OpenGlRegisteredOpenTKImageRenderable> InGameStaticRenderables { get; }
+
 		private List<OpenGlRegisteredOpenTKImageRenderable> Renderables { get; }
 
 		private IImagePaintEventPublisher PaintEventPublisher { get; }
 
-		public OpenTKGameWindow(int width, int height, IInputCallbackSubscriber inputSubscriber, IImagePaintEventPublisher paintEventPublisher)
+		private IGameStateHookable GameStateHookable { get; }
+
+		public OpenTKGameWindow(int width, int height, IInputCallbackSubscriber inputSubscriber, IImagePaintEventPublisher paintEventPublisher, IGameStateHookable gameStateHookable)
 			: base(width, height, new RsOpenTkGraphicsMocde(), "Rs317.Sharp by Glader")
 		{
 			InputSubscriber = inputSubscriber ?? throw new ArgumentNullException(nameof(inputSubscriber));
 			PaintEventPublisher = paintEventPublisher ?? throw new ArgumentNullException(nameof(paintEventPublisher));
+			GameStateHookable = gameStateHookable ?? throw new ArgumentNullException(nameof(gameStateHookable));
 
 			ImageProducerCreationQueue = new ConcurrentQueue<IOpenTKImageRenderable>();
 			Renderables = new List<OpenGlRegisteredOpenTKImageRenderable>(25);
+			InGameStaticRenderables = new List<OpenGlRegisteredOpenTKImageRenderable>(10);
 			SetupGameEventCallbacks();
 
 			PaintEventPublisher.OnImageRenderableCreated += OnImageProducerCreated;
+			gameStateHookable.LoggedIn.OnVariableValueChanged += OnLoginStateChanged;
+		}
+
+		public void OnImageProducerCreated(object sender, IOpenTKImageRenderable imageProducer)
+		{
+			ImageProducerCreationQueue.Enqueue(imageProducer);
+		}
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private void OnLoginStateChanged(object sender, HookableVariableValueChangedEventArgs<bool> e)
+		{
+			//I don't know if we NEED to, but for safety we should
+			//delete the textures from the GPU for dynamic image producers.
+			foreach (var r in Renderables)
+				DeleteTexture(r.TextureId);
+
+			Renderables.Clear();
 		}
 
 		private void SetupGameEventCallbacks()
@@ -67,6 +93,7 @@ namespace Rs317.Sharp
 			RecalculateViewPort();
 		}
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			base.OnRenderFrame(e);
@@ -90,17 +117,32 @@ namespace Rs317.Sharp
 				//We can requeue it and maybe handle it later.
 				if (imageProducer.isDirty)
 				{
-					int textureId = CreateTexture(imageProducer);
-					Renderables.Add(new OpenGlRegisteredOpenTKImageRenderable(imageProducer, textureId));
+					AddToRenderCollection(imageProducer);
 				}
 				else
 					ImageProducerCreationQueue.Enqueue(imageProducer);
 			}
 
-			int textureUploadCount = 0;
+			//If we're logged in, we should render the static in-game renderables.
+			//These are the frames around the dynamic UI elements.
+			//Even after going to th e login screen, they never cleanup.
+			if(GameStateHookable.LoggedIn)
+				RenderRenderables(InGameStaticRenderables);
+
+			RenderRenderables(Renderables);
+
+			SwapBuffers();
+
+			//For debugging texture uploads.
+			/*if(textureUploadCount != 0)
+				Console.WriteLine($"Texture Uploads this Frame: {textureUploadCount}");*/
+		}
+
+		private void RenderRenderables(IEnumerable<OpenGlRegisteredOpenTKImageRenderable> renderablesToRender)
+		{
 			//Now, for every renderable that we have registered
 			//we just need to actually render it.
-			foreach (var renderable in Renderables)
+			foreach (var renderable in renderablesToRender)
 			{
 				//TODO: Double check locking on isDirty
 				//When the renderable is dirty, we must update
@@ -115,7 +157,6 @@ namespace Rs317.Sharp
 						//But now anything that attempts to set the dirty bit will have to wait.
 						UpdateTexture(renderable);
 						renderable.Renderable.ConsumeDirty();
-						textureUploadCount++;
 					}
 				}
 
@@ -124,12 +165,49 @@ namespace Rs317.Sharp
 				BindTexture(renderable.TextureId);
 				DrawTexture(renderable.Renderable);
 			}
+		}
 
-			SwapBuffers();
+		private void AddToRenderCollection(IOpenTKImageRenderable imageProducer)
+		{
+			int textureId = CreateTexture(imageProducer);
 
-			//For debugging texture uploads.
-			/*if(textureUploadCount != 0)
-				Console.WriteLine($"Texture Uploads this Frame: {textureUploadCount}");*/
+			if (IsStaticImageProducer(imageProducer))
+				InGameStaticRenderables.Add(new OpenGlRegisteredOpenTKImageRenderable(imageProducer, textureId));
+			else
+				Renderables.Add(new OpenGlRegisteredOpenTKImageRenderable(imageProducer, textureId));
+		}
+
+		private bool IsStaticImageProducer(IOpenTKImageRenderable imageProducer)
+		{
+			//HelloKitty: This is kind of hacky, I know. BUT because of the way that the static frames
+			//around the in-game UI work they don't recreate after login and logout. Unlike almost all other frames.
+			//So we must handle them specially.
+
+			/*Created ImageProducer: backLeftIP1
+			Created ImageProducer: backLeftIP2
+			Created ImageProducer: backRightIP1
+			Created ImageProducer: backRightIP2
+			Created ImageProducer: backTopIP1
+			Created ImageProducer: backVmidIP1
+			Created ImageProducer: backVmidIP2
+			Created ImageProducer: backVmidIP3
+			Created ImageProducer: backVmidIP2_2*/
+
+			switch(imageProducer.Name)
+			{
+				case "backLeftIP1":
+				case "backLeftIP2":
+				case "backRightIP1":
+				case "backRightIP2":
+				case "backTopIP1":
+				case "backVmidIP1":
+				case "backVmidIP2":
+				case "backVmidIP3":
+				case "backVmidIP2_2":
+					return true;
+			}
+
+			return false;
 		}
 
 		private void RecalculateViewPort()
@@ -144,6 +222,11 @@ namespace Rs317.Sharp
 		private void BindTexture(int textureId)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, textureId);
+		}
+
+		private void DeleteTexture(int textureId)
+		{
+			GL.DeleteTexture(textureId);
 		}
 
 		protected override void OnResize(EventArgs e)
@@ -316,7 +399,7 @@ namespace Rs317.Sharp
 			InputSubscriber?.mouseDragged(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
 		}*/
 
-		private void mousePressed(object sender, MouseEventArgs e)
+			private void mousePressed(object sender, MouseEventArgs e)
 		{
 			InputSubscriber?.mousePressed(sender, TransformMouseEventCoordinates(e));
 		}
@@ -333,11 +416,6 @@ namespace Rs317.Sharp
 
 				return new RsMouseInputEventArgs((int) ((float) args.X / widthModifier), (int) ((float) args.Y / heightModifier), args.Mouse.RightButton == ButtonState.Pressed);
 			}
-		}
-
-		public void OnImageProducerCreated(object sender, IOpenTKImageRenderable imageProducer)
-		{
-			ImageProducerCreationQueue.Enqueue(imageProducer);
 		}
 	}
 }
