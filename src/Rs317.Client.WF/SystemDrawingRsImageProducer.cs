@@ -1,6 +1,8 @@
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Rs317.Sharp
@@ -9,13 +11,17 @@ namespace Rs317.Sharp
 	{
 		private Bitmap image { get; }
 
-		private FasterPixel fastPixel { get; }
+		private IntPtr ImageDataPointer { get; }
 
 		public SystemDrawingRsImageProducer(int width, int height, string name)
 			: base(width, height, name)
 		{
 			image = new Bitmap(width, height);
-			fastPixel = new FasterPixel(image);
+
+			BitmapData data = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, image.PixelFormat);
+			ImageDataPointer = data.Scan0;
+			image.UnlockBits(data);
+
 			initDrawingArea();
 		}
 
@@ -32,19 +38,21 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void method239()
+		private unsafe void method239()
 		{
-			fastPixel.Lock();
-			for (int y = 0; y < height; y++)
+			int* pointer = (int*)ImageDataPointer;
+
+			for(int y = 0; y < height; y++)
 			{
-				for (int x = 0; x < width; x++)
+				for(int x = 0; x < width; x++)
 				{
-					int value = pixels[x + y * width];
-					//fastPixel.SetPixel(x, y, Color.FromArgb((value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF));
-					fastPixel.SetPixel(x, y, (byte)(value >> 16), (byte)(value >> 8), (byte)value, 255);
+					int index = (x + y * width);
+					int value = base.pixels[index];
+
+					//The 255 << 24 is the alpha bits that must be set.
+					*(pointer + index) = value + (255 << 24);
 				}
 			}
-			fastPixel.Unlock(true);
 		}
 	}
 }
