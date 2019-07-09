@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Rs317.Sharp
 {
-	public abstract class BaseRsImageProducer<TGraphicsType>
+	public abstract class BaseRsImageProducer<TGraphicsType> : INameable
 	{
 		public virtual int[] pixels { get; }
 
@@ -12,10 +12,16 @@ namespace Rs317.Sharp
 
 		public int height { get; }
 
-		protected BaseRsImageProducer(int width, int height)
+		/// <inheritdoc />
+		public string Name { get; }
+
+		protected BaseRsImageProducer(int width, int height, string name)
 		{
+			if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+
 			this.width = width;
 			this.height = height;
+			Name = name;
 			pixels = new int[width * height];
 			initDrawingArea();
 		}

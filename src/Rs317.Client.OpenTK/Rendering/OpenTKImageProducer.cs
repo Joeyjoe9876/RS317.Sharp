@@ -21,8 +21,8 @@ namespace Rs317.Sharp
 
 		private bool accessedPixelBuffer { get; set; } = false;
 
-		public OpenTKImageProducer(int width, int height)
-			: base(width, height)
+		public OpenTKImageProducer(int width, int height, string name)
+			: base(width, height, name)
 		{
 			image = new Bitmap(width, height);
 

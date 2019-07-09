@@ -37,5 +37,10 @@ namespace Rs317.Sharp
 		/// Otherwise you could miss it being set.
 		/// </summary>
 		void ConsumeDirty();
+
+		/// <summary>
+		/// The name of the image producer.
+		/// </summary>
+		string Name { get; }
 	}
 }

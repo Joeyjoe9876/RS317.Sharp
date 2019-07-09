@@ -30,7 +30,7 @@ namespace Rs317.Sharp
 		{
 			Console.WriteLine($"Created ImageProducer: {producerName}");
 
-			OpenTKImageProducer imageProducer = new OpenTKImageProducer(xSize, ySize);
+			OpenTKImageProducer imageProducer = new OpenTKImageProducer(xSize, ySize, producerName);
 			ImagePaintListener.OnImageProducerCreated(imageProducer);
 
 			return imageProducer;

@@ -11,8 +11,8 @@ namespace Rs317.Sharp
 
 		private FasterPixel fastPixel { get; }
 
-		public SystemDrawingRsImageProducer(int width, int height)
-			: base(width, height)
+		public SystemDrawingRsImageProducer(int width, int height, string name)
+			: base(width, height, name)
 		{
 			image = new Bitmap(width, height);
 			fastPixel = new FasterPixel(image);
