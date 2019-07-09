@@ -233,7 +233,7 @@ namespace Rs317.Sharp
 		private OnDemandFetcher onDemandFetcher;
 
 		//IBaseClient
-		public bool isLoggedIn => this.loggedIn;
+		public bool isLoggedIn => this.LoggedIn;
 
 		public int CurrentTick => tick;
 
@@ -378,7 +378,7 @@ namespace Rs317.Sharp
 		private static bool displayFpsAndMemory;
 
 		//Adding a hook here.
-		public HookableVariable<bool> loggedIn { get; private set; }
+		public HookableVariable<bool> LoggedIn { get; private set; }
 
 		private bool reportAbuseMute;
 		private bool loadGeneratedMap;
@@ -631,7 +631,7 @@ namespace Rs317.Sharp
 			crosses = new Sprite[8];
 			musicEnabled = true;
 			redrawTab = false;
-			loggedIn.Update(false);
+			LoggedIn.Update(false);
 			reportAbuseMute = false;
 			loadGeneratedMap = false;
 			cutsceneActive = false;
@@ -5584,10 +5584,10 @@ namespace Rs317.Sharp
 			minimapState = 0;
 			destinationX = 0;
 			RSSocket rsSocket = socket;
-			loggedIn.Update(false);
+			LoggedIn.Update(false);
 			loginFailures = 0;
 			login(enteredUsername, enteredPassword, true);
-			if(!loggedIn)
+			if(!LoggedIn)
 				logout();
 			try
 			{
@@ -7841,7 +7841,7 @@ namespace Rs317.Sharp
 					mouseDetection.coordsIndex = 0;
 					base.awtFocus = true;
 					windowFocused = true;
-					loggedIn.Update(true);
+					LoggedIn.Update(true);
 					stream.position = 0;
 					inStream.position = 0;
 					packetOpcode = -1;
@@ -8017,7 +8017,7 @@ namespace Rs317.Sharp
 
 				if(responseCode == 15)
 				{
-					loggedIn.Update(true);
+					LoggedIn.Update(true);
 					stream.position = 0;
 					inStream.position = 0;
 					packetOpcode = -1;
@@ -8137,7 +8137,7 @@ namespace Rs317.Sharp
 			}
 
 			socket = null;
-			loggedIn.Update(false);
+			LoggedIn.Update(false);
 			loginScreenState = 0;
 			// myUsername = "";
 			// myPassword = "";
@@ -8165,7 +8165,7 @@ namespace Rs317.Sharp
 				if(!handleIncomingData())
 					break;
 
-			if(!loggedIn)
+			if(!LoggedIn)
 				return;
 
 			lock(mouseDetection.SyncObj)
@@ -9552,7 +9552,7 @@ namespace Rs317.Sharp
 			}
 
 			drawCycle++;
-			if(!loggedIn)
+			if(!LoggedIn)
 				drawLoginScreen(false);
 			else
 				drawGameScreen();
@@ -9565,7 +9565,7 @@ namespace Rs317.Sharp
 			if(rsAlreadyLoaded || loadingError || genericLoadingError)
 				return;
 			tick++;
-			if(!loggedIn)
+			if(!LoggedIn)
 				updateLogin();
 			else
 				updateGame();
@@ -9617,7 +9617,7 @@ namespace Rs317.Sharp
 					{
 						loginFailures = 0;
 						login(enteredUsername, enteredPassword, false);
-						if(loggedIn)
+						if(LoggedIn)
 							return;
 					}
 
