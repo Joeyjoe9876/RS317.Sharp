@@ -6,7 +6,6 @@ using Rs317.Sharp;
 
 namespace Rs317.Extended
 {
-
 	/*stream.position = 0;
 	stream.put(14);
 	stream.put(nameHash);
