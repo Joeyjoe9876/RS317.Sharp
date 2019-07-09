@@ -376,7 +376,10 @@ namespace Rs317.Sharp
 		private bool redrawTab;
 		private int unreadMessages;
 		private static bool displayFpsAndMemory;
-		public bool loggedIn;
+
+		//Adding a hook here.
+		public HookableVariable<bool> loggedIn { get; private set; }
+
 		private bool reportAbuseMute;
 		private bool loadGeneratedMap;
 		private bool cutsceneActive;
@@ -628,7 +631,7 @@ namespace Rs317.Sharp
 			crosses = new Sprite[8];
 			musicEnabled = true;
 			redrawTab = false;
-			loggedIn = false;
+			loggedIn.Update(false);
 			reportAbuseMute = false;
 			loadGeneratedMap = false;
 			cutsceneActive = false;
@@ -5581,7 +5584,7 @@ namespace Rs317.Sharp
 			minimapState = 0;
 			destinationX = 0;
 			RSSocket rsSocket = socket;
-			loggedIn = false;
+			loggedIn.Update(false);
 			loginFailures = 0;
 			login(enteredUsername, enteredPassword, true);
 			if(!loggedIn)
@@ -7838,7 +7841,7 @@ namespace Rs317.Sharp
 					mouseDetection.coordsIndex = 0;
 					base.awtFocus = true;
 					windowFocused = true;
-					loggedIn = true;
+					loggedIn.Update(true);
 					stream.position = 0;
 					inStream.position = 0;
 					packetOpcode = -1;
@@ -8014,7 +8017,7 @@ namespace Rs317.Sharp
 
 				if(responseCode == 15)
 				{
-					loggedIn = true;
+					loggedIn.Update(true);
 					stream.position = 0;
 					inStream.position = 0;
 					packetOpcode = -1;
@@ -8134,7 +8137,7 @@ namespace Rs317.Sharp
 			}
 
 			socket = null;
-			loggedIn = false;
+			loggedIn.Update(false);
 			loginScreenState = 0;
 			// myUsername = "";
 			// myPassword = "";
