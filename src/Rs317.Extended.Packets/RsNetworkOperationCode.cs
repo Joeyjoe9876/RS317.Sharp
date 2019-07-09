@@ -16,5 +16,7 @@ namespace Rs317.Extended
 		SetClientWalkableInterface = 208,
 
 		SetPlayerRightClickOptions = 104,
+
+		SetPlayerNetworkStatus = 249,
 	}
 }
