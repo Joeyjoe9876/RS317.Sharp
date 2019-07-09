@@ -8,6 +8,7 @@ using Rs317.Sharp;
 namespace Rs317.Extended
 {
 	//STILL not the game protocol sadly.
+	[WireDataContract]
 	public sealed class ServerLoginResponsePacket
 	{
 		/// <summary>
