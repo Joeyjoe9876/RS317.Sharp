@@ -9420,7 +9420,7 @@ namespace Rs317.Sharp
 			HandlePacket117(stream, opcode);
 		}
 
-		private void HandlePacket117(Buffer stream, int opcode)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)] private void HandlePacket117(Buffer stream, int opcode)
 		{
 			if (opcode == 117)
 			{
@@ -9547,7 +9547,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private void HandlePacket147(Buffer stream, int opcode)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)] private void HandlePacket147(Buffer stream, int opcode)
 		{
 			if (opcode == 147)
 			{
@@ -9756,7 +9756,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private void HandlePacket105(Buffer stream, int opcode)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)] private void HandlePacket105(Buffer stream, int opcode)
 		{
 			if (opcode == 105)
 			{
