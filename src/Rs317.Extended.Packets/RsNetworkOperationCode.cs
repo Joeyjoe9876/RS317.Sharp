@@ -20,5 +20,7 @@ namespace Rs317.Extended
 		SetPlayerNetworkStatus = 249,
 
 		SetChatModeStatus = 206,
+
+		SetSkillExperience = 134,
 	}
 }
