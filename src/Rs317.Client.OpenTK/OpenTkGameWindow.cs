@@ -16,7 +16,7 @@ namespace Rs317.Sharp
 	/// <summary>
 	/// The Open GL through OpenTK game window for the game client.
 	/// </summary>
-	public sealed class OpenTKGameWindow : GameWindow, IImagePaintEventListener
+	public sealed class OpenTKGameWindow : GameWindow
 	{
 		private bool ViewportSizeChanged = false;
 
@@ -26,17 +26,19 @@ namespace Rs317.Sharp
 
 		private List<OpenGlRegisteredOpenTKImageRenderable> Renderables { get; }
 
-		public OpenTKGameWindow(int width, int height)
+		private IImagePaintEventPublisher PaintEventPublisher { get; }
+
+		public OpenTKGameWindow(int width, int height, IInputCallbackSubscriber inputSubscriber, IImagePaintEventPublisher paintEventPublisher)
 			: base(width, height, new RsOpenTkGraphicsMocde(), "Rs317.Sharp by Glader")
 		{
+			InputSubscriber = inputSubscriber ?? throw new ArgumentNullException(nameof(inputSubscriber));
+			PaintEventPublisher = paintEventPublisher ?? throw new ArgumentNullException(nameof(paintEventPublisher));
+
 			ImageProducerCreationQueue = new ConcurrentQueue<IOpenTKImageRenderable>();
 			Renderables = new List<OpenGlRegisteredOpenTKImageRenderable>(25);
 			SetupGameEventCallbacks();
-		}
 
-		public void RegisterInputSubscriber(IInputCallbackSubscriber subscriber)
-		{
-			InputSubscriber = subscriber ?? throw new ArgumentNullException(nameof(subscriber));
+			PaintEventPublisher.OnImageRenderableCreated += OnImageProducerCreated;
 		}
 
 		private void SetupGameEventCallbacks()
@@ -333,7 +335,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public void OnImageProducerCreated(IOpenTKImageRenderable imageProducer)
+		public void OnImageProducerCreated(object sender, IOpenTKImageRenderable imageProducer)
 		{
 			ImageProducerCreationQueue.Enqueue(imageProducer);
 		}

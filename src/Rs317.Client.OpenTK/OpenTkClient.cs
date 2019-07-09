@@ -11,14 +11,15 @@ namespace Rs317.Sharp
 	{
 		public OpenTKRsGraphicsContext GraphicsObject { get; }
 
-		public IImagePaintEventListener ImagePaintListener { get; }
+		private IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer> ImageProducerFactory { get; }
 
-		public OpenTKClient(ClientConfiguration config, OpenTKRsGraphicsContext graphicsObject, IImagePaintEventListener imagePaintListener) 
+		public OpenTKClient(ClientConfiguration config, OpenTKRsGraphicsContext graphicsObject, IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer> imageProducerFactory) 
 			: base(config)
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
+
 			GraphicsObject = graphicsObject ?? throw new ArgumentNullException(nameof(graphicsObject));
-			ImagePaintListener = imagePaintListener ?? throw new ArgumentNullException(nameof(imagePaintListener));
+			ImageProducerFactory = imageProducerFactory ?? throw new ArgumentNullException(nameof(imageProducerFactory));
 		}
 
 		protected override IRSGraphicsProvider<OpenTKRsGraphicsContext> CreateGraphicsProvider()
@@ -30,10 +31,7 @@ namespace Rs317.Sharp
 		{
 			Console.WriteLine($"Created ImageProducer: {producerName}");
 
-			OpenTKImageProducer imageProducer = new OpenTKImageProducer(xSize, ySize, producerName);
-			ImagePaintListener.OnImageProducerCreated(imageProducer);
-
-			return imageProducer;
+			return ImageProducerFactory.Create(new ImageProducerFactoryCreationContext(xSize, ySize, producerName));
 		}
 	}
 }
