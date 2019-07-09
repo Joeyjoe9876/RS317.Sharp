@@ -233,7 +233,7 @@ namespace Rs317.Sharp
 		private OnDemandFetcher onDemandFetcher;
 
 		//IBaseClient
-		public bool isLoggedIn => this.LoggedIn;
+		public bool isLoggedIn => this.LoggedIn.VariableValue;
 
 		public int CurrentTick => tick;
 
@@ -378,7 +378,7 @@ namespace Rs317.Sharp
 		private static bool displayFpsAndMemory;
 
 		//Adding a hook here.
-		public HookableVariable<bool> LoggedIn { get; private set; }
+		public HookableVariable<bool> LoggedIn { get; private set; } = new HookableVariable<bool>(false);
 
 		private bool reportAbuseMute;
 		private bool loadGeneratedMap;

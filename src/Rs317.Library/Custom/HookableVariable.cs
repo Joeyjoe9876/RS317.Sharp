@@ -25,7 +25,7 @@ namespace Rs317.Sharp
 		}
 	}
 
-	public struct HookableVariable<TVariableType>
+	public class HookableVariable<TVariableType>
 	{
 		/// <summary>
 		/// Fired when the hookable variable's value changes.
@@ -34,7 +34,6 @@ namespace Rs317.Sharp
 
 		public TVariableType VariableValue { get; private set; }
 
-		//For performance reasons I choose not to lock.
 		private readonly object SyncObj;
 
 		public HookableVariable(TVariableType variableValue)
@@ -55,12 +54,23 @@ namespace Rs317.Sharp
 			return hookable.VariableValue;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void Update(TVariableType value)
 		{
-			if(!Equals(value, VariableValue))
-				OnVariableValueChanged?.Invoke(this, new HookableVariableValueChangedEventArgs<TVariableType>(VariableValue, value));
-
-			VariableValue = value;
+			try
+			{
+				if (!Equals(value, VariableValue))
+					OnVariableValueChanged?.Invoke(this, new HookableVariableValueChangedEventArgs<TVariableType>(VariableValue, value));
+			}
+			catch (Exception e)
+			{
+				throw;
+			}
+			finally
+			{
+				lock(SyncObj)
+					VariableValue = value;
+			}
 		}
 	}
 }
