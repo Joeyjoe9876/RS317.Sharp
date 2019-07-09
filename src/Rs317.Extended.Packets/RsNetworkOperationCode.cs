@@ -9,10 +9,6 @@ namespace Rs317.Extended
 	/// </summary>
 	public enum RsNetworkOperationCode : byte
 	{
-		/// <summary>
-		/// Operation code for packet type that indicates a login
-		/// success.
-		/// </summary>
-		ConnectionInitialized = 0,
+
 	}
 }
