@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Rs317.Common\Rs317.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Packets\Login\" />
-  </ItemGroup>
-
 </Project>
