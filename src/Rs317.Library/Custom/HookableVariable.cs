@@ -55,7 +55,7 @@ namespace Rs317.Sharp
 			return hookable.VariableValue;
 		}
 
-		public void Update(TVariableType value)
+		internal void Update(TVariableType value)
 		{
 			if(!Equals(value, VariableValue))
 				OnVariableValueChanged?.Invoke(this, new HookableVariableValueChangedEventArgs<TVariableType>(VariableValue, value));
