@@ -17,7 +17,7 @@ namespace Rs317.Extended
 	/// initial connection packet sent by the client.
 	/// </summary>
 	[WireDataContract]
-	public sealed class InitialConnectionPacket //no base type, since it's unique.
+	public sealed class InitialConnectionRequestPacket //no base type, since it's unique.
 	{
 		/// <summary>
 		/// First byte sent inidicating the type of the connection.
@@ -28,7 +28,7 @@ namespace Rs317.Extended
 		[WireMember(2)]
 		public byte NameHash { get; private set; }
 
-		public InitialConnectionPacket(ConnectionInititializationType connectionType, byte nameHash)
+		public InitialConnectionRequestPacket(ConnectionInititializationType connectionType, byte nameHash)
 		{
 			ConnectionType = connectionType;
 			NameHash = nameHash;
@@ -37,7 +37,7 @@ namespace Rs317.Extended
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		private  InitialConnectionPacket()
+		private  InitialConnectionRequestPacket()
 		{
 			
 		}
