@@ -7,8 +7,8 @@ using JetBrains.Annotations;
 namespace Rs317.Extended
 {
 	[WireDataContract]
-	[GameClientPayload(RsNetworkOperationCode.SetPlayerRightClickOptions)]
-	public sealed class ServerSetPlayerRightClickOptionsPayload : BaseGameClientPayload
+	[GameServerPayload(RsNetworkOperationCode.SetPlayerRightClickOptions)]
+	public sealed class ServerSetPlayerRightClickOptionsPayload : BaseGameServerPayload
 	{
 		/*int actionId = inStream.getUnsignedByteC();
 		int actionAtTop = inStream.getUnsignedByteA();
