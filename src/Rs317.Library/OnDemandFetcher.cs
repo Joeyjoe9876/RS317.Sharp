@@ -685,7 +685,7 @@ namespace Rs317.Sharp
 			}
 			catch(Exception exception)
 			{
-				signlink.reporterror($"od_ex {exception.Message}");
+				signlink.reporterror($"od_ex {exception.Message}\nStack: {exception.StackTrace}");
 			}
 		}
 
