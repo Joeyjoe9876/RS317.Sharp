@@ -14,7 +14,7 @@ namespace Rs317.Sharp
 		{
 			try
 			{
-				Console.WriteLine($"RS2 user client - release #{317} using Rs317.Sharp");
+				Console.WriteLine($"RS2 user client - release #{317} using Rs317.Sharp by Glader");
 				await StartClient(0, 0, true);
 			}
 			catch(Exception exception)
