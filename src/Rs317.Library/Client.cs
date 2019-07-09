@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
-	public abstract class Client<TGraphicsType> : RSApplet<TGraphicsType>, IBaseClient, IMouseInputQueryable
+	public abstract class Client<TGraphicsType> : RSApplet<TGraphicsType>, IBaseClient, IMouseInputQueryable, IGameStateHookable
 	{
 		//TODO: Optimize formating
 		private static String formatAmount(int amount)
