@@ -46,6 +46,7 @@ namespace Rs317.Sharp
 		{
 			get
 			{
+				//There is a race condition here. But it's for significant performance benefit.
 				accessedPixelBuffer = true;
 				return base.pixels;
 			}
@@ -64,9 +65,11 @@ namespace Rs317.Sharp
 			//TODO: We can optimize around this in the client itself.
 			lock (SyncObject)
 			{
+				//There is a race condition here. But it's for significant performance benefit.
 				if(accessedPixelBuffer)
 					isDirty = true;
 
+				//There is a race condition here. But it's for significant performance benefit.
 				accessedPixelBuffer = false;
 			}
 		}
