@@ -14,6 +14,12 @@ Rs317.Sharp is made up of the core Library of the RS engine as well as some code
 
 **[Rs317.Client.OpenTK](https://github.com/HelloKitty/RS317.Sharp/tree/master/src/Rs317.Client.OpenTK):** Is the OpenGL/OpenTK implementation that also, as of the time of this documentation, pushes bitmaps to the screen via OpenGL. However, because it's GPU rendered it allows for psuedo-antialiasing and Resizable. Eventually it should/could support rendering the gameview as OpenGL meshes.
 
+## FAQ
+
+#### Q. Why isn't my **Cache** loading?
+
+**A.** Unlike most clients, this client expects the cache to be in a subfolder called Cache.
+
 ## License
 
 Applicable licensing referenced in [317Refactor](https://github.com/Jameskmonger/317refactor) and additional work/changes done licensed under a modified AGPL license.
