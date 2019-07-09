@@ -13,6 +13,6 @@ namespace Rs317.Extended
 		/// Operation code for packet type that indicates a login
 		/// success.
 		/// </summary>
-		LoginSuccessful = 2,
+		ConnectionInitialized = 2,
 	}
 }

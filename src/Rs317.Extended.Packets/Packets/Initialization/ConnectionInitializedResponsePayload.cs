@@ -6,8 +6,8 @@ using FreecraftCore.Serializer;
 namespace Rs317.Extended
 {
 	[WireDataContract]
-	[GameClientPayload(RsNetworkOperationCode.LoginSuccessful)]
-	public sealed class LoginSuccessResponsePayload : BaseGameClientPayload
+	[GameClientPayload(RsNetworkOperationCode.ConnectionInitialized)]
+	public sealed class ConnectionInitializedResponsePayload : BaseGameClientPayload
 	{
 		/// <summary>
 		/// AKA the serverSessionKey.
@@ -16,12 +16,12 @@ namespace Rs317.Extended
 		[WireMember(1)]
 		public long ServerEncryptionInitializationVector { get; private set; }
 
-		public LoginSuccessResponsePayload(long serverEncryptionInitializationVector)
+		public ConnectionInitializedResponsePayload(long serverEncryptionInitializationVector)
 		{
 			ServerEncryptionInitializationVector = serverEncryptionInitializationVector;
 		}
 
-		private LoginSuccessResponsePayload()
+		private ConnectionInitializedResponsePayload()
 		{
 			
 		}
