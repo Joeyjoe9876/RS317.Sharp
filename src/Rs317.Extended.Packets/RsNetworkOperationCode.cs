@@ -18,5 +18,7 @@ namespace Rs317.Extended
 		SetPlayerRightClickOptions = 104,
 
 		SetPlayerNetworkStatus = 249,
+
+		SetChatModeStatus = 206,
 	}
 }
