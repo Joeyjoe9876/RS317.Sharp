@@ -5779,123 +5779,123 @@ namespace Rs317.Sharp
 				thirdMostRecentOpcode = secondMostRecentOpcode;
 				secondMostRecentOpcode = mostRecentOpcode;
 				mostRecentOpcode = packetOpcode;
-				if (HandlePacket81()) return true;
+				if(HandlePacket81()) return true;
 
-				if (HandlePacket176()) return true;
+				if(HandlePacket176()) return true;
 
-				if (HandlePacket64()) return true;
+				if(HandlePacket64()) return true;
 
-				if (HandlePacket185()) return true;
+				if(HandlePacket185()) return true;
 
-				if (HandlePacket107()) return true;
+				if(HandlePacket107()) return true;
 
-				if (HandlePacket72()) return true;
+				if(HandlePacket72()) return true;
 
-				if (HandlePacket214()) return true;
+				if(HandlePacket214()) return true;
 
-				if (HandlePacket166()) return true;
+				if(HandlePacket166()) return true;
 
-				if (HandlePacket134()) return true;
+				if(HandlePacket134()) return true;
 
-				if (HandlePacket71()) return true;
+				if(HandlePacket71()) return true;
 
-				if (HandlePacket74()) return true;
+				if(HandlePacket74()) return true;
 
-				if (HandlePacket121()) return true;
+				if(HandlePacket121()) return true;
 
-				if (!HandlePacket109()) return false;
+				if(!HandlePacket109()) return false;
 
-				if (HandlePacket70()) return true;
+				if(HandlePacket70()) return true;
 
-				if (HandlePacket73And241()) return true;
+				if(HandlePacket73And241()) return true;
 
-				if (HandlePacket208()) return true;
+				if(HandlePacket208()) return true;
 
-				if (HandlePacket99()) return true;
+				if(HandlePacket99()) return true;
 
-				if (HandlePacket75()) return true;
+				if(HandlePacket75()) return true;
 
-				if (HandlePacket114()) return true;
+				if(HandlePacket114()) return true;
 
-				if (HandlePacket60()) return true;
+				if(HandlePacket60()) return true;
 
-				if (HandlePacket35()) return true;
+				if(HandlePacket35()) return true;
 
-				if (HandlePacket174()) return true;
+				if(HandlePacket174()) return true;
 
-				if (HandlePacket104()) return true;
+				if(HandlePacket104()) return true;
 
-				if (HandlePacket78()) return true;
+				if(HandlePacket78()) return true;
 
-				if (HandlePacket253()) return true;
+				if(HandlePacket253()) return true;
 
-				if (HandlePacket1()) return true;
+				if(HandlePacket1()) return true;
 
-				if (HandlePacket50()) return true;
+				if(HandlePacket50()) return true;
 
-				if (HandlePacket110()) return true;
+				if(HandlePacket110()) return true;
 
-				if (HandlePacket254()) return true;
+				if(HandlePacket254()) return true;
 
-				if (HandlePacket248()) return true;
+				if(HandlePacket248()) return true;
 
-				if (HandlePacket79()) return true;
+				if(HandlePacket79()) return true;
 
-				if (HandlePacket68()) return true;
+				if(HandlePacket68()) return true;
 
-				if (HandlePacket196()) return true;
+				if(HandlePacket196()) return true;
 
-				if (HandlePacket85()) return true;
+				if(HandlePacket85()) return true;
 
-				if (HandlePacket24()) return true;
+				if(HandlePacket24()) return true;
 
-				if (HandlePacket246()) return true;
+				if(HandlePacket246()) return true;
 
-				if (HandlePacket171()) return true;
+				if(HandlePacket171()) return true;
 
-				if (HandlePacket142()) return true;
+				if(HandlePacket142()) return true;
 
-				if (HandlePacket126()) return true;
+				if(HandlePacket126()) return true;
 
-				if (HandlePacket206()) return true;
+				if(HandlePacket206()) return true;
 
-				if (HandlePacket240()) return true;
+				if(HandlePacket240()) return true;
 
-				if (HandlePacket8()) return true;
+				if(HandlePacket8()) return true;
 
-				if (HandlePacket122()) return true;
+				if(HandlePacket122()) return true;
 
-				if (HandlePacket53()) return true;
+				if(HandlePacket53()) return true;
 
-				if (HandlePacket230()) return true;
+				if(HandlePacket230()) return true;
 
-				if (HandlePacket221()) return true;
+				if(HandlePacket221()) return true;
 
-				if (HandlePacket177()) return true;
+				if(HandlePacket177()) return true;
 
-				if (HandlePacket249()) return true;
+				if(HandlePacket249()) return true;
 
-				if (HandlePacket65()) return true;
+				if(HandlePacket65()) return true;
 
-				if (HandlePacket27()) return true;
+				if(HandlePacket27()) return true;
 
-				if (HandlePacket187()) return true;
+				if(HandlePacket187()) return true;
 
-				if (HandlePacket97()) return true;
+				if(HandlePacket97()) return true;
 
-				if (HandlePacket218()) return true;
+				if(HandlePacket218()) return true;
 
-				if (HandlePacket87()) return true;
+				if(HandlePacket87()) return true;
 
-				if (HandlePacket36()) return true;
+				if(HandlePacket36()) return true;
 
-				if (HandlePacket61()) return true;
+				if(HandlePacket61()) return true;
 
-				if (HandlePacket200()) return true;
+				if(HandlePacket200()) return true;
 
-				if (HandlePacket219()) return true;
+				if(HandlePacket219()) return true;
 
-				if (HandlePacket34()) return true;
+				if(HandlePacket34()) return true;
 
 				if(packetOpcode == 105 || packetOpcode == 84 || packetOpcode == 147 || packetOpcode == 215
 					|| packetOpcode == 4 || packetOpcode == 117 || packetOpcode == 156 || packetOpcode == 44
@@ -5906,9 +5906,9 @@ namespace Rs317.Sharp
 					return true;
 				}
 
-				if (HandlePacket106()) return true;
+				if(HandlePacket106()) return true;
 
-				if (HandlePacket164()) return true;
+				if(HandlePacket164()) return true;
 
 				signlink.reporterror("T1 - " + packetOpcode + "," + packetSize + " - " + secondMostRecentOpcode + ","
 									 + thirdMostRecentOpcode);
@@ -5934,11 +5934,11 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket164()
 		{
-			if (packetOpcode == 164)
+			if(packetOpcode == 164)
 			{
 				int interfaceId = inStream.getUnsignedShort();
 				loadInterface(interfaceId);
-				if (inventoryOverlayInterfaceID != -1)
+				if(inventoryOverlayInterfaceID != -1)
 				{
 					inventoryOverlayInterfaceID = -1;
 					redrawTab = true;
@@ -5958,7 +5958,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket106()
 		{
-			if (packetOpcode == 106)
+			if(packetOpcode == 106)
 			{
 				currentTabId = inStream.getUnsignedByteC();
 				redrawTab = true;
@@ -5972,19 +5972,19 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket34()
 		{
-			if (packetOpcode == 34)
+			if(packetOpcode == 34)
 			{
 				redrawTab = true;
 				int interfaceId = inStream.getUnsignedLEShort();
 				RSInterface rsInterface = RSInterface.cache[interfaceId];
-				while (inStream.position < packetSize)
+				while(inStream.position < packetSize)
 				{
 					int itemSlot = inStream.getSmartB();
 					int itemId = inStream.getUnsignedLEShort();
 					int itemAmount = inStream.getUnsignedByte();
-					if (itemAmount == 255)
+					if(itemAmount == 255)
 						itemAmount = inStream.getInt();
-					if (itemSlot >= 0 && itemSlot < rsInterface.inventoryItemId.Length)
+					if(itemSlot >= 0 && itemSlot < rsInterface.inventoryItemId.Length)
 					{
 						rsInterface.inventoryItemId[itemSlot] = itemId;
 						rsInterface.inventoryStackSize[itemSlot] = itemAmount;
@@ -6000,22 +6000,22 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket219()
 		{
-			if (packetOpcode == 219)
+			if(packetOpcode == 219)
 			{
-				if (inventoryOverlayInterfaceID != -1)
+				if(inventoryOverlayInterfaceID != -1)
 				{
 					inventoryOverlayInterfaceID = -1;
 					redrawTab = true;
 					drawTabIcons = true;
 				}
 
-				if (chatboxInterfaceId != -1)
+				if(chatboxInterfaceId != -1)
 				{
 					chatboxInterfaceId = -1;
 					redrawChatbox = true;
 				}
 
-				if (inputDialogState != 0)
+				if(inputDialogState != 0)
 				{
 					inputDialogState = 0;
 					redrawChatbox = true;
@@ -6032,13 +6032,13 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket200()
 		{
-			if (packetOpcode == 200)
+			if(packetOpcode == 200)
 			{
 				int interfaceId = inStream.getUnsignedLEShort();
 				int animationId = inStream.getShort();
 				RSInterface rsInterface = RSInterface.cache[interfaceId];
 				rsInterface.animationIdDefault = animationId;
-				if (animationId == -1)
+				if(animationId == -1)
 				{
 					rsInterface.animationFrame = 0;
 					rsInterface.animationDuration = 0;
@@ -6053,7 +6053,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket61()
 		{
-			if (packetOpcode == 61)
+			if(packetOpcode == 61)
 			{
 				multiCombatZone = inStream.getUnsignedByte() == 1;
 				packetOpcode = -1;
@@ -6065,17 +6065,17 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket36()
 		{
-			if (packetOpcode == 36)
+			if(packetOpcode == 36)
 			{
 				int settingId = inStream.getUnsignedShort();
 				byte settingValue = inStream.get();
 				defaultSettings[settingId] = settingValue;
-				if (interfaceSettings[settingId] != settingValue)
+				if(interfaceSettings[settingId] != settingValue)
 				{
 					interfaceSettings[settingId] = settingValue;
 					handleInterfaceSetting(settingId);
 					redrawTab = true;
-					if (dialogID != -1)
+					if(dialogID != -1)
 						redrawChatbox = true;
 				}
 
@@ -6088,17 +6088,17 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket87()
 		{
-			if (packetOpcode == 87)
+			if(packetOpcode == 87)
 			{
 				int settingId = inStream.getUnsignedShort();
 				int settingValue = inStream.getMESInt();
 				defaultSettings[settingId] = settingValue;
-				if (interfaceSettings[settingId] != settingValue)
+				if(interfaceSettings[settingId] != settingValue)
 				{
 					interfaceSettings[settingId] = settingValue;
 					handleInterfaceSetting(settingId);
 					redrawTab = true;
-					if (dialogID != -1)
+					if(dialogID != -1)
 						redrawChatbox = true;
 				}
 
@@ -6111,7 +6111,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket218()
 		{
-			if (packetOpcode == 218)
+			if(packetOpcode == 218)
 			{
 				int interfaceId = inStream.getSignedLEShortA();
 				dialogID = interfaceId;
@@ -6125,24 +6125,24 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket97()
 		{
-			if (packetOpcode == 97)
+			if(packetOpcode == 97)
 			{
 				int interfaceId = inStream.getUnsignedLEShort();
 				loadInterface(interfaceId);
-				if (inventoryOverlayInterfaceID != -1)
+				if(inventoryOverlayInterfaceID != -1)
 				{
 					inventoryOverlayInterfaceID = -1;
 					redrawTab = true;
 					drawTabIcons = true;
 				}
 
-				if (chatboxInterfaceId != -1)
+				if(chatboxInterfaceId != -1)
 				{
 					chatboxInterfaceId = -1;
 					redrawChatbox = true;
 				}
 
-				if (inputDialogState != 0)
+				if(inputDialogState != 0)
 				{
 					inputDialogState = 0;
 					redrawChatbox = true;
@@ -6159,7 +6159,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket187()
 		{
-			if (packetOpcode == 187)
+			if(packetOpcode == 187)
 			{
 				messagePromptRaised = false;
 				inputDialogState = 2;
@@ -6174,7 +6174,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket27()
 		{
-			if (packetOpcode == 27)
+			if(packetOpcode == 27)
 			{
 				messagePromptRaised = false;
 				inputDialogState = 1;
@@ -6189,7 +6189,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket65()
 		{
-			if (packetOpcode == 65)
+			if(packetOpcode == 65)
 			{
 				updateNPCs(inStream, packetSize);
 				packetOpcode = -1;
@@ -6201,7 +6201,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket249()
 		{
-			if (packetOpcode == 249)
+			if(packetOpcode == 249)
 			{
 				membershipStatus = inStream.getUnsignedByteA();
 				playerListId = inStream.getUnsignedShortA();
@@ -6214,7 +6214,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket177()
 		{
-			if (packetOpcode == 177)
+			if(packetOpcode == 177)
 			{
 				cutsceneActive = true;
 				anInt995 = inStream.getUnsignedByte();
@@ -6222,7 +6222,7 @@ namespace Rs317.Sharp
 				cameraOffsetZ = inStream.getUnsignedLEShort();
 				anInt998 = inStream.getUnsignedByte();
 				anInt999 = inStream.getUnsignedByte();
-				if (anInt999 >= 100)
+				if(anInt999 >= 100)
 				{
 					int x = anInt995 * 128 + 64;
 					int y = anInt996 * 128 + 64;
@@ -6230,13 +6230,13 @@ namespace Rs317.Sharp
 					int distanceX = x - cameraPositionX;
 					int distanceZ = z - cameraPositionZ;
 					int distanceY = y - cameraPositionY;
-					int distanceScalar = (int) Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
-					cameraVerticalRotation = (int) (Math.Atan2(distanceZ, distanceScalar) * 325.94900000000001D)
-					                         & 0x7FF;
-					cameraHorizontalRotation = (int) (Math.Atan2(distanceX, distanceY) * -325.94900000000001D) & 0x7FF;
-					if (cameraVerticalRotation < 128)
+					int distanceScalar = (int)Math.Sqrt(distanceX * distanceX + distanceY * distanceY);
+					cameraVerticalRotation = (int)(Math.Atan2(distanceZ, distanceScalar) * 325.94900000000001D)
+											 & 0x7FF;
+					cameraHorizontalRotation = (int)(Math.Atan2(distanceX, distanceY) * -325.94900000000001D) & 0x7FF;
+					if(cameraVerticalRotation < 128)
 						cameraVerticalRotation = 128;
-					if (cameraVerticalRotation > 383)
+					if(cameraVerticalRotation > 383)
 						cameraVerticalRotation = 383;
 				}
 
@@ -6249,7 +6249,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket221()
 		{
-			if (packetOpcode == 221)
+			if(packetOpcode == 221)
 			{
 				friendListStatus = inStream.getUnsignedByte();
 				redrawTab = true;
@@ -6262,7 +6262,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket230()
 		{
-			if (packetOpcode == 230)
+			if(packetOpcode == 230)
 			{
 				int modelZoom = inStream.getUnsignedLEShortA();
 				int interfaceId = inStream.getUnsignedLEShort();
@@ -6280,18 +6280,18 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket53()
 		{
-			if (packetOpcode == 53)
+			if(packetOpcode == 53)
 			{
 				redrawTab = true;
 				int interfaceId = inStream.getUnsignedLEShort();
 				RSInterface rsInterface = RSInterface.cache[interfaceId];
 				int itemCount = inStream.getUnsignedLEShort();
 
-				for (int item = 0; item < itemCount; item++)
+				for(int item = 0; item < itemCount; item++)
 				{
 					int stackSize = inStream.getUnsignedByte();
 
-					if (stackSize == 255)
+					if(stackSize == 255)
 					{
 						stackSize = inStream.getMEBInt();
 					}
@@ -6300,7 +6300,7 @@ namespace Rs317.Sharp
 					rsInterface.inventoryStackSize[item] = stackSize;
 				}
 
-				for (int i = itemCount; i < rsInterface.inventoryItemId.Length; i++)
+				for(int i = itemCount; i < rsInterface.inventoryItemId.Length; i++)
 				{
 					rsInterface.inventoryItemId[i] = 0;
 					rsInterface.inventoryStackSize[i] = 0;
@@ -6315,7 +6315,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket122()
 		{
-			if (packetOpcode == 122)
+			if(packetOpcode == 122)
 			{
 				int interfaceId = inStream.getUnsignedShortA();
 				int rgb = inStream.getUnsignedShortA();
@@ -6332,7 +6332,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket8()
 		{
-			if (packetOpcode == 8)
+			if(packetOpcode == 8)
 			{
 				int interfaceId = inStream.getUnsignedShortA();
 				int interfaceModelId = inStream.getUnsignedLEShort();
@@ -6347,9 +6347,9 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket240()
 		{
-			if (packetOpcode == 240)
+			if(packetOpcode == 240)
 			{
-				if (currentTabId == 12)
+				if(currentTabId == 12)
 					redrawTab = true;
 				playerWeight = inStream.getShort();
 				packetOpcode = -1;
@@ -6361,7 +6361,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket206()
 		{
-			if (packetOpcode == 206)
+			if(packetOpcode == 206)
 			{
 				publicChatMode = inStream.getUnsignedByte();
 				privateChatMode = inStream.getUnsignedByte();
@@ -6377,12 +6377,12 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket126()
 		{
-			if (packetOpcode == 126)
+			if(packetOpcode == 126)
 			{
 				String text = inStream.getString();
 				int interfaceId = inStream.getUnsignedLEShortA();
 				RSInterface.cache[interfaceId].textDefault = text;
-				if (RSInterface.cache[interfaceId].parentID == tabInterfaceIDs[currentTabId])
+				if(RSInterface.cache[interfaceId].parentID == tabInterfaceIDs[currentTabId])
 					redrawTab = true;
 				packetOpcode = -1;
 				return true;
@@ -6393,17 +6393,17 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket142()
 		{
-			if (packetOpcode == 142)
+			if(packetOpcode == 142)
 			{
 				int interfaceId = inStream.getUnsignedShort();
 				loadInterface(interfaceId);
-				if (chatboxInterfaceId != -1)
+				if(chatboxInterfaceId != -1)
 				{
 					chatboxInterfaceId = -1;
 					redrawChatbox = true;
 				}
 
-				if (inputDialogState != 0)
+				if(inputDialogState != 0)
 				{
 					inputDialogState = 0;
 					redrawChatbox = true;
@@ -6423,7 +6423,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket171()
 		{
-			if (packetOpcode == 171)
+			if(packetOpcode == 171)
 			{
 				bool hiddenUntilHovered = inStream.getUnsignedByte() == 1;
 				int interfaceId = inStream.getUnsignedLEShort();
@@ -6437,12 +6437,12 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket246()
 		{
-			if (packetOpcode == 246)
+			if(packetOpcode == 246)
 			{
 				int interfaceId = inStream.getUnsignedShort();
 				int itemModelZoom = inStream.getUnsignedLEShort();
 				int itemId = inStream.getUnsignedLEShort();
-				if (itemId == 0x00FFFF)
+				if(itemId == 0x00FFFF)
 				{
 					RSInterface.cache[interfaceId].modelTypeDefault = 0;
 					packetOpcode = -1;
@@ -6466,12 +6466,12 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket24()
 		{
-			if (packetOpcode == 24)
+			if(packetOpcode == 24)
 			{
 				flashingSidebar = inStream.getUnsignedByteS();
-				if (flashingSidebar == currentTabId)
+				if(flashingSidebar == currentTabId)
 				{
-					if (flashingSidebar == 3)
+					if(flashingSidebar == 3)
 						currentTabId = 1;
 					else
 						currentTabId = 3;
@@ -6487,7 +6487,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket85()
 		{
-			if (packetOpcode == 85)
+			if(packetOpcode == 85)
 			{
 				playerPositionY = inStream.getUnsignedByteC();
 				playerPositionX = inStream.getUnsignedByteC();
@@ -6500,51 +6500,51 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket196()
 		{
-			if (packetOpcode == 196)
+			if(packetOpcode == 196)
 			{
 				long nameAsLong = inStream.getLong();
 				int messageId = inStream.getInt();
 				int playerRights = inStream.getUnsignedByte();
 				bool ignored = false;
-				for (int message = 0; message < 100; message++)
+				for(int message = 0; message < 100; message++)
 				{
-					if (privateMessages[message] != messageId)
+					if(privateMessages[message] != messageId)
 						continue;
 					ignored = true;
 					break;
 				}
 
-				if (playerRights <= 1)
+				if(playerRights <= 1)
 				{
-					for (int p = 0; p < ignoreCount; p++)
+					for(int p = 0; p < ignoreCount; p++)
 					{
-						if (ignoreListAsLongs[p] != nameAsLong)
+						if(ignoreListAsLongs[p] != nameAsLong)
 							continue;
 						ignored = true;
 						break;
 					}
 				}
 
-				if (!ignored && inTutorial == 0)
+				if(!ignored && inTutorial == 0)
 					try
 					{
 						privateMessages[privateMessagePointer] = messageId;
 						privateMessagePointer = (privateMessagePointer + 1) % 100;
 						String message = TextInput.readFromStream(packetSize - 13, inStream);
-						if (playerRights != 3)
+						if(playerRights != 3)
 						{
 							//I disabled censorship for now.
 							//message = Censor.censor(message);
 						}
 
-						if (playerRights == 2 || playerRights == 3)
+						if(playerRights == 2 || playerRights == 3)
 							pushMessage(message, 7, "@cr2@" + TextClass.formatName(TextClass.longToName(nameAsLong)));
-						else if (playerRights == 1)
+						else if(playerRights == 1)
 							pushMessage(message, 7, "@cr1@" + TextClass.formatName(TextClass.longToName(nameAsLong)));
 						else
 							pushMessage(message, 3, TextClass.formatName(TextClass.longToName(nameAsLong)));
 					}
-					catch (Exception exception1)
+					catch(Exception exception1)
 					{
 						signlink.reporterror("cde1");
 					}
@@ -6558,10 +6558,10 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket68()
 		{
-			if (packetOpcode == 68)
+			if(packetOpcode == 68)
 			{
-				for (int setting = 0; setting < interfaceSettings.Length; setting++)
-					if (interfaceSettings[setting] != defaultSettings[setting])
+				for(int setting = 0; setting < interfaceSettings.Length; setting++)
+					if(interfaceSettings[setting] != defaultSettings[setting])
 					{
 						interfaceSettings[setting] = defaultSettings[setting];
 						handleInterfaceSetting(setting);
@@ -6577,16 +6577,16 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket79()
 		{
-			if (packetOpcode == 79)
+			if(packetOpcode == 79)
 			{
 				int interfaceId = inStream.getUnsignedShort();
 				int scrollPosition = inStream.getUnsignedLEShortA();
 				RSInterface rsInterface = RSInterface.cache[interfaceId];
-				if (rsInterface != null && rsInterface.type == 0)
+				if(rsInterface != null && rsInterface.type == 0)
 				{
-					if (scrollPosition < 0)
+					if(scrollPosition < 0)
 						scrollPosition = 0;
-					if (scrollPosition > rsInterface.scrollMax - rsInterface.height)
+					if(scrollPosition > rsInterface.scrollMax - rsInterface.height)
 						scrollPosition = rsInterface.scrollMax - rsInterface.height;
 					rsInterface.scrollPosition = scrollPosition;
 				}
@@ -6600,17 +6600,17 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket248()
 		{
-			if (packetOpcode == 248)
+			if(packetOpcode == 248)
 			{
 				int interfaceId = inStream.getUnsignedLEShortA();
 				int inventoryInterfaceId = inStream.getUnsignedLEShort();
-				if (chatboxInterfaceId != -1)
+				if(chatboxInterfaceId != -1)
 				{
 					chatboxInterfaceId = -1;
 					redrawChatbox = true;
 				}
 
-				if (inputDialogState != 0)
+				if(inputDialogState != 0)
 				{
 					inputDialogState = 0;
 					redrawChatbox = true;
@@ -6630,38 +6630,38 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket254()
 		{
-			if (packetOpcode == 254)
+			if(packetOpcode == 254)
 			{
 				hintIconType = inStream.getUnsignedByte();
-				if (hintIconType == 1)
+				if(hintIconType == 1)
 					hintIconNpcId = inStream.getUnsignedLEShort();
-				if (hintIconType >= 2 && hintIconType <= 6)
+				if(hintIconType >= 2 && hintIconType <= 6)
 				{
-					if (hintIconType == 2)
+					if(hintIconType == 2)
 					{
 						hintIconDrawTileX = 64;
 						hintIconDrawTileY = 64;
 					}
 
-					if (hintIconType == 3)
+					if(hintIconType == 3)
 					{
 						hintIconDrawTileX = 0;
 						hintIconDrawTileY = 64;
 					}
 
-					if (hintIconType == 4)
+					if(hintIconType == 4)
 					{
 						hintIconDrawTileX = 128;
 						hintIconDrawTileY = 64;
 					}
 
-					if (hintIconType == 5)
+					if(hintIconType == 5)
 					{
 						hintIconDrawTileX = 64;
 						hintIconDrawTileY = 0;
 					}
 
-					if (hintIconType == 6)
+					if(hintIconType == 6)
 					{
 						hintIconDrawTileX = 64;
 						hintIconDrawTileY = 128;
@@ -6673,7 +6673,7 @@ namespace Rs317.Sharp
 					hintIconDrawHeight = inStream.getUnsignedByte();
 				}
 
-				if (hintIconType == 10)
+				if(hintIconType == 10)
 					hintIconPlayerId = inStream.getUnsignedLEShort();
 				packetOpcode = -1;
 				return true;
@@ -6684,9 +6684,9 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket110()
 		{
-			if (packetOpcode == 110)
+			if(packetOpcode == 110)
 			{
-				if (currentTabId == 12)
+				if(currentTabId == 12)
 					redrawTab = true;
 				playerEnergy = inStream.getUnsignedByte();
 				packetOpcode = -1;
@@ -6698,22 +6698,22 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket50()
 		{
-			if (packetOpcode == 50)
+			if(packetOpcode == 50)
 			{
 				long nameAsLong = inStream.getLong();
 				int worldId = inStream.getUnsignedByte();
 				String name = TextClass.formatName(TextClass.longToName(nameAsLong));
-				for (int friend = 0; friend < friendsCount; friend++)
+				for(int friend = 0; friend < friendsCount; friend++)
 				{
-					if (nameAsLong != friendsListAsLongs[friend])
+					if(nameAsLong != friendsListAsLongs[friend])
 						continue;
-					if (friendsWorldIds[friend] != worldId)
+					if(friendsWorldIds[friend] != worldId)
 					{
 						friendsWorldIds[friend] = worldId;
 						redrawTab = true;
-						if (worldId > 0)
+						if(worldId > 0)
 							pushMessage(name + " has logged in.", 5, "");
-						if (worldId == 0)
+						if(worldId == 0)
 							pushMessage(name + " has logged out.", 5, "");
 					}
 
@@ -6721,7 +6721,7 @@ namespace Rs317.Sharp
 					break;
 				}
 
-				if (name != null && friendsCount < 200)
+				if(name != null && friendsCount < 200)
 				{
 					friendsListAsLongs[friendsCount] = nameAsLong;
 					friendsList[friendsCount] = name;
@@ -6730,12 +6730,12 @@ namespace Rs317.Sharp
 					redrawTab = true;
 				}
 
-				for (bool orderComplete = false; !orderComplete;)
+				for(bool orderComplete = false; !orderComplete;)
 				{
 					orderComplete = true;
-					for (int friend = 0; friend < friendsCount - 1; friend++)
-						if (friendsWorldIds[friend] != localWorldId && friendsWorldIds[friend + 1] == localWorldId
-						    || friendsWorldIds[friend] == 0 && friendsWorldIds[friend + 1] != 0)
+					for(int friend = 0; friend < friendsCount - 1; friend++)
+						if(friendsWorldIds[friend] != localWorldId && friendsWorldIds[friend + 1] == localWorldId
+							|| friendsWorldIds[friend] == 0 && friendsWorldIds[friend + 1] != 0)
 						{
 							int tempWorld = friendsWorldIds[friend];
 							friendsWorldIds[friend] = friendsWorldIds[friend + 1];
@@ -6760,14 +6760,14 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket1()
 		{
-			if (packetOpcode == 1)
+			if(packetOpcode == 1)
 			{
-				for (int p = 0; p < players.Length; p++)
-					if (players[p] != null)
+				for(int p = 0; p < players.Length; p++)
+					if(players[p] != null)
 						players[p].animation = -1;
 
-				for (int n = 0; n < npcs.Length; n++)
-					if (npcs[n] != null)
+				for(int n = 0; n < npcs.Length; n++)
+					if(npcs[n] != null)
 						npcs[n].animation = -1;
 
 				packetOpcode = -1;
@@ -6779,55 +6779,55 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket253()
 		{
-			if (packetOpcode == 253)
+			if(packetOpcode == 253)
 			{
 				String message = inStream.getString();
-				if (message.EndsWith(":tradereq:"))
+				if(message.EndsWith(":tradereq:"))
 				{
 					String name = message.Substring(0, message.IndexOf(":"));
 					long nameAsLong = TextClass.nameToLong(name);
 					bool ignored = false;
-					for (int p = 0; p < ignoreCount; p++)
+					for(int p = 0; p < ignoreCount; p++)
 					{
-						if (ignoreListAsLongs[p] != nameAsLong)
+						if(ignoreListAsLongs[p] != nameAsLong)
 							continue;
 						ignored = true;
 						break;
 					}
 
-					if (!ignored && inTutorial == 0)
+					if(!ignored && inTutorial == 0)
 						pushMessage("wishes to trade with you.", 4, name);
 				}
-				else if (message.EndsWith(":duelreq:"))
+				else if(message.EndsWith(":duelreq:"))
 				{
 					String name = message.Substring(0, message.IndexOf(":"));
 					long nameAsLong = TextClass.nameToLong(name);
 					bool ignored = false;
-					for (int p = 0; p < ignoreCount; p++)
+					for(int p = 0; p < ignoreCount; p++)
 					{
-						if (ignoreListAsLongs[p] != nameAsLong)
+						if(ignoreListAsLongs[p] != nameAsLong)
 							continue;
 						ignored = true;
 						break;
 					}
 
-					if (!ignored && inTutorial == 0)
+					if(!ignored && inTutorial == 0)
 						pushMessage("wishes to duel with you.", 8, name);
 				}
-				else if (message.EndsWith(":chalreq:"))
+				else if(message.EndsWith(":chalreq:"))
 				{
 					String name = message.Substring(0, message.IndexOf(":"));
 					long nameAsLong = TextClass.nameToLong(name);
 					bool ignored = false;
-					for (int p = 0; p < ignoreCount; p++)
+					for(int p = 0; p < ignoreCount; p++)
 					{
-						if (ignoreListAsLongs[p] != nameAsLong)
+						if(ignoreListAsLongs[p] != nameAsLong)
 							continue;
 						ignored = true;
 						break;
 					}
 
-					if (!ignored && inTutorial == 0)
+					if(!ignored && inTutorial == 0)
 					{
 						String text = message.Substring(message.IndexOf(":") + 1, message.Length - 9);
 						pushMessage(text, 8, name);
@@ -6848,7 +6848,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket78()
 		{
-			if (packetOpcode == 78)
+			if(packetOpcode == 78)
 			{
 				destinationX = 0;
 				packetOpcode = -1;
@@ -6860,14 +6860,14 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket104()
 		{
-			if (packetOpcode == 104)
+			if(packetOpcode == 104)
 			{
 				int actionId = inStream.getUnsignedByteC();
 				int actionAtTop = inStream.getUnsignedByteA();
 				String actionText = inStream.getString();
-				if (actionId >= 1 && actionId <= 5)
+				if(actionId >= 1 && actionId <= 5)
 				{
-					if (actionText.Equals("null", StringComparison.InvariantCultureIgnoreCase))
+					if(actionText.Equals("null", StringComparison.InvariantCultureIgnoreCase))
 						actionText = null;
 					playerActionText[actionId - 1] = actionText;
 					playerActionUnpinned[actionId - 1] = actionAtTop == 0;
@@ -6882,12 +6882,12 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket174()
 		{
-			if (packetOpcode == 174)
+			if(packetOpcode == 174)
 			{
 				int trackId = inStream.getUnsignedLEShort();
 				int loop = inStream.getUnsignedByte();
 				int delay = inStream.getUnsignedLEShort();
-				if (effectsEnabled && !lowMemory && trackCount < 50)
+				if(effectsEnabled && !lowMemory && trackCount < 50)
 				{
 					trackIds[trackCount] = trackId;
 					trackLoop[trackCount] = loop;
@@ -6904,7 +6904,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket35()
 		{
-			if (packetOpcode == 35)
+			if(packetOpcode == 35)
 			{
 				int cameraId = inStream.getUnsignedByte();
 				int jitter = inStream.getUnsignedByte();
@@ -6924,11 +6924,11 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket60()
 		{
-			if (packetOpcode == 60)
+			if(packetOpcode == 60)
 			{
 				playerPositionY = inStream.getUnsignedByte();
 				playerPositionX = inStream.getUnsignedByteC();
-				while (inStream.position < packetSize)
+				while(inStream.position < packetSize)
 				{
 					int opcode = inStream.getUnsignedByte();
 					parseGroupPacket(inStream, opcode);
@@ -6943,7 +6943,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket114()
 		{
-			if (packetOpcode == 114)
+			if(packetOpcode == 114)
 			{
 				systemUpdateTime = inStream.getUnsignedShort() * 30;
 				packetOpcode = -1;
@@ -6955,7 +6955,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket75()
 		{
-			if (packetOpcode == 75)
+			if(packetOpcode == 75)
 			{
 				int modelId = inStream.getUnsignedShortA();
 				int interfaceId = inStream.getUnsignedShortA();
@@ -6970,7 +6970,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket99()
 		{
-			if (packetOpcode == 99)
+			if(packetOpcode == 99)
 			{
 				minimapState = inStream.getUnsignedByte();
 				packetOpcode = -1;
@@ -6982,10 +6982,10 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket208()
 		{
-			if (packetOpcode == 208)
+			if(packetOpcode == 208)
 			{
 				int interfaceId = inStream.getSignedLEShort();
-				if (interfaceId >= 0)
+				if(interfaceId >= 0)
 					loadInterface(interfaceId);
 				walkableInterfaceId = interfaceId;
 				packetOpcode = -1;
@@ -6997,30 +6997,30 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket73And241()
 		{
-			if (packetOpcode == 73 || packetOpcode == 241)
+			if(packetOpcode == 73 || packetOpcode == 241)
 			{
 				// mapReset();
 				int playerRegionX = regionX;
 				int playerRegionY = regionY;
-				if (packetOpcode == 73)
+				if(packetOpcode == 73)
 				{
 					playerRegionX = inStream.getUnsignedLEShortA();
 					playerRegionY = inStream.getUnsignedLEShort();
 					loadGeneratedMap = false;
 				}
 
-				if (packetOpcode == 241)
+				if(packetOpcode == 241)
 				{
 					playerRegionY = inStream.getUnsignedLEShortA();
 					inStream.initBitAccess();
-					for (int z = 0; z < 4; z++)
+					for(int z = 0; z < 4; z++)
 					{
-						for (int x = 0; x < 13; x++)
+						for(int x = 0; x < 13; x++)
 						{
-							for (int y = 0; y < 13; y++)
+							for(int y = 0; y < 13; y++)
 							{
 								int tileExists = inStream.readBits(1);
-								if (tileExists == 1)
+								if(tileExists == 1)
 									constructMapTiles[z, x, y] = inStream.readBits(26);
 								else
 									constructMapTiles[z, x, y] = -1;
@@ -7033,7 +7033,7 @@ namespace Rs317.Sharp
 					loadGeneratedMap = true;
 				}
 
-				if (regionX == playerRegionX && regionY == playerRegionY && loadingStage == 2)
+				if(regionX == playerRegionX && regionY == playerRegionY && loadingStage == 2)
 				{
 					packetOpcode = -1;
 					return true;
@@ -7044,7 +7044,7 @@ namespace Rs317.Sharp
 				baseX = (regionX - 6) * 8;
 				baseY = (regionY - 6) * 8;
 				inTutorialIsland = (regionX / 8 == 48 || regionX / 8 == 49) && regionY / 8 == 48;
-				if (regionX / 8 == 48 && regionY / 8 == 148)
+				if(regionX / 8 == 48 && regionY / 8 == 148)
 					inTutorialIsland = true;
 				loadingStage = 1;
 				loadRegionTime = TimeService.CurrentTimeInMilliseconds();
@@ -7052,12 +7052,12 @@ namespace Rs317.Sharp
 				fontPlain.drawCentredText("Loading - please wait.", 257, 151, 0);
 				fontPlain.drawCentredText("Loading - please wait.", 256, 150, 0xFFFFFF);
 				gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
-				if (packetOpcode == 73)
+				if(packetOpcode == 73)
 				{
 					int r = 0;
-					for (int x = (regionX - 6) / 8; x <= (regionX + 6) / 8; x++)
+					for(int x = (regionX - 6) / 8; x <= (regionX + 6) / 8; x++)
 					{
-						for (int y = (regionY - 6) / 8; y <= (regionY + 6) / 8; y++)
+						for(int y = (regionY - 6) / 8; y <= (regionY + 6) / 8; y++)
 							r++;
 					}
 
@@ -7067,13 +7067,13 @@ namespace Rs317.Sharp
 					terrainDataIds = new int[r];
 					objectDataIds = new int[r];
 					r = 0;
-					for (int x = (regionX - 6) / 8; x <= (regionX + 6) / 8; x++)
+					for(int x = (regionX - 6) / 8; x <= (regionX + 6) / 8; x++)
 					{
-						for (int y = (regionY - 6) / 8; y <= (regionY + 6) / 8; y++)
+						for(int y = (regionY - 6) / 8; y <= (regionY + 6) / 8; y++)
 						{
 							mapCoordinates[r] = (x << 8) + y;
-							if (inTutorialIsland
-							    && (y == 49 || y == 149 || y == 147 || x == 50 || x == 49 && y == 47))
+							if(inTutorialIsland
+								&& (y == 49 || y == 149 || y == 147 || x == 50 || x == 49 && y == 47))
 							{
 								terrainDataIds[r] = -1;
 								objectDataIds[r] = -1;
@@ -7082,10 +7082,10 @@ namespace Rs317.Sharp
 							else
 							{
 								int terrainId = terrainDataIds[r] = onDemandFetcher.getMapId(0, x, y);
-								if (terrainId != -1)
+								if(terrainId != -1)
 									onDemandFetcher.request(3, terrainId);
 								int objectId = objectDataIds[r] = onDemandFetcher.getMapId(1, x, y);
-								if (objectId != -1)
+								if(objectId != -1)
 									onDemandFetcher.request(3, objectId);
 								r++;
 							}
@@ -7093,31 +7093,31 @@ namespace Rs317.Sharp
 					}
 				}
 
-				if (packetOpcode == 241)
+				if(packetOpcode == 241)
 				{
 					int l16 = 0;
 					int[] ai = new int[676];
-					for (int plane = 0; plane < 4; plane++)
+					for(int plane = 0; plane < 4; plane++)
 					{
-						for (int x = 0; x < 13; x++)
+						for(int x = 0; x < 13; x++)
 						{
-							for (int y = 0; y < 13; y++)
+							for(int y = 0; y < 13; y++)
 							{
 								int k30 = constructMapTiles[plane, x, y];
-								if (k30 != -1)
+								if(k30 != -1)
 								{
 									int k31 = k30 >> 14 & 0x3FF;
 									int i32 = k30 >> 3 & 0x7FF;
 									int k32 = (k31 / 8 << 8) + i32 / 8;
-									for (int j33 = 0; j33 < l16; j33++)
+									for(int j33 = 0; j33 < l16; j33++)
 									{
-										if (ai[j33] != k32)
+										if(ai[j33] != k32)
 											continue;
 										k32 = -1;
 										break;
 									}
 
-									if (k32 != -1)
+									if(k32 != -1)
 										ai[l16++] = k32;
 								}
 							}
@@ -7129,16 +7129,16 @@ namespace Rs317.Sharp
 					mapCoordinates = new int[l16];
 					terrainDataIds = new int[l16];
 					objectDataIds = new int[l16];
-					for (int r = 0; r < l16; r++)
+					for(int r = 0; r < l16; r++)
 					{
 						int coords = mapCoordinates[r] = ai[r];
 						int x = coords >> 8 & 0xFF;
 						int y = coords & 0xFF;
 						int terrainId = terrainDataIds[r] = onDemandFetcher.getMapId(0, x, y);
-						if (terrainId != -1)
+						if(terrainId != -1)
 							onDemandFetcher.request(3, terrainId);
 						int objectId = objectDataIds[r] = onDemandFetcher.getMapId(1, x, y);
-						if (objectId != -1)
+						if(objectId != -1)
 							onDemandFetcher.request(3, objectId);
 					}
 				}
@@ -7147,12 +7147,12 @@ namespace Rs317.Sharp
 				int _y = baseY - anInt1037;
 				anInt1036 = baseX;
 				anInt1037 = baseY;
-				for (int n = 0; n < 16384; n++)
+				for(int n = 0; n < 16384; n++)
 				{
 					NPC npc = npcs[n];
-					if (npc != null)
+					if(npc != null)
 					{
-						for (int waypoint = 0; waypoint < 10; waypoint++)
+						for(int waypoint = 0; waypoint < 10; waypoint++)
 						{
 							npc.waypointX[waypoint] -= _x;
 							npc.waypointY[waypoint] -= _y;
@@ -7163,12 +7163,12 @@ namespace Rs317.Sharp
 					}
 				}
 
-				for (int p = 0; p < MAX_ENTITY_COUNT; p++)
+				for(int p = 0; p < MAX_ENTITY_COUNT; p++)
 				{
 					Player player = players[p];
-					if (player != null)
+					if(player != null)
 					{
-						for (int waypoint = 0; waypoint < 10; waypoint++)
+						for(int waypoint = 0; waypoint < 10; waypoint++)
 						{
 							player.waypointX[waypoint] -= _x;
 							player.waypointY[waypoint] -= _y;
@@ -7183,7 +7183,7 @@ namespace Rs317.Sharp
 				byte currentPositionX = 0;
 				sbyte boundaryPositionX = 104;
 				sbyte incrementX = 1;
-				if (_x < 0)
+				if(_x < 0)
 				{
 					currentPositionX = 103;
 					boundaryPositionX = -1;
@@ -7193,40 +7193,40 @@ namespace Rs317.Sharp
 				byte currentPositionY = 0;
 				sbyte boundaryPositionY = 104;
 				sbyte incrementY = 1;
-				if (_y < 0)
+				if(_y < 0)
 				{
 					currentPositionY = 103;
 					boundaryPositionY = -1;
 					incrementY = -1;
 				}
 
-				for (int x = currentPositionX; x != boundaryPositionX; x += incrementX)
+				for(int x = currentPositionX; x != boundaryPositionX; x += incrementX)
 				{
-					for (int y = currentPositionY; y != boundaryPositionY; y += incrementY)
+					for(int y = currentPositionY; y != boundaryPositionY; y += incrementY)
 					{
 						int x2 = x + _x;
 						int y2 = y + _y;
-						for (int z = 0; z < 4; z++)
-							if (x2 >= 0 && y2 >= 0 && x2 < 104 && y2 < 104)
+						for(int z = 0; z < 4; z++)
+							if(x2 >= 0 && y2 >= 0 && x2 < 104 && y2 < 104)
 								groundArray[z, x, y] = groundArray[z, x2, y2];
 							else
 								groundArray[z, x, y] = null;
 					}
 				}
 
-				for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+				for(GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList
 						.peekFront();
 					spawnRequest != null;
-					spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+					spawnRequest = (GameObjectSpawnRequest)spawnObjectList
 						.getPrevious())
 				{
 					spawnRequest.x -= _x;
 					spawnRequest.y -= _y;
-					if (spawnRequest.x < 0 || spawnRequest.y < 0 || spawnRequest.x >= 104 || spawnRequest.y >= 104)
+					if(spawnRequest.x < 0 || spawnRequest.y < 0 || spawnRequest.x >= 104 || spawnRequest.y >= 104)
 						spawnRequest.unlink();
 				}
 
-				if (destinationX != 0)
+				if(destinationX != 0)
 				{
 					destinationX -= _x;
 					destinationY -= _y;
@@ -7242,7 +7242,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket70()
 		{
-			if (packetOpcode == 70)
+			if(packetOpcode == 70)
 			{
 				int x = inStream.getShort();
 				int y = inStream.getSignedLEShort();
@@ -7259,7 +7259,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket109()
 		{
-			if (packetOpcode == 109)
+			if(packetOpcode == 109)
 			{
 				logout();
 				packetOpcode = -1;
@@ -7271,11 +7271,11 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket121()
 		{
-			if (packetOpcode == 121)
+			if(packetOpcode == 121)
 			{
 				int nextSong = inStream.getUnsignedShortA();
 				int previousSong = inStream.getUnsignedLEShortA();
-				if (musicEnabled && !lowMemory)
+				if(musicEnabled && !lowMemory)
 				{
 					this.nextSong = nextSong;
 					songChanging = false;
@@ -7292,12 +7292,12 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket74()
 		{
-			if (packetOpcode == 74)
+			if(packetOpcode == 74)
 			{
 				int songId = inStream.getUnsignedShort();
-				if (songId == 0x00FFFF)
+				if(songId == 0x00FFFF)
 					songId = -1;
-				if (songId != currentSong && musicEnabled && !lowMemory && prevSong == 0)
+				if(songId != currentSong && musicEnabled && !lowMemory && prevSong == 0)
 				{
 					nextSong = songId;
 					songChanging = true;
@@ -7314,11 +7314,11 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket71()
 		{
-			if (packetOpcode == 71)
+			if(packetOpcode == 71)
 			{
 				int sidebarId = inStream.getUnsignedLEShort();
 				int interfaceId = inStream.getUnsignedByteA();
-				if (sidebarId == 0x00FFFF)
+				if(sidebarId == 0x00FFFF)
 					sidebarId = -1;
 				tabInterfaceIDs[interfaceId] = sidebarId;
 				redrawTab = true;
@@ -7332,7 +7332,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket134()
 		{
-			if (packetOpcode == 134)
+			if(packetOpcode == 134)
 			{
 				redrawTab = true;
 				int _skillId = inStream.getUnsignedByte();
@@ -7341,8 +7341,8 @@ namespace Rs317.Sharp
 				skillExperience[_skillId] = _skillExp;
 				skillLevel[_skillId] = _skillLevel;
 				skillMaxLevel[_skillId] = 1;
-				for (int level = 0; level < 98; level++)
-					if (_skillExp >= EXPERIENCE_TABLE[level])
+				for(int level = 0; level < 98; level++)
+					if(_skillExp >= EXPERIENCE_TABLE[level])
 						skillMaxLevel[_skillId] = level + 2;
 
 				packetOpcode = -1;
@@ -7354,7 +7354,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket166()
 		{
-			if (packetOpcode == 166)
+			if(packetOpcode == 166)
 			{
 				// Spin camera
 				cutsceneActive = true;
@@ -7363,7 +7363,7 @@ namespace Rs317.Sharp
 				anInt1100 = inStream.getUnsignedLEShort();
 				anInt1101 = inStream.getUnsignedByte();
 				anInt1102 = inStream.getUnsignedByte();
-				if (anInt1102 >= 100)
+				if(anInt1102 >= 100)
 				{
 					cameraPositionX = anInt1098 * 128 + 64;
 					cameraPositionY = anInt1099 * 128 + 64;
@@ -7379,10 +7379,10 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket214()
 		{
-			if (packetOpcode == 214)
+			if(packetOpcode == 214)
 			{
 				ignoreCount = packetSize / 8;
-				for (int p = 0; p < ignoreCount; p++)
+				for(int p = 0; p < ignoreCount; p++)
 					ignoreListAsLongs[p] = inStream.getLong();
 
 				packetOpcode = -1;
@@ -7394,11 +7394,11 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket72()
 		{
-			if (packetOpcode == 72)
+			if(packetOpcode == 72)
 			{
 				int interfaceId = inStream.getUnsignedShort();
 				RSInterface rsInterface = RSInterface.cache[interfaceId];
-				for (int slot = 0; slot < rsInterface.inventoryItemId.Length; slot++)
+				for(int slot = 0; slot < rsInterface.inventoryItemId.Length; slot++)
 				{
 					rsInterface.inventoryItemId[slot] = -1;
 					rsInterface.inventoryItemId[slot] = 0;
@@ -7413,10 +7413,10 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket107()
 		{
-			if (packetOpcode == 107)
+			if(packetOpcode == 107)
 			{
 				cutsceneActive = false;
-				for (int c = 0; c < 5; c++)
+				for(int c = 0; c < 5; c++)
 					customCameraActive[c] = false;
 
 				packetOpcode = -1;
@@ -7428,17 +7428,17 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket185()
 		{
-			if (packetOpcode == 185)
+			if(packetOpcode == 185)
 			{
 				int interfaceId = inStream.getUnsignedShortA();
 				RSInterface.cache[interfaceId].modelTypeDefault = 3;
-				if (localPlayer.npcAppearance == null)
+				if(localPlayer.npcAppearance == null)
 					RSInterface.cache[interfaceId].modelIdDefault = (localPlayer.bodyPartColour[0] << 25)
-					                                                + (localPlayer.bodyPartColour[4] << 20) + (localPlayer.appearance[0] << 15)
-					                                                + (localPlayer.appearance[8] << 10) + (localPlayer.appearance[11] << 5)
-					                                                + localPlayer.appearance[1];
+																	+ (localPlayer.bodyPartColour[4] << 20) + (localPlayer.appearance[0] << 15)
+																	+ (localPlayer.appearance[8] << 10) + (localPlayer.appearance[11] << 5)
+																	+ localPlayer.appearance[1];
 				else
-					RSInterface.cache[interfaceId].modelIdDefault = (int) (0x12345678L + localPlayer.npcAppearance.id);
+					RSInterface.cache[interfaceId].modelIdDefault = (int)(0x12345678L + localPlayer.npcAppearance.id);
 				packetOpcode = -1;
 				return true;
 			}
@@ -7448,28 +7448,28 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket64()
 		{
-			if (packetOpcode == 64)
+			if(packetOpcode == 64)
 			{
 				playerPositionX = inStream.getUnsignedByteC();
 				playerPositionY = inStream.getUnsignedByteS();
-				for (int x = playerPositionX; x < playerPositionX + 8; x++)
+				for(int x = playerPositionX; x < playerPositionX + 8; x++)
 				{
-					for (int y = playerPositionY; y < playerPositionY + 8; y++)
-						if (groundArray[plane, x, y] != null)
+					for(int y = playerPositionY; y < playerPositionY + 8; y++)
+						if(groundArray[plane, x, y] != null)
 						{
 							groundArray[plane, x, y] = null;
 							spawnGroundItem(x, y);
 						}
 				}
 
-				for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+				for(GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList
 						.peekFront();
 					spawnRequest != null;
-					spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+					spawnRequest = (GameObjectSpawnRequest)spawnObjectList
 						.getPrevious())
-					if (spawnRequest.x >= playerPositionX && spawnRequest.x < playerPositionX + 8
-					                                      && spawnRequest.y >= playerPositionY && spawnRequest.y < playerPositionY + 8
-					                                      && spawnRequest.z == plane)
+					if(spawnRequest.x >= playerPositionX && spawnRequest.x < playerPositionX + 8
+														  && spawnRequest.y >= playerPositionY && spawnRequest.y < playerPositionY + 8
+														  && spawnRequest.z == plane)
 						spawnRequest.delayUntilRespawn = 0;
 
 				packetOpcode = -1;
@@ -7481,27 +7481,27 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket176()
 		{
-			if (packetOpcode == 176)
+			if(packetOpcode == 176)
 			{
 				daysSinceRecoveryChange = inStream.getUnsignedByteC();
 				unreadMessages = inStream.getUnsignedLEShortA();
 				membership = inStream.getUnsignedByte();
 				lastAddress = inStream.getMEBInt();
 				daysSinceLogin = inStream.getUnsignedLEShort();
-				if (lastAddress != 0 && openInterfaceId == -1)
+				if(lastAddress != 0 && openInterfaceId == -1)
 				{
 					//TODO: Disabled DNS lookup.
 					//signlink.dnslookup(TextClass.decodeDNS(lastAddress));
 					clearTopInterfaces();
 					int contentType = 650;
-					if (daysSinceRecoveryChange != 201 || membership == 1)
+					if(daysSinceRecoveryChange != 201 || membership == 1)
 						contentType = 655;
 					reportAbuseInput = "";
 					reportAbuseMute = false;
-					for (int interfaceId = 0; interfaceId < RSInterface.cache.Length; interfaceId++)
+					for(int interfaceId = 0; interfaceId < RSInterface.cache.Length; interfaceId++)
 					{
-						if (RSInterface.cache[interfaceId] == null
-						    || RSInterface.cache[interfaceId].contentType != contentType)
+						if(RSInterface.cache[interfaceId] == null
+							|| RSInterface.cache[interfaceId].contentType != contentType)
 							continue;
 						openInterfaceId = RSInterface.cache[interfaceId].parentID;
 						break;
@@ -7517,7 +7517,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket81()
 		{
-			if (packetOpcode == 81)
+			if(packetOpcode == 81)
 			{
 				updatePlayers(packetSize, inStream);
 				loadingMap = false;
@@ -9397,32 +9397,33 @@ namespace Rs317.Sharp
 
 		private void parseGroupPacket(Buffer stream, int opcode)
 		{
-			if (HandlePacket84(stream, opcode)) return;
+			if(HandlePacket84(stream, opcode)) return;
 
 			HandlePacket105(stream, opcode);
 
-			if (HandlePacket215(stream, opcode)) return;
+			if(HandlePacket215(stream, opcode)) return;
 
-			if (HandlePacket156(stream, opcode)) return;
+			if(HandlePacket156(stream, opcode)) return;
 
-			if (HandlePacket160(stream, opcode)) return;
+			if(HandlePacket160(stream, opcode)) return;
 
 			HandlePacket147(stream, opcode);
 
-			if (HandlePacket151(stream, opcode)) return;
+			if(HandlePacket151(stream, opcode)) return;
 
-			if (HandlePacket4(stream, opcode)) return;
+			if(HandlePacket4(stream, opcode)) return;
 
-			if (HandlePacket44(stream, opcode)) return;
+			if(HandlePacket44(stream, opcode)) return;
 
-			if (HandlePacket101(stream, opcode)) return;
+			if(HandlePacket101(stream, opcode)) return;
 
 			HandlePacket117(stream, opcode);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)] private void HandlePacket117(Buffer stream, int opcode)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void HandlePacket117(Buffer stream, int opcode)
 		{
-			if (opcode == 117)
+			if(opcode == 117)
 			{
 				int projectileAngle = stream.getUnsignedByte();
 				int projectileX = playerPositionX + (projectileAngle >> 4 & 7);
@@ -9437,9 +9438,9 @@ namespace Rs317.Sharp
 				int projectileSpeed = stream.getUnsignedLEShort();
 				int projectileInitialSlope = stream.getUnsignedByte();
 				int projectileDistanceFromSource = stream.getUnsignedByte();
-				if (projectileX >= 0 && projectileY >= 0 && projectileX < 104 && projectileY < 104 && projectileOffsetX >= 0
-				    && projectileOffsetY >= 0 && projectileOffsetX < 104 && projectileOffsetY < 104
-				    && projectileGraphicId != 0x00FFFF)
+				if(projectileX >= 0 && projectileY >= 0 && projectileX < 104 && projectileY < 104 && projectileOffsetX >= 0
+					&& projectileOffsetY >= 0 && projectileOffsetX < 104 && projectileOffsetY < 104
+					&& projectileGraphicId != 0x00FFFF)
 				{
 					projectileX = projectileX * 128 + 64;
 					projectileY = projectileY * 128 + 64;
@@ -9459,7 +9460,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket101(Buffer stream, int opcode)
 		{
-			if (opcode == 101)
+			if(opcode == 101)
 			{
 				int objectData = stream.getUnsignedByteC();
 				int objectType = objectData >> 2;
@@ -9468,7 +9469,7 @@ namespace Rs317.Sharp
 				int positionOffset = stream.getUnsignedByte();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
 				int y = playerPositionY + (positionOffset & 7);
-				if (x >= 0 && y >= 0 && x < 104 && y < 104)
+				if(x >= 0 && y >= 0 && x < 104 && y < 104)
 					createObjectSpawnRequest(-1, -1, face, type, y, objectType, plane, x, 0);
 				return true;
 			}
@@ -9478,19 +9479,19 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket44(Buffer stream, int opcode)
 		{
-			if (opcode == 44)
+			if(opcode == 44)
 			{
 				int itemId = stream.getUnsignedShortA();
 				int itemAmount = stream.getUnsignedLEShort();
 				int positionOffset = stream.getUnsignedByte();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
 				int y = playerPositionY + (positionOffset & 7);
-				if (x >= 0 && y >= 0 && x < 104 && y < 104)
+				if(x >= 0 && y >= 0 && x < 104 && y < 104)
 				{
 					Item item = new Item();
 					item.itemId = itemId;
 					item.itemCount = itemAmount;
-					if (groundArray[plane, x, y] == null)
+					if(groundArray[plane, x, y] == null)
 						groundArray[plane, x, y] = new DoubleEndedQueue();
 					groundArray[plane, x, y].pushBack(item);
 					spawnGroundItem(x, y);
@@ -9504,7 +9505,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket4(Buffer stream, int opcode)
 		{
-			if (opcode == 4)
+			if(opcode == 4)
 			{
 				int positionOffset = stream.getUnsignedByte();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
@@ -9512,7 +9513,7 @@ namespace Rs317.Sharp
 				int graphicId = stream.getUnsignedLEShort();
 				int drawHeight = stream.getUnsignedByte();
 				int delay = stream.getUnsignedLEShort();
-				if (x >= 0 && y >= 0 && x < 104 && y < 104)
+				if(x >= 0 && y >= 0 && x < 104 && y < 104)
 				{
 					x = x * 128 + 64;
 					y = y * 128 + 64;
@@ -9529,7 +9530,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket151(Buffer stream, int opcode)
 		{
-			if (opcode == 151)
+			if(opcode == 151)
 			{
 				int positionOffset = stream.getUnsignedByteA();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
@@ -9539,7 +9540,7 @@ namespace Rs317.Sharp
 				int objectType = data >> 2;
 				int orientation = data & 3;
 				int type = objectTypes[objectType];
-				if (x >= 0 && y >= 0 && x < 104 && y < 104)
+				if(x >= 0 && y >= 0 && x < 104 && y < 104)
 					createObjectSpawnRequest(-1, objectId, orientation, type, y, objectType, plane, x, 0);
 				return true;
 			}
@@ -9547,9 +9548,10 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)] private void HandlePacket147(Buffer stream, int opcode)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void HandlePacket147(Buffer stream, int opcode)
 		{
-			if (opcode == 147)
+			if(opcode == 147)
 			{
 				int positionOffset = stream.getUnsignedByteS();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
@@ -9567,11 +9569,11 @@ namespace Rs317.Sharp
 				int objectId = stream.getUnsignedLEShort();
 				byte offsetY = stream.getByteC();
 				Player player;
-				if (targetPlayer == playerListId)
+				if(targetPlayer == playerListId)
 					player = localPlayer;
 				else
 					player = players[targetPlayer];
-				if (player != null)
+				if(player != null)
 				{
 					GameObjectDefinition gObject = GameObjectDefinition.getDefinition(objectId);
 					int tileHeightX0Y0 = intGroundArray[plane][x][y];
@@ -9580,7 +9582,7 @@ namespace Rs317.Sharp
 					int tileHeightX0Y1 = intGroundArray[plane][x][y + 1];
 					Model model = gObject.getModelAt(objectType, objectOrientation, tileHeightX0Y0, tileHeightX1Y0,
 						tileHeightX1Y1, tileHeightX0Y1, -1);
-					if (model != null)
+					if(model != null)
 					{
 						createObjectSpawnRequest(duration + 1, -1, 0, type, y, 0, plane, x, startDelay + 1);
 						player.modifiedAppearanceStartTime = startDelay + tick;
@@ -9588,7 +9590,7 @@ namespace Rs317.Sharp
 						player.playerModel = model;
 						int sizeX = gObject.sizeX;
 						int sizeY = gObject.sizeY;
-						if (objectOrientation == 1 || objectOrientation == 3)
+						if(objectOrientation == 1 || objectOrientation == 3)
 						{
 							sizeX = gObject.sizeY;
 							sizeY = gObject.sizeX;
@@ -9597,14 +9599,14 @@ namespace Rs317.Sharp
 						player.anInt1711 = x * 128 + sizeX * 64;
 						player.anInt1713 = y * 128 + sizeY * 64;
 						player.drawHeight = getFloorDrawHeight(plane, player.anInt1713, player.anInt1711);
-						if (offsetX > tileHeight)
+						if(offsetX > tileHeight)
 						{
 							byte temp = offsetX;
 							offsetX = tileHeight;
 							tileHeight = temp;
 						}
 
-						if (offsetY > tileWidth)
+						if(offsetY > tileWidth)
 						{
 							byte temp = offsetY;
 							offsetY = tileWidth;
@@ -9622,7 +9624,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket160(Buffer stream, int opcode)
 		{
-			if (opcode == 160) // Spawn a 4-square object?
+			if(opcode == 160) // Spawn a 4-square object?
 			{
 				int positionOffset = stream.getUnsignedByteS();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
@@ -9632,19 +9634,19 @@ namespace Rs317.Sharp
 				int orientation = objectData & 3;
 				int type = objectTypes[objectType];
 				int animationId = stream.getUnsignedLEShortA();
-				if (x >= 0 && y >= 0 && x < 103 && y < 103)
+				if(x >= 0 && y >= 0 && x < 103 && y < 103)
 				{
 					int tileHeightX0Y0 = intGroundArray[plane][x][y];
 					int tileHeightX1Y0 = intGroundArray[plane][x + 1][y];
 					int tileHeightX1Y1 = intGroundArray[plane][x + 1][y + 1];
 					int tileHeightX0Y1 = intGroundArray[plane][x][y + 1];
-					if (type == 0)
+					if(type == 0)
 					{
 						Wall wallObject = worldController.getWallObject(x, y, plane);
-						if (wallObject != null)
+						if(wallObject != null)
 						{
 							int uid = wallObject.uid >> 14 & 0x7FFF;
-							if (objectType == 2)
+							if(objectType == 2)
 							{
 								wallObject.primary = new GameObject(uid, 4 + orientation, 2, tileHeightX1Y0,
 									tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
@@ -9659,29 +9661,29 @@ namespace Rs317.Sharp
 						}
 					}
 
-					if (type == 1)
+					if(type == 1)
 					{
 						WallDecoration wallDecoration = worldController.getWallDecoration(x, y, plane);
-						if (wallDecoration != null)
+						if(wallDecoration != null)
 							wallDecoration.renderable = new GameObject(wallDecoration.uid >> 14 & 0x7FFF, 0, 4,
 								tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
 					}
 
-					if (type == 2)
+					if(type == 2)
 					{
 						InteractiveObject interactiveObject = worldController.getInteractiveObject(x, y, plane);
-						if (objectType == 11)
+						if(objectType == 11)
 							objectType = 10;
-						if (interactiveObject != null)
+						if(interactiveObject != null)
 							interactiveObject.renderable = new GameObject(interactiveObject.uid >> 14 & 0x7FFF, orientation,
 								objectType, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId,
 								false);
 					}
 
-					if (type == 3)
+					if(type == 3)
 					{
 						GroundDecoration groundDecoration = worldController.getGroundDecoration(x, y, plane);
-						if (groundDecoration != null)
+						if(groundDecoration != null)
 							groundDecoration.renderable = new GameObject(groundDecoration.uid >> 14 & 0x7FFF, orientation,
 								22, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
 					}
@@ -9695,29 +9697,29 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket156(Buffer stream, int opcode)
 		{
-			if (opcode == 156)
+			if(opcode == 156)
 			{
 				int positionOffset = stream.getUnsignedByteA();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
 				int y = playerPositionY + (positionOffset & 7);
 				int itemId = stream.getUnsignedLEShort();
-				if (x >= 0 && y >= 0 && x < 104 && y < 104)
+				if(x >= 0 && y >= 0 && x < 104 && y < 104)
 				{
 					DoubleEndedQueue groundItems = groundArray[plane, x, y];
-					if (groundItems != null)
+					if(groundItems != null)
 					{
-						for (Item item = (Item) groundItems.peekFront();
+						for(Item item = (Item)groundItems.peekFront();
 							item != null;
-							item = (Item) groundItems
+							item = (Item)groundItems
 								.getPrevious())
 						{
-							if (item.itemId != (itemId & 0x7FFF))
+							if(item.itemId != (itemId & 0x7FFF))
 								continue;
 							item.unlink();
 							break;
 						}
 
-						if (groundItems.peekFront() == null)
+						if(groundItems.peekFront() == null)
 							groundArray[plane, x, y] = null;
 						spawnGroundItem(x, y);
 					}
@@ -9731,7 +9733,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket215(Buffer stream, int opcode)
 		{
-			if (opcode == 215)
+			if(opcode == 215)
 			{
 				int id = stream.getUnsignedLEShortA();
 				int positionOffset = stream.getUnsignedByteS();
@@ -9739,12 +9741,12 @@ namespace Rs317.Sharp
 				int y = playerPositionY + (positionOffset & 7);
 				int playerId = stream.getUnsignedLEShortA();
 				int count = stream.getUnsignedLEShort();
-				if (x >= 0 && y >= 0 && x < 104 && y < 104 && playerId != playerListId)
+				if(x >= 0 && y >= 0 && x < 104 && y < 104 && playerId != playerListId)
 				{
 					Item item = new Item();
 					item.itemId = id;
 					item.itemCount = count;
-					if (groundArray[plane, x, y] == null)
+					if(groundArray[plane, x, y] == null)
 						groundArray[plane, x, y] = new DoubleEndedQueue();
 					groundArray[plane, x, y].pushBack(item);
 					spawnGroundItem(x, y);
@@ -9756,9 +9758,10 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)] private void HandlePacket105(Buffer stream, int opcode)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void HandlePacket105(Buffer stream, int opcode)
 		{
-			if (opcode == 105)
+			if(opcode == 105)
 			{
 				int positionOffset = stream.getUnsignedByte();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
@@ -9767,9 +9770,9 @@ namespace Rs317.Sharp
 				int data = stream.getUnsignedByte();
 				int boundarySize = data >> 4 & 0xf;
 				int loop = data & 7;
-				if (localPlayer.waypointX[0] >= x - boundarySize && localPlayer.waypointX[0] <= x + boundarySize
-				                                                 && localPlayer.waypointY[0] >= y - boundarySize && localPlayer.waypointY[0] <= y + boundarySize
-				                                                 && effectsEnabled && !lowMemory && trackCount < 50)
+				if(localPlayer.waypointX[0] >= x - boundarySize && localPlayer.waypointX[0] <= x + boundarySize
+																 && localPlayer.waypointY[0] >= y - boundarySize && localPlayer.waypointY[0] <= y + boundarySize
+																 && effectsEnabled && !lowMemory && trackCount < 50)
 				{
 					trackIds[trackCount] = trackId;
 					trackLoop[trackCount] = loop;
@@ -9781,7 +9784,7 @@ namespace Rs317.Sharp
 
 		private bool HandlePacket84(Buffer stream, int opcode)
 		{
-			if (opcode == 84)
+			if(opcode == 84)
 			{
 				int positionOffset = stream.getUnsignedByte();
 				int x = playerPositionX + (positionOffset >> 4 & 7);
@@ -9789,17 +9792,17 @@ namespace Rs317.Sharp
 				int targetItemId = stream.getUnsignedLEShort();
 				int targetItemAmount = stream.getUnsignedLEShort();
 				int itemCount = stream.getUnsignedLEShort();
-				if (x >= 0 && y >= 0 && x < 104 && y < 104)
+				if(x >= 0 && y >= 0 && x < 104 && y < 104)
 				{
 					DoubleEndedQueue groundItemArray = groundArray[plane, x, y];
-					if (groundItemArray != null)
+					if(groundItemArray != null)
 					{
-						for (Item item = (Item) groundItemArray.peekFront();
+						for(Item item = (Item)groundItemArray.peekFront();
 							item != null;
-							item = (Item) groundItemArray
+							item = (Item)groundItemArray
 								.getPrevious())
 						{
-							if (item.itemId != (targetItemId & 0x7FFF) || item.itemCount != targetItemAmount)
+							if(item.itemId != (targetItemId & 0x7FFF) || item.itemCount != targetItemAmount)
 								continue;
 							item.itemCount = itemCount;
 							break;
@@ -11042,12 +11045,12 @@ namespace Rs317.Sharp
 				renderNPCs(false);
 				renderProjectiles();
 				renderStationaryGraphics();
-				if (!cutsceneActive)
+				if(!cutsceneActive)
 				{
 					int vertical = cameraVertical;
-					if (secondaryCameraVertical / 256 > vertical)
+					if(secondaryCameraVertical / 256 > vertical)
 						vertical = secondaryCameraVertical / 256;
-					if (customCameraActive[4] && cameraAmplitude[4] + 128 > vertical)
+					if(customCameraActive[4] && cameraAmplitude[4] + 128 > vertical)
 						vertical = cameraAmplitude[4] + 128;
 					int horizontal = cameraHorizontal + cameraRandomisationA & 0x7FF;
 					setCameraPosition(currentCameraPositionH, currentCameraPositionV,
@@ -11055,7 +11058,7 @@ namespace Rs317.Sharp
 				}
 
 				int cameraPlane;
-				if (!cutsceneActive)
+				if(!cutsceneActive)
 					cameraPlane = getWorldDrawPlane();
 				else
 					cameraPlane = getCameraPlaneCutscene();
@@ -11064,25 +11067,25 @@ namespace Rs317.Sharp
 				int z = cameraPositionY;
 				int curveY = cameraVerticalRotation;
 				int curveZ = cameraHorizontalRotation;
-				for (int i = 0; i < 5; i++)
-					if (customCameraActive[i])
+				for(int i = 0; i < 5; i++)
+					if(customCameraActive[i])
 					{
-						int randomisation = (int) ((StaticRandomGenerator.Next() * (cameraJitter[i] * 2 + 1) - cameraJitter[i])
-						                           + Math.Sin(unknownCameraVariable[i] * (cameraFrequency[i] / 100D)) * cameraAmplitude[i]);
-						if (i == 0)
+						int randomisation = (int)((StaticRandomGenerator.Next() * (cameraJitter[i] * 2 + 1) - cameraJitter[i])
+												   + Math.Sin(unknownCameraVariable[i] * (cameraFrequency[i] / 100D)) * cameraAmplitude[i]);
+						if(i == 0)
 							cameraPositionX += randomisation;
-						if (i == 1)
+						if(i == 1)
 							cameraPositionZ += randomisation;
-						if (i == 2)
+						if(i == 2)
 							cameraPositionY += randomisation;
-						if (i == 3)
+						if(i == 3)
 							cameraHorizontalRotation = cameraHorizontalRotation + randomisation & 0x7FF;
-						if (i == 4)
+						if(i == 4)
 						{
 							cameraVerticalRotation += randomisation;
-							if (cameraVerticalRotation < 128)
+							if(cameraVerticalRotation < 128)
 								cameraVerticalRotation = 128;
-							if (cameraVerticalRotation > 383)
+							if(cameraVerticalRotation > 383)
 								cameraVerticalRotation = 383;
 						}
 					}
@@ -11971,7 +11974,7 @@ namespace Rs317.Sharp
 
 		public override void startUp()
 		{
-			if (!wasClientStartupCalled)
+			if(!wasClientStartupCalled)
 				wasClientStartupCalled = true;
 			else
 				throw new InvalidOperationException($"Failed. Cannot call startup on Client multiple times.");
@@ -12093,7 +12096,7 @@ namespace Rs317.Sharp
 					{
 						processOnDemandQueue();
 					}
-					catch (Exception e)
+					catch(Exception e)
 					{
 						Console.WriteLine($"Failed to process animation demand queue. Reason: {e.Message} \n Stack: {e.StackTrace}");
 						signlink.reporterror($"Failed to process animation demand queue. Reason: {e.Message} \n Stack: {e.StackTrace}");
