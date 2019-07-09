@@ -14,5 +14,7 @@ namespace Rs317.Extended
 		/// that is walkable.
 		/// </summary>
 		SetClientWalkableInterface = 208,
+
+		SetPlayerRightClickOptions = 104,
 	}
 }
