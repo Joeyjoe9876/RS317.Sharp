@@ -38,8 +38,9 @@ namespace Rs317.Sharp
 				int size = ((buffer[0] & 0xff) << 16) + ((buffer[1] & 0xff) << 8) + (buffer[2] & 0xff);
 				int sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
 
-				if(size < 0 || size > 0x7a120)
-					return null;
+				//Custom: This enables the loading 377 cache as specified here https://www.rune-server.ee/runescape-development/rs2-client/configuration/139904-377-cache-317-client.html
+				//if(size < 0 || size > 0x7a120)
+				//	return null;
 
 				if(sector <= 0 || sector > dataFile.Length / 520L)
 					return null;
