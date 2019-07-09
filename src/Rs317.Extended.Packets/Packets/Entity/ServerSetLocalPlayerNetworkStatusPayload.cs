@@ -6,7 +6,7 @@ using FreecraftCore.Serializer;
 namespace Rs317.Extended
 {
 	[WireDataContract]
-	[GameClientPayload(RsNetworkOperationCode.SetClientWalkableInterface)]
+	[GameClientPayload(RsNetworkOperationCode.SetPlayerNetworkStatus)]
 	public sealed class ServerSetLocalPlayerNetworkStatusPayload : BaseGameServerPayload
 	{
 		/// <summary>
