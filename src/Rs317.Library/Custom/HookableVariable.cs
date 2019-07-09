@@ -30,7 +30,7 @@ namespace Rs317.Sharp
 		/// <summary>
 		/// Fired when the hookable variable's value changes.
 		/// </summary>
-		public EventHandler<HookableVariableValueChangedEventArgs<TVariableType>> OnVariableValueChanged { get; }
+		public event EventHandler<HookableVariableValueChangedEventArgs<TVariableType>> OnVariableValueChanged;
 
 		public TVariableType VariableValue { get; private set; }
 
