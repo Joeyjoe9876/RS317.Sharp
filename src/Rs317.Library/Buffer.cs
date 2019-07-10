@@ -6,13 +6,13 @@ using Reinterpret.Net;
 namespace Rs317.Sharp
 {
 
-	public sealed class Buffer : Cacheable, IBufferReadable, IBufferWriteable, IBuffer
+	public sealed class Buffer : IBufferReadable, IBufferWriteable, IBuffer
 	{
-		public byte[] buffer;
+		public byte[] buffer { get; }
 
-		public int position;
+		public int position { get; set; }
 
-		public int bitPosition;
+		public int bitPosition { get; private set; }
 
 		private static int[] BIT_MASKS =
 		{
@@ -21,41 +21,9 @@ namespace Rs317.Sharp
 			0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1
 		};
 
-		public ISAACRandomGenerator encryptor;
-
-		private static int cacheCount;
-
-		private static DoubleEndedQueue BUFFER_CACHE = new DoubleEndedQueue();
-
-		private static readonly object SyncObject = new object();
-
-		public static Buffer create()
+		internal Buffer()
 		{
-			lock (SyncObject)
-			{
-				Buffer stream = null;
 
-				if (cacheCount > 0)
-				{
-					cacheCount--;
-					stream = (Buffer) BUFFER_CACHE.popFront();
-				}
-
-				if (stream != null)
-				{
-					stream.position = 0;
-					return stream;
-				}
-			}
-
-			Buffer stream_1 = new Buffer();
-			stream_1.position = 0;
-			stream_1.buffer = new byte[5000];
-			return stream_1;
-		}
-
-		private Buffer()
-		{
 		}
 
 		public Buffer(byte[] buf)
@@ -329,7 +297,7 @@ namespace Rs317.Sharp
 
 		public void putOpcode(int i)
 		{
-			buffer[position++] = (byte) (i + encryptor.value());
+			buffer[position++] = (byte)i;
 		}
 
 		public void putShort(int i)

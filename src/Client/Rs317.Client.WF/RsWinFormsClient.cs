@@ -12,7 +12,7 @@ namespace Rs317.Sharp
 		public Graphics GraphicsObject { get; }
 
 		public RsWinFormsClient(ClientConfiguration config, Graphics graphicsObject) 
-			: base(config)
+			: base(config, new DefaultBufferFactory())
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 			GraphicsObject = graphicsObject ?? throw new ArgumentNullException(nameof(graphicsObject));

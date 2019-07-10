@@ -97,7 +97,7 @@ namespace Rs317.Sharp
 		private int thirdMostRecentOpcode;
 		private String clickToContinueString;
 		private int privateChatMode;
-		private Buffer loginStream;
+		private IBufferWriteable loginStream;
 		private bool effectsEnabled;
 		private int[] currentFlameColours;
 		private int[] flameColour1;
@@ -313,7 +313,7 @@ namespace Rs317.Sharp
 		private int loadingBarPercentage;
 		private bool loadingMap;
 		private String[] friendsList;
-		private Buffer inStream;
+		private IBufferReadable inStream;
 		private int moveItemInterfaceId;
 		private int moveItemSlotStart;
 		private int activeInterfaceType;
@@ -412,7 +412,7 @@ namespace Rs317.Sharp
 		private int inventoryOverlayInterfaceID;
 		private int[] anIntArray1190;
 		private int[] anIntArray1191;
-		private Buffer stream;
+		private IBufferWriteable stream;
 		private int lastAddress;
 		private int splitPrivateChat;
 		private IndexedImage inventoryBackgroundImage;
@@ -510,8 +510,11 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public Client(ClientConfiguration config)
+		public Client(ClientConfiguration config, IBufferFactory bufferFactory)
 		{
+			if (config == null) throw new ArgumentNullException(nameof(config));
+			if (bufferFactory == null) throw new ArgumentNullException(nameof(bufferFactory));
+
 			if(!config.isLowMemory)
 				setHighMem();
 			else
@@ -532,7 +535,7 @@ namespace Rs317.Sharp
 			npcs = new NPC[16384];
 			npcIds = new int[16384];
 			actorsToUpdateIds = new int[1000];
-			loginStream = Buffer.create();
+			loginStream = bufferFactory.Create(EmptyFactoryCreationContext.Instance);
 			effectsEnabled = true;
 			openInterfaceId = -1;
 			skillExperience = new int[Skills.skillsCount];
@@ -612,7 +615,7 @@ namespace Rs317.Sharp
 			minimapHintY = new int[1000];
 			loadingMap = false;
 			friendsList = new String[200];
-			inStream = Buffer.create();
+			inStream = bufferFactory.Create(EmptyFactoryCreationContext.Instance);
 			expectedCRCs = new int[9];
 			menuActionData2 = new int[500];
 			menuActionData3 = new int[500];
@@ -643,7 +646,7 @@ namespace Rs317.Sharp
 			spawnObjectList = new DoubleEndedQueue();
 			cameraVertical = 128;
 			inventoryOverlayInterfaceID = -1;
-			stream = Buffer.create();
+			stream = bufferFactory.Create(EmptyFactoryCreationContext.Instance);
 			menuActionName = new String[500];
 			cameraAmplitude = new int[5];
 			trackIds = new int[50];
@@ -8220,6 +8223,8 @@ namespace Rs317.Sharp
 					stream.putInt(signlink.uid);
 					stream.putString(playerUsername);
 					stream.putString(playerPassword);
+
+					//Custom: RSA is disabled for now.
 					stream.generateKeys();
 					loginStream.position = 0;
 					if(recoveredConnection)
@@ -8234,7 +8239,9 @@ namespace Rs317.Sharp
 						loginStream.putInt(expectedCRCs[crc]);
 
 					loginStream.putBytes(stream.buffer, stream.position, 0);
-					stream.encryptor = new ISAACRandomGenerator(seed);
+					
+					//Custom: This decorates the stream with encryption capability. Encrypting outgoing opcodes.
+					stream = new OpcodeEncryptingBufferWriterDecorator(stream, new ISAACRandomGenerator(seed));
 					for(int index = 0; index < 4; index++)
 						seed[index] += 50;
 
@@ -9395,7 +9402,7 @@ namespace Rs317.Sharp
 			return signlink.openSocket(port);
 		}
 
-		private void parseGroupPacket(Buffer stream, int opcode)
+		private void parseGroupPacket(IBufferReadable stream, int opcode)
 		{
 			if(HandlePacket84(stream, opcode)) return;
 
@@ -9421,7 +9428,7 @@ namespace Rs317.Sharp
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void HandlePacket117(Buffer stream, int opcode)
+		private void HandlePacket117(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 117)
 			{
@@ -9458,7 +9465,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private bool HandlePacket101(Buffer stream, int opcode)
+		private bool HandlePacket101(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 101)
 			{
@@ -9477,7 +9484,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private bool HandlePacket44(Buffer stream, int opcode)
+		private bool HandlePacket44(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 44)
 			{
@@ -9503,7 +9510,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private bool HandlePacket4(Buffer stream, int opcode)
+		private bool HandlePacket4(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 4)
 			{
@@ -9528,7 +9535,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private bool HandlePacket151(Buffer stream, int opcode)
+		private bool HandlePacket151(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 151)
 			{
@@ -9549,7 +9556,7 @@ namespace Rs317.Sharp
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void HandlePacket147(Buffer stream, int opcode)
+		private void HandlePacket147(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 147)
 			{
@@ -9622,7 +9629,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private bool HandlePacket160(Buffer stream, int opcode)
+		private bool HandlePacket160(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 160) // Spawn a 4-square object?
 			{
@@ -9695,7 +9702,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private bool HandlePacket156(Buffer stream, int opcode)
+		private bool HandlePacket156(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 156)
 			{
@@ -9731,7 +9738,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private bool HandlePacket215(Buffer stream, int opcode)
+		private bool HandlePacket215(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 215)
 			{
@@ -9759,7 +9766,7 @@ namespace Rs317.Sharp
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void HandlePacket105(Buffer stream, int opcode)
+		private void HandlePacket105(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 105)
 			{
@@ -9782,7 +9789,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private bool HandlePacket84(Buffer stream, int opcode)
+		private bool HandlePacket84(IBufferReadable stream, int opcode)
 		{
 			if(opcode == 84)
 			{
@@ -12801,7 +12808,7 @@ namespace Rs317.Sharp
 			entity.currentRotation = entity.turnDirection;
 		}
 
-		private void updateLocalPlayerMovement(Buffer stream)
+		private void updateLocalPlayerMovement(IBufferReadable stream)
 		{
 			stream.initBitAccess();
 			int currentlyUpdating = stream.readBits(1);
@@ -12849,7 +12856,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void updateNPCBlock(Buffer stream)
+		private void updateNPCBlock(IBufferReadable stream)
 		{
 			for(int n = 0; n < playersObservedCount; n++)
 			{
@@ -12960,7 +12967,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void updateNPCList(int packetSize, Buffer stream)
+		private void updateNPCList(int packetSize, IBufferReadable stream)
 		{
 			while(stream.bitPosition + 21 < packetSize * 8)
 			{
@@ -12990,7 +12997,7 @@ namespace Rs317.Sharp
 			stream.finishBitAccess();
 		}
 
-		private void updateNPCMovement(Buffer stream)
+		private void updateNPCMovement(IBufferReadable stream)
 		{
 			stream.initBitAccess();
 			int npcsToUpdate = stream.readBits(8);
@@ -13055,7 +13062,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void updateNPCs(Buffer stream, int packetSize)
+		private void updateNPCs(IBufferReadable stream, int packetSize)
 		{
 			actorsToUpdateCount = 0;
 			playersObservedCount = 0;
@@ -13087,7 +13094,7 @@ namespace Rs317.Sharp
 				}
 		}
 
-		private void updateOtherPlayerMovement(Buffer stream)
+		private void updateOtherPlayerMovement(IBufferReadable stream)
 		{
 			int playersToUpdate = stream.readBits(8);
 			if(playersToUpdate < localPlayerCount)
@@ -13150,7 +13157,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void updatePlayer(Buffer stream, int updateType, Player player, int playerId)
+		private void updatePlayer(IBufferReadable stream, int updateType, Player player, int playerId)
 		{
 			if((updateType & 0x400) != 0)
 			{
@@ -13342,7 +13349,7 @@ namespace Rs317.Sharp
 
 		}
 
-		private void updatePlayerList(Buffer stream, int count)
+		private void updatePlayerList(IBufferReadable stream, int count)
 		{
 			while(stream.bitPosition + 10 < count * 8)
 			{
@@ -13375,7 +13382,7 @@ namespace Rs317.Sharp
 			stream.finishBitAccess();
 		}
 
-		private void updatePlayers(int packetSize, Buffer stream)
+		private void updatePlayers(int packetSize, IBufferReadable stream)
 		{
 			actorsToUpdateCount = 0;
 			playersObservedCount = 0;
@@ -13406,7 +13413,7 @@ namespace Rs317.Sharp
 				}
 		}
 
-		private void updatePlayersBlock(Buffer stream)
+		private void updatePlayersBlock(IBufferReadable stream)
 		{
 			for(int p = 0; p < playersObservedCount; p++)
 			{

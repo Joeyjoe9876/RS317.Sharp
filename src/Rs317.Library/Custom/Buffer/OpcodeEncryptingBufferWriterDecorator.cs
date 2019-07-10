@@ -23,6 +23,11 @@ namespace Rs317.Sharp
 			set => DecoratedBufferWriter.position = value;
 		}
 
+		public void generateKeys()
+		{
+			DecoratedBufferWriter.generateKeys();
+		}
+
 		public void put(int i)
 		{
 			DecoratedBufferWriter.put(i);

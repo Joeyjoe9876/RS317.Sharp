@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Rs317.Common\Rs317.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Primitives\" />
+  </ItemGroup>
+
 </Project>

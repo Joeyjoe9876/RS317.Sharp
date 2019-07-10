@@ -14,7 +14,7 @@ namespace Rs317.Sharp
 			return text;
 		}
 
-		public static String readFromStream(int length, Buffer stream)
+		public static String readFromStream(int length, IBufferReadable stream)
 		{
 			int pointer = 0;
 			int l = -1;
@@ -67,7 +67,7 @@ namespace Rs317.Sharp
 			return new String(characterList, 0, pointer);
 		}
 
-		public static void writeToStream(String text, Buffer stream)
+		public static void writeToStream(String text, IBufferWriteable stream)
 		{
 			if (text.Length > 80)
 				text = text.Substring(0, 80);

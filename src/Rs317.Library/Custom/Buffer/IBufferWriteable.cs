@@ -6,6 +6,8 @@ namespace Rs317.Sharp
 {
 	public interface IBufferWriteable : IBufferExposeable, IBufferSeekable
 	{
+		void generateKeys();
+
 		void put(int i);
 
 		void put24BitInt(int i);
