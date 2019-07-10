@@ -12960,9 +12960,9 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void updateNPCList(int amount, Buffer stream)
+		private void updateNPCList(int packetSize, Buffer stream)
 		{
-			while(stream.bitPosition + 21 < amount * 8)
+			while(stream.bitPosition + 21 < packetSize * 8)
 			{
 				int npcId = stream.readBits(14);
 				if(npcId == 16383)
@@ -13055,12 +13055,12 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void updateNPCs(Buffer stream, int amount)
+		private void updateNPCs(Buffer stream, int packetSize)
 		{
 			actorsToUpdateCount = 0;
 			playersObservedCount = 0;
 			updateNPCMovement(stream);
-			updateNPCList(amount, stream);
+			updateNPCList(packetSize, stream);
 			updateNPCBlock(stream);
 			for(int k = 0; k < actorsToUpdateCount; k++)
 			{
@@ -13072,10 +13072,10 @@ namespace Rs317.Sharp
 				}
 			}
 
-			if(stream.position != amount)
+			if(stream.position != packetSize)
 			{
 				signlink.reporterror(
-					enteredUsername + " size mismatch in getnpcpos - pos:" + stream.position + " psize:" + amount);
+					enteredUsername + " size mismatch in getnpcpos - pos:" + stream.position + " psize:" + packetSize);
 				throw new Exception("eek");
 			}
 
