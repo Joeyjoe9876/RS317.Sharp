@@ -26,7 +26,7 @@ Applicable licensing referenced in [317Refactor](https://github.com/Jameskmonger
 
 ## Contributing
 
-What does **modified** mean? Well, the APGL cannot be modified. In this case, I'm just refering to how contributes work. Any contributor to the project retains an additional unrestricted, non-exclusive, perpetual, and irrevocable license granted to themselves for all portions of work they contribute.
+What does **modified** mean? Well, the APGL cannot be modified. In this case, I'm just refering to how contributions work. Any contributor to the project retains an additional unrestricted, non-exclusive, perpetual, and irrevocable license granted to themselves for all portions of work they contribute.
 
 What this means is if you write something, contribute it as a pull request to the repository, it is licensed to other users under AGPL 3.0 but you also retain your ownership and rights to it too, so you can do whatever you want with the code you've written yourself and aren't restrited by the repositories AGPL license. In the plainest of terms, you can do whatever you want with what you write. Just not with what everyone else has written, which requires you to follow the AGPL.
 
