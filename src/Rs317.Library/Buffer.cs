@@ -6,7 +6,7 @@ using Reinterpret.Net;
 namespace Rs317.Sharp
 {
 
-	public sealed class Buffer : Cacheable, IBufferReadable, IBufferWriteable
+	public sealed class Buffer : Cacheable, IBufferReadable, IBufferWriteable, IBuffer
 	{
 		public byte[] buffer;
 
