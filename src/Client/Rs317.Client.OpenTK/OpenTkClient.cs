@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
-	public sealed class OpenTKClient : Client<OpenTKRsGraphicsContext>
+	public class OpenTKClient : Client<OpenTKRsGraphicsContext>
 	{
 		public OpenTKRsGraphicsContext GraphicsObject { get; }
 
 		private IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer> ImageProducerFactory { get; }
 
-		public OpenTKClient(ClientConfiguration config, OpenTKRsGraphicsContext graphicsObject, IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer> imageProducerFactory) 
-			: base(config, new DefaultBufferFactory())
+		public OpenTKClient(ClientConfiguration config, OpenTKRsGraphicsContext graphicsObject, IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer> imageProducerFactory, IBufferFactory bufferFactory) 
+			: base(config, bufferFactory)
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 

@@ -48,7 +48,7 @@ namespace Rs317.Sharp
 
 		public virtual OpenTKClient CreateOpenTkClient(ClientConfiguration configuration, OpenTkImageProducerFactory imageProducerFactory)
 		{
-			return new OpenTKClient(configuration, new OpenTKRsGraphicsContext(), imageProducerFactory);
+			return new OpenTKClient(configuration, new OpenTKRsGraphicsContext(), imageProducerFactory, new DefaultBufferFactory());
 		}
 	}
 }

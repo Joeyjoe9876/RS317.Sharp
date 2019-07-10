@@ -23,7 +23,7 @@ namespace Rs317.Extended
 
 		public override OpenTKClient CreateOpenTkClient(ClientConfiguration configuration, OpenTkImageProducerFactory imageProducerFactory)
 		{
-			return base.CreateOpenTkClient(configuration, imageProducerFactory);
+			return new ExtendedOpenTkClient(configuration, new OpenTKRsGraphicsContext(), imageProducerFactory, new ExtendedBufferFactory());
 		}
 	}
 }
