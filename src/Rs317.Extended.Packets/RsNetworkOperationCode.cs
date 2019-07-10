@@ -26,5 +26,7 @@ namespace Rs317.Extended
 		CameraReset = 107,
 
 		ResetInterfaceButtonState = 68,
+
+		LinkTabsToInterface = 71,
 	}
 }
