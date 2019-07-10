@@ -6187,7 +6187,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private bool HandlePacket65()
+		protected virtual bool HandlePacket65()
 		{
 			if(packetOpcode == 65)
 			{
@@ -7515,7 +7515,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private bool HandlePacket81()
+		protected virtual bool HandlePacket81()
 		{
 			if(packetOpcode == 81)
 			{
