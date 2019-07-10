@@ -13,7 +13,7 @@ namespace Rs317.Sharp
 
 		public static void load(Archive archive)
 		{
-			Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
+			Default317Buffer buffer = new Default317Buffer(archive.decompressFile("varbit.dat"));
 			int count = buffer.getUnsignedLEShort();
 
 			if(values == null)
@@ -36,7 +36,7 @@ namespace Rs317.Sharp
 
 		}
 
-		private void load(Buffer buffer)
+		private void load(Default317Buffer buffer)
 		{
 			do
 			{

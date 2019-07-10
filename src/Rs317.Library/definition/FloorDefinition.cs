@@ -7,7 +7,7 @@ namespace Rs317.Sharp
 	{
 		public static void load(Archive archive)
 		{
-			Buffer stream = new Buffer(archive.decompressFile("flo.dat"));
+			Default317Buffer stream = new Default317Buffer(archive.decompressFile("flo.dat"));
 			int cacheSize = stream.getUnsignedLEShort();
 			if(cache == null)
 				cache = new FloorDefinition[cacheSize];
@@ -42,7 +42,7 @@ namespace Rs317.Sharp
 			occlude = true;
 		}
 
-		private void loadDefinition(Buffer stream)
+		private void loadDefinition(Default317Buffer stream)
 		{
 			do
 			{

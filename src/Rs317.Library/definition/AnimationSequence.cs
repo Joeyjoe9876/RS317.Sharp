@@ -7,7 +7,7 @@ namespace Rs317.Sharp
 	{
 		public static void unpackConfig(Archive streamLoader)
 		{
-			Buffer stream = new Buffer(streamLoader.decompressFile("seq.dat"));
+			Default317Buffer stream = new Default317Buffer(streamLoader.decompressFile("seq.dat"));
 			int length = stream.getUnsignedLEShort();
 			if(animations == null)
 				animations = new AnimationSequence[length];
@@ -66,7 +66,7 @@ namespace Rs317.Sharp
 			return frameLength;
 		}
 
-		private void readValues(Buffer stream)
+		private void readValues(Default317Buffer stream)
 		{
 			do
 			{

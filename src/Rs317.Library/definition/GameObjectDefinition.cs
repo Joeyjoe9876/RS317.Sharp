@@ -26,8 +26,8 @@ namespace Rs317.Sharp
 
 		public static void load(Archive archive)
 		{
-			GameObjectDefinition.stream = new Buffer(archive.decompressFile("loc.dat"));
-			Buffer indexStream = new Buffer(archive.decompressFile("loc.idx"));
+			GameObjectDefinition.stream = new Default317Buffer(archive.decompressFile("loc.dat"));
+			Default317Buffer indexStream = new Default317Buffer(archive.decompressFile("loc.idx"));
 			int objectCount = indexStream.getUnsignedLEShort();
 			streamOffsets = new int[objectCount];
 			int offset = 2;
@@ -77,7 +77,7 @@ namespace Rs317.Sharp
 		public int configIds;
 		private bool rotated;
 		public static bool lowMemory;
-		private static Buffer stream;
+		private static Default317Buffer stream;
 		public int id;
 		private static int[] streamOffsets;
 		public bool walkable;
@@ -333,7 +333,7 @@ namespace Rs317.Sharp
 			return model;
 		}
 
-		private void loadDefinition(Buffer stream)
+		private void loadDefinition(Default317Buffer stream)
 		{
 			int _actions = -1;
 			do

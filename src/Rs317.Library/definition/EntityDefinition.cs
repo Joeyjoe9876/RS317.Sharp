@@ -20,8 +20,8 @@ namespace Rs317.Sharp
 
 		public static void load(Archive streamLoader)
 		{
-			EntityDefinition.stream = new Buffer(streamLoader.decompressFile("npc.dat"));
-			Buffer stream = new Buffer(streamLoader.decompressFile("npc.idx"));
+			EntityDefinition.stream = new Default317Buffer(streamLoader.decompressFile("npc.dat"));
+			Default317Buffer stream = new Default317Buffer(streamLoader.decompressFile("npc.idx"));
 			int size = stream.getUnsignedLEShort();
 			EntityDefinition.streamOffsets = new int[size];
 			int offset = 2;
@@ -55,7 +55,7 @@ namespace Rs317.Sharp
 
 		private int settingId;
 
-		private static Buffer stream;
+		private static Default317Buffer stream;
 		public int combatLevel;
 		public String name;
 		public String[] actions;
@@ -224,7 +224,7 @@ namespace Rs317.Sharp
 			return headModel;
 		}
 
-		private void loadDefinition(Buffer stream)
+		private void loadDefinition(Default317Buffer stream)
 		{
 			do
 			{

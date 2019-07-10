@@ -174,8 +174,8 @@ namespace Rs317.Sharp
 
 		public static void load(Archive streamLoader)
 		{
-			stream = new Buffer(streamLoader.decompressFile("obj.dat"));
-			Buffer index = new Buffer(streamLoader.decompressFile("obj.idx"));
+			stream = new Default317Buffer(streamLoader.decompressFile("obj.dat"));
+			Default317Buffer index = new Default317Buffer(streamLoader.decompressFile("obj.idx"));
 			itemCount = index.getUnsignedLEShort();
 			streamOffsets = new int[itemCount];
 			int offset = 2;
@@ -237,7 +237,7 @@ namespace Rs317.Sharp
 		private static int cacheIndex;
 		public int modelZoom;
 		public static bool membersWorld = true;
-		private static Buffer stream;
+		private static Default317Buffer stream;
 		private int shadowModifier;
 		private int maleEquipModelIdEmblem;
 		private int maleEquipModelIdSecondary;
@@ -441,7 +441,7 @@ namespace Rs317.Sharp
 			return cached;
 		}
 
-		private void readValues(Buffer stream)
+		private void readValues(Default317Buffer stream)
 		{
 			do
 			{

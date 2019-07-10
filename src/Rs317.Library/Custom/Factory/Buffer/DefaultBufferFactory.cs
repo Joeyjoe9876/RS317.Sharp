@@ -9,7 +9,7 @@ namespace Rs317.Sharp
 		public IBuffer Create(EmptyFactoryCreationContext context)
 		{
 			//This is how the old Buffer.Create functioned, except it would try to pull from a cache. Which was dumb.
-			return new Buffer(new byte[5000]);
+			return new Default317Buffer(new byte[5000]);
 		}
 	}
 }

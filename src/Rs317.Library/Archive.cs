@@ -19,7 +19,7 @@ namespace Rs317.Sharp
 
 		public Archive(byte[] data)
 		{
-			Buffer buffer = new Buffer(data);
+			Default317Buffer buffer = new Default317Buffer(data);
 			int compressedLength = buffer.get3Bytes();
 			int decompressedLength = buffer.get3Bytes();
 
@@ -28,7 +28,7 @@ namespace Rs317.Sharp
 				byte[] output = new byte[compressedLength];
 				Bzip2Decompressor.decompress(output, compressedLength, data, decompressedLength, 6);
 				outputData = output;
-				buffer = new Buffer(outputData);
+				buffer = new Default317Buffer(outputData);
 				this.decompressed = true;
 			}
 			else

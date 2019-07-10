@@ -20,7 +20,7 @@ namespace Rs317.Sharp
 		private int amplitude;
 		private int ticks;
 
-		public void decode(Buffer stream)
+		public void decode(Default317Buffer stream)
 		{
 			form = stream.getUnsignedByte();
 			start = stream.getInt();
@@ -28,7 +28,7 @@ namespace Rs317.Sharp
 			decodeShape(stream);
 		}
 
-		public void decodeShape(Buffer stream)
+		public void decodeShape(Default317Buffer stream)
 		{
 			phaseCount = stream.getUnsignedByte();
 			phaseDuration = new int[phaseCount];

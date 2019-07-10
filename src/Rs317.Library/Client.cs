@@ -86,7 +86,7 @@ namespace Rs317.Sharp
 		private volatile bool currentlyDrawingFlames;
 		private TcpClient jaggrabSocket;
 		private int loginScreenState;
-		private Buffer textStream;
+		private Default317Buffer textStream;
 		private NPC[] npcs;
 		private int npcCount;
 		private int[] npcIds;
@@ -138,7 +138,7 @@ namespace Rs317.Sharp
 		private int[] localPlayers;
 		private int playersObservedCount;
 		private int[] playersObserved;
-		private Buffer[] playerAppearanceData;
+		private Default317Buffer[] playerAppearanceData;
 		private int cameraRandomisationA;
 		private int nextCameraRandomisationA;
 		private int friendsCount;
@@ -531,7 +531,7 @@ namespace Rs317.Sharp
 			friendsWorldIds = new int[200];
 			groundArray = new DoubleEndedQueue[4, 104, 104];
 			currentlyDrawingFlames = false;
-			textStream = new Buffer(new byte[5000]);
+			textStream = new Default317Buffer(new byte[5000]);
 			npcs = new NPC[16384];
 			npcIds = new int[16384];
 			actorsToUpdateIds = new int[1000];
@@ -553,7 +553,7 @@ namespace Rs317.Sharp
 			players = new Player[MAX_ENTITY_COUNT];
 			localPlayers = new int[MAX_ENTITY_COUNT];
 			playersObserved = new int[MAX_ENTITY_COUNT];
-			playerAppearanceData = new Buffer[MAX_ENTITY_COUNT];
+			playerAppearanceData = new Default317Buffer[MAX_ENTITY_COUNT];
 			nextCameraRandomisationA = 1;
 			wayPoints = new int[104, 104];
 			SCROLLBAR_GRIP_HIGHLIGHT = 0x766654;
@@ -7659,7 +7659,7 @@ namespace Rs317.Sharp
 						}
 						else
 						{
-							Buffer stream = Effect.data(trackLoop[track], trackIds[track]);
+							Default317Buffer stream = Effect.data(trackLoop[track], trackIds[track]);
 							if(TimeService.CurrentTimeInMilliseconds() + stream.position / 22 > songStartTime + songStartOffset / 22)
 							{
 								songStartOffset = stream.position;
@@ -10501,7 +10501,7 @@ namespace Rs317.Sharp
 				} while(onDemandData.dataType != 93 || !onDemandFetcher.method564((int)onDemandData.id));
 
 				Console.WriteLine($"Debug: Spinning demand fetcher outer loop.");
-				Rs317.Sharp.Region.passivelyRequestGameObjectModels(new Buffer(onDemandData.buffer), onDemandFetcher);
+				Rs317.Sharp.Region.passivelyRequestGameObjectModels(new Default317Buffer(onDemandData.buffer), onDemandFetcher);
 			} while(true);
 		}
 
@@ -11393,7 +11393,7 @@ namespace Rs317.Sharp
 					NetworkStream datainputstream = openJagGrabInputStream(s1 + j);
 					byte[] abyte1 = new byte[6];
 					datainputstream.Read(abyte1, 0, 6);
-					Buffer stream = new Buffer(abyte1);
+					Default317Buffer stream = new Default317Buffer(abyte1);
 					stream.position = 3;
 					int i2 = stream.get3Bytes() + 6;
 					int j2 = 6;
@@ -12368,7 +12368,7 @@ namespace Rs317.Sharp
 				{
 					drawLoadingText(90, "Unpacking sounds");
 					byte[] soundData = archiveSounds.decompressFile("sounds.dat");
-					Buffer stream = new Buffer(soundData);
+					Default317Buffer stream = new Default317Buffer(soundData);
 					Effect.load(stream);
 				}
 
@@ -13300,7 +13300,7 @@ namespace Rs317.Sharp
 			{
 				int appearanceBufferSize = stream.getUnsignedByteC();
 				byte[] _appearanceBuffer = new byte[appearanceBufferSize];
-				Buffer appearanceBuffer = new Buffer(_appearanceBuffer);
+				Default317Buffer appearanceBuffer = new Default317Buffer(_appearanceBuffer);
 				stream.readBytes(appearanceBufferSize, 0, _appearanceBuffer);
 				playerAppearanceData[playerId] = appearanceBuffer;
 				player.updatePlayerAppearance(appearanceBuffer);

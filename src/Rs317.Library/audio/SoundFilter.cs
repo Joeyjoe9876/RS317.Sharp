@@ -99,7 +99,7 @@ namespace Rs317.Sharp
 			return pairCount[direction] * 2;
 		}
 
-		public void decode(Buffer stream, Envelope envelope)
+		public void decode(Default317Buffer stream, Envelope envelope)
 		{
 			int count = stream.getUnsignedByte();
 			pairCount[0] = count >> 4;

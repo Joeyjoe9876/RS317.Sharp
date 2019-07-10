@@ -303,7 +303,7 @@ namespace Rs317.Sharp
 			return visible;
 		}
 
-		public void updatePlayerAppearance(Buffer stream)
+		public void updatePlayerAppearance(Default317Buffer stream)
 		{
 			stream.position = 0;
 			gender = stream.getUnsignedByte();

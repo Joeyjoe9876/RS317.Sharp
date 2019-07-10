@@ -7,7 +7,7 @@ namespace Rs317.Sharp
 	{
 		public static void load(Archive streamLoader)
 		{
-			Buffer stream = new Buffer(streamLoader.decompressFile("idk.dat"));
+			Default317Buffer stream = new Default317Buffer(streamLoader.decompressFile("idk.dat"));
 			count = stream.getUnsignedLEShort();
 			if(cache == null)
 				cache = new IdentityKit[count];
@@ -106,7 +106,7 @@ namespace Rs317.Sharp
 			return cached;
 		}
 
-		private void loadDefinition(Buffer stream)
+		private void loadDefinition(Default317Buffer stream)
 		{
 			do
 			{

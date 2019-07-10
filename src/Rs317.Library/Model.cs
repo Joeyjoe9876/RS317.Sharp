@@ -60,7 +60,7 @@ namespace Rs317.Sharp
 			}
 			else
 			{
-				Buffer stream = new Buffer(modelData);
+				Default317Buffer stream = new Default317Buffer(modelData);
 				stream.position = modelData.Length - 18;
 				ModelHeader modelHeader = modelHeaders[modelId] = new ModelHeader();
 				modelHeader.modelData = modelData;
@@ -466,15 +466,15 @@ namespace Rs317.Sharp
 			if(modelHeader.triangleSkinOffset >= 0)
 				triangleSkins = new int[triangleCount];
 			triangleColours = new int[triangleCount];
-			Buffer vertexDirectionOffsetStream = new Buffer(modelHeader.modelData);
+			Default317Buffer vertexDirectionOffsetStream = new Default317Buffer(modelHeader.modelData);
 			vertexDirectionOffsetStream.position = modelHeader.vertexDirectionOffset;
-			Buffer xDataOffsetStream = new Buffer(modelHeader.modelData);
+			Default317Buffer xDataOffsetStream = new Default317Buffer(modelHeader.modelData);
 			xDataOffsetStream.position = modelHeader.dataOffsetX;
-			Buffer yDataOffsetStream = new Buffer(modelHeader.modelData);
+			Default317Buffer yDataOffsetStream = new Default317Buffer(modelHeader.modelData);
 			yDataOffsetStream.position = modelHeader.dataOffsetY;
-			Buffer zDataOffsetStream = new Buffer(modelHeader.modelData);
+			Default317Buffer zDataOffsetStream = new Default317Buffer(modelHeader.modelData);
 			zDataOffsetStream.position = modelHeader.dataOffsetZ;
-			Buffer vertexSkinOffsetStream = new Buffer(modelHeader.modelData);
+			Default317Buffer vertexSkinOffsetStream = new Default317Buffer(modelHeader.modelData);
 			vertexSkinOffsetStream.position = modelHeader.vertexSkinOffset;
 			int baseOffsetX = 0;
 			int baseOffsetY = 0;

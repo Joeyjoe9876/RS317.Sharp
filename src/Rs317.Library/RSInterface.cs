@@ -35,7 +35,7 @@ namespace Rs317.Sharp
 		public static void unpack(Archive streamLoader, GameFont[] fonts, Archive mediaArchive)
 		{
 			spriteCache = new Cache(50000);
-			Buffer stream = new Buffer(streamLoader.decompressFile("data"));
+			Default317Buffer stream = new Default317Buffer(streamLoader.decompressFile("data"));
 			int parentId = -1;
 			int interfaceCount = stream.getUnsignedLEShort();
 			cache = new RSInterface[interfaceCount];

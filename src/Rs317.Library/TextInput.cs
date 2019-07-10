@@ -111,7 +111,7 @@ namespace Rs317.Sharp
 		}
 
 		private static char[] characterList = new char[100];
-		private static Buffer stream = new Buffer(new byte[100]);
+		private static Default317Buffer stream = new Default317Buffer(new byte[100]);
 
 		private static char[] validChars =
 		{

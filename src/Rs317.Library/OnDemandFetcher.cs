@@ -711,7 +711,7 @@ namespace Rs317.Sharp
 			{
 				byte[] abyte0 = streamLoader.decompressFile(strings[i]);
 				int j = abyte0.Length / 2;
-				Buffer stream = new Buffer(abyte0);
+				Default317Buffer stream = new Default317Buffer(abyte0);
 				versions[i] = new int[j];
 				filePriorities[i] = new byte[j];
 				for(int l = 0; l < j; l++)
@@ -724,7 +724,7 @@ namespace Rs317.Sharp
 			{
 				byte[] abyte1 = streamLoader.decompressFile(strings2[k]);
 				int i1 = abyte1.Length / 4;
-				Buffer stream_1 = new Buffer(abyte1);
+				Default317Buffer stream_1 = new Default317Buffer(abyte1);
 				crcs[k] = new int[i1];
 				for(int l1 = 0; l1 < i1; l1++)
 					crcs[k][l1] = stream_1.getInt();
@@ -741,7 +741,7 @@ namespace Rs317.Sharp
 					modelIndices[k1] = 0;
 
 			abyte2 = streamLoader.decompressFile("map_index");
-			Buffer stream2 = new Buffer(abyte2);
+			Default317Buffer stream2 = new Default317Buffer(abyte2);
 			j1 = abyte2.Length / 7;
 			mapIndices1 = new int[j1];
 			mapIndices2 = new int[j1];
@@ -756,14 +756,14 @@ namespace Rs317.Sharp
 			}
 
 			abyte2 = streamLoader.decompressFile("anim_index");
-			stream2 = new Buffer(abyte2);
+			stream2 = new Default317Buffer(abyte2);
 			j1 = abyte2.Length / 2;
 			frames = new int[j1];
 			for(int j2 = 0; j2 < j1; j2++)
 				frames[j2] = stream2.getUnsignedLEShort();
 
 			abyte2 = streamLoader.decompressFile("midi_index");
-			stream2 = new Buffer(abyte2);
+			stream2 = new Default317Buffer(abyte2);
 			j1 = abyte2.Length;
 			musicPriorities = new int[j1];
 			for(int k2 = 0; k2 < j1; k2++)

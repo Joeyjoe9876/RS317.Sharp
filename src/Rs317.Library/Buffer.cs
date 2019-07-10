@@ -6,7 +6,7 @@ using Reinterpret.Net;
 namespace Rs317.Sharp
 {
 
-	public sealed class Buffer : IBufferReadable, IBufferWriteable, IBuffer
+	public sealed class Default317Buffer : IBufferReadable, IBufferWriteable, IBuffer
 	{
 		public byte[] buffer { get; }
 
@@ -21,12 +21,12 @@ namespace Rs317.Sharp
 			0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1
 		};
 
-		internal Buffer()
+		internal Default317Buffer()
 		{
 
 		}
 
-		public Buffer(byte[] buf)
+		public Default317Buffer(byte[] buf)
 		{
 			buffer = buf ?? throw new ArgumentNullException(nameof(buf));
 			position = 0;

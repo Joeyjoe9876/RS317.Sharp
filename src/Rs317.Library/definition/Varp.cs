@@ -10,7 +10,7 @@ namespace Rs317.Sharp
 
 		public static void load(Archive archive)
 		{
-			Buffer stream = new Buffer(archive.decompressFile("varp.dat"));
+			Default317Buffer stream = new Default317Buffer(archive.decompressFile("varp.dat"));
 			int count = stream.getUnsignedLEShort();
 
 			if(values == null)
@@ -34,7 +34,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void load(Buffer buffer)
+		private void load(Default317Buffer buffer)
 		{
 			do
 			{

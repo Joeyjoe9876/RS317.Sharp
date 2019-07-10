@@ -24,8 +24,8 @@ namespace Rs317.Sharp
 		{
 			try
 			{
-				Buffer imageBuffer = new Buffer(archive.decompressFile(name + ".dat"));
-				Buffer metadataBuffer = new Buffer(archive.decompressFile("index.dat"));
+				Default317Buffer imageBuffer = new Default317Buffer(archive.decompressFile(name + ".dat"));
+				Default317Buffer metadataBuffer = new Default317Buffer(archive.decompressFile("index.dat"));
 
 				metadataBuffer.position = imageBuffer.getUnsignedLEShort();
 				resizeWidth = metadataBuffer.getUnsignedLEShort();

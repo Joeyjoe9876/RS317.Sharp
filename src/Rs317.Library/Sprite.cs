@@ -34,8 +34,8 @@ namespace Rs317.Sharp
 				if(target.ToLower() == "headicons")
 					return;
 
-				Buffer dataStream = new Buffer(streamLoader.decompressFile(target + ".dat"));
-				Buffer indexStream = new Buffer(streamLoader.decompressFile("index.dat"));
+				Default317Buffer dataStream = new Default317Buffer(streamLoader.decompressFile(target + ".dat"));
+				Default317Buffer indexStream = new Default317Buffer(streamLoader.decompressFile("index.dat"));
 				indexStream.position = dataStream.getUnsignedLEShort();
 				maxWidth = indexStream.getUnsignedLEShort();
 				maxHeight = indexStream.getUnsignedLEShort();

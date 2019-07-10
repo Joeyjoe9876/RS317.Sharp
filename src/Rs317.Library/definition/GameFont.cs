@@ -63,13 +63,13 @@ namespace Rs317.Sharp
 			 * The buffer containing data about this specific font. The position of the font
 			 * within the parent archive (index.dat) and the pixel data for the glyph.
 			 */
-			Buffer glyphData = new Buffer(archive.decompressFile(name + ".dat"));
+			Default317Buffer glyphData = new Default317Buffer(archive.decompressFile(name + ".dat"));
 
 			/*
 			 * Stores the information about the glyphs, such as the kerning and the
 			 * dimensons.
 			 */
-			Buffer glyphInformation = new Buffer(archive.decompressFile("index.dat"));
+			Default317Buffer glyphInformation = new Default317Buffer(archive.decompressFile("index.dat"));
 
 			/*
 			 * Find the glyph information within the parent archive.

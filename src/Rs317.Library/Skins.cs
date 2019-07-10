@@ -6,7 +6,7 @@ namespace Rs317.Sharp
 
 		public int[][] skinList;
 
-		public Skins(Buffer buffer)
+		public Skins(Default317Buffer buffer)
 		{
 			int count = buffer.getUnsignedByte();
 			opcodes = new int[count];

@@ -10,7 +10,7 @@ namespace Rs317.Sharp
 
 		private static byte[] _output;
 
-		private static Buffer output;
+		private static Default317Buffer output;
 
 		private Instrument[] instruments;
 
@@ -22,7 +22,7 @@ namespace Rs317.Sharp
 			instruments = new Instrument[10];
 		}
 
-		public static Buffer data(int i, int id)
+		public static Default317Buffer data(int i, int id)
 		{
 			if (effects[id] != null)
 			{
@@ -35,10 +35,10 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public static void load(Buffer stream)
+		public static void load(Default317Buffer stream)
 		{
 			_output = new byte[0x6baa8];
-			output = new Buffer(_output);
+			output = new Default317Buffer(_output);
 			Instrument.initialise();
 			do
 			{
@@ -51,7 +51,7 @@ namespace Rs317.Sharp
 			} while (true);
 		}
 
-		private void decode(Buffer stream)
+		private void decode(Default317Buffer stream)
 		{
 			for (int instrument = 0; instrument < 10; instrument++)
 			{
@@ -68,7 +68,7 @@ namespace Rs317.Sharp
 			loopEnd = stream.getUnsignedLEShort();
 		}
 
-		private Buffer encode(int loops)
+		private Default317Buffer encode(int loops)
 		{
 			int size = mix(loops);
 			output.position = 0;

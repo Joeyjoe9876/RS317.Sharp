@@ -69,7 +69,7 @@ namespace Rs317.Sharp
 			duration = 500;
 		}
 
-		public void decode(Buffer stream)
+		public void decode(Default317Buffer stream)
 		{
 			pitchEnvelope = new Envelope();
 			pitchEnvelope.decode(stream);

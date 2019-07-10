@@ -36,7 +36,7 @@ namespace Rs317.Sharp
 
 		public static void method529(byte[] data)
 		{
-			Buffer buffer = new Buffer(data);
+			Default317Buffer buffer = new Default317Buffer(data);
 			buffer.position = data.Length - 8;
 
 			int attributesOffset = buffer.getUnsignedLEShort();
@@ -45,23 +45,23 @@ namespace Rs317.Sharp
 			int baseOffset = buffer.getUnsignedLEShort();
 
 			int offset = 0;
-			Buffer headerBuffer = new Buffer(data);
+			Default317Buffer headerBuffer = new Default317Buffer(data);
 			headerBuffer.position = offset;
 
 			offset += attributesOffset + 2;
-			Buffer attributeBuffer = new Buffer(data);
+			Default317Buffer attributeBuffer = new Default317Buffer(data);
 			attributeBuffer.position = offset;
 
 			offset += transformationOffset;
-			Buffer transformationBuffer = new Buffer(data);
+			Default317Buffer transformationBuffer = new Default317Buffer(data);
 			transformationBuffer.position = offset;
 
 			offset += durationOffset;
-			Buffer durationBuffer = new Buffer(data);
+			Default317Buffer durationBuffer = new Default317Buffer(data);
 			durationBuffer.position = offset;
 
 			offset += baseOffset;
-			Buffer baseBuffer = new Buffer(data);
+			Default317Buffer baseBuffer = new Default317Buffer(data);
 			baseBuffer.position = offset;
 
 			Skins @base = new Skins(baseBuffer);

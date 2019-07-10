@@ -334,7 +334,7 @@ namespace Rs317.Sharp
 			return definition.modelTypeCached(type);
 		}
 
-		public static void passivelyRequestGameObjectModels(Buffer stream, OnDemandFetcher onDemandFetcher)
+		public static void passivelyRequestGameObjectModels(Default317Buffer stream, OnDemandFetcher onDemandFetcher)
 		{
 			start:
 			{
@@ -371,7 +371,7 @@ namespace Rs317.Sharp
 		public static bool regionCached(int regionX, int regionY, byte[] objectData)
 		{
 			bool cached = true;
-			Buffer objectDataStream = new Buffer(objectData);
+			Default317Buffer objectDataStream = new Default317Buffer(objectData);
 			int objectId = -1;
 			do
 			{
@@ -1035,7 +1035,7 @@ namespace Rs317.Sharp
 
 		public void loadObjectBlock(int blockX, CollisionMap[] collisionMap, int blockY, WorldController worldController, byte[] blockData)
 		{
-			Buffer stream = new Buffer(blockData);
+			Default317Buffer stream = new Default317Buffer(blockData);
 			int objectId = -1;
 			do
 			{
@@ -1074,7 +1074,7 @@ namespace Rs317.Sharp
 
 		public void loadObjectSubblock(CollisionMap[] collisionMap, WorldController worldController, int i, int j, int k, int objectPlane, byte[] blockData, int i1, int rotation, int k1)
 		{
-			Buffer stream = new Buffer(blockData);
+			Default317Buffer stream = new Default317Buffer(blockData);
 			int objectId = -1;
 			do
 			{
@@ -1133,7 +1133,7 @@ namespace Rs317.Sharp
 				}
 			}
 
-			Buffer stream = new Buffer(blockData);
+			Default317Buffer stream = new Default317Buffer(blockData);
 			for(int plane = 0; plane < 4; plane++)
 			{
 				for(int tileX = 0; tileX < 64; tileX++)
@@ -1159,7 +1159,7 @@ namespace Rs317.Sharp
 					}
 			}
 
-			Buffer terrainDataStream = new Buffer(terrainData);
+			Default317Buffer terrainDataStream = new Default317Buffer(terrainData);
 			for(int plane = 0; plane < 4; plane++)
 			{
 				for(int regionX = 0; regionX < 64; regionX++)
@@ -1178,7 +1178,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void loadTerrainTile(int tileY, int offsetY, Buffer stream, int tileX, int tileZ, int i1, int offsetX)
+		private void loadTerrainTile(int tileY, int offsetY, Default317Buffer stream, int tileX, int tileZ, int i1, int offsetX)
 		{
 			if(tileX >= 0 && tileX < 104 && tileY >= 0 && tileY < 104)
 			{

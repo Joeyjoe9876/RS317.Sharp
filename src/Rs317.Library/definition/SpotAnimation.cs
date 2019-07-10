@@ -8,7 +8,7 @@ namespace Rs317.Sharp
 	{
 		public static void load(Archive archive)
 		{
-			Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));
+			Default317Buffer buffer = new Default317Buffer(archive.decompressFile("spotanim.dat"));
 			int count = buffer.getUnsignedLEShort();
 			if(cache == null)
 				cache = new SpotAnimation[count];
@@ -64,7 +64,7 @@ namespace Rs317.Sharp
 			return model;
 		}
 
-		private void read(Buffer stream)
+		private void read(Default317Buffer stream)
 		{
 			do
 			{
