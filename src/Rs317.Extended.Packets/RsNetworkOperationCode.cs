@@ -24,5 +24,7 @@ namespace Rs317.Extended
 		SetSkillExperience = 134,
 
 		CameraReset = 107,
+
+		ResetInterfaceButtonState = 68,
 	}
 }
