@@ -66,9 +66,8 @@ namespace Rs317.Sharp
 			return rotatedModel;
 		}
 
-		public void InitializeFromDefinition(EntityDefinition definition)
+		public void InitializeFromDefinition()
 		{
-			if(definition == null) throw new ArgumentNullException(nameof(definition));
 			if(npcDefinition == null) throw new InvalidOperationException($"Cannot initialize NPC with null definition: {nameof(npcDefinition)}");
 
 			boundaryDimension = npcDefinition.boundaryDimension;

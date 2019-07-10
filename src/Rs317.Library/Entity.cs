@@ -16,7 +16,7 @@ namespace Rs317.Sharp
 		public int interactingEntity;
 		public int stepsDelayed { get; set; }
 
-		public int degreesToTurn { get; set; }
+		public int degreesToTurn { get; protected set; }
 
 		public int runAnimationId { get; protected set; }
 
@@ -51,7 +51,7 @@ namespace Rs317.Sharp
 		public int lastUpdateTick { get; set; }
 		public int faceTowardX { get; set; }
 		public int faceTowardY { get; set; }
-		public int boundaryDimension { get; set; }
+		public int boundaryDimension { get; protected set; }
 		public bool dynamic { get; set; }
 		public int stepsRemaining { get; set; }
 		public int startX { get; set; }

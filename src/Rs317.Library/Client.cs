@@ -12938,13 +12938,7 @@ namespace Rs317.Sharp
 				if((updateType & 2) != 0)
 				{
 					npc.npcDefinition = EntityDefinition.getDefinition(stream.getUnsignedShortA());
-					npc.boundaryDimension = npc.npcDefinition.boundaryDimension;
-					npc.degreesToTurn = npc.npcDefinition.degreesToTurn;
-					npc.walkAnimationId = npc.npcDefinition.walkAnimationId;
-					npc.turnAboutAnimationId = npc.npcDefinition.turnAboutAnimationId;
-					npc.turnRightAnimationId = npc.npcDefinition.turnRightAnimationId;
-					npc.turnLeftAnimationId = npc.npcDefinition.turnLeftAnimationId;
-					npc.standAnimationId = npc.npcDefinition.standAnimationId;
+					npc.InitializeFromDefinition();
 				}
 
 				if((updateType & 4) != 0)
@@ -12989,7 +12983,7 @@ namespace Rs317.Sharp
 				int furtherUpdateRequired = stream.readBits(1);
 				if(furtherUpdateRequired == 1)
 					playersObserved[playersObservedCount++] = npcId;
-				npc.InitializeFromDefinition(npc.npcDefinition);
+				npc.InitializeFromDefinition();
 				npc.setPos(localPlayer.waypointX[0] + x, localPlayer.waypointY[0] + y, clearWaypointQueue == 1);
 			}
 
