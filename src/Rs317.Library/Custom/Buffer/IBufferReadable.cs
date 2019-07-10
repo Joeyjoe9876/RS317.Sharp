@@ -4,8 +4,11 @@ using System.Text;
 
 namespace Rs317.Sharp
 {
-	public interface IBufferReadable
+	public interface IBufferReadable : IBufferExposeable, IBufferSeekable
 	{
+		//Lowercase due to Java for now.
+		int bitPosition { get; }
+
 		void finishBitAccess();
 
 		void generateKeys();

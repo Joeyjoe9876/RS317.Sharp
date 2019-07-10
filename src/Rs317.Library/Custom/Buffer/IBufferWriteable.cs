@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Rs317.Sharp
 {
-	public interface IBufferWriteable
+	public interface IBufferWriteable : IBufferExposeable, IBufferSeekable
 	{
 		void put(int i);
 
