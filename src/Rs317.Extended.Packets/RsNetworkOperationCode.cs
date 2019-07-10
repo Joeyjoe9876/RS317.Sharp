@@ -22,5 +22,7 @@ namespace Rs317.Extended
 		SetChatModeStatus = 206,
 
 		SetSkillExperience = 134,
+
+		CameraReset = 107,
 	}
 }
