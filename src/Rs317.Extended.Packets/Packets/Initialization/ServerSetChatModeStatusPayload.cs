@@ -8,7 +8,7 @@ using Rs317.Sharp;
 namespace Rs317.Extended
 {
 	[WireDataContract]
-	[GameServerPayload(RsNetworkOperationCode.SetChatModeStatus)]
+	[GameServerPayload(RsServerNetworkOperationCode.SetChatModeStatus)]
 	public sealed class ServerSetChatModeStatusPayload : BaseGameServerPayload
 	{
 		[WireMember(1)]

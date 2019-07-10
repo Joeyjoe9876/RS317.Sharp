@@ -6,7 +6,7 @@ using FreecraftCore.Serializer;
 namespace Rs317.Extended
 {
 	[WireDataContract]
-	[GameServerPayload(RsNetworkOperationCode.ResetInterfaceButtonState)]
+	[GameServerPayload(RsServerNetworkOperationCode.ResetInterfaceButtonState)]
 	public sealed class ServerResetInterfaceButtonStatePayload : BaseGameServerPayload
 	{
 		//Just a command packet.

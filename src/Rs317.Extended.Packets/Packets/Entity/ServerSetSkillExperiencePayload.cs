@@ -10,7 +10,7 @@ namespace Rs317.Extended
 	int _skillLevel = inStream.getUnsignedByte();*/
 
 	[WireDataContract]
-	[GameServerPayload(RsNetworkOperationCode.SetSkillExperience)]
+	[GameServerPayload(RsServerNetworkOperationCode.SetSkillExperience)]
 	public sealed class ServerSetSkillExperiencePayload : BaseGameServerPayload
 	{
 		//TODO: make this an enum.

@@ -8,7 +8,7 @@ namespace Rs317.Extended
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public sealed class GameClientPayloadAttribute : WireDataContractBaseTypeAttribute
 	{
-		public GameClientPayloadAttribute(RsNetworkOperationCode operationCode) 
+		public GameClientPayloadAttribute(RsClientNetworkOperationCode operationCode) 
 			: base((int)operationCode, typeof(BaseGameClientPayload))
 		{
 		}

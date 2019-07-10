@@ -13,7 +13,7 @@ namespace Rs317
 	daysSinceLogin = inStream.getUnsignedLEShort();*/
 
 	[WireDataContract]
-	[GameServerPayload(RsNetworkOperationCode.WelcomeMessage)]
+	[GameServerPayload(RsServerNetworkOperationCode.WelcomeMessage)]
 	public sealed class ServerWelcomeMessagePacketPayload : BaseGameServerPayload
 	{
 		[WireMember(1)]

@@ -6,7 +6,7 @@ using FreecraftCore.Serializer;
 namespace Rs317.Extended
 {
 	[WireDataContract]
-	[GameServerPayload(RsNetworkOperationCode.CameraReset)]
+	[GameServerPayload(RsServerNetworkOperationCode.CameraReset)]
 	public sealed class ServerResetLocalCameraPayload : BaseGameServerPayload
 	{
 		//No data in this packet, just a command.

@@ -10,7 +10,7 @@ namespace Rs317.Extended
 
 	//I can't even believe this is a payload lol.
 	[WireDataContract]
-	[GameServerPayload(RsNetworkOperationCode.LinkTabsToInterface)]
+	[GameServerPayload(RsServerNetworkOperationCode.LinkTabsToInterface)]
 	public sealed class ServerLinkTabsToInterfacePayload : BaseGameServerPayload
 	{
 		[WireMember(1)]
