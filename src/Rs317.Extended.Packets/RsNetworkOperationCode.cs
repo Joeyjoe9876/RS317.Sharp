@@ -28,5 +28,7 @@ namespace Rs317.Extended
 		ResetInterfaceButtonState = 68,
 
 		LinkTabsToInterface = 71,
+
+		WelcomeMessage = 176,
 	}
 }
