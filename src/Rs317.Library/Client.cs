@@ -12989,13 +12989,7 @@ namespace Rs317.Sharp
 				int furtherUpdateRequired = stream.readBits(1);
 				if(furtherUpdateRequired == 1)
 					playersObserved[playersObservedCount++] = npcId;
-				npc.boundaryDimension = npc.npcDefinition.boundaryDimension;
-				npc.degreesToTurn = npc.npcDefinition.degreesToTurn;
-				npc.walkAnimationId = npc.npcDefinition.walkAnimationId;
-				npc.turnAboutAnimationId = npc.npcDefinition.turnAboutAnimationId;
-				npc.turnRightAnimationId = npc.npcDefinition.turnRightAnimationId;
-				npc.turnLeftAnimationId = npc.npcDefinition.turnLeftAnimationId;
-				npc.standAnimationId = npc.npcDefinition.standAnimationId;
+				npc.InitializeFromDefinition(npc.npcDefinition);
 				npc.setPos(localPlayer.waypointX[0] + x, localPlayer.waypointY[0] + y, clearWaypointQueue == 1);
 			}
 

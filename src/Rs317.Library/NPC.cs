@@ -1,4 +1,6 @@
 
+using System;
+
 namespace Rs317.Sharp
 {
 	public sealed class NPC : Entity
@@ -62,6 +64,20 @@ namespace Rs317.Sharp
 			if(npcDefinition.boundaryDimension == 1)
 				rotatedModel.singleTile = true;
 			return rotatedModel;
+		}
+
+		public void InitializeFromDefinition(EntityDefinition definition)
+		{
+			if(definition == null) throw new ArgumentNullException(nameof(definition));
+			if(npcDefinition == null) throw new InvalidOperationException($"Cannot initialize NPC with null definition: {nameof(npcDefinition)}");
+
+			boundaryDimension = npcDefinition.boundaryDimension;
+			degreesToTurn = npcDefinition.degreesToTurn;
+			walkAnimationId = npcDefinition.walkAnimationId;
+			turnAboutAnimationId = npcDefinition.turnAboutAnimationId;
+			turnRightAnimationId = npcDefinition.turnRightAnimationId;
+			turnLeftAnimationId = npcDefinition.turnLeftAnimationId;
+			standAnimationId = npcDefinition.standAnimationId;
 		}
 
 		public override bool isVisible()
