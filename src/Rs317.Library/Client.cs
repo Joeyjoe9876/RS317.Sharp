@@ -5741,12 +5741,7 @@ namespace Rs317.Sharp
 					return false;
 				if(packetOpcode == -1)
 				{
-					socket.read(inStream.buffer, 1);
-					packetOpcode = inStream.buffer[0] & 0xFF;
-					if(encryption != null)
-						packetOpcode = packetOpcode - encryption.value() & 0xFF;
-					packetSize = PacketInformation.PACKET_SIZES[packetOpcode];
-					availableBytes--;
+					availableBytes = ReadPacketHeader(availableBytes);
 				}
 
 				if(packetSize == -1)
@@ -5933,6 +5928,26 @@ namespace Rs317.Sharp
 			}
 
 			return true;
+		}
+
+		/// <summary>
+		/// Reads the incoming packet header
+		/// and initializes the Client fields <see cref="packetOpcode"/>
+		/// and <see cref="packetSize"/>.
+		///
+		/// It then returns the number of consumed bytes from the stream.
+		/// </summary>
+		/// <param name="currentAvailableBytes"></param>
+		/// <returns>The number of available bytes left.</returns>
+		protected virtual int ReadPacketHeader(int currentAvailableBytes)
+		{
+			socket.read(inStream.buffer, 1);
+			packetOpcode = inStream.buffer[0] & 0xFF;
+			if (encryption != null)
+				packetOpcode = packetOpcode - encryption.value() & 0xFF;
+			packetSize = PacketInformation.PACKET_SIZES[packetOpcode];
+			currentAvailableBytes--;
+			return currentAvailableBytes;
 		}
 
 		private bool HandlePacket164()
