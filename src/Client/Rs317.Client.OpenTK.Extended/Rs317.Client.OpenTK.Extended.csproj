@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Rs317.Extended.Client.Common\Rs317.Extended.Client.Common.csproj" />
+    <ProjectReference Include="..\..\Rs317.Library.Client\Rs317.Library.Client.csproj" />
     <ProjectReference Include="..\Rs317.Client.OpenTK\Rs317.Client.OpenTK.csproj" />
   </ItemGroup>
 

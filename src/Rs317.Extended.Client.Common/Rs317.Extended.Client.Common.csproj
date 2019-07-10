@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rs317.Library\Rs317.Library.csproj" />
+    <ProjectReference Include="..\Rs317.Library.Client\Rs317.Library.Client.csproj" />
   </ItemGroup>
 
 </Project>
