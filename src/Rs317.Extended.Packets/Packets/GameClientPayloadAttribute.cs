@@ -6,7 +6,7 @@ using FreecraftCore.Serializer;
 namespace Rs317.Extended
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-	public sealed class GameClientPayloadAttribute : WireDataContractBaseTypeAttribute
+	public sealed class GameClientPayloadAttribute : WireDataContractBaseLinkAttribute
 	{
 		public GameClientPayloadAttribute(RsClientNetworkOperationCode operationCode) 
 			: base((int)operationCode, typeof(BaseGameClientPayload))
