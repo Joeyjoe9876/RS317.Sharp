@@ -8197,6 +8197,15 @@ namespace Rs317.Sharp
 
 		private void login(String playerUsername, String playerPassword, bool recoveredConnection)
 		{
+			
+
+			if(!recoveredConnection)
+			{
+				loginMessage1 = "";
+				loginMessage2 = "Connecting to server...";
+				drawLoginScreen(true);
+			}
+
 			HandleClientAuthentication(playerUsername, playerPassword, recoveredConnection);
 		}
 
@@ -8205,13 +8214,6 @@ namespace Rs317.Sharp
 			signlink.errorname = playerUsername;
 			try
 			{
-				if (!recoveredConnection)
-				{
-					loginMessage1 = "";
-					loginMessage2 = "Connecting to server...";
-					drawLoginScreen(true);
-				}
-
 				socket = new RSSocket(this, openSocket(43594 + portOffset).ConfigureAwait(false).GetAwaiter().GetResult());
 				long nameLong = TextClass.nameToLong(playerUsername);
 				int nameHash = (int) (nameLong >> 16 & 31L);
@@ -8287,98 +8289,7 @@ namespace Rs317.Sharp
 
 				if (responseCode == 2)
 				{
-					playerRights = socket.read();
-					flagged = socket.read() == 1;
-					lastClickTime = 0L;
-					sameClickPositionCounter = 0;
-					mouseDetection.coordsIndex = 0;
-					base.awtFocus = true;
-					windowFocused = true;
-					LoggedIn.Update(true);
-					stream.position = 0;
-					inStream.position = 0;
-					packetOpcode = -1;
-					mostRecentOpcode = -1;
-					secondMostRecentOpcode = -1;
-					thirdMostRecentOpcode = -1;
-					packetSize = 0;
-					packetReadAnticheat = 0;
-					systemUpdateTime = 0;
-					idleLogout = 0;
-					hintIconType = 0;
-					menuActionRow = 0;
-					menuOpen = false;
-					base.idleTime = 0;
-					for (int m = 0; m < 100; m++)
-						chatMessages[m] = null;
-
-					itemSelected = false;
-					spellSelected = false;
-					loadingStage = 0;
-					trackCount = 0;
-					cameraRandomisationH = (int) (StaticRandomGenerator.Next(100)) - 50;
-					cameraRandomisationV = (int) (StaticRandomGenerator.Next(110)) - 55;
-					cameraRandomisationA = (int) (StaticRandomGenerator.Next(80)) - 40;
-					minimapRotation = (int) (StaticRandomGenerator.Next(120)) - 60;
-					minimapZoom = (int) (StaticRandomGenerator.Next(30)) - 20;
-					cameraHorizontal = (int) (StaticRandomGenerator.Next(20)) - 10 & 0x7FF;
-					minimapState = 0;
-					lastRegionId = -1;
-					destinationX = 0;
-					destinationY = 0;
-					localPlayerCount = 0;
-					npcCount = 0;
-					for (int p = 0; p < MAX_ENTITY_COUNT; p++)
-					{
-						players[p] = null;
-						playerAppearanceData[p] = null;
-					}
-
-					for (int n = 0; n < 16384; n++)
-						npcs[n] = null;
-
-					localPlayer = players[LOCAL_PLAYER_ID] = new Player();
-					StaticLocalPlayerRepository.LocalPlayerInstance = localPlayer;
-					projectileQueue.clear();
-					stationaryGraphicQueue.clear();
-					for (int l2 = 0; l2 < 4; l2++)
-					{
-						for (int i3 = 0; i3 < 104; i3++)
-						{
-							for (int k3 = 0; k3 < 104; k3++)
-								groundArray[l2, i3, k3] = null;
-						}
-					}
-
-					spawnObjectList = new DoubleEndedQueue();
-					friendListStatus = 0;
-					friendsCount = 0;
-					dialogID = -1;
-					chatboxInterfaceId = -1;
-					openInterfaceId = -1;
-					inventoryOverlayInterfaceID = -1;
-					walkableInterfaceId = -1;
-					continuedDialogue = false;
-					currentTabId = 3;
-					inputDialogState = 0;
-					menuOpen = false;
-					messagePromptRaised = false;
-					clickToContinueString = null;
-					multiCombatZone = false;
-					flashingSidebar = -1;
-					characterEditChangeGender = true;
-					changeGender();
-					for (int c = 0; c < 5; c++)
-						characterEditColours[c] = 0;
-
-					for (int a = 0; a < 5; a++)
-					{
-						playerActionText[a] = null;
-						playerActionUnpinned[a] = false;
-					}
-
-					currentWalkingQueueSize = 0;
-					setupGameplayScreen();
+					HandleLoginSuccessful(socket.read(), socket.read() == 1);
 					return;
 				}
 
@@ -8573,6 +8484,104 @@ namespace Rs317.Sharp
 			}
 
 			loginMessage2 = "Error connecting to server.";
+		}
+
+		//TODO: switch to enum rights.
+		private void HandleLoginSuccessful(int playerRights, bool isAccountFlagged)
+		{
+			this.playerRights = playerRights;
+			flagged = isAccountFlagged;
+
+			lastClickTime = 0L;
+			sameClickPositionCounter = 0;
+			mouseDetection.coordsIndex = 0;
+			base.awtFocus = true;
+			windowFocused = true;
+			LoggedIn.Update(true);
+			stream.position = 0;
+			inStream.position = 0;
+			packetOpcode = -1;
+			mostRecentOpcode = -1;
+			secondMostRecentOpcode = -1;
+			thirdMostRecentOpcode = -1;
+			packetSize = 0;
+			packetReadAnticheat = 0;
+			systemUpdateTime = 0;
+			idleLogout = 0;
+			hintIconType = 0;
+			menuActionRow = 0;
+			menuOpen = false;
+			base.idleTime = 0;
+			for (int m = 0; m < 100; m++)
+				chatMessages[m] = null;
+
+			itemSelected = false;
+			spellSelected = false;
+			loadingStage = 0;
+			trackCount = 0;
+			cameraRandomisationH = (int) (StaticRandomGenerator.Next(100)) - 50;
+			cameraRandomisationV = (int) (StaticRandomGenerator.Next(110)) - 55;
+			cameraRandomisationA = (int) (StaticRandomGenerator.Next(80)) - 40;
+			minimapRotation = (int) (StaticRandomGenerator.Next(120)) - 60;
+			minimapZoom = (int) (StaticRandomGenerator.Next(30)) - 20;
+			cameraHorizontal = (int) (StaticRandomGenerator.Next(20)) - 10 & 0x7FF;
+			minimapState = 0;
+			lastRegionId = -1;
+			destinationX = 0;
+			destinationY = 0;
+			localPlayerCount = 0;
+			npcCount = 0;
+			for (int p = 0; p < MAX_ENTITY_COUNT; p++)
+			{
+				players[p] = null;
+				playerAppearanceData[p] = null;
+			}
+
+			for (int n = 0; n < 16384; n++)
+				npcs[n] = null;
+
+			localPlayer = players[LOCAL_PLAYER_ID] = new Player();
+			StaticLocalPlayerRepository.LocalPlayerInstance = localPlayer;
+			projectileQueue.clear();
+			stationaryGraphicQueue.clear();
+			for (int l2 = 0; l2 < 4; l2++)
+			{
+				for (int i3 = 0; i3 < 104; i3++)
+				{
+					for (int k3 = 0; k3 < 104; k3++)
+						groundArray[l2, i3, k3] = null;
+				}
+			}
+
+			spawnObjectList = new DoubleEndedQueue();
+			friendListStatus = 0;
+			friendsCount = 0;
+			dialogID = -1;
+			chatboxInterfaceId = -1;
+			openInterfaceId = -1;
+			inventoryOverlayInterfaceID = -1;
+			walkableInterfaceId = -1;
+			continuedDialogue = false;
+			currentTabId = 3;
+			inputDialogState = 0;
+			menuOpen = false;
+			messagePromptRaised = false;
+			clickToContinueString = null;
+			multiCombatZone = false;
+			flashingSidebar = -1;
+			characterEditChangeGender = true;
+			changeGender();
+			for (int c = 0; c < 5; c++)
+				characterEditColours[c] = 0;
+
+			for (int a = 0; a < 5; a++)
+			{
+				playerActionText[a] = null;
+				playerActionUnpinned[a] = false;
+			}
+
+			currentWalkingQueueSize = 0;
+			setupGameplayScreen();
 		}
 
 		private void logout()
