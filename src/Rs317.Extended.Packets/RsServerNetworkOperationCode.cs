@@ -30,5 +30,7 @@ namespace Rs317.Extended
 		LinkTabsToInterface = 71,
 
 		WelcomeMessage = 176,
+
+		SetRegion = 73,
 	}
 }
