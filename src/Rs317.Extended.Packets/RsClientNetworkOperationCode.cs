@@ -9,6 +9,7 @@ namespace Rs317.Extended
 	/// </summary>
 	public enum RsClientNetworkOperationCode : byte
 	{
-
+		//TODO: make sure this opcode isn't in use. It's custom.
+		SessionClaimRequest = 255,
 	}
 }
