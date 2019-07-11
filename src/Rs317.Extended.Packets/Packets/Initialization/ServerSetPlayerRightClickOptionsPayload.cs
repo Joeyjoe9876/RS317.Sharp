@@ -24,18 +24,19 @@ namespace Rs317.Extended
 		/// I don't know.
 		/// </summary>
 		[WireMember(2)]
-		public byte TopActionId { get; private set; }
+		public bool IsPinnedAction { get; private set; }
 
 		/// <summary>
 		/// The text of the action.
 		/// </summary>
+		[SendSize(SendSizeAttribute.SizeType.UShort)]
 		[WireMember(3)]
 		public string ActionText { get; private set; }
 
-		public ServerSetPlayerRightClickOptionsPayload(byte actionId, byte topActionId, [NotNull] string actionText)
+		public ServerSetPlayerRightClickOptionsPayload(byte actionId, bool actionIsPinned, [NotNull] string actionText)
 		{
 			ActionId = actionId;
-			TopActionId = topActionId;
+			IsPinnedAction = actionIsPinned;
 			ActionText = actionText ?? throw new ArgumentNullException(nameof(actionText));
 		}
 
