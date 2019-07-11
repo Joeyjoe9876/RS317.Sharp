@@ -101,7 +101,7 @@ namespace Rs317.Extended
 
 		public void putOpcode(int i)
 		{
-			throw new NotImplementedException();
+			put(i);
 		}
 
 		public void putShort(int i)
