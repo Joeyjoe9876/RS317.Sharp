@@ -32,5 +32,7 @@ namespace Rs317.Extended
 		WelcomeMessage = 176,
 
 		SetRegion = 73,
+
+		LocalPlayerUpdate = 81,
 	}
 }
