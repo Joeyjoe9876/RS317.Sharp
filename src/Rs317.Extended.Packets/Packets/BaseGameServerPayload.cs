@@ -5,7 +5,7 @@ using FreecraftCore.Serializer;
 
 namespace Rs317.Extended
 {
-	[WireDataContract]
+	[WireDataContract(WireDataContractAttribute.KeyType.Byte, true)]
 	public abstract class BaseGameServerPayload : IGamePacketPayload
 	{
 
