@@ -5,6 +5,7 @@ using FreecraftCore.Serializer;
 
 namespace Rs317.Extended
 {
+	[Obsolete("Extended no longer uses the connection init or auth packets from Rs317")]
 	[WireDataContract]
 	public sealed class ConnectionInitializedResponsePacket
 	{

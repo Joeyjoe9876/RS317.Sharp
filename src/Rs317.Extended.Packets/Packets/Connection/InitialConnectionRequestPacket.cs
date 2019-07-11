@@ -15,6 +15,7 @@ namespace Rs317.Extended
 	/// Serializable structure that represents the
 	/// initial connection packet sent by the client.
 	/// </summary>
+	[Obsolete("Extended no longer uses the connection init or auth packets from Rs317")]
 	[WireDataContract]
 	public sealed class InitialConnectionRequestPacket //no base type, since it's unique.
 	{

@@ -8,6 +8,7 @@ using Rs317.Sharp;
 namespace Rs317.Extended
 {
 	//STILL not the game protocol sadly.
+	[Obsolete("Extended no longer uses the connection init or auth packets from Rs317")]
 	[WireDataContract]
 	public sealed class ServerLoginResponsePacket
 	{

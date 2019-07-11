@@ -12,6 +12,7 @@ namespace Rs317.Extended
 	/// The response packet DTO for the login initialization.
 	/// This is doesn't match the game protocol, like most logins in other games.
 	/// </summary>
+	[Obsolete("Extended no longer uses the connection init or auth packets from Rs317")]
 	[WireDataContract]
 	public sealed class InitialConnectionResponsePacket
 	{
