@@ -8776,9 +8776,7 @@ namespace Rs317.Sharp
 			loadingStages();
 			spawnGameObjects();
 			handleMusic();
-			packetReadAnticheat++;
-			if(packetReadAnticheat > 750)
-				dropClient();
+			HandlePacketRecieveAntiCheatCheck();
 			updatePlayerInstances();
 			updateNPCInstances();
 			cycleEntitySpokenText();
@@ -8984,6 +8982,13 @@ namespace Rs317.Sharp
 			{
 				logout();
 			}
+		}
+
+		protected virtual void HandlePacketRecieveAntiCheatCheck()
+		{
+			packetReadAnticheat++;
+			if (packetReadAnticheat > 750)
+				dropClient();
 		}
 
 		private void manageTextInput()
