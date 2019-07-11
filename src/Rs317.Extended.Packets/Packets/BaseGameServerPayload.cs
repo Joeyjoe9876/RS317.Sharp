@@ -6,7 +6,7 @@ using FreecraftCore.Serializer;
 namespace Rs317.Extended
 {
 	[WireDataContract]
-	public abstract class BaseGameServerPayload
+	public abstract class BaseGameServerPayload : IGamePacketPayload
 	{
 
 	}
