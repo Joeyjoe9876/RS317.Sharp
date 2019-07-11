@@ -23,9 +23,8 @@ namespace Rs317.Extended
 		/// <inheritdoc />
 		public IManagedNetworkServerClient<BaseGameServerPayload, BaseGameClientPayload> Create(ManagedSessionCreationContext context)
 		{
-			return null;
-			//return new GladMMOUnmanagedNetworkClient<DotNetTcpClientNetworkClient, GameClientPacketPayload, GameServerPacketPayload, IGamePacketPayload>(new DotNetTcpClientNetworkClient(context.Client), Serializer, Logger)
-			//	.AsManagedSession(Logger);
+			return new Extended317UnmanagedNetworkClient<DotNetTcpClientNetworkClient, BaseGameClientPayload, BaseGameServerPayload, IGamePacketPayload>(new DotNetTcpClientNetworkClient(context.Client), Serializer, Logger)
+				.AsManagedSession();
 		}
 	}
 }
