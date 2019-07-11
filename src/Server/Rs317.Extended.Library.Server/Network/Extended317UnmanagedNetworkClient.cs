@@ -145,41 +145,48 @@ namespace Rs317.Extended
 
 		public virtual async Task<NetworkIncomingMessage<TReadPayloadBaseType>> ReadAsync(CancellationToken token)
 		{
-			using(await readSynObj.LockAsync(token).ConfigureAwait(false))
+			try
 			{
-				//if was canceled the header reading probably returned null anyway
-				if(token.IsCancellationRequested)
-					return null;
+				using(await readSynObj.LockAsync(token).ConfigureAwait(false))
+				{
+					//if was canceled the header reading probably returned null anyway
+					if(token.IsCancellationRequested)
+						return null;
 
+					//Custom 317 Protocol:
+					//2 byte short payload length.
+					//1 byte opcode (in the payload data).
 
-				//Custom 317 Protocol:
-				//2 byte short payload length.
-				//1 byte opcode (in the payload data).
+					//payload length
+					await ReadAsync(PacketPayloadReadBuffer, 0, 2, token)
+						.ConfigureAwait(false);
 
-				//payload length
-				await ReadAsync(PacketPayloadReadBuffer, 0, 2, token)
-					.ConfigureAwait(false);
+					//We read from the payload buffer 2 bytes, it's the size.
+					int payloadSize = PacketPayloadReadBuffer.Reinterpret<short>(0);
 
-				//We read from the payload buffer 2 bytes, it's the size.
-				int payloadSize = PacketPayloadReadBuffer.Reinterpret<short>(0);
+					//If the token was canceled then the buffer isn't filled and we can't make a message
+					if(token.IsCancellationRequested)
+						return null;
 
-				//If the token was canceled then the buffer isn't filled and we can't make a message
-				if(token.IsCancellationRequested)
-					return null;
+					//We need to read enough bytes to deserialize the payload
+					await ReadAsync(PacketPayloadReadBuffer, 0, payloadSize, token)
+						.ConfigureAwait(false);//TODO: Should we timeout?
 
-				//We need to read enough bytes to deserialize the payload
-				await ReadAsync(PacketPayloadReadBuffer, 0, payloadSize, token)
-					.ConfigureAwait(false);//TODO: Should we timeout?
+					//If the token was canceled then the buffer isn't filled and we can't make a message
+					if(token.IsCancellationRequested)
+						return null;
 
-				//If the token was canceled then the buffer isn't filled and we can't make a message
-				if(token.IsCancellationRequested)
-					return null;
+					//Deserialize the bytes starting from the begining but ONLY read up to the payload size. We reuse this buffer and it's large
+					//so if we don't specify the length we could end up with an issue.
+					var payload = Serializer.Deserialize<TReadPayloadBaseType>(PacketPayloadReadBuffer, 0, payloadSize);
 
-				//Deserialize the bytes starting from the begining but ONLY read up to the payload size. We reuse this buffer and it's large
-				//so if we don't specify the length we could end up with an issue.
-				var payload = Serializer.Deserialize<TReadPayloadBaseType>(PacketPayloadReadBuffer, 0, payloadSize);
-
-				return new NetworkIncomingMessage<TReadPayloadBaseType>(new HeaderlessPacketHeader(payloadSize), payload);
+					return new NetworkIncomingMessage<TReadPayloadBaseType>(new HeaderlessPacketHeader(payloadSize), payload);
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
 			}
 		}
 	}
