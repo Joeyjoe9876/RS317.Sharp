@@ -37,7 +37,7 @@ namespace Rs317.Extended
 			PayloadTypes = typeof(InitialConnectionRequestPacket)
 				.Assembly
 				.GetExportedTypes()
-				.Where(t => typeof(BaseGameServerPayload).IsAssignableFrom(t) || typeof(BaseGameServerPayload).IsAssignableFrom(t))
+				.Where(t => typeof(BaseGameServerPayload).IsAssignableFrom(t) || typeof(BaseGameClientPayload).IsAssignableFrom(t))
 				.Distinct()
 				.ToArray();
 
