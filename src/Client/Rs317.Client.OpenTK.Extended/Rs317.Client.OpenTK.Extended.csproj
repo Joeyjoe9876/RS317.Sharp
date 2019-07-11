@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Refit" Version="4.7.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Models\Rs317.Extended.Models.Authentication\Rs317.Extended.Models.Authentication.csproj" />
     <ProjectReference Include="..\..\Rs317.Extended.Client.Common\Rs317.Extended.Client.Common.csproj" />
     <ProjectReference Include="..\..\Rs317.Library.Client\Rs317.Library.Client.csproj" />
     <ProjectReference Include="..\Rs317.Client.OpenTK\Rs317.Client.OpenTK.csproj" />
