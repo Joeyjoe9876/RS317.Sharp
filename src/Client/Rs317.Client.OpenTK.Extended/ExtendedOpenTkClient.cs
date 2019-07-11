@@ -35,6 +35,7 @@ namespace Rs317.Extended
 			//1 byte opcode, for the client we don't preserve it in the stream since it doesn't use similar deserialization.
 			packetOpcode = inStream.buffer[2] & 0xFF;
 
+			packetSize--;
 			currentAvailableBytes -= 3;
 			return currentAvailableBytes;
 		}
