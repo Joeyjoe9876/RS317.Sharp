@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using GladMMO;
+using Refit;
 using Reinterpret.Net;
 using Rs317.Sharp;
 
@@ -34,6 +37,37 @@ namespace Rs317.Extended
 
 			currentAvailableBytes -= 3;
 			return currentAvailableBytes;
+		}
+
+		//TODO: This is just initial/demo code. We need a real and proper implementation.
+		protected override void HandleClientAuthentication(string playerUsername, string playerPassword, bool recoveredConnection)
+		{
+			//Dev hack to enable HTTPS for now.
+			ServicePointManager.ServerCertificateValidationCallback += (o, c, ch, er) => true;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+			ServicePointManager.CheckCertificateRevocationList = false;
+
+			//TODO: Implement service discovery.
+			IAuthenticationService service = RestService.For<IAuthenticationService>("https://auth.vrguardians.net/");
+
+			JWTModel model = service.TryAuthenticate(new AuthenticationRequestModel(playerUsername, playerPassword))
+				.ConfigureAwait(false).GetAwaiter().GetResult();
+
+			Console.WriteLine($"Authentication Result: {model.isTokenValid} OptionalError: {model.Error}");
+
+			if(model.isTokenValid)
+				HandleLoginSuccessful(2, false);
+
+			SendSessionClaimRequest(model);
+		}
+
+		private void SendSessionClaimRequest(JWTModel model)
+		{
+			//Now we must hand write the session claim packet
+			socket.write(2, ((short) model.AccessToken.Length + 2).Reinterpret()); //2 bytes for the length prefixed access token
+			socket.write(1, new byte[1] {(byte) RsClientNetworkOperationCode.SessionClaimRequest});
+			socket.write(2, ((short) model.AccessToken.Length).Reinterpret());
+			socket.write(model.AccessToken.Length, Encoding.ASCII.GetBytes(model.AccessToken));
 		}
 	}
 }
