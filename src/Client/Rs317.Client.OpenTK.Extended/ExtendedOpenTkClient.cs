@@ -55,19 +55,26 @@ namespace Rs317.Extended
 
 			Console.WriteLine($"Authentication Result: {model.isTokenValid} OptionalError: {model.Error}");
 
-			if(model.isTokenValid)
+			if (model.isTokenValid)
+			{
+				ConnectToGameServer();
 				HandleLoginSuccessful(2, false);
 
-			SendSessionClaimRequest(model);
+				SendSessionClaimRequest(model);
+			}
 		}
 
 		private void SendSessionClaimRequest(JWTModel model)
 		{
 			//Now we must hand write the session claim packet
-			socket.write(2, ((short) model.AccessToken.Length + 2).Reinterpret()); //2 bytes for the length prefixed access token
-			socket.write(1, new byte[1] {(byte) RsClientNetworkOperationCode.SessionClaimRequest});
-			socket.write(2, ((short) model.AccessToken.Length).Reinterpret());
-			socket.write(model.AccessToken.Length, Encoding.ASCII.GetBytes(model.AccessToken));
+			stream.putShort((short) model.AccessToken.Length + 2 + 1); //2 bytes for the length prefixed access token and 1 for the opcode.
+			stream.put((byte) RsClientNetworkOperationCode.SessionClaimRequest);
+			stream.putString(model.AccessToken);
+		}
+
+		protected override void HandlePacketRecieveAntiCheatCheck()
+		{
+			//This prevents the client from disconnecting.
 		}
 	}
 }

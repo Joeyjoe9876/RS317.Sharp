@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Models\Rs317.Extended.Models.Authentication\Rs317.Extended.Models.Authentication.csproj" />
     <ProjectReference Include="..\..\Rs317.Extended.Client.Common\Rs317.Extended.Client.Common.csproj" />
+    <ProjectReference Include="..\..\Rs317.Extended.Packets\Rs317.Extended.Packets.csproj" />
     <ProjectReference Include="..\..\Rs317.Library.Client\Rs317.Library.Client.csproj" />
     <ProjectReference Include="..\Rs317.Client.OpenTK\Rs317.Client.OpenTK.csproj" />
   </ItemGroup>
