@@ -8197,10 +8197,15 @@ namespace Rs317.Sharp
 
 		private void login(String playerUsername, String playerPassword, bool recoveredConnection)
 		{
+			HandleClientAuthentication(playerUsername, playerPassword, recoveredConnection);
+		}
+
+		protected virtual void HandleClientAuthentication(string playerUsername, string playerPassword, bool recoveredConnection)
+		{
 			signlink.errorname = playerUsername;
 			try
 			{
-				if(!recoveredConnection)
+				if (!recoveredConnection)
 				{
 					loginMessage1 = "";
 					loginMessage2 = "Connecting to server...";
@@ -8209,26 +8214,26 @@ namespace Rs317.Sharp
 
 				socket = new RSSocket(this, openSocket(43594 + portOffset).ConfigureAwait(false).GetAwaiter().GetResult());
 				long nameLong = TextClass.nameToLong(playerUsername);
-				int nameHash = (int)(nameLong >> 16 & 31L);
+				int nameHash = (int) (nameLong >> 16 & 31L);
 				stream.position = 0;
 				stream.put(14);
 				stream.put(nameHash);
 				socket.write(2, stream.buffer);
-				for(int ignoredByte = 0; ignoredByte < 8; ignoredByte++)
+				for (int ignoredByte = 0; ignoredByte < 8; ignoredByte++)
 					socket.read();
 
 				int responseCode = socket.read();
 				int initialResponseCode = responseCode;
-				if(responseCode == 0)
+				if (responseCode == 0)
 				{
 					socket.read(inStream.buffer, 8);
 					inStream.position = 0;
 					serverSessionKey = inStream.getLong();
 					int[] seed = new int[4];
-					seed[0] = (int)(StaticRandomGenerator.NextInt() * 99999999D);
-					seed[1] = (int)(StaticRandomGenerator.NextInt() * 99999999D);
-					seed[2] = (int)(serverSessionKey >> 32);
-					seed[3] = (int)serverSessionKey;
+					seed[0] = (int) (StaticRandomGenerator.NextInt() * 99999999D);
+					seed[1] = (int) (StaticRandomGenerator.NextInt() * 99999999D);
+					seed[2] = (int) (serverSessionKey >> 32);
+					seed[3] = (int) serverSessionKey;
 					stream.position = 0;
 					stream.put(10);
 					stream.putInt(seed[0]);
@@ -8242,7 +8247,7 @@ namespace Rs317.Sharp
 					//Custom: RSA is disabled for now.
 					stream.generateKeys();
 					loginStream.position = 0;
-					if(recoveredConnection)
+					if (recoveredConnection)
 						loginStream.put(18);
 					else
 						loginStream.put(16);
@@ -8250,14 +8255,14 @@ namespace Rs317.Sharp
 					loginStream.put(255);
 					loginStream.putShort(317);
 					loginStream.put(lowMemory ? 1 : 0);
-					for(int crc = 0; crc < 9; crc++)
+					for (int crc = 0; crc < 9; crc++)
 						loginStream.putInt(expectedCRCs[crc]);
 
 					loginStream.putBytes(stream.buffer, stream.position, 0);
-					
+
 					//Custom: This decorates the stream with encryption capability. Encrypting outgoing opcodes.
 					stream = new OpcodeEncryptingBufferWriterDecorator(stream, new ISAACRandomGenerator(seed));
-					for(int index = 0; index < 4; index++)
+					for (int index = 0; index < 4; index++)
 						seed[index] += 50;
 
 					encryption = new ISAACRandomGenerator(seed);
@@ -8265,13 +8270,13 @@ namespace Rs317.Sharp
 					responseCode = socket.read();
 				}
 
-				if(responseCode == 1)
+				if (responseCode == 1)
 				{
 					try
 					{
 						Thread.Sleep(2000);
 					}
-					catch(Exception _ex)
+					catch (Exception _ex)
 					{
 						signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 					}
@@ -8280,7 +8285,7 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				if(responseCode == 2)
+				if (responseCode == 2)
 				{
 					playerRights = socket.read();
 					flagged = socket.read() == 1;
@@ -8304,47 +8309,45 @@ namespace Rs317.Sharp
 					menuActionRow = 0;
 					menuOpen = false;
 					base.idleTime = 0;
-					for(int m = 0; m < 100; m++)
+					for (int m = 0; m < 100; m++)
 						chatMessages[m] = null;
 
 					itemSelected = false;
 					spellSelected = false;
 					loadingStage = 0;
 					trackCount = 0;
-					cameraRandomisationH = (int)(StaticRandomGenerator.Next(100)) - 50;
-					cameraRandomisationV = (int)(StaticRandomGenerator.Next(110)) - 55;
-					cameraRandomisationA = (int)(StaticRandomGenerator.Next(80)) - 40;
-					minimapRotation = (int)(StaticRandomGenerator.Next(120)) - 60;
-					minimapZoom = (int)(StaticRandomGenerator.Next(30)) - 20;
-					cameraHorizontal = (int)(StaticRandomGenerator.Next(20)) - 10 & 0x7FF;
+					cameraRandomisationH = (int) (StaticRandomGenerator.Next(100)) - 50;
+					cameraRandomisationV = (int) (StaticRandomGenerator.Next(110)) - 55;
+					cameraRandomisationA = (int) (StaticRandomGenerator.Next(80)) - 40;
+					minimapRotation = (int) (StaticRandomGenerator.Next(120)) - 60;
+					minimapZoom = (int) (StaticRandomGenerator.Next(30)) - 20;
+					cameraHorizontal = (int) (StaticRandomGenerator.Next(20)) - 10 & 0x7FF;
 					minimapState = 0;
 					lastRegionId = -1;
 					destinationX = 0;
 					destinationY = 0;
 					localPlayerCount = 0;
 					npcCount = 0;
-					for(int p = 0; p < MAX_ENTITY_COUNT; p++)
+					for (int p = 0; p < MAX_ENTITY_COUNT; p++)
 					{
 						players[p] = null;
 						playerAppearanceData[p] = null;
 					}
 
-					for(int n = 0; n < 16384; n++)
+					for (int n = 0; n < 16384; n++)
 						npcs[n] = null;
 
 					localPlayer = players[LOCAL_PLAYER_ID] = new Player();
 					StaticLocalPlayerRepository.LocalPlayerInstance = localPlayer;
 					projectileQueue.clear();
 					stationaryGraphicQueue.clear();
-					for(int l2 = 0; l2 < 4; l2++)
+					for (int l2 = 0; l2 < 4; l2++)
 					{
-						for(int i3 = 0; i3 < 104; i3++)
+						for (int i3 = 0; i3 < 104; i3++)
 						{
-							for(int k3 = 0; k3 < 104; k3++)
+							for (int k3 = 0; k3 < 104; k3++)
 								groundArray[l2, i3, k3] = null;
-
 						}
-
 					}
 
 					spawnObjectList = new DoubleEndedQueue();
@@ -8365,10 +8368,10 @@ namespace Rs317.Sharp
 					flashingSidebar = -1;
 					characterEditChangeGender = true;
 					changeGender();
-					for(int c = 0; c < 5; c++)
+					for (int c = 0; c < 5; c++)
 						characterEditColours[c] = 0;
 
-					for(int a = 0; a < 5; a++)
+					for (int a = 0; a < 5; a++)
 					{
 						playerActionText[a] = null;
 						playerActionUnpinned[a] = false;
@@ -8379,91 +8382,91 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				if(responseCode == 3)
+				if (responseCode == 3)
 				{
 					loginMessage1 = "";
 					loginMessage2 = "Invalid username or password.";
 					return;
 				}
 
-				if(responseCode == 4)
+				if (responseCode == 4)
 				{
 					loginMessage1 = "Your account has been disabled.";
 					loginMessage2 = "Please check your message-center for details.";
 					return;
 				}
 
-				if(responseCode == 5)
+				if (responseCode == 5)
 				{
 					loginMessage1 = "Your account is already logged in.";
 					loginMessage2 = "Try again in 60 secs...";
 					return;
 				}
 
-				if(responseCode == 6)
+				if (responseCode == 6)
 				{
 					loginMessage1 = "RuneScape has been updated!";
 					loginMessage2 = "Please reload this page.";
 					return;
 				}
 
-				if(responseCode == 7)
+				if (responseCode == 7)
 				{
 					loginMessage1 = "This world is full.";
 					loginMessage2 = "Please use a different world.";
 					return;
 				}
 
-				if(responseCode == 8)
+				if (responseCode == 8)
 				{
 					loginMessage1 = "Unable to connect.";
 					loginMessage2 = "Login server offline.";
 					return;
 				}
 
-				if(responseCode == 9)
+				if (responseCode == 9)
 				{
 					loginMessage1 = "Login limit exceeded.";
 					loginMessage2 = "Too many connections from your address.";
 					return;
 				}
 
-				if(responseCode == 10)
+				if (responseCode == 10)
 				{
 					loginMessage1 = "Unable to connect.";
 					loginMessage2 = "Bad session id.";
 					return;
 				}
 
-				if(responseCode == 11)
+				if (responseCode == 11)
 				{
 					loginMessage2 = "Login server rejected session.";
 					loginMessage2 = "Please try again.";
 					return;
 				}
 
-				if(responseCode == 12)
+				if (responseCode == 12)
 				{
 					loginMessage1 = "You need a members account to login to this world.";
 					loginMessage2 = "Please subscribe, or use a different world.";
 					return;
 				}
 
-				if(responseCode == 13)
+				if (responseCode == 13)
 				{
 					loginMessage1 = "Could not complete login.";
 					loginMessage2 = "Please try using a different world.";
 					return;
 				}
 
-				if(responseCode == 14)
+				if (responseCode == 14)
 				{
 					loginMessage1 = "The server is being updated.";
 					loginMessage2 = "Please wait 1 minute and try again.";
 					return;
 				}
 
-				if(responseCode == 15)
+				if (responseCode == 15)
 				{
 					LoggedIn.Update(true);
 					stream.position = 0;
@@ -8481,30 +8484,30 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				if(responseCode == 16)
+				if (responseCode == 16)
 				{
 					loginMessage1 = "Login attempts exceeded.";
 					loginMessage2 = "Please wait 1 minute and try again.";
 					return;
 				}
 
-				if(responseCode == 17)
+				if (responseCode == 17)
 				{
 					loginMessage1 = "You are standing in a members-only area.";
 					loginMessage2 = "To play on this world move to a free area first";
 					return;
 				}
 
-				if(responseCode == 20)
+				if (responseCode == 20)
 				{
 					loginMessage1 = "Invalid loginserver requested";
 					loginMessage2 = "Please try using a different world.";
 					return;
 				}
 
-				if(responseCode == 21)
+				if (responseCode == 21)
 				{
-					for(int s = socket.read(); s >= 0; s--)
+					for (int s = socket.read(); s >= 0; s--)
 					{
 						loginMessage1 = "You have only just left another world";
 						loginMessage2 = "Your profile will be transferred in: " + s + " seconds";
@@ -8513,7 +8516,7 @@ namespace Rs317.Sharp
 						{
 							Thread.Sleep(1000);
 						}
-						catch(Exception _ex)
+						catch (Exception _ex)
 						{
 							signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 						}
@@ -8523,17 +8526,17 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				if(responseCode == -1)
+				if (responseCode == -1)
 				{
-					if(initialResponseCode == 0)
+					if (initialResponseCode == 0)
 					{
-						if(loginFailures < 2)
+						if (loginFailures < 2)
 						{
 							try
 							{
 								Thread.Sleep(2000);
 							}
-							catch(Exception _ex)
+							catch (Exception _ex)
 							{
 								signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 							}
@@ -8564,7 +8567,7 @@ namespace Rs317.Sharp
 					return;
 				}
 			}
-			catch(IOException _ex)
+			catch (IOException _ex)
 			{
 				loginMessage1 = "";
 			}
