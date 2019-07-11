@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Library.Client", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Extended.Library.Server", "src\Server\Rs317.Extended.Library.Server\Rs317.Extended.Library.Server.csproj", "{8E39FE51-A4EC-4319-BC55-D09397A3B9AD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{66FB0C3C-CC40-4FB8-804A-FD4515D2E34A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Extended.Models.Authentication", "src\Models\Rs317.Extended.Models.Authentication\Rs317.Extended.Models.Authentication.csproj", "{3BA0CF65-562D-45D8-BEAB-0E2494E71297}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,10 @@ Global
 		{8E39FE51-A4EC-4319-BC55-D09397A3B9AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E39FE51-A4EC-4319-BC55-D09397A3B9AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E39FE51-A4EC-4319-BC55-D09397A3B9AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BA0CF65-562D-45D8-BEAB-0E2494E71297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BA0CF65-562D-45D8-BEAB-0E2494E71297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BA0CF65-562D-45D8-BEAB-0E2494E71297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BA0CF65-562D-45D8-BEAB-0E2494E71297}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +86,8 @@ Global
 		{FD7FB0AB-93C9-4193-BDCC-D2C91ED3F443} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{F22A4884-1EF5-439B-B7EC-6F6B8D46AFAE} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{8E39FE51-A4EC-4319-BC55-D09397A3B9AD} = {FD7FB0AB-93C9-4193-BDCC-D2C91ED3F443}
+		{66FB0C3C-CC40-4FB8-804A-FD4515D2E34A} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
+		{3BA0CF65-562D-45D8-BEAB-0E2494E71297} = {66FB0C3C-CC40-4FB8-804A-FD4515D2E34A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D68657D2-EEFE-4C81-83F0-DDB62718EAB9}
