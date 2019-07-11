@@ -412,7 +412,7 @@ namespace Rs317.Sharp
 		private int inventoryOverlayInterfaceID;
 		private int[] anIntArray1190;
 		private int[] anIntArray1191;
-		private IBufferWriteable stream;
+		protected IBufferWriteable stream { get; private set; }
 		private int lastAddress;
 		private int splitPrivateChat;
 		private IndexedImage inventoryBackgroundImage;
@@ -8214,7 +8214,7 @@ namespace Rs317.Sharp
 			signlink.errorname = playerUsername;
 			try
 			{
-				socket = new RSSocket(this, openSocket(43594 + portOffset).ConfigureAwait(false).GetAwaiter().GetResult());
+				ConnectToGameServer();
 				long nameLong = TextClass.nameToLong(playerUsername);
 				int nameHash = (int) (nameLong >> 16 & 31L);
 				stream.position = 0;
@@ -8484,6 +8484,11 @@ namespace Rs317.Sharp
 			}
 
 			loginMessage2 = "Error connecting to server.";
+		}
+
+		protected void ConnectToGameServer()
+		{
+			socket = new RSSocket(this, openSocket(43594 + portOffset).ConfigureAwait(false).GetAwaiter().GetResult());
 		}
 
 		//TODO: switch to enum rights.
