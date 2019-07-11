@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Rs317.Sharp
 {
-	public interface IFactoryCreateable<in TCreationContext, out TCreateType>
+	public interface IFactoryCreateable<out TCreateType, in TCreationContext>
 	{
 		TCreateType Create(TCreationContext context);
 	}

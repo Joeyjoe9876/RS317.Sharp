@@ -14,4 +14,8 @@
     <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rs317.Common\Rs317.Common.csproj" />
+  </ItemGroup>
+
 </Project>

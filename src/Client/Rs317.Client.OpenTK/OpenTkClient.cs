@@ -11,9 +11,9 @@ namespace Rs317.Sharp
 	{
 		public OpenTKRsGraphicsContext GraphicsObject { get; }
 
-		private IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer> ImageProducerFactory { get; }
+		private IFactoryCreateable<OpenTKImageProducer, ImageProducerFactoryCreationContext> ImageProducerFactory { get; }
 
-		public OpenTKClient(ClientConfiguration config, OpenTKRsGraphicsContext graphicsObject, IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer> imageProducerFactory, IBufferFactory bufferFactory) 
+		public OpenTKClient(ClientConfiguration config, OpenTKRsGraphicsContext graphicsObject, IFactoryCreateable<OpenTKImageProducer, ImageProducerFactoryCreationContext> imageProducerFactory, IBufferFactory bufferFactory) 
 			: base(config, bufferFactory)
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));

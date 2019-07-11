@@ -12,7 +12,7 @@ namespace Rs317.Extended
 	{
 		public ExtendedOpenTkClient(ClientConfiguration config, 
 			OpenTKRsGraphicsContext graphicsObject, 
-			IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer> 
+			IFactoryCreateable<OpenTKImageProducer, ImageProducerFactoryCreationContext> 
 				imageProducerFactory, IBufferFactory bufferFactory) 
 			: base(config, graphicsObject, imageProducerFactory, bufferFactory)
 		{

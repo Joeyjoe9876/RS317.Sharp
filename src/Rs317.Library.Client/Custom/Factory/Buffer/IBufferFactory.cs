@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Rs317.Sharp
 {
-	public interface IBufferFactory : IFactoryCreateable<EmptyFactoryCreationContext, IBuffer>
+	public interface IBufferFactory : IFactoryCreateable<IBuffer, EmptyFactoryCreationContext>
 	{
 
 	}

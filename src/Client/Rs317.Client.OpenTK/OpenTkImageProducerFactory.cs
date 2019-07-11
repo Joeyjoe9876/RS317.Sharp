@@ -5,7 +5,7 @@ using Rs317.Sharp;
 
 namespace Rs317.Sharp
 {
-	public sealed class OpenTkImageProducerFactory : IImagePaintEventPublisher, IFactoryCreateable<ImageProducerFactoryCreationContext, OpenTKImageProducer>
+	public sealed class OpenTkImageProducerFactory : IImagePaintEventPublisher, IFactoryCreateable<OpenTKImageProducer, ImageProducerFactoryCreationContext>
 	{
 		/// <summary>
 		/// Event that should be invoked when a renderable is made.
