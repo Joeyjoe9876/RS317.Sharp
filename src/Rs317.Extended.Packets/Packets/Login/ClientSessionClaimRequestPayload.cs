@@ -16,6 +16,7 @@ namespace Rs317.Extended
 		/// The JWT string that can be used to authorize
 		/// the user.
 		/// </summary>
+		[SendSize(SendSizeAttribute.SizeType.UShort)]
 		[WireMember(1)]
 		public string JWT { get; }
 
@@ -23,7 +24,6 @@ namespace Rs317.Extended
 		public ClientSessionClaimRequestPayload(string jwt)
 		{
 			if(string.IsNullOrWhiteSpace(jwt)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(jwt));
-			if(characterId < 0) throw new ArgumentOutOfRangeException(nameof(characterId));
 
 			JWT = jwt;
 		}
