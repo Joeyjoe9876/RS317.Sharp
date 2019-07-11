@@ -101,6 +101,12 @@ namespace Rs317.Extended
 
 		public void putOpcode(int i)
 		{
+			//If it has a length, let's send it as a short
+			if(PacketInformation.CLIENT_SEND_PACKET_SIZES[i] >= 0)
+				putShort(PacketInformation.CLIENT_SEND_PACKET_SIZES[i] + 1); //+1 is for the following opcode. It's included as the payload.
+			else
+				throw new NotImplementedException($"TODO: Need to manually handle the size for OpCode: {i}");
+			
 			put(i);
 		}
 
