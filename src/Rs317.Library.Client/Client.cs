@@ -227,7 +227,7 @@ namespace Rs317.Sharp
 		private int cameraOffsetZ;
 		private int anInt998;
 		private int anInt999;
-		private ISAACRandomGenerator encryption;
+		protected ISAACRandomGenerator encryption { get; private set; }
 		private Sprite minimapEdgeImage;
 		private int SCROLLBAR_TRACK_COLOUR;
 		private OnDemandFetcher onDemandFetcher;
@@ -244,8 +244,8 @@ namespace Rs317.Sharp
 
 		private String amountOrNameInput;
 		private int daysSinceLogin;
-		private int packetSize;
-		private int packetOpcode;
+		protected int packetSize { get; set; }
+		protected int packetOpcode { get; set; }
 		private int packetReadAnticheat;
 		private int idleCounter;
 		private int idleLogout;
@@ -313,7 +313,7 @@ namespace Rs317.Sharp
 		private int loadingBarPercentage;
 		private bool loadingMap;
 		private String[] friendsList;
-		private IBufferReadable inStream;
+		protected IBufferReadable inStream { get; private set; }
 		private int moveItemInterfaceId;
 		private int moveItemSlotStart;
 		private int activeInterfaceType;
@@ -390,7 +390,7 @@ namespace Rs317.Sharp
 		private BaseRsImageProducer<TGraphicsType> gameScreenImageProducer;
 		private BaseRsImageProducer<TGraphicsType> chatboxImageProducer;
 		private int daysSinceRecoveryChange;
-		private RSSocket socket;
+		protected RSSocket socket { get; private set; }
 		private int privateMessagePointer;
 		private int minimapZoom;
 		private int randomisationMinimapZoom;
