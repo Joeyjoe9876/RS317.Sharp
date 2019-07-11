@@ -30,8 +30,18 @@ namespace Rs317.Extended
 		{
 			if(serializer == null) throw new ArgumentNullException(nameof(serializer));
 
-			foreach (var payload in GameServerMetadataMarker.PayloadTypes)
+			serializer.RegisterType<BaseGameClientPayload>();
+			serializer.RegisterType<BaseGameServerPayload>();
+			serializer.RegisterType<UnknownClientGamePayload>();
+			serializer.RegisterType<UnknownServerGamePayload>();
+
+			foreach(var payload in GameServerMetadataMarker.PayloadTypes)
+			{
+				Console.WriteLine($"Registering: {payload.Name}");
 				serializer.RegisterType(payload);
+			}
+
+			serializer.Compile();
 		}
 	}
 }
