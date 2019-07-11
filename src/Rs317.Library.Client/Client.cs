@@ -8487,7 +8487,7 @@ namespace Rs317.Sharp
 		}
 
 		//TODO: switch to enum rights.
-		private void HandleLoginSuccessful(int playerRights, bool isAccountFlagged)
+		protected void HandleLoginSuccessful(int playerRights, bool isAccountFlagged)
 		{
 			this.playerRights = playerRights;
 			flagged = isAccountFlagged;
