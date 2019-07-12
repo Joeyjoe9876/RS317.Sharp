@@ -268,8 +268,8 @@ namespace Rs317.Sharp
 		private int[] unknownCameraVariable;
 		private bool characterModelChanged;
 		private Sprite[] mapFunctionImage;
-		private int baseX;
-		private int baseY;
+		protected int baseX { get; private set; }
+		protected int baseY { get; private set; }
 		private int anInt1036;
 		private int anInt1037;
 		private int loginFailures;
@@ -486,15 +486,15 @@ namespace Rs317.Sharp
 		private int chatboxInterfaceId;
 		private int cameraRandomisationH;
 		private int nextCameraRandomisationH;
-		private int[] walkingQueueX;
-		private int[] walkingQueueY;
+		protected int[] walkingQueueX { get; private set; }
+		protected int[] walkingQueueY { get; private set; }
 		private bool itemSelected;
 		private int lastItemSelectedSlot;
 		private int lastItemSelectedInterface;
 		private int useItemId;
 		private String selectedItemName;
 		private int publicChatMode;
-		private static int currentWalkingQueueSize;
+		protected static int currentWalkingQueueSize { get; set; }
 		private int currentTrackLoop;
 
 		static Client()
