@@ -3668,47 +3668,53 @@ namespace Rs317.Sharp
 				int x = walkingQueueX[currentIndex];
 				int y = walkingQueueY[currentIndex];
 				currentWalkingQueueSize += maxPathSize;
-				if(currentWalkingQueueSize >= 92)
-				{
-					stream.putOpcode(36);
-					stream.putInt(0);
-					currentWalkingQueueSize = 0;
-				}
 
-				if(clickType == 0)
-				{
-					stream.putOpcode(164);
-					stream.put(maxPathSize + maxPathSize + 3);
-				}
-
-				if(clickType == 1)
-				{
-					stream.putOpcode(248);
-					stream.put(maxPathSize + maxPathSize + 3 + 14);
-				}
-
-				if(clickType == 2)
-				{
-					stream.putOpcode(98);
-					stream.put(maxPathSize + maxPathSize + 3);
-				}
-
-				stream.putLEShortA(x + baseX);
 				destinationX = walkingQueueX[0];
 				destinationY = walkingQueueY[0];
-				for(int counter = 1; counter < maxPathSize; counter++)
-				{
-					currentIndex--;
-					stream.put(walkingQueueX[currentIndex] - x);
-					stream.put(walkingQueueY[currentIndex] - y);
-				}
-
-				stream.putLEShort(y + baseY);
-				stream.putByteC(base.keyStatus[5] != 1 ? 0 : 1);
+				SendWalkPacket(clickType, maxPathSize, x, currentIndex, y);
 				return true;
 			}
 
 			return clickType != 1;
+		}
+
+		protected virtual void SendWalkPacket(int clickType, int maxPathSize, int x, int currentIndex, int y)
+		{
+			if (currentWalkingQueueSize >= 92)
+			{
+				stream.putOpcode(36);
+				stream.putInt(0);
+				currentWalkingQueueSize = 0;
+			}
+
+			if (clickType == 0)
+			{
+				stream.putOpcode(164);
+				stream.put(maxPathSize + maxPathSize + 3);
+			}
+
+			if (clickType == 1)
+			{
+				stream.putOpcode(248);
+				stream.put(maxPathSize + maxPathSize + 3 + 14);
+			}
+
+			if (clickType == 2)
+			{
+				stream.putOpcode(98);
+				stream.put(maxPathSize + maxPathSize + 3);
+			}
+
+			stream.putLEShortA(x + baseX);
+			for (int counter = 1; counter < maxPathSize; counter++)
+			{
+				currentIndex--;
+				stream.put(walkingQueueX[currentIndex] - x);
+				stream.put(walkingQueueY[currentIndex] - y);
+			}
+
+			stream.putLEShort(y + baseY);
+			stream.putByteC(base.keyStatus[5] != 1 ? 0 : 1);
 		}
 
 		private void draw3dScreen()
