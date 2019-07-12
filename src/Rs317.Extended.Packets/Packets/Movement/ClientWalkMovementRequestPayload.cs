@@ -26,9 +26,9 @@ namespace Rs317.Extended
 		/// <summary>
 		/// Serializer ctor.
 		/// </summary>
-		private ClientWalkMovementRequestPayload(bool isRunningRequested)
+		private ClientWalkMovementRequestPayload()
 		{
-			this.isRunningRequested = isRunningRequested;
+
 		}
 	}
 }
