@@ -77,5 +77,49 @@ namespace Rs317.Extended
 		{
 			//This prevents the client from disconnecting.
 		}
+		protected override void SendWalkPacket(int mouseClickType, int maxPathSize, int x, int currentIndex, int y)
+		{
+			if(currentWalkingQueueSize >= 92)
+			{
+				stream.putOpcode(36);
+				stream.putInt(0);
+				currentWalkingQueueSize = 0;
+			}
+
+			if(clickType == 0)
+			{
+				//opcode + size of pathpoints (x, y) so times 4 and then + 1 for length prefix array of pathpoints
+				//and finally 1 byte for the run mode.
+				stream.putShort(1 + (maxPathSize) * sizeof(short) * 2  + 1 + 1);
+				stream.putOpcode(164);
+				stream.put(maxPathSize);
+			}
+
+			if(clickType == 1)
+			{
+				stream.putOpcode(248);
+				stream.put(maxPathSize + maxPathSize + 3 + 14);
+			}
+
+			if(clickType == 2)
+			{
+				stream.putOpcode(98);
+				stream.put(maxPathSize + maxPathSize + 3);
+			}
+
+			//Send the X and Y as shorts, unlike 317.
+			stream.putShort(walkingQueueX[currentIndex]);
+			stream.putShort(walkingQueueY[currentIndex]);
+
+			for(int counter = 1; counter < maxPathSize; counter++)
+			{
+				currentIndex--;
+				stream.putShort(walkingQueueX[currentIndex]);
+				stream.putShort(walkingQueueY[currentIndex]);
+			}
+
+			//Indicates if the ctrl key is pressed for running.
+			stream.putByteC(base.keyStatus[5] != 1 ? 0 : 1);
+		}
 	}
 }
