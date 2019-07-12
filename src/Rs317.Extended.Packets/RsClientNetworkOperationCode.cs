@@ -11,5 +11,7 @@ namespace Rs317.Extended
 	{
 		//TODO: make sure this opcode isn't in use. It's custom.
 		SessionClaimRequest = 254,
+
+		LeftClickWalkRequest = 164,
 	}
 }
