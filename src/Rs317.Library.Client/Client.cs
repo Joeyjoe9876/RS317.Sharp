@@ -5783,6 +5783,9 @@ namespace Rs317.Sharp
 				thirdMostRecentOpcode = secondMostRecentOpcode;
 				secondMostRecentOpcode = mostRecentOpcode;
 				mostRecentOpcode = packetOpcode;
+
+				Console.WriteLine($"recv: {packetOpcode}");
+
 				if(HandlePacket81()) return true;
 
 				if(HandlePacket176()) return true;
@@ -6227,13 +6230,20 @@ namespace Rs317.Sharp
 		{
 			if(packetOpcode == 249)
 			{
-				membershipStatus = inStream.getUnsignedByteA();
-				playerListId = inStream.getUnsignedShortA();
+				int isMemeber = inStream.getUnsignedByteA();
+				int playerId = inStream.getUnsignedShortA();
+				SetNetworkPlayerStatus(isMemeber, playerId);
 				packetOpcode = -1;
 				return true;
 			}
 
 			return false;
+		}
+
+		public void SetNetworkPlayerStatus(int isMemeber, int playerId)
+		{
+			membershipStatus = isMemeber;
+			playerListId = playerId;
 		}
 
 		private bool HandlePacket177()
@@ -6584,19 +6594,24 @@ namespace Rs317.Sharp
 		{
 			if(packetOpcode == 68)
 			{
-				for(int setting = 0; setting < interfaceSettings.Length; setting++)
-					if(interfaceSettings[setting] != defaultSettings[setting])
-					{
-						interfaceSettings[setting] = defaultSettings[setting];
-						handleInterfaceSetting(setting);
-						redrawTab = true;
-					}
+				ResetInterfaceSettings();
 
 				packetOpcode = -1;
 				return true;
 			}
 
 			return false;
+		}
+
+		public void ResetInterfaceSettings()
+		{
+			for (int setting = 0; setting < interfaceSettings.Length; setting++)
+				if (interfaceSettings[setting] != defaultSettings[setting])
+				{
+					interfaceSettings[setting] = defaultSettings[setting];
+					handleInterfaceSetting(setting);
+					redrawTab = true;
+				}
 		}
 
 		private bool HandlePacket79()
@@ -7028,7 +7043,8 @@ namespace Rs317.Sharp
 		{
 			if(packetOpcode == 73 || packetOpcode == 241)
 			{
-				// mapReset();
+
+				;
 				int playerRegionX = regionX;
 				int playerRegionY = regionY;
 				if(packetOpcode == 73)
@@ -7263,11 +7279,170 @@ namespace Rs317.Sharp
 				}
 
 				cutsceneActive = false;
+
 				packetOpcode = -1;
 				return true;
 			}
 
 			return false;
+		}
+
+		public void InitializePlayerRegion(int newRegionX, int newRegionY)
+		{
+			// mapReset();
+			int playerRegionX = newRegionX;
+			int playerRegionY = newRegionY;
+			Console.WriteLine($"Region: {playerRegionX}:{playerRegionY}");
+			loadGeneratedMap = false;
+
+			if (regionX == playerRegionX && regionY == playerRegionY && loadingStage == 2)
+				return;
+
+			regionX = playerRegionX;
+			regionY = playerRegionY;
+			baseX = (regionX - 6) * 8;
+			baseY = (regionY - 6) * 8;
+			inTutorialIsland = (regionX / 8 == 48 || regionX / 8 == 49) && regionY / 8 == 48;
+			if (regionX / 8 == 48 && regionY / 8 == 148)
+				inTutorialIsland = true;
+			loadingStage = 1;
+			loadRegionTime = TimeService.CurrentTimeInMilliseconds();
+			gameScreenImageProducer.initDrawingArea();
+			fontPlain.drawCentredText("Loading - please wait.", 257, 151, 0);
+			fontPlain.drawCentredText("Loading - please wait.", 256, 150, 0xFFFFFF);
+			gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
+
+			{
+				int r = 0;
+				for (int x = (regionX - 6) / 8; x <= (regionX + 6) / 8; x++)
+				{
+					for (int y = (regionY - 6) / 8; y <= (regionY + 6) / 8; y++)
+						r++;
+				}
+
+				terrainData = new byte[r][];
+				objectData = new byte[r][];
+				mapCoordinates = new int[r];
+				terrainDataIds = new int[r];
+				objectDataIds = new int[r];
+				r = 0;
+				for (int x = (regionX - 6) / 8; x <= (regionX + 6) / 8; x++)
+				{
+					for (int y = (regionY - 6) / 8; y <= (regionY + 6) / 8; y++)
+					{
+						mapCoordinates[r] = (x << 8) + y;
+						if (inTutorialIsland
+						    && (y == 49 || y == 149 || y == 147 || x == 50 || x == 49 && y == 47))
+						{
+							terrainDataIds[r] = -1;
+							objectDataIds[r] = -1;
+							r++;
+						}
+						else
+						{
+							int terrainId = terrainDataIds[r] = onDemandFetcher.getMapId(0, x, y);
+							if (terrainId != -1)
+								onDemandFetcher.request(3, terrainId);
+							int objectId = objectDataIds[r] = onDemandFetcher.getMapId(1, x, y);
+							if (objectId != -1)
+								onDemandFetcher.request(3, objectId);
+							r++;
+						}
+					}
+				}
+			}
+
+			int _x = baseX - anInt1036;
+			int _y = baseY - anInt1037;
+			anInt1036 = baseX;
+			anInt1037 = baseY;
+			for (int n = 0; n < 16384; n++)
+			{
+				NPC npc = npcs[n];
+				if (npc != null)
+				{
+					for (int waypoint = 0; waypoint < 10; waypoint++)
+					{
+						npc.waypointX[waypoint] -= _x;
+						npc.waypointY[waypoint] -= _y;
+					}
+
+					npc.x -= _x * 128;
+					npc.y -= _y * 128;
+				}
+			}
+
+			for (int p = 0; p < MAX_ENTITY_COUNT; p++)
+			{
+				Player player = players[p];
+				if (player != null)
+				{
+					for (int waypoint = 0; waypoint < 10; waypoint++)
+					{
+						player.waypointX[waypoint] -= _x;
+						player.waypointY[waypoint] -= _y;
+					}
+
+					player.x -= _x * 128;
+					player.y -= _y * 128;
+				}
+			}
+
+			loadingMap = true;
+			byte currentPositionX = 0;
+			sbyte boundaryPositionX = 104;
+			sbyte incrementX = 1;
+			if (_x < 0)
+			{
+				currentPositionX = 103;
+				boundaryPositionX = -1;
+				incrementX = -1;
+			}
+
+			byte currentPositionY = 0;
+			sbyte boundaryPositionY = 104;
+			sbyte incrementY = 1;
+			if (_y < 0)
+			{
+				currentPositionY = 103;
+				boundaryPositionY = -1;
+				incrementY = -1;
+			}
+
+			for (int x = currentPositionX; x != boundaryPositionX; x += incrementX)
+			{
+				for (int y = currentPositionY; y != boundaryPositionY; y += incrementY)
+				{
+					int x2 = x + _x;
+					int y2 = y + _y;
+					for (int z = 0; z < 4; z++)
+						if (x2 >= 0 && y2 >= 0 && x2 < 104 && y2 < 104)
+							groundArray[z, x, y] = groundArray[z, x2, y2];
+						else
+							groundArray[z, x, y] = null;
+				}
+			}
+
+			for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+					.peekFront();
+				spawnRequest != null;
+				spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+					.getPrevious())
+			{
+				spawnRequest.x -= _x;
+				spawnRequest.y -= _y;
+				if (spawnRequest.x < 0 || spawnRequest.y < 0 || spawnRequest.x >= 104 || spawnRequest.y >= 104)
+					spawnRequest.unlink();
+			}
+
+			if (destinationX != 0)
+			{
+				destinationX -= _x;
+				destinationY -= _y;
+			}
+
+			cutsceneActive = false;
+			return;
 		}
 
 		private bool HandlePacket70()
@@ -7348,16 +7523,22 @@ namespace Rs317.Sharp
 			{
 				int sidebarId = inStream.getUnsignedLEShort();
 				int interfaceId = inStream.getUnsignedByteA();
-				if(sidebarId == 0x00FFFF)
-					sidebarId = -1;
-				tabInterfaceIDs[interfaceId] = sidebarId;
-				redrawTab = true;
-				drawTabIcons = true;
+				LinkSideBarToInterface(sidebarId, interfaceId);
 				packetOpcode = -1;
 				return true;
 			}
 
 			return false;
+		}
+
+		public void LinkSideBarToInterface(int sidebarId, int interfaceId)
+		{
+			Console.WriteLine($"Interface Link: SideBar: {sidebarId} InterfaceId: {interfaceId}");
+			if (sidebarId == 0x00FFFF)
+				sidebarId = -1;
+			tabInterfaceIDs[interfaceId] = sidebarId;
+			redrawTab = true;
+			drawTabIcons = true;
 		}
 
 		private bool HandlePacket134()
@@ -7445,15 +7626,20 @@ namespace Rs317.Sharp
 		{
 			if(packetOpcode == 107)
 			{
-				cutsceneActive = false;
-				for(int c = 0; c < 5; c++)
-					customCameraActive[c] = false;
+				ResetCutsceneCamera();
 
 				packetOpcode = -1;
 				return true;
 			}
 
 			return false;
+		}
+
+		public void ResetCutsceneCamera()
+		{
+			cutsceneActive = false;
+			for (int c = 0; c < 5; c++)
+				customCameraActive[c] = false;
 		}
 
 		private bool HandlePacket185()

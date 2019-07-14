@@ -47,8 +47,8 @@ namespace Rs317.GladMMO
 				playerProperties.put(DataType.SHORT, 0x336); // turn 90 ccw
 				playerProperties.put(DataType.SHORT, 0x338); // run*/
 
-			Client.playerPositionY = 51;
-			Client.playerPositionX = 54;
+			//Client.playerPositionY = 51;
+			//Client.playerPositionX = 54;
 
 			//updatePlayers(packetSize, inStream);
 			Client.loadingMap = false;
