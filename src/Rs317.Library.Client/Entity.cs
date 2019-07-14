@@ -18,7 +18,7 @@ namespace Rs317.Sharp
 
 		public int degreesToTurn { get; protected set; }
 
-		public int runAnimationId { get; protected set; }
+		public int runAnimationId { get; set; }
 
 		public String overheadTextMessage;
 		public int height;

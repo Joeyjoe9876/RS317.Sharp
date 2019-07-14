@@ -25,13 +25,13 @@ namespace Rs317.Sharp
 		public int modifiedAppearanceStartTime;
 		public int modifiedAppearanceEndTime { get; set; }
 		public int drawHeight2 { get; set; }
-		public bool visible { get; private set; }
+		public bool visible { get; set; }
 		public int anInt1711 { get; set; }
 		public int drawHeight { get; set; }
 		public int anInt1713 { get; set; }
 		public Model playerModel { get; set; }
 		public int[] appearance;
-		private long appearanceOffset;
+		public long appearanceOffset;
 		public int localX { get; set; }
 		public int localY { get; set; }
 		public int playerTileHeight { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FreecraftCore.Serializer;
+using JetBrains.Annotations;
 
 namespace Rs317.Extended
 {
@@ -9,9 +10,15 @@ namespace Rs317.Extended
 	[GameServerPayload(RsServerNetworkOperationCode.LocalPlayerUpdate)]
 	public sealed class ServerUpdateLocalPlayerPayload : BaseGameServerPayload
 	{
-		//TODO: Implement this. This is just a stub for now.
+		[WireMember(1)]
+		public Vector2<short> Position { get; set; }
 
-		public ServerUpdateLocalPlayerPayload()
+		public ServerUpdateLocalPlayerPayload([NotNull] Vector2<short> position)
+		{
+			Position = position ?? throw new ArgumentNullException(nameof(position));
+		}
+
+		private ServerUpdateLocalPlayerPayload()
 		{
 			
 		}

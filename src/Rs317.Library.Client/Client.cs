@@ -132,12 +132,12 @@ namespace Rs317.Sharp
 		private int anInt886;
 		private String inputString;
 		private int MAX_ENTITY_COUNT;
-		private int LOCAL_PLAYER_ID;
+		public int LOCAL_PLAYER_ID { get; private set; }
 		private Player[] players;
 		private int localPlayerCount;
 		private int[] localPlayers;
-		private int playersObservedCount;
-		private int[] playersObserved;
+		public int playersObservedCount;
+		public int[] playersObserved;
 		private Default317Buffer[] playerAppearanceData;
 		private int cameraRandomisationA;
 		private int nextCameraRandomisationA;
@@ -311,7 +311,7 @@ namespace Rs317.Sharp
 		private Sprite mapDotFriend;
 		private Sprite mapDotTeam;
 		private int loadingBarPercentage;
-		private bool loadingMap;
+		public bool loadingMap { get; set; }
 		private String[] friendsList;
 		protected IBufferReadable inStream { get; private set; }
 		private int moveItemInterfaceId;
@@ -395,8 +395,8 @@ namespace Rs317.Sharp
 		private int minimapZoom;
 		private int randomisationMinimapZoom;
 		private long songStartTime;
-		private String enteredUsername;
-		private String enteredPassword;
+		public String enteredUsername { get; set; }
+		public String enteredPassword { get; set; }
 		private bool genericLoadingError;
 		private int[] objectTypes = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 		private int reportAbuseInterfaceID;
@@ -475,10 +475,10 @@ namespace Rs317.Sharp
 		private Sprite minimapImage;
 		private int arbitraryDestination;
 		private int renderCount;
-		private String loginMessage1;
-		private String loginMessage2;
-		private int playerPositionX;
-		private int playerPositionY;
+		protected String loginMessage1;
+		protected String loginMessage2;
+		public int playerPositionX;
+		public int playerPositionY;
 		private GameFont fontSmall;
 		private GameFont fontPlain;
 		private GameFont fontBold;
@@ -4971,7 +4971,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void drawLoginScreen(bool originalLoginScreen)
+		protected void drawLoginScreen(bool originalLoginScreen)
 		{
 			setupLoginScreen();
 			loginBoxLeftBackgroundTile.initDrawingArea();
@@ -7009,14 +7009,19 @@ namespace Rs317.Sharp
 			if(packetOpcode == 208)
 			{
 				int interfaceId = inStream.getSignedLEShort();
-				if(interfaceId >= 0)
-					loadInterface(interfaceId);
-				walkableInterfaceId = interfaceId;
+				SetWalkableInterfaceId(interfaceId);
 				packetOpcode = -1;
 				return true;
 			}
 
 			return false;
+		}
+
+		public void SetWalkableInterfaceId(int interfaceId)
+		{
+			if (interfaceId >= 0)
+				loadInterface(interfaceId);
+			walkableInterfaceId = interfaceId;
 		}
 
 		private bool HandlePacket73And241()
@@ -7030,6 +7035,7 @@ namespace Rs317.Sharp
 				{
 					playerRegionX = inStream.getUnsignedLEShortA();
 					playerRegionY = inStream.getUnsignedLEShort();
+					Console.WriteLine($"Region: {playerRegionX}:{playerRegionY}");
 					loadGeneratedMap = false;
 				}
 
@@ -8203,8 +8209,6 @@ namespace Rs317.Sharp
 
 		private void login(String playerUsername, String playerPassword, bool recoveredConnection)
 		{
-			
-
 			if(!recoveredConnection)
 			{
 				loginMessage1 = "";
@@ -8498,7 +8502,7 @@ namespace Rs317.Sharp
 		}
 
 		//TODO: switch to enum rights.
-		protected void HandleLoginSuccessful(int playerRights, bool isAccountFlagged)
+		public void HandleLoginSuccessful(int playerRights, bool isAccountFlagged)
 		{
 			this.playerRights = playerRights;
 			flagged = isAccountFlagged;
@@ -10166,7 +10170,7 @@ namespace Rs317.Sharp
 						&& base.clickY <= _y + 20)
 					{
 						loginFailures = 0;
-						login(enteredUsername, enteredPassword, false);
+						OnLoginButtonClicked();
 						if(LoggedIn)
 							return;
 					}
@@ -10231,6 +10235,11 @@ namespace Rs317.Sharp
 						loginScreenState = 0;
 				}
 			}
+		}
+
+		protected virtual void OnLoginButtonClicked()
+		{
+			login(enteredUsername, enteredPassword, false);
 		}
 
 		private void processMenuClick()

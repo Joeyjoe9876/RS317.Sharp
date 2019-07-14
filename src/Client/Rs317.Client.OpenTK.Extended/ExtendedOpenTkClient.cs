@@ -14,13 +14,17 @@ namespace Rs317.Extended
 {
 	public sealed class ExtendedOpenTkClient : OpenTKClient
 	{
+		private long LastMilliseconds { get; set; } = -1;
+
+		private Queue<Vector2<int>> LocalPlayerWalkingQueue { get; }
+
 		public ExtendedOpenTkClient(ClientConfiguration config, 
 			OpenTKRsGraphicsContext graphicsObject, 
 			IFactoryCreateable<OpenTKImageProducer, ImageProducerFactoryCreationContext> 
 				imageProducerFactory, IBufferFactory bufferFactory) 
 			: base(config, graphicsObject, imageProducerFactory, bufferFactory)
 		{
-
+			LocalPlayerWalkingQueue = new Queue<Vector2<int>>(10);
 		}
 
 		protected override int ReadPacketHeader(int currentAvailableBytes)
@@ -77,6 +81,90 @@ namespace Rs317.Extended
 		{
 			//This prevents the client from disconnecting.
 		}
+
+		protected override bool HandlePacket81()
+		{
+			if(packetOpcode == 81)
+			{
+				int x = inStream.getShort();
+				int y = inStream.getShort();
+
+				playersObserved[playersObservedCount++] = LOCAL_PLAYER_ID;
+
+				localPlayer.setPos(x, y, false);
+
+				localPlayer.visible = true;
+				localPlayer.lastUpdateTick = tick;
+				
+				localPlayer.standAnimationId = 0x328;
+				localPlayer.standTurnAnimationId = 0x337;
+				localPlayer.walkAnimationId = 0x333;
+				localPlayer.turnAboutAnimationId = 0x334;
+				localPlayer.turnLeftAnimationId = 0x335;
+				localPlayer.turnRightAnimationId = 0x336;
+				localPlayer.runAnimationId = 0x338;
+
+				localPlayer.appearanceOffset = 336413342762192;
+				localPlayer.appearance = new int[12] {0, 0, 0, 0, 275, 0, 285, 295, 259, 291, 300, 266};
+
+
+				/*	playerProperties.put(DataType.SHORT, 0x328); // stand
+					playerProperties.put(DataType.SHORT, 0x337); // stand turn
+					playerProperties.put(DataType.SHORT, 0x333); // walk
+					playerProperties.put(DataType.SHORT, 0x334); // turn 180
+					playerProperties.put(DataType.SHORT, 0x335); // turn 90 cw
+					playerProperties.put(DataType.SHORT, 0x336); // turn 90 ccw
+					playerProperties.put(DataType.SHORT, 0x338); // run*/
+
+				playerPositionY = 51;
+				playerPositionX = 54;
+
+				//updatePlayers(packetSize, inStream);
+				loadingMap = false;
+				packetOpcode = -1;
+				return true;
+			}
+
+			return false;
+		}
+
+		public override void processGameLoop()
+		{
+			base.processGameLoop();
+
+			long currentMilliseconds = TimeService.CurrentTimeInMilliseconds();
+			
+			if (LastMilliseconds == -1)
+				LastMilliseconds = currentMilliseconds;
+			else if (currentMilliseconds - 600 >= LastMilliseconds)
+			{
+				//It's been 600ms, time for another tick.
+				LastMilliseconds = currentMilliseconds;
+				ProcessGameTick();
+			}
+		}
+
+		private void ProcessGameTick()
+		{
+			if (!LocalPlayerWalkingQueue.Any())
+				return;
+
+			Console.WriteLine($"X: {this.baseX + localPlayer.waypointX[0]} Y: {this.baseY + localPlayer.waypointY[0]}");
+
+			Vector2<int> walkPoint = LocalPlayerWalkingQueue.Peek();
+
+			int yOffet = Math.Sign(walkPoint.Y - localPlayer.waypointY[0]);
+			int xOffet = Math.Sign(walkPoint.X - localPlayer.waypointX[0]);
+
+			if (yOffet == 0 && 0 == xOffet)
+			{
+				LocalPlayerWalkingQueue.Dequeue();
+				ProcessGameTick();
+			}
+			else
+				localPlayer.setPos(xOffet + localPlayer.waypointX[0], yOffet + localPlayer.waypointY[0], false);
+		}
+
 		protected override void SendWalkPacket(int mouseClickType, int maxPathSize, int x, int currentIndex, int y)
 		{
 			if(currentWalkingQueueSize >= 92)
@@ -108,14 +196,17 @@ namespace Rs317.Extended
 			}
 
 			//Send the X and Y as shorts, unlike 317.
+			LocalPlayerWalkingQueue.Clear();
 			stream.putShort(walkingQueueX[currentIndex]);
 			stream.putShort(walkingQueueY[currentIndex]);
+			LocalPlayerWalkingQueue.Enqueue(new Vector2<int>(walkingQueueX[currentIndex], walkingQueueY[currentIndex]));
 
 			for(int counter = 1; counter < maxPathSize; counter++)
 			{
 				currentIndex--;
 				stream.putShort(walkingQueueX[currentIndex]);
 				stream.putShort(walkingQueueY[currentIndex]);
+				LocalPlayerWalkingQueue.Enqueue(new Vector2<int>(walkingQueueX[currentIndex], walkingQueueY[currentIndex]));
 			}
 
 			//Indicates if the ctrl key is pressed for running.
