@@ -35,6 +35,8 @@ namespace Rs317.Sharp
 
 		private IGameStateHookable GameStateHookable { get; }
 
+		private Action PendingRenderThreadActions;
+
 		public OpenTKGameWindow(int width, int height, IInputCallbackSubscriber inputSubscriber, IImagePaintEventPublisher paintEventPublisher, IGameStateHookable gameStateHookable)
 			: base(width, height, new RsOpenTkGraphicsMocde(), "Rs317.Sharp by Glader")
 		{
@@ -59,12 +61,15 @@ namespace Rs317.Sharp
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		private void OnLoginStateChanged(object sender, HookableVariableValueChangedEventArgs<bool> e)
 		{
-			//I don't know if we NEED to, but for safety we should
-			//delete the textures from the GPU for dynamic image producers.
-			foreach (var r in Renderables)
-				DeleteTexture(r.TextureId);
+			PendingRenderThreadActions += () =>
+			{
+				//I don't know if we NEED to, but for safety we should
+				//delete the textures from the GPU for dynamic image producers.
+				foreach (var r in Renderables)
+					DeleteTexture(r.TextureId);
 
-			Renderables.Clear();
+				Renderables.Clear();
+			};
 		}
 
 		private void SetupGameEventCallbacks()
@@ -96,6 +101,9 @@ namespace Rs317.Sharp
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
+			PendingRenderThreadActions?.Invoke();
+			PendingRenderThreadActions = null;
+
 			base.OnRenderFrame(e);
 
 			if(ViewportSizeChanged)
