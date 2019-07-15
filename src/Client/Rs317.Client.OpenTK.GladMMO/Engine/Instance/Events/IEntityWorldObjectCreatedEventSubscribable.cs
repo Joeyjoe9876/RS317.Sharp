@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GladMMO;
+using Rs317.Sharp;
 
 namespace Rs317.GladMMO
 {

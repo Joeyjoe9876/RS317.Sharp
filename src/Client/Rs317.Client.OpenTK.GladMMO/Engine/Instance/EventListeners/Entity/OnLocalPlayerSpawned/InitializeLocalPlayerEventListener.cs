@@ -21,9 +21,6 @@ namespace Rs317.GladMMO
 		{
 			Client.playersObserved[Client.playersObservedCount++] = Client.LOCAL_PLAYER_ID;
 
-			//TODO: This SHOULD be coming from the initial position of the movement data.
-			GladMMOOpenTkClient.localPlayer.setPos(50, 50, true);
-
 			GladMMOOpenTkClient.localPlayer.visible = true;
 			GladMMOOpenTkClient.localPlayer.lastUpdateTick = GladMMOOpenTkClient.tick;
 

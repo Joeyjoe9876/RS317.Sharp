@@ -6,10 +6,12 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using GladMMO;
+using GladNet;
 using Refit;
 using Reinterpret.Net;
 using Rs317.GladMMMO;
 using Rs317.Sharp;
+using UnityEngine;
 
 namespace Rs317.GladMMO
 {
@@ -18,6 +20,9 @@ namespace Rs317.GladMMO
 		public GameManager GameManagerService { get; }
 
 		public event EventHandler OnLoginButtonClickedEvent;
+
+		//Injected at connection time.
+		public static IPeerPayloadSendService<GameClientPacketPayload> SendService { get; set; }
 
 		public GladMMOOpenTkClient(ClientConfiguration config, 
 			OpenTKRsGraphicsContext graphicsObject, 
@@ -58,6 +63,19 @@ namespace Rs317.GladMMO
 		protected override void SendIdlePing()
 		{
 			//Just stub it out.
+		}
+
+		protected override void SendWalkPacket(int clickType, int maxPathSize, int x, int currentIndex, int y)
+		{
+			//TODO: Don't use unit vectors.
+			List<Vector3> pathPoints = new List<Vector3>(currentIndex);
+
+			for(int counter = 0; counter < maxPathSize; counter++)
+			{
+				pathPoints.Add(new Vector3(walkingQueueX[counter] + baseX, 0, walkingQueueY[counter] + baseY));
+			}
+
+			SendService.SendMessage(new ClientSetClickToMovePathRequestPayload(new PathBasedMovementData(pathPoints.ToArray(), 100)));
 		}
 	}
 }

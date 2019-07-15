@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Common.Logging;
 using GladMMO;
+using Rs317.Sharp;
 using UnityEngine;
 
 namespace Rs317.GladMMO
@@ -22,17 +23,27 @@ namespace Rs317.GladMMO
 	{
 		private ILog Logger { get; }
 
-		public DefaultMovementGeneratorFactory([JetBrains.Annotations.NotNull] ILog logger)
+		private GladMMOOpenTkClient Client { get; }
+
+		public DefaultMovementGeneratorFactory([JetBrains.Annotations.NotNull] ILog logger, [JetBrains.Annotations.NotNull] GladMMOOpenTkClient client)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
 		public IMovementGenerator<IWorldObject> Create(EntityAssociatedData<IMovementData> context)
 		{
-			if(Logger.IsWarnEnabled)
-				Logger.Warn($"TODO: Need to implement movement generator.");
+			if (context.Data is PathBasedMovementData pd)
+			{
+				return new PathMovementGenerator(pd, Client);
+			}
+			else
+			{
+				if(Logger.IsWarnEnabled)
+					Logger.Warn($"TODO: Need to implement movement generator.");
 
-			return new MovementGeneratorStub();
+				return new MovementGeneratorStub();
+			}
 		}
 	}
 }

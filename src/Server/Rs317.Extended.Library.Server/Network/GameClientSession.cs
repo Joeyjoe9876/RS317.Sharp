@@ -37,6 +37,7 @@ namespace Rs317.Extended
 		/// <inheritdoc />
 		public override Task OnNetworkMessageRecieved(NetworkIncomingMessage<BaseGameClientPayload> message)
 		{
+			Console.WriteLine($"Recieved: {message.Payload.GetType().Name}");
 			return MessageHandlers.TryHandleMessage(new DefaultSessionMessageContext<BaseGameServerPayload>(this.Connection, this.SendService, MockedInterceptorService, Details), message);
 		}
 	}

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using Glader.Essentials;
 using Rs317.GladMMO;
-using UnityEngine;
+using Rs317.Sharp;
 
 namespace GladMMO
 {
 	/// <summary>
-	/// Event subscriber that links the <see cref="GameObject"/> and <see cref="NetworkEntityGuid"/> of an Entity
+	/// Event subscriber that links the <see cref="UnityEngine.GameObject"/> and <see cref="NetworkEntityGuid"/> of an Entity
 	/// together in a two-way relationship.
 	/// </summary>
 	[SceneTypeCreateGladMMO(GameSceneType.InstanceServerScene)]

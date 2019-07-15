@@ -6,6 +6,7 @@ using Common.Logging;
 using Glader.Essentials;
 using GladNet;
 using Rs317.GladMMO;
+using Rs317.Sharp;
 
 namespace GladMMO
 {

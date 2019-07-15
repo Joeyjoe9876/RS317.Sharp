@@ -2,7 +2,7 @@ using System;
 
 namespace Rs317.Sharp
 {
-	public class Entity : Animable
+	public class Entity : Animable, IWorldObject
 	{
 		public int entScreenX;
 
@@ -205,6 +205,15 @@ namespace Rs317.Sharp
 					hitsLoopCycle[hit] = currentTime + 70;
 					return;
 				}
+		}
+
+		public int CurrentX => waypointX[0];
+
+		public int CurrentY => waypointY[0];
+
+		public void setPos(int x, int y)
+		{
+			setPos(x, y, false);
 		}
 	}
 }

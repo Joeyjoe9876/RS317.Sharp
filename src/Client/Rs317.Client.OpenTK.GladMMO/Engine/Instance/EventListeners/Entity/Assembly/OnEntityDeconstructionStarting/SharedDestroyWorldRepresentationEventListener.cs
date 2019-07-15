@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using Glader.Essentials;
 using Rs317.GladMMO;
-using UnityEngine;
+using Rs317.Sharp;
 
 namespace GladMMO
 {
 	/// <summary>
 	/// Base shared event listener for EntityDeconstructionStarting that will destroy the
-	/// world representation/<see cref="GameObject"/> representation of the Entity.
+	/// world representation/<see cref="UnityEngine.GameObject"/> representation of the Entity.
 	/// It will also broadcast the <see cref="IEntityWorldRepresentationDeconstructionFinishedEventSubscribable"/> and
 	/// <see cref="IEntityWorldRepresentationDeconstructionStartingEventSubscribable"/> events.
 	/// </summary>
