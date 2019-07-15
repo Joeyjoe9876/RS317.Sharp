@@ -70,9 +70,14 @@ namespace Rs317.GladMMO
 			//TODO: Don't use unit vectors.
 			List<Vector3> pathPoints = new List<Vector3>(currentIndex);
 
-			for(int counter = 0; counter < maxPathSize; counter++)
+			pathPoints.Add(new Vector3(walkingQueueX[currentIndex] + baseX, 0, walkingQueueY[currentIndex] + baseY));
+
+			for(int counter = 1; counter < maxPathSize; counter++)
 			{
-				pathPoints.Add(new Vector3(walkingQueueX[counter] + baseX, 0, walkingQueueY[counter] + baseY));
+				currentIndex--;
+				stream.putShort(walkingQueueX[currentIndex]);
+				stream.putShort(walkingQueueY[currentIndex]);
+				pathPoints.Add(new Vector3(walkingQueueX[currentIndex] + baseX, 0, walkingQueueY[currentIndex] + baseY));
 			}
 
 			SendService.SendMessage(new ClientSetClickToMovePathRequestPayload(new PathBasedMovementData(pathPoints.ToArray(), 100)));
