@@ -10,20 +10,23 @@ namespace Rs317.GladMMO
 	{
 		private GladMMOOpenTkClient Client { get; }
 
+		private ICharacterDataRepository CharacterDataRepository { get; }
+
 		public InitializeDefaultLocalSpawnRequirementsEventListener(ILocalPlayerSpawnedEventSubscribable subscriptionService,
-			[NotNull] GladMMOOpenTkClient client) 
+			[NotNull] GladMMOOpenTkClient client,
+			[NotNull] ICharacterDataRepository characterDataRepository) 
 			: base(subscriptionService)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
+			CharacterDataRepository = characterDataRepository ?? throw new ArgumentNullException(nameof(characterDataRepository));
 		}
 
 		protected override void OnLocalPlayerSpawned(LocalPlayerSpawnedEventArgs args)
 		{
 			Client.SetWalkableInterfaceId(-1);
-			Client.SetNetworkPlayerStatus(1, 4); //TODO: Don't just hackily add default 4.
+			Client.SetNetworkPlayerStatus(1, CharacterDataRepository.CharacterId); //TODO: Don't just hackily add default 4.
 			Client.ResetCutsceneCamera();
 			Client.ResetInterfaceSettings();
-			Client.InitializePlayerRegion(402, 402);
 
 			Client.LinkSideBarToInterface(3971, 1);
 			Client.LinkSideBarToInterface(638, 2);
