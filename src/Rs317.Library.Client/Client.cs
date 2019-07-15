@@ -9160,7 +9160,7 @@ namespace Rs317.Sharp
 				randomisationMinimapZoom = -1;
 			idleCounter++;
 			if(idleCounter > 50)
-				stream.putOpcode(0);
+				SendIdlePing();
 			try
 			{
 				if(socket != null && stream.position > 0)
@@ -9178,6 +9178,11 @@ namespace Rs317.Sharp
 			{
 				logout();
 			}
+		}
+
+		protected virtual void SendIdlePing()
+		{
+			stream.putOpcode(0);
 		}
 
 		protected virtual void HandlePacketRecieveAntiCheatCheck()
