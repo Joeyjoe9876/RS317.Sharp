@@ -133,9 +133,9 @@ namespace Rs317.Sharp
 		private String inputString;
 		private int MAX_ENTITY_COUNT;
 		public int LOCAL_PLAYER_ID { get; private set; }
-		private Player[] players;
-		private int localPlayerCount;
-		private int[] localPlayers;
+		public Player[] players;
+		public int localPlayerCount;
+		public int[] localPlayers;
 		public int playersObservedCount;
 		public int[] playersObserved;
 		private Default317Buffer[] playerAppearanceData;
@@ -268,8 +268,8 @@ namespace Rs317.Sharp
 		private int[] unknownCameraVariable;
 		private bool characterModelChanged;
 		private Sprite[] mapFunctionImage;
-		protected int baseX { get; private set; }
-		protected int baseY { get; private set; }
+		public int baseX { get; private set; }
+		public int baseY { get; private set; }
 		private int anInt1036;
 		private int anInt1037;
 		private int loginFailures;
@@ -5662,8 +5662,8 @@ namespace Rs317.Sharp
 			int worldDrawPlane = 3;
 			if(cameraVerticalRotation < 310)
 			{
-				int cameraX = cameraPositionX >> 7;
-				int cameraY = cameraPositionY >> 7;
+				int cameraX = Math.Max(cameraPositionX >> 7, 0);
+				int cameraY = Math.Max(cameraPositionY >> 7, 0);
 				int playerX = localPlayer.x >> 7;
 				int playerY = localPlayer.y >> 7;
 				if((tileFlags[plane, cameraX, cameraY] & 4) != 0)
