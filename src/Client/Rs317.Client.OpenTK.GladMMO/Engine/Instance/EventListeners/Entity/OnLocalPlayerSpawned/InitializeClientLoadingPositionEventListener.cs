@@ -28,10 +28,10 @@ namespace Rs317.GladMMO
 			//x, z / 8 + 6
 			IMovementData movementData = MovementDataMappable.RetrieveEntity(args.EntityGuid);
 
-			int xRegion = (int)movementData.InitialPosition.x / 8 + 6;
-			int zRegion = (int)movementData.InitialPosition.z / 8 + 6; //current serverside z is y in RS engine.
+			int xRegion = (int)movementData.InitialPosition.x / 8;
+			int zRegion = (int)movementData.InitialPosition.z / 8; //current serverside z is y in RS engine.
 			int xOffset = (int)movementData.InitialPosition.x - ((xRegion - 6) * 8);
-			int yOffset = (int)movementData.InitialPosition.z - ((xRegion - 6) * 8);
+			int yOffset = (int)movementData.InitialPosition.z - ((zRegion - 6) * 8);
 
 			Client.InitializePlayerRegion(xRegion, zRegion);
 			
