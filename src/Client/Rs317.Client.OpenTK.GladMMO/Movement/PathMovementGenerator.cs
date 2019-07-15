@@ -27,13 +27,11 @@ namespace Rs317
 			if (CurrentPathIndex >= MovementData.MovementPath.Count)
 				return;
 
-			int xRegion = (int)MovementData.MovementPath[CurrentPathIndex].x / 8;
-			int zRegion = (int)MovementData.MovementPath[CurrentPathIndex].z / 8; //current serverside z is y in RS engine.
-			int xOffset = (int)MovementData.MovementPath[CurrentPathIndex].x - ((xRegion - 6) * 8);
-			int yOffset = (int)MovementData.MovementPath[CurrentPathIndex].z - ((zRegion - 6) * 8);
+			int xOffset = (int)MovementData.MovementPath[CurrentPathIndex].x - Client.baseX;
+			int yOffset = (int)MovementData.MovementPath[CurrentPathIndex].z - Client.baseY;
 
-			int localYOffset = Math.Sign((int)yOffset - (int)entity.CurrentX);
-			int localXOffset = Math.Sign((int)xOffset - (int)entity.CurrentY);
+			int localYOffset = Math.Sign((int)yOffset - (int)entity.CurrentY);
+			int localXOffset = Math.Sign((int)xOffset - (int)entity.CurrentX);
 
 			if(localYOffset == 0 && 0 == localXOffset)
 			{
