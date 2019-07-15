@@ -54,5 +54,10 @@ namespace Rs317.GladMMO
 
 			OnLoginButtonClickedEvent?.Invoke(this, EventArgs.Empty);
 		}
+
+		protected override void SendIdlePing()
+		{
+			//Just stub it out.
+		}
 	}
 }
