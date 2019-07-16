@@ -18,6 +18,7 @@ namespace Rs317.GladMMO
 			builder.RegisterModule(new GameClientMessageHandlerAutofacModule(GameSceneType.InstanceServerScene, this.GetType().Assembly));
 			builder.RegisterModule<GladMMONetworkSerializerAutofacModule>();
 			builder.RegisterModule<GameplayDependencyRegisterationAutofacModule>();
+			builder.RegisterModule<CharacterServiceDependencyAutofacModule>();
 
 			builder.RegisterInstance<GameManager>(GladMMOProgram.RootGameManager)
 				.As<IGameContextEventQueueable>()
