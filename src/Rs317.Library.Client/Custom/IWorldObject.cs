@@ -12,5 +12,7 @@ namespace Rs317.Sharp
 
 		//Lowercase name perserved due to java.
 		void setPos(int x, int y);
+
+		void SetName(string name);
 	}
 }

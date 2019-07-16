@@ -2,7 +2,7 @@ using System;
 
 namespace Rs317.Sharp
 {
-	public class Entity : Animable, IWorldObject
+	public abstract class Entity : Animable, IWorldObject
 	{
 		public int entScreenX;
 
@@ -215,5 +215,7 @@ namespace Rs317.Sharp
 		{
 			setPos(x, y, false);
 		}
+
+		public abstract void SetName(string name);
 	}
 }

@@ -19,6 +19,11 @@ namespace GladMMO
 			CurrentX = x;
 			CurrentY = y;
 		}
+
+		public void SetName(string name)
+		{
+
+		}
 	}
 
 	//Conceptually this is like a partial factory
