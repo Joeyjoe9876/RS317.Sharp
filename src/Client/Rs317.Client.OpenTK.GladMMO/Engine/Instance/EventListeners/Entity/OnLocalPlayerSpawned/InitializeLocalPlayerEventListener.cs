@@ -34,21 +34,6 @@ namespace Rs317.GladMMO
 
 			GladMMOOpenTkClient.localPlayer.appearanceOffset = 336413342762192;
 			GladMMOOpenTkClient.localPlayer.appearance = new int[12] { 0, 0, 0, 0, 275, 0, 285, 295, 259, 291, 300, 266 };
-
-
-			/*	playerProperties.put(DataType.SHORT, 0x328); // stand
-				playerProperties.put(DataType.SHORT, 0x337); // stand turn
-				playerProperties.put(DataType.SHORT, 0x333); // walk
-				playerProperties.put(DataType.SHORT, 0x334); // turn 180
-				playerProperties.put(DataType.SHORT, 0x335); // turn 90 cw
-				playerProperties.put(DataType.SHORT, 0x336); // turn 90 ccw
-				playerProperties.put(DataType.SHORT, 0x338); // run*/
-
-			//Client.playerPositionY = 51;
-			//Client.playerPositionX = 54;
-
-			//updatePlayers(packetSize, inStream);
-			Client.loadingMap = false;
 		}
 	}
 }

@@ -38,6 +38,7 @@ namespace Rs317.GladMMO
 			//The offset from the region should be used in setPosition
 			//until an absolute method is available
 			GladMMOOpenTkClient.localPlayer.setPos(xOffset, yOffset, true);
+			Client.loadingMap = false;
 		}
 	}
 }
