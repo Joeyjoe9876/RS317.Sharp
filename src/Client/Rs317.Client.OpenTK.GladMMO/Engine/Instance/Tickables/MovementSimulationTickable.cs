@@ -8,7 +8,7 @@ using Rs317.Sharp;
 namespace GladMMO
 {
 	[SceneTypeCreateGladMMO(GameSceneType.InstanceServerScene)]
-	public sealed class MovementSimulationTickable : IGameTickable
+	public sealed class MovementSimulationTickable : IGameFixedTickable
 	{
 		private IReadonlyEntityGuidMappable<IMovementGenerator<IWorldObject>> MovementGenerators { get; }
 
@@ -32,7 +32,7 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public void Tick()
+		public void FixedTick()
 		{
 			foreach(var entry in MovementGenerators.EnumerateWithGuid(KnonwnEntities))
 				entry.ComponentValue.Update(WorldObjectMap.RetrieveEntity(entry.EntityGuid), TimeService.CurrentRemoteTime);
