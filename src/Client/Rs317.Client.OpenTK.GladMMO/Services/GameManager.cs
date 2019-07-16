@@ -13,12 +13,17 @@ namespace Rs317.GladMMMO
 {
 	public sealed class GameManager : IGameContextEventQueueable, IGameServiceable
 	{
+		private long LastMilliseconds { get; set; } = -1;
+
 		private ConcurrentQueue<Action> EventQueue { get; } = new ConcurrentQueue<Action>();
 
 		public static IDisposable LifetimeDependencyScope { get; set; }
 
 		//Hacky, but this is mutable when the game state changes.
 		private IEnumerable<IGameTickable> CurrentGameTickables { get; set; } = Array.Empty<IGameTickable>();
+
+		//Hacky, but this is mutable when the game state changes.
+		private IEnumerable<IGameFixedTickable> CurrentGameFixedTickables { get; set; } = Array.Empty<IGameFixedTickable>();
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public void OnLoginStateChanged(object sender, HookableVariableValueChangedEventArgs<bool> e)
@@ -50,6 +55,8 @@ namespace Rs317.GladMMMO
 			var gameInitializables = container.Resolve<IEnumerable<IGameInitializable>>();
 			var gameStartables = container.Resolve<IEnumerable<IGameStartable>>();
 			CurrentGameTickables = container.Resolve<IEnumerable<IGameTickable>>();
+			CurrentGameFixedTickables = container.Resolve<IEnumerable<IGameFixedTickable>>();
+
 			EventQueue.Enqueue(() =>
 			{
 				foreach (var initializable in gameInitializables)
@@ -79,6 +86,19 @@ namespace Rs317.GladMMMO
 
 			foreach(var tickable in CurrentGameTickables)
 				tickable.Tick();
+
+			long currentMilliseconds = TimeService.CurrentTimeInMilliseconds();
+
+			if(LastMilliseconds == -1)
+				LastMilliseconds = currentMilliseconds;
+			else if(currentMilliseconds - 600 >= LastMilliseconds)
+			{
+				//It's been 600ms, time for another tick.
+				LastMilliseconds = currentMilliseconds;
+
+				foreach(var fixedTickable in CurrentGameFixedTickables)
+					fixedTickable.FixedTick();
+			}
 		}
 
 		public static IContainer BuildTitleScreenContainer()
