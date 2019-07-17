@@ -12,6 +12,8 @@ namespace Rs317.Sharp
 
 	public sealed class signlink
 	{
+		private static Action<string> OnError { get; set; }
+
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static void dnslookup(String s)
 		{
@@ -153,15 +155,19 @@ namespace Rs317.Sharp
 
 		public static void reporterror(String s)
 		{
-			if(shouldReportErrors)
+			if (shouldReportErrors)
+			{
+				OnError?.Invoke(s);
 				Console.WriteLine($"Error: {s}");
+			}
 		}
 
-		public static Task startpriv(IPAddress inetaddress)
+		public static Task startpriv(IPAddress inetaddress, Action<string> onError = null)
 		{
 			if(IsSignLinkThreadActive)
 				throw new InvalidOperationException($"Cannot call this method when thread is active.");
 
+			OnError = onError;
 			savereq = null;
 			urlreq = null;
 			socketip = inetaddress;
