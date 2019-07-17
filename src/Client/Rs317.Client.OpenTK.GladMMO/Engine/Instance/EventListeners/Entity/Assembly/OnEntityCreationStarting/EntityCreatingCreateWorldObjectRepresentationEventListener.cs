@@ -24,6 +24,11 @@ namespace GladMMO
 		{
 
 		}
+
+		public void SetLevel(int level)
+		{
+
+		}
 	}
 
 	//Conceptually this is like a partial factory

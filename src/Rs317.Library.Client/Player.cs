@@ -310,6 +310,13 @@ namespace Rs317.Sharp
 			this.name = name;
 		}
 
+		public override void SetLevel(int level)
+		{
+			if (level <= 0) throw new ArgumentOutOfRangeException(nameof(level));
+
+			combatLevel = level;
+		}
+
 		public void updatePlayerAppearance(Default317Buffer stream)
 		{
 			stream.position = 0;

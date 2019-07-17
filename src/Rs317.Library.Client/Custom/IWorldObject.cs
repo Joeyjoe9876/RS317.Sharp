@@ -14,5 +14,7 @@ namespace Rs317.Sharp
 		void setPos(int x, int y);
 
 		void SetName(string name);
+
+		void SetLevel(int level);
 	}
 }

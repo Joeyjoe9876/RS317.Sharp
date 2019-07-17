@@ -217,5 +217,7 @@ namespace Rs317.Sharp
 		}
 
 		public abstract void SetName(string name);
+
+		public abstract void SetLevel(int level);
 	}
 }

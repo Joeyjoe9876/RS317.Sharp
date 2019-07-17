@@ -88,5 +88,10 @@ namespace Rs317.Sharp
 		{
 			//TODO: NPCs don't have names??
 		}
+
+		public override void SetLevel(int level)
+		{
+			//TODO: NPCs don't have a level??
+		}
 	}
 }
