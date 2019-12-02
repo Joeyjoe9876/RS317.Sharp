@@ -407,7 +407,7 @@ namespace Rs317.Sharp
 			InputSubscriber?.mouseDragged(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
 		}*/
 
-			private void mousePressed(object sender, MouseEventArgs e)
+		private void mousePressed(object sender, MouseEventArgs e)
 		{
 			InputSubscriber?.mousePressed(sender, TransformMouseEventCoordinates(e));
 		}
