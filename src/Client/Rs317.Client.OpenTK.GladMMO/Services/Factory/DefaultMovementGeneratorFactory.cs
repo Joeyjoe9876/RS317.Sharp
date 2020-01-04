@@ -16,6 +16,10 @@ namespace Rs317.GladMMO
 
 		public Vector3 CurrentPosition { get; }
 
+		public bool isStarted { get; }
+
+		public bool isFinished { get; }
+
 		public bool isRunning { get; }
 	}
 

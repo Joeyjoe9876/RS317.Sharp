@@ -63,7 +63,7 @@ namespace Rs317.GladMMMO
 					initializable.OnGameInitialized().ConfigureAwait(false).GetAwaiter().GetResult();
 
 				foreach(var startable in gameStartables)
-					startable.Start().ConfigureAwait(false).GetAwaiter().GetResult();
+					startable.OnGameStart().ConfigureAwait(false).GetAwaiter().GetResult();
 			});
 
 			LifetimeDependencyScope = container;
@@ -97,7 +97,7 @@ namespace Rs317.GladMMMO
 				LastMilliseconds = currentMilliseconds;
 
 				foreach(var fixedTickable in CurrentGameFixedTickables)
-					fixedTickable.FixedTick();
+					fixedTickable.OnGameFixedTick();
 			}
 		}
 

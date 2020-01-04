@@ -18,7 +18,7 @@ namespace Rs317.GladMMO
 		{
 			//Register all required Authentication/Title modules.
 			builder.RegisterModule<AuthenticationDependencyAutofacModule>();
-			builder.RegisterModule(new CommonGameDependencyModule(GameSceneType.TitleScreen));
+			builder.RegisterModule(new CommonGameDependencyModule(GameSceneType.TitleScreen, "http://192.168.0.12:5000", this.ThisAssembly));
 			builder.RegisterModule<TitleScreenUIDependenciesModule>();
 			builder.RegisterModule(new EngineInterfaceRegisterationModule((int)GameSceneType.TitleScreen, typeof(GladMMOOpenTkClient).Assembly));
 

@@ -40,13 +40,13 @@ namespace GladMMO
 
 		private GladMMOOpenTkClient Client { get; }
 
-		private ICharacterDataRepository CharacterDataRepository { get; }
+		private ILocalCharacterDataRepository CharacterDataRepository { get; }
 
 		private IReadonlyEntityGuidMappable<IMovementData> MovementDataMappable { get; }
 
 		public EntityCreatingCreateWorldObjectRepresentationEventListener(IEntityCreationStartingEventSubscribable subscriptionService,
 			[NotNull] GladMMOOpenTkClient client,
-			[JetBrains.Annotations.NotNull] ICharacterDataRepository characterDataRepository,
+			[JetBrains.Annotations.NotNull] ILocalCharacterDataRepository characterDataRepository,
 			[JetBrains.Annotations.NotNull] IReadonlyEntityGuidMappable<IMovementData> movementDataMappable)
 			: base(subscriptionService)
 		{

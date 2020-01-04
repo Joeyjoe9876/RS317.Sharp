@@ -7,7 +7,7 @@ using Rs317.Sharp;
 namespace Rs317.GladMMO
 {
 	[SceneTypeCreateGladMMO(GameSceneType.InstanceServerScene)]
-	public sealed class RegisterPlayerLevelChangeEventListener : EntityCreationFinishedEventListener
+	public sealed class RegisterPlayerLevelChangeEventListener : PlayerCreationFinishedEventListener
 	{
 		private IEntityDataChangeCallbackRegisterable DataChangeRegisterable { get; }
 
@@ -22,15 +22,6 @@ namespace Rs317.GladMMO
 			WorldObjectMappable = worldObjectMappable ?? throw new ArgumentNullException(nameof(worldObjectMappable));
 		}
 
-		protected override void OnEventFired(object source, EntityCreationFinishedEventArgs args)
-		{
-			//Only interested in players for now.
-			if (args.EntityGuid.EntityType != EntityType.Player)
-				return;
-
-			DataChangeRegisterable.RegisterCallback<int>(args.EntityGuid, (int) EUnitFields.UNIT_FIELD_LEVEL, OnEntityLevelChanged);
-		}
-
 		private void OnEntityLevelChanged([JetBrains.Annotations.NotNull] NetworkEntityGuid entity, [JetBrains.Annotations.NotNull] EntityDataChangedArgs<int> changeData)
 		{
 			if (entity == null) throw new ArgumentNullException(nameof(entity));
@@ -39,6 +30,11 @@ namespace Rs317.GladMMO
 			IWorldObject worldObject = WorldObjectMappable.RetrieveEntity(entity);
 
 			worldObject.SetLevel(changeData.NewValue);
+		}
+
+		protected override void OnEntityCreationFinished(EntityCreationFinishedEventArgs args)
+		{
+			DataChangeRegisterable.RegisterCallback<int>(args.EntityGuid, (int)BaseObjectField.UNIT_FIELD_LEVEL, OnEntityLevelChanged);
 		}
 	}
 }

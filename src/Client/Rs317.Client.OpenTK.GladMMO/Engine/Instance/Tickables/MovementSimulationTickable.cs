@@ -32,7 +32,7 @@ namespace GladMMO
 		}
 
 		/// <inheritdoc />
-		public void FixedTick()
+		public void OnGameFixedTick()
 		{
 			foreach(var entry in MovementGenerators.EnumerateWithGuid(KnonwnEntities))
 				entry.ComponentValue.Update(WorldObjectMap.RetrieveEntity(entry.EntityGuid), TimeService.CurrentRemoteTime);

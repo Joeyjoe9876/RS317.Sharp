@@ -27,9 +27,16 @@ namespace GladMMO
 		/// <inheritdoc />
 		public Task OnGameInitialized()
 		{
+			LoginButton.IsInteractable = true;
+
 			//When login button is pressed we should temporarily disable the interactivity of the login button.
 			LoginButton.AddOnClickListener(() =>
 			{
+				//This kind of a hack, but login is being called twice right now
+				//and I don't want to deal with or find out why.
+				//if (LoginButton.IsInteractable == false)
+				//	return;
+
 				LoginButton.IsInteractable = false;
 
 				//We should just dispatch on click.

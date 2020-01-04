@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.46" />
   </ItemGroup>
 
@@ -17,9 +18,6 @@
   <ItemGroup>
     <Reference Include="Autofac">
       <HintPath>..\..\..\lib\GladMMO\Client\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Core">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\common.logging.core\3.4.1\lib\netstandard1.0\Common.Logging.Core.dll</HintPath>
     </Reference>
     <Reference Include="Glader.Essentials.Common">
       <HintPath>..\..\..\lib\GladMMO\Client\Glader.Essentials.Common.dll</HintPath>
@@ -33,8 +31,8 @@
     <Reference Include="GladMMO.Client.Common">
       <HintPath>..\..\..\lib\GladMMO\Client\GladMMO.Client.Common.dll</HintPath>
     </Reference>
-    <Reference Include="GladMMO.Client.Game.NetCore">
-      <HintPath>..\..\..\lib\GladMMO\Client\GladMMO.Client.Game.NetCore.dll</HintPath>
+    <Reference Include="GladMMO.Client.Game">
+      <HintPath>..\..\..\lib\GladMMO\Client\GladMMO.Client.Game.dll</HintPath>
     </Reference>
     <Reference Include="GladMMO.Client.NameQueryService">
       <HintPath>..\..\..\lib\GladMMO\Client\GladMMO.Client.NameQueryService.dll</HintPath>

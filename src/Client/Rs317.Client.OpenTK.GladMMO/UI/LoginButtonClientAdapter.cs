@@ -34,6 +34,11 @@ namespace Rs317.GladMMO
 			throw new NotImplementedException("TODO: WE haven't implemented this for RS yet.");
 		}
 
+		public void SimulateClick(bool eventsOnly)
+		{
+			OnClicked?.Invoke();
+		}
+
 		public bool IsInteractable { get; set; } = true;
 
 		public void Dispose()

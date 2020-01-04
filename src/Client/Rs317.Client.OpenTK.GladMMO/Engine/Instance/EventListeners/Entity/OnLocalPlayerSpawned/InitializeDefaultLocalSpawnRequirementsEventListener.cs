@@ -10,11 +10,11 @@ namespace Rs317.GladMMO
 	{
 		private GladMMOOpenTkClient Client { get; }
 
-		private ICharacterDataRepository CharacterDataRepository { get; }
+		private ILocalCharacterDataRepository CharacterDataRepository { get; }
 
 		public InitializeDefaultLocalSpawnRequirementsEventListener(ILocalPlayerSpawnedEventSubscribable subscriptionService,
 			[NotNull] GladMMOOpenTkClient client,
-			[NotNull] ICharacterDataRepository characterDataRepository) 
+			[NotNull] ILocalCharacterDataRepository characterDataRepository) 
 			: base(subscriptionService)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));

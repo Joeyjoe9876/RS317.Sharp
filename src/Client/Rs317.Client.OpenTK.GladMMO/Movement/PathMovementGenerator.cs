@@ -47,6 +47,10 @@ namespace Rs317
 
 		public Vector3 CurrentPosition { get; }
 
+		public bool isStarted { get; }
+
+		public bool isFinished { get; }
+
 		public bool isRunning { get; } = true;
 	}
 }

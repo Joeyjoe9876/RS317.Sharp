@@ -15,14 +15,14 @@ namespace GladMMO
 
 		private IReadonlyAuthTokenRepository AuthTokenRepository { get; }
 
-		private ICharacterDataRepository CharacterDataRepository { get; }
+		private ILocalCharacterDataRepository CharacterDataRepository { get; }
 
 		private ICharacterService CharacterService { get; }
 
 		public OnConnectionEstablishedClaimSessionEventListener(INetworkConnectionEstablishedEventSubscribable subscriptionService,
 			[NotNull] IPeerPayloadSendService<GameClientPacketPayload> sendService,
 			[NotNull] IReadonlyAuthTokenRepository authTokenRepository,
-			[NotNull] ICharacterDataRepository characterDataRepository,
+			[NotNull] ILocalCharacterDataRepository characterDataRepository,
 			[NotNull] ICharacterService characterService) 
 			: base(subscriptionService)
 		{

@@ -11,27 +11,15 @@ namespace GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.InstanceServerScene)]
 	public sealed class BroadcastLocalPlayerSpawnedEventListener : PlayerCreationFinishedEventListener, ILocalPlayerSpawnedEventSubscribable
 	{
-		private ICharacterDataRepository CharacterDateRepository { get; }
+		private ILocalCharacterDataRepository CharacterDateRepository { get; }
 
 		public event EventHandler<LocalPlayerSpawnedEventArgs> OnLocalPlayerSpawned;
 
 		public BroadcastLocalPlayerSpawnedEventListener(IEntityCreationFinishedEventSubscribable subscriptionService,
-			[NotNull] ICharacterDataRepository characterDateRepository) 
+			[NotNull] ILocalCharacterDataRepository characterDateRepository) 
 			: base(subscriptionService)
 		{
 			CharacterDateRepository = characterDateRepository ?? throw new ArgumentNullException(nameof(characterDateRepository));
-		}
-
-		protected override void OnPlayerEntityCreationFinished(EntityCreationFinishedEventArgs args)
-		{
-			//Obviously, we only fire the event if the spawned entity is the local player.
-			if (IsSpawningEntityLocalPlayer(args.EntityGuid))
-			{
-				OnLocalPlayerSpawned?.Invoke(this, new LocalPlayerSpawnedEventArgs(args.EntityGuid));
-				
-				//Also, once we've encountered the local player spawn we can actually unsubscribe from this event
-				Unsubscribe();
-			}
 		}
 
 		//This was brought over from the TrinityCore times, it used to be more complex to determine.
@@ -40,6 +28,18 @@ namespace GladMMO
 			if(guid == null) throw new ArgumentNullException(nameof(guid));
 
 			return guid.EntityType == EntityType.Player && CharacterDateRepository.CharacterId == guid.EntityId;
+		}
+
+		protected override void OnEntityCreationFinished(EntityCreationFinishedEventArgs args)
+		{
+			//Obviously, we only fire the event if the spawned entity is the local player.
+			if(IsSpawningEntityLocalPlayer(args.EntityGuid))
+			{
+				OnLocalPlayerSpawned?.Invoke(this, new LocalPlayerSpawnedEventArgs(args.EntityGuid));
+
+				//Also, once we've encountered the local player spawn we can actually unsubscribe from this event
+				Unsubscribe();
+			}
 		}
 	}
 }

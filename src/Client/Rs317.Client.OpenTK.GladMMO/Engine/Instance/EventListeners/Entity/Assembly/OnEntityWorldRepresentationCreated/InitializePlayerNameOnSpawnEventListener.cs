@@ -32,12 +32,11 @@ namespace Rs317.GladMMO
 
 			Task.Factory.StartNew(async () =>
 			{
-				NameQueryResponse queryResponse = await NameQueryService.RetrieveAsync(args.EntityGuid)
+				ResponseModel<NameQueryResponse, NameQueryResponseCode> responseModel = await NameQueryService.RetrievePlayerNameAsync(args.EntityGuid.RawGuidValue)
 					.ConfigureAwait(false);
 
-				if (queryResponse.isSuccessful)
-					args.WorldReprensetation.SetName(queryResponse.EntityName);
-
+				if (responseModel.isSuccessful)
+					args.WorldReprensetation.SetName(responseModel.Result.EntityName);
 			});
 		}
 	}

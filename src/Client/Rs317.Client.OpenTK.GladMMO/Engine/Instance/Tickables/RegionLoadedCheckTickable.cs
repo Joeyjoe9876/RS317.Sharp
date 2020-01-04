@@ -18,7 +18,7 @@ namespace Rs317.GladMMO
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public void FixedTick()
+		public void OnGameFixedTick()
 		{
 			if (!GladMMOOpenTkClient.localPlayer.visible)
 				return;

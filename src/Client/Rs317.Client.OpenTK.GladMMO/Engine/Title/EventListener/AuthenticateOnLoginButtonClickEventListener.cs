@@ -50,7 +50,7 @@ namespace Rs317.GladMMO
 			Console.WriteLine($"Auth: {UserNameField.Text}:{PasswordField.Text}");
 			Task.Factory.StartNew(async () =>
 			{
-				JWTModel jwtModel = null;
+				PlayerAccountJWTModel jwtModel = null;
 
 				//TODO: Validate username and password
 				//We can't do error code supression with refit anymore, so we have to do this crap.
@@ -61,7 +61,7 @@ namespace Rs317.GladMMO
 				}
 				catch(ApiException e)
 				{
-					jwtModel = e.GetContentAs<JWTModel>();
+					jwtModel = e.GetContentAs<PlayerAccountJWTModel>();
 
 					if(Logger.IsErrorEnabled)
 						Logger.Error($"Encountered Auth Error: {e.Message}");
