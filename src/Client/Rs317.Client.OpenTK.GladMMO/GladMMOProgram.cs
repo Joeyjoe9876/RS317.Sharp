@@ -8,7 +8,6 @@ using Common.Logging;
 using Glader.Essentials;
 using GladMMO;
 using GladMMO.Client;
-using Rs317.Extended;
 using Rs317.GladMMMO;
 using Rs317.Sharp;
 

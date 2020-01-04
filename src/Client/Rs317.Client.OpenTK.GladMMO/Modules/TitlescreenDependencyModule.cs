@@ -7,7 +7,6 @@ using Autofac;
 using Common.Logging;
 using Glader.Essentials;
 using GladMMO;
-using Rs317.Extended;
 using Rs317.GladMMMO;
 using Rs317.Sharp;
 
@@ -39,7 +38,7 @@ namespace Rs317.GladMMO
 				.AsImplementedInterfaces()
 				.SingleInstance();
 
-			builder.RegisterType<ExtendedBufferFactory>()
+			builder.RegisterType<DefaultBufferFactory>()
 				.AsSelf()
 				.AsImplementedInterfaces()
 				.SingleInstance();
