@@ -49,6 +49,11 @@ namespace Rs317.GladMMO
 				.ExternallyOwned()
 				.SingleInstance();
 
+			//LocalZoneDataRepository : IZoneDataRepository
+			builder.RegisterType<LocalZoneDataRepository>()
+				.As<IZoneDataRepository>()
+				.As<IReadonlyZoneDataRepository>();
+
 			builder.Register<GladMMOOpenTkClient>(context =>
 				{
 					//This is done to make sure only 1 is ever created.

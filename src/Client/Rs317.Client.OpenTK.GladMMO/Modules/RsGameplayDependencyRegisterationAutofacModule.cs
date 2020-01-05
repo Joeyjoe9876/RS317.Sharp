@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace GladMMO
 {
-	public sealed class GameplayDependencyRegisterationAutofacModule : Module
+	public sealed class RsGameplayDependencyRegisterationAutofacModule : Module
 	{
-		public GameplayDependencyRegisterationAutofacModule()
+		public RsGameplayDependencyRegisterationAutofacModule()
 		{
 
 		}

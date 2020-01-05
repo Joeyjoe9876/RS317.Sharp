@@ -17,7 +17,7 @@ namespace Rs317.GladMMO
 			builder.RegisterModule<GameServerNetworkClientAutofacModule>();
 			builder.RegisterModule(new GameClientMessageHandlerAutofacModule(GameSceneType.InstanceServerScene, this.GetType().Assembly));
 			builder.RegisterModule<GladMMONetworkSerializerAutofacModule>();
-			builder.RegisterModule<GameplayDependencyRegisterationAutofacModule>();
+			builder.RegisterModule<RsGameplayDependencyRegisterationAutofacModule>();
 			builder.RegisterModule<CharacterServiceDependencyAutofacModule>();
 			builder.RegisterModule<GladMMOClientExplicitEngineInterfaceAutoModule>();
 
@@ -52,6 +52,11 @@ namespace Rs317.GladMMO
 			builder.RegisterInstance(new ConsoleLogger(LogLevel.All))
 				.AsImplementedInterfaces()
 				.SingleInstance();
+
+			//LocalZoneDataRepository : IZoneDataRepository
+			builder.RegisterType<LocalZoneDataRepository>()
+				.As<IZoneDataRepository>()
+				.As<IReadonlyZoneDataRepository>();
 		}
 	}
 }
