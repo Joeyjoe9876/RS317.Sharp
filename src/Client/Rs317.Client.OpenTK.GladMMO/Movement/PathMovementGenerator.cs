@@ -42,7 +42,6 @@ namespace Rs317
 			{
 				entity.setPos(entity.CurrentX + localXOffset, entity.CurrentY + localYOffset);
 			}
-				
 		}
 
 		public Vector3 CurrentPosition { get; }

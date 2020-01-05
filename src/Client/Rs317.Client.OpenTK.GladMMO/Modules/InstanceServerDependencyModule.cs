@@ -19,6 +19,7 @@ namespace Rs317.GladMMO
 			builder.RegisterModule<GladMMONetworkSerializerAutofacModule>();
 			builder.RegisterModule<GameplayDependencyRegisterationAutofacModule>();
 			builder.RegisterModule<CharacterServiceDependencyAutofacModule>();
+			builder.RegisterModule<GladMMOClientExplicitEngineInterfaceAutoModule>();
 
 			builder.RegisterInstance<GameManager>(GladMMOProgram.RootGameManager)
 				.As<IGameContextEventQueueable>()
@@ -46,8 +47,7 @@ namespace Rs317.GladMMO
 				.ExternallyOwned();
 
 			//Register all required Authentication/Title modules.
-			builder.RegisterModule(new CommonGameDependencyModule(GameSceneType.InstanceServerScene, "http://192.168.0.12:5000", ThisAssembly));
-			builder.RegisterModule(new EngineInterfaceRegisterationModule((int)GameSceneType.InstanceServerScene, typeof(GladMMOOpenTkClient).Assembly));
+			builder.RegisterModule(new CommonGameDependencyModule(GameSceneType.InstanceServerScene, "http://192.168.0.12:5000", typeof(GladMMOOpenTkClient).Assembly));
 
 			builder.RegisterInstance(new ConsoleLogger(LogLevel.All))
 				.AsImplementedInterfaces()

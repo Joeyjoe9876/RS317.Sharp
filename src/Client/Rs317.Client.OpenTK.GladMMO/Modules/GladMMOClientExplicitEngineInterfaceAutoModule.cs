@@ -14,6 +14,18 @@ namespace Rs317.GladMMO
 			builder.RegisterType<EntityDataChangeTrackerTickable>()
 				.As<IGameTickable>()
 				.SingleInstance();
+
+			builder.RegisterType<OnInitConnectNetworkClientInitializable>()
+				.As<IGameInitializable>()
+				.SingleInstance();
+
+			/*[AdditionalRegisterationAs(typeof(INetworkConnectionEstablishedEventSubscribable))]
+			[SceneTypeCreateGladMMO(GameSceneType.InstanceServerScene)]
+			public sealed class OnStartRestartNetworkClientHandlingInititablize : IGameStartable, INetworkConnectionEstablishedEventSubscribable*/
+			builder.RegisterType<OnStartRestartNetworkClientHandlingInititablize>()
+				.As<INetworkConnectionEstablishedEventSubscribable>()
+				.As<IGameStartable>()
+				.SingleInstance();
 		}
 	}
 }
