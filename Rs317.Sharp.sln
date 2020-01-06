@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{66FB0C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Client.OpenTK.GladMMO", "src\Client\Rs317.Client.OpenTK.GladMMO\Rs317.Client.OpenTK.GladMMO.csproj", "{9B2DE466-0944-438C-BFBB-D1E0D9B849EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Library.Client.API", "src\Rs317.Library.Client.API\Rs317.Library.Client.API.csproj", "{D2E731DF-FE55-42CE-BECC-DA3610F1F916}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{9B2DE466-0944-438C-BFBB-D1E0D9B849EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B2DE466-0944-438C-BFBB-D1E0D9B849EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B2DE466-0944-438C-BFBB-D1E0D9B849EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2E731DF-FE55-42CE-BECC-DA3610F1F916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2E731DF-FE55-42CE-BECC-DA3610F1F916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2E731DF-FE55-42CE-BECC-DA3610F1F916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2E731DF-FE55-42CE-BECC-DA3610F1F916}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{F22A4884-1EF5-439B-B7EC-6F6B8D46AFAE} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{66FB0C3C-CC40-4FB8-804A-FD4515D2E34A} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{9B2DE466-0944-438C-BFBB-D1E0D9B849EA} = {DBB10E5D-C6F0-4964-9D1C-9648ED4FAA68}
+		{D2E731DF-FE55-42CE-BECC-DA3610F1F916} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D68657D2-EEFE-4C81-83F0-DDB62718EAB9}
