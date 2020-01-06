@@ -303,6 +303,20 @@ namespace Rs317.Sharp
 			return visible;
 		}
 
+		public override void SetName(string name)
+		{
+			if (string.IsNullOrEmpty(name)) throw new ArgumentException("Value cannot be null or empty.", nameof(name));
+
+			this.name = name;
+		}
+
+		public override void SetLevel(int level)
+		{
+			if (level <= 0) throw new ArgumentOutOfRangeException(nameof(level));
+
+			combatLevel = level;
+		}
+
 		public void updatePlayerAppearance(Default317Buffer stream)
 		{
 			stream.position = 0;

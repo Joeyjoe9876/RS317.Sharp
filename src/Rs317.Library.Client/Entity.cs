@@ -2,7 +2,7 @@ using System;
 
 namespace Rs317.Sharp
 {
-	public class Entity : Animable
+	public abstract class Entity : Animable, IWorldObject
 	{
 		public int entScreenX;
 
@@ -206,5 +206,18 @@ namespace Rs317.Sharp
 					return;
 				}
 		}
+
+		public int CurrentX => waypointX[0];
+
+		public int CurrentY => waypointY[0];
+
+		public void setPos(int x, int y)
+		{
+			setPos(x, y, false);
+		}
+
+		public abstract void SetName(string name);
+
+		public abstract void SetLevel(int level);
 	}
 }

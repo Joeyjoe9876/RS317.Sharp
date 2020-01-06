@@ -83,5 +83,15 @@ namespace Rs317.Sharp
 		{
 			return npcDefinition != null;
 		}
+
+		public override void SetName(string name)
+		{
+			//TODO: NPCs don't have names??
+		}
+
+		public override void SetLevel(int level)
+		{
+			//TODO: NPCs don't have a level??
+		}
 	}
 }

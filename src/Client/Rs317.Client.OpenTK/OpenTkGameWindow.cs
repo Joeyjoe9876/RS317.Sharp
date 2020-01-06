@@ -38,7 +38,7 @@ namespace Rs317.Sharp
 		private Action PendingRenderThreadActions;
 
 		public OpenTKGameWindow(int width, int height, IInputCallbackSubscriber inputSubscriber, IImagePaintEventPublisher paintEventPublisher, IGameStateHookable gameStateHookable)
-			: base(width, height, new RsOpenTkGraphicsMocde(), "Rs317.Sharp by Glader")
+			: base(width, height, new RsOpenTkGraphicsMode(), "Rs317.Sharp by Glader")
 		{
 			InputSubscriber = inputSubscriber ?? throw new ArgumentNullException(nameof(inputSubscriber));
 			PaintEventPublisher = paintEventPublisher ?? throw new ArgumentNullException(nameof(paintEventPublisher));
@@ -407,7 +407,7 @@ namespace Rs317.Sharp
 			InputSubscriber?.mouseDragged(sender, new RsMousePositionChangeEventArgs(e.X, e.Y));
 		}*/
 
-			private void mousePressed(object sender, MouseEventArgs e)
+		private void mousePressed(object sender, MouseEventArgs e)
 		{
 			InputSubscriber?.mousePressed(sender, TransformMouseEventCoordinates(e));
 		}
