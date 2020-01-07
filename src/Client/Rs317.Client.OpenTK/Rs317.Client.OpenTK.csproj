@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Rs317.Library.Client.API\Rs317.Library.Client.API.csproj" />
     <ProjectReference Include="..\..\Rs317.Library.Client\Rs317.Library.Client.csproj" />
   </ItemGroup>
 

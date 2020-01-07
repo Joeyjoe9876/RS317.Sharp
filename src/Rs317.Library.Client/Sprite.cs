@@ -11,8 +11,23 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Rs317.Sharp
 {
-	public sealed class Sprite : DrawingArea
+	public sealed class Sprite : DrawingArea, ITexture
 	{
+#region ITexture
+		public int[] Pixels => pixels;
+
+		public int AnimationDirection => 0;
+
+		public int AnimationSpeed => 0;
+
+		public bool isLoaded => true;
+
+		//TODO: Implement these properly?
+		public float UVCoordU { get; set; }
+
+		public float UVCoordV { get; set; }
+#endregion
+
 		public int[] pixels;
 
 		public int width;
