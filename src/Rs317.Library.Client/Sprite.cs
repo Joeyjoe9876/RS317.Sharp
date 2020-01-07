@@ -42,6 +42,8 @@ namespace Rs317.Sharp
 
 		public int maxHeight;
 
+		public bool isValid { get; } = true;
+
 		public Sprite(Archive streamLoader, String target, int archiveId)
 		{
 			try
@@ -98,6 +100,9 @@ namespace Rs317.Sharp
 			}
 			catch (Exception e)
 			{
+				isValid = false;
+
+				//Don't throw, this is just a data error. Not an engine fault.
 				throw new InvalidOperationException($"Failed to generate Sprite for: {target} id: {id}. Reason: {e.Message}\nStack: {e.StackTrace}", e);
 			}
 		}
@@ -136,6 +141,9 @@ namespace Rs317.Sharp
 
 		public void adjustRGB(int adjustmentR, int adjustmentG, int adjustmentB)
 		{
+			if(!isValid)
+				return;
+
 			for(int pixel = 0; pixel < pixels.Length; pixel++)
 			{
 				int originalColour = pixels[pixel];
@@ -168,6 +176,9 @@ namespace Rs317.Sharp
 		private void blockCopy(int destinationPointer, int copyLength, int k, int sourceBlockLength, int sourcePointer,
 			int destinationBlockLength, int[] source, int[] destination)
 		{
+			if(!isValid)
+				return;
+
 			int blockCount = -(copyLength >> 2);
 			copyLength = -(copyLength & 3);
 			for(int i2 = -k; i2 < 0; i2++)
@@ -191,6 +202,9 @@ namespace Rs317.Sharp
 		private void blockCopyAlpha(int sourcePointer, int blockCount, int[] destination, int[] source,
 			int sourceBlockLength, int i1, int destinationBlockLength, int alpha, int destinationPointer)
 		{
+			if(!isValid)
+				return;
+
 			int sourceValue; // was parameter
 			int destinationAlpha = 256 - alpha;
 			for(int k2 = -i1; k2 < 0; k2++)
@@ -220,6 +234,9 @@ namespace Rs317.Sharp
 		private void blockCopyTransparent(int[] destination, int[] source, int sourcePointer, int destinationPointer,
 			int copyLength, int i1, int destinationBlockLength, int sourceBlockLength)
 		{
+			if(!isValid)
+				return;
+
 			int value; // was parameter
 			int blockCount = -(copyLength >> 2);
 			copyLength = -(copyLength & 3);
@@ -266,6 +283,9 @@ namespace Rs317.Sharp
 
 		public void drawImage(int x, int y)
 		{
+			if(!isValid)
+				return;
+
 			x += offsetX;
 			y += offsetY;
 			int destinationOffset = x + y * DrawingArea.width;
@@ -313,6 +333,9 @@ namespace Rs317.Sharp
 
 		public void drawImageAlpha(int i, int j)
 		{
+			if(!isValid)
+				return;
+
 			int k = 128; // was parameter
 			i += offsetX;
 			j += offsetY;
@@ -360,6 +383,9 @@ namespace Rs317.Sharp
 
 		public void drawInverse(int i, int j)
 		{
+			if(!isValid)
+				return;
+
 			i += offsetX;
 			j += offsetY;
 			int l = i + j * DrawingArea.width;
@@ -409,11 +435,17 @@ namespace Rs317.Sharp
 
 		public void initDrawingArea()
 		{
+			if(!isValid)
+				return;
+
 			DrawingArea.initDrawingArea(height, width, pixels);
 		}
 
 		public void method354(IndexedImage background, int x, int y)
 		{
+			if(!isValid)
+				return;
+
 			y += offsetX;
 			x += offsetY;
 			int k = y + x * DrawingArea.width;
@@ -460,6 +492,9 @@ namespace Rs317.Sharp
 
 		private void method355(int[] ai, int i, byte[] abyte0, int j, int[] ai1, int k, int l, int i1, int j1, int k1)
 		{
+			if(!isValid)
+				return;
+
 			int l1 = -(i >> 2);
 			i = -(i & 3);
 			for(int j2 = -j; j2 < 0; j2++)
@@ -505,6 +540,9 @@ namespace Rs317.Sharp
 
 		public void rotate(int x, int y, double rotation)
 		{
+			if(!isValid)
+				return;
+
 			// all of the following were parameters
 			int centreY = 15;
 			int width = 20;
@@ -553,6 +591,9 @@ namespace Rs317.Sharp
 		public void rotate(int height, int rotation, int[] widthMap, int hingeSize, int[] ai1, int centreY, int y, int x,
 			int width, int centreX)
 		{
+			if(!isValid)
+				return;
+
 			try
 			{
 				int negativeCentreX = -width / 2;
@@ -590,6 +631,9 @@ namespace Rs317.Sharp
 
 		public void trim()
 		{
+			if(!isValid)
+				return;
+
 			int[] targetPixels = new int[maxWidth * maxHeight];
 			for(int _y = 0; _y < height; _y++)
 			{

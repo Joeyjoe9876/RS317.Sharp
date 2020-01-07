@@ -20,6 +20,8 @@ namespace Rs317.Sharp
 
 		private int resizeHeight;
 
+		public bool isValid { get; } = true;
+
 		public IndexedImage(Archive archive, String name, int id)
 		{
 			try
@@ -74,12 +76,18 @@ namespace Rs317.Sharp
 			}
 			catch (Exception e)
 			{
+				isValid = false;
+
+				//Don't throw, this is just a data error. Not an engine fault.
 				throw new InvalidOperationException($"Failed to generate IndexedImage for: {name} id: {id}. Reason: {e.Message}\nStack: {e.StackTrace}", e);
 			}
 		}
 
 		public void draw(int x, int y)
 		{
+			if (!isValid)
+				return;
+
 			x += drawOffsetX;
 			y += drawOffsetY;
 			int l = x + y * DrawingArea.width;
@@ -126,6 +134,9 @@ namespace Rs317.Sharp
 
 		public void resizeToHalf()
 		{
+			if(!isValid)
+				return;
+
 			resizeWidth /= 2;
 			resizeHeight /= 2;
 
@@ -148,6 +159,9 @@ namespace Rs317.Sharp
 
 		public void resize()
 		{
+			if(!isValid)
+				return;
+
 			if(width == resizeWidth && height == resizeHeight)
 				return;
 
@@ -170,6 +184,9 @@ namespace Rs317.Sharp
 
 		public void flipHorizontally()
 		{
+			if(!isValid)
+				return;
+
 			byte[] tempPixels = new byte[width * height];
 			int i = 0;
 			for(int y = 0; y < height; y++)
@@ -186,6 +203,9 @@ namespace Rs317.Sharp
 
 		public void flipVertically()
 		{
+			if(!isValid)
+				return;
+
 			byte[] tempPixels = new byte[width * height];
 			int i = 0;
 			for(int y = height - 1; y >= 0; y--)
@@ -202,6 +222,9 @@ namespace Rs317.Sharp
 
 		private void draw(int i, int[] pixelsToDraw, byte[] image, int j, int k, int l, int i1, int[] paletteToDraw, int j1)
 		{
+			if(!isValid)
+				return;
+
 			int k1 = -(l >> 2);
 			l = -(l & 3);
 			for(int l1 = -i; l1 < 0; l1++)
@@ -247,6 +270,9 @@ namespace Rs317.Sharp
 
 		public void mixPalette(int red, int green, int blue)
 		{
+			if(!isValid)
+				return;
+
 			for(int i = 0; i < palette.Length; i++)
 			{
 				int r = palette[i] >> 16 & 0xff;
