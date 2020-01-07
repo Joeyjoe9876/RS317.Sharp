@@ -24,6 +24,9 @@ namespace Rs317.Sharp
 			UnitySystemConsoleRedirector.Redirect();
 			AppDomain.CurrentDomain.UnhandledException += (sender, args) => Debug.LogError($"Unhandled Exception: {args.ExceptionObject.ToString()}");
 
+			//765, 503 default size.
+			Screen.SetResolution(765, 503, Screen.fullScreenMode);
+
 			try
 			{
 				await StartClient(0, 0, true);
