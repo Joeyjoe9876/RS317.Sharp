@@ -49,7 +49,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		protected override void OnBeforeInternalDrawGraphics(int x, int z)
+		protected override void OnBeforeInternalDrawGraphics(int x, int z, IRSGraphicsProvider<OpenTKRsGraphicsContext> graphicsObject)
 		{
 			method239();
 		}

@@ -31,7 +31,7 @@ namespace Rs317.Sharp
 			initDrawingArea();
 		}
 
-		protected override void OnBeforeInternalDrawGraphics(int x, int z)
+		protected override void OnBeforeInternalDrawGraphics(int x, int z, IRSGraphicsProvider<UnityRsGraphics> graphicsObject)
 		{
 			//Texture creation is async
 			if (!Image.IsCompleted)

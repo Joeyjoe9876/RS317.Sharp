@@ -25,7 +25,7 @@ namespace Rs317.Sharp
 			initDrawingArea();
 		}
 
-		protected override void OnBeforeInternalDrawGraphics(int x, int z)
+		protected override void OnBeforeInternalDrawGraphics(int x, int z, IRSGraphicsProvider<Graphics> graphicsObject)
 		{
 			method239();
 		}

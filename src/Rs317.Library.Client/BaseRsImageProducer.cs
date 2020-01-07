@@ -39,7 +39,7 @@ namespace Rs317.Sharp
 		/// <param name="x"></param>
 		public void drawGraphics(int y, IRSGraphicsProvider<TGraphicsType> g, int x, bool force = false)
 		{
-			OnBeforeInternalDrawGraphics(y, x);
+			OnBeforeInternalDrawGraphics(y, x, g);
 			lock (g.SyncObj)
 			{
 				InternalDrawGraphics(x, y, g, force);
@@ -52,7 +52,8 @@ namespace Rs317.Sharp
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="z"></param>
-		protected abstract void OnBeforeInternalDrawGraphics(int x, int z);
+		/// <param name="graphicsObject"></param>
+		protected abstract void OnBeforeInternalDrawGraphics(int x, int z, IRSGraphicsProvider<TGraphicsType> graphicsObject);
 
 		/// <summary>
 		/// Called when the graphics drawing is requested.
