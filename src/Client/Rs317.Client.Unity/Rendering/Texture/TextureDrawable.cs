@@ -57,7 +57,7 @@ namespace Rs317.Sharp
 			float widthModifier = (float)Screen.width / 765.0f;
 			float heightModifier = (float)Screen.height / 503.0f;
 
-			return new Rect(xOffset * widthModifier, 503.0f - yOffset - image.height, image.width * widthModifier, image.height * heightModifier);
+			return new Rect(xOffset * widthModifier, (503.0f - yOffset - (float)image.height) * heightModifier, image.width * widthModifier, image.height * heightModifier);
 			//return new Rect(xOffset * widthModifier, yOffset * heightModifier, image.width * widthModifier, image.height * heightModifier);
 		}
 	}

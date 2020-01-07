@@ -73,7 +73,7 @@ namespace Rs317.Sharp
 			if (!TextureCreationRequestQueue.IsEmpty)
 			{
 				TextureCreationRequestQueue.TryDequeue(out var request);
-				Texture2D texture = new Texture2D(request.Width, request.Height, TextureFormat.BGRA32, true, false);
+				Texture2D texture = new Texture2D(request.Width, request.Height, TextureFormat.BGRA32, false, false);
 
 				TextureDictionary[request.Name] = texture;
 				request.CompleteRequest(texture);
