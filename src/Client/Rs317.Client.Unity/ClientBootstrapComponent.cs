@@ -50,8 +50,10 @@ namespace Rs317.Sharp
 			Debug.Log($"Signlink started.");
 
 			RsUnityClient client1 = new RsUnityClient(configuration, GraphicsObject);
+			GraphicsObject.GameStateHookable = client1;
 			//windowsFormApplication.RegisterInputSubscriber(client1);
 			client1.createClientFrame(765, 503);
+			
 
 			Debug.Log($"Client frame created.");
 		}
