@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,7 +13,23 @@ namespace Rs317.Sharp
 
 		private IInputCallbackSubscriber _inputSubscribable;
 
-		private static KeyCode[] KeyCodes { get; } = (KeyCode[])System.Enum.GetValues(typeof(KeyCode));
+		//don't include deletes, we handle those seperately.
+		private static KeyCode[] KeyCodes { get; } = ((KeyCode[])System.Enum.GetValues(typeof(KeyCode)))
+			.Where(k => k != KeyCode.Backspace && k != KeyCode.Delete)
+			.ToArray();
+
+		[SerializeField]
+		private float BackSpaceRateSeconds = 0.1f;
+
+		[SerializeField]
+		private float WaitBeforeContinousBackspaceSeconds = 0.5f;
+
+		/// <summary>
+		/// Indicates the last absolute gametime the backspace was pressed.
+		/// </summary>
+		private float lastBackspacePress = 0.0f;
+
+		private bool isHoldingBackspace = false;
 
 		public IInputCallbackSubscriber InputSubscribable
 		{
@@ -37,6 +54,8 @@ namespace Rs317.Sharp
 		{
 			if (!isStarted)
 				return;
+
+			
 
 			//TODO: Enable mouse enter and leave event.
 			//https://answers.unity.com/questions/973606/how-can-i-tell-if-the-mouse-is-over-the-game-windo.html
@@ -96,6 +115,37 @@ namespace Rs317.Sharp
 			//https://docs.unity3d.com/ScriptReference/Input-inputString.html
 			for(int i = 0; i < Input.inputString.Length; i++)
 				keyTyped(this, Input.inputString[i]);
+
+			//The inputstring will not have the backspace
+			//if it's being held so we must do some special handling for
+			//it so players in the rsclient can hold backspace.
+			if (Input.GetKey(KeyCode.Backspace) || Input.GetKey(KeyCode.Delete))
+			{
+				if (isHoldingBackspace)
+				{
+					//It's being held down and therefore
+					//lastBackspacePress actually is the last time it was pressed.
+					//From there we can determine how many times we need to backspace
+					int backspaceCount = (int)((Time.time - lastBackspacePress) / BackSpaceRateSeconds);
+					for(int i = 0; i < backspaceCount; i++)
+						keyPressed(this, KeyCode.Backspace);
+
+					if(backspaceCount > 0)
+						lastBackspacePress = Time.time;
+				}
+				else
+				{
+					isHoldingBackspace = true;
+					keyPressed(this, KeyCode.Backspace);
+					lastBackspacePress = Time.time + WaitBeforeContinousBackspaceSeconds; //the added wait time will prevent us from pressing more than once until that cutoff.
+				}
+			}
+
+			if (Input.GetKeyUp(KeyCode.Backspace) || Input.GetKeyUp(KeyCode.Delete))
+			{
+				isHoldingBackspace = false;
+				lastBackspacePress = Time.time;
+			}
 		}
 
 		private void mouseExited(object sender, EventArgs e)
