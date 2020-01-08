@@ -12233,8 +12233,8 @@ namespace Rs317.Sharp
 
 			if(clientRunning)
 			{
-				// rsAlreadyLoaded = true;
-				// return;
+				rsAlreadyLoaded = true;
+				return;
 			}
 
 			clientRunning = true;
