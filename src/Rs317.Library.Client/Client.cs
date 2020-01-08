@@ -13,6 +13,8 @@ namespace Rs317.Sharp
 {
 	public abstract class Client<TGraphicsType> : RSApplet<TGraphicsType>, IBaseClient, IMouseInputQueryable, IGameStateHookable
 	{
+		public IBufferFactory BufferFactory { get; }
+
 		//TODO: Optimize formating
 		private static String formatAmount(int amount)
 		{
@@ -514,6 +516,7 @@ namespace Rs317.Sharp
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 			if (bufferFactory == null) throw new ArgumentNullException(nameof(bufferFactory));
+			BufferFactory = bufferFactory;
 
 			if(!config.isLowMemory)
 				setHighMem();
@@ -8812,6 +8815,10 @@ namespace Rs317.Sharp
 			currentSong = -1;
 			nextSong = -1;
 			prevSong = 0;
+
+			this.stream = BufferFactory.Create(EmptyFactoryCreationContext.Instance);
+			this.inStream = BufferFactory.Create(EmptyFactoryCreationContext.Instance);
+			this.loginStream = BufferFactory.Create(EmptyFactoryCreationContext.Instance);
 		}
 
 		private void updateGame()
