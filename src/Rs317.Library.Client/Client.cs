@@ -8674,7 +8674,7 @@ namespace Rs317.Sharp
 					return;
 				}
 			}
-			catch (IOException _ex)
+			catch (Exception _ex) //not only IO, any exception. Otherwise it's broken for failed to reach remote host AND other problems.
 			{
 				loginMessage1 = "";
 			}
