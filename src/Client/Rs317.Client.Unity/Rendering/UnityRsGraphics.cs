@@ -95,6 +95,9 @@ namespace Rs317.Sharp
 		//is attached to a camera.
 		private void OnPostRender()
 		{
+			if (GameStateHookable == null)
+				return;
+
 			GL.PushMatrix();
 			GL.LoadPixelMatrix();
 
