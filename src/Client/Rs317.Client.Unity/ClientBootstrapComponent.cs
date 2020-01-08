@@ -16,6 +16,9 @@ namespace Rs317.Sharp
 		[SerializeField]
 		private UnityRsGraphics GraphicsObject;
 
+		[SerializeField]
+		private UnityRsInputDispatcherComponent InputObject;
+
 		//Called on scene start, which starts the underlying client.
 		private async Task Start()
 		{
@@ -53,6 +56,7 @@ namespace Rs317.Sharp
 			Debug.Log($"Signlink started.");
 
 			RsUnityClient client1 = new RsUnityClient(configuration, GraphicsObject);
+			InputObject.InputSubscribable = client1;
 			GraphicsObject.GameStateHookable = client1;
 			//windowsFormApplication.RegisterInputSubscriber(client1);
 			client1.createClientFrame(765, 503);
