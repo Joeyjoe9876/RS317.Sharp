@@ -111,8 +111,15 @@ namespace Rs317.Sharp
 
 			//Now it's time to actually draw all registered textures
 			//use DrawablesList so we can semi-control order.
-			foreach(var drawable in GameStateHookable.LoggedIn ? InGameDrawablesList : DrawablesList)
-				drawable.Draw();
+			if(!GameStateHookable.LoggedIn)
+				foreach(var drawable in DrawablesList)
+					drawable.Draw();
+
+			if(GameStateHookable.LoggedIn)
+			{
+				foreach(var drawable in InGameDrawablesList)
+					drawable.Draw();
+			}
 
 			GL.PopMatrix();
 		}
@@ -133,6 +140,17 @@ namespace Rs317.Sharp
 			Created ImageProducer: backVmidIP3
 			Created ImageProducer: backVmidIP2_2*/
 
+			/*chatboxImageProducer = CreateNewImageProducer(479, 96, nameof(chatboxImageProducer));
+			minimapImageProducer = CreateNewImageProducer(172, 156, nameof(minimapImageProducer));
+			DrawingArea.clear();
+			minimapBackgroundImage.draw(0, 0);
+			tabImageProducer = CreateNewImageProducer(190, 261, nameof(tabImageProducer));
+			gameScreenImageProducer = CreateNewImageProducer(512, 334, nameof(gameScreenImageProducer));
+			DrawingArea.clear();
+			chatSettingImageProducer = CreateNewImageProducer(496, 50, nameof(chatSettingImageProducer));
+			bottomSideIconImageProducer = CreateNewImageProducer(269, 37, nameof(bottomSideIconImageProducer));
+			topSideIconImageProducer = CreateNewImageProducer(249, 45, nameof(topSideIconImageProducer));*/
+
 			switch(name)
 			{
 				case "backLeftIP1":
@@ -144,6 +162,18 @@ namespace Rs317.Sharp
 				case "backVmidIP2":
 				case "backVmidIP3":
 				case "backVmidIP2_2":
+					return true;
+			}
+
+			switch (name)
+			{
+				case "chatboxImageProducer":
+				case "minimapImageProducer":
+				case "tabImageProducer":
+				case "gameScreenImageProducer":
+				case "chatSettingImageProducer":
+				case "bottomSideIconImageProducer":
+				case "topSideIconImageProducer":
 					return true;
 			}
 
