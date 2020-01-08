@@ -12,6 +12,8 @@ namespace Rs317.Sharp
 
 		private IInputCallbackSubscriber _inputSubscribable;
 
+		private static KeyCode[] KeyCodes { get; } = (KeyCode[])System.Enum.GetValues(typeof(KeyCode));
+
 		public IInputCallbackSubscriber InputSubscribable
 		{
 			get => _inputSubscribable;
@@ -28,10 +30,7 @@ namespace Rs317.Sharp
 
 		private void InitializeCallbacks()
 		{
-			/*this.MouseMove += new EventHandler<MouseMoveEventArgs>(mouseMoved);
-			this.KeyDown += new EventHandler<KeyboardKeyEventArgs>(keyPressed);
-			this.KeyUp += new EventHandler<KeyboardKeyEventArgs>(keyReleased);
-			this.KeyPress += new EventHandler<KeyPressEventArgs>(keyTyped);*/
+
 		}
 
 		void Update()
@@ -50,7 +49,7 @@ namespace Rs317.Sharp
 			//for 10 fucking years.
 
 			//mousePressed
-			if (Input.GetMouseButtonDown(0)) //left
+			if(Input.GetMouseButtonDown(0)) //left
 				mousePressed(this, MouseButton.LeftMouse);
 
 			if(Input.GetMouseButtonDown(1)) //right
@@ -68,6 +67,35 @@ namespace Rs317.Sharp
 
 			if(Input.GetMouseButtonDown(2)) //middle
 				mouseReleased(this, MouseButton.MiddleMouse);
+
+
+			//this.MouseMove += new EventHandler<MouseMoveEventArgs>(mouseMoved);
+			//If any axis has input it's moved.
+			if(Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+				mouseMoved();
+
+			//This is ridiculous, but it's the only way to detect which keys are pressed.
+			foreach (KeyCode keyCode in KeyCodes)
+			{
+				//All three events matter
+				/*this.KeyDown += new EventHandler<KeyboardKeyEventArgs>(keyPressed);
+				this.KeyUp += new EventHandler<KeyboardKeyEventArgs>(keyReleased);
+				this.KeyPress += new EventHandler<KeyPressEventArgs>(keyTyped);*/
+
+				//We can be smart-ish here
+				//Keydown should be called for ALL keys that are down.
+				if (Input.GetKeyDown(keyCode))
+				{
+					keyPressed(this, keyCode);
+				}
+				else if(Input.GetKeyUp(keyCode)) //can't be both
+					keyReleased(this, keyCode);
+			}
+
+			//For typing we can iterate all typed keys since last frame.
+			//https://docs.unity3d.com/ScriptReference/Input-inputString.html
+			for(int i = 0; i < Input.inputString.Length; i++)
+				keyTyped(this, Input.inputString[i]);
 		}
 
 		private void mouseExited(object sender, EventArgs e)
@@ -90,87 +118,88 @@ namespace Rs317.Sharp
 			InputSubscribable?.focusGained(sender, e);
 		}
 
-		/*private void keyTyped(object sender, KeyPressEventArgs e)
+		private void keyTyped(object sender, char typedChar)
 		{
-			InputSubscribable?.keyTyped(sender, new RsKeyEventArgs(e.KeyChar, e.KeyChar));
+			InputSubscribable?.keyTyped(sender, new RsKeyEventArgs(typedChar, typedChar));
 		}
 
-		private void keyReleased(object sender, KeyboardKeyEventArgs e)
+		private void keyReleased(object sender, KeyCode e)
 		{
-			int i = (int)e.Key;
-			if(e.Key == Key.Enter)
+			int i = (int)e;
+			if(e == KeyCode.Return)
 				i = 10;
-			else if(e.Key == Key.Left)
+			else if(e == KeyCode.LeftArrow)
 				i = 37;
-			else if(e.Key == Key.Right)
+			else if(e == KeyCode.RightArrow)
 				i = 39;
-			else if(e.Key == Key.Up)
+			else if(e == KeyCode.UpArrow)
 				i = 38;
-			else if(e.Key == Key.Down)
+			else if(e == KeyCode.DownArrow)
 				i = 40;
-			else if(e.Key == Key.Back || e.Key == Key.Delete)
+			else if(e == KeyCode.Backspace || e == KeyCode.Delete)
 				i = 8;
-			else if(e.Key == Key.ControlLeft || e.Key == Key.ControlRight)
+			else if(e == KeyCode.LeftControl || e == KeyCode.RightControl)
 				i = 5;
-			else if(e.Key == Key.Tab)
+			else if(e == KeyCode.Tab)
 				i = 9;
-			else if((int)e.Key >= (int)Key.F1 && (int)e.Key <= (int)Key.F12)
-				i = 1008 + (int)e.Key - (int)Key.F1;
-			else if(e.Key == Key.Home)
+			else if((int)e >= (int)KeyCode.F1 && (int)e <= (int)KeyCode.F12)
+				i = 1008 + (int)e - (int)KeyCode.F1;
+			else if(e == KeyCode.Home)
 				i = 1000;
-			else if(e.Key == Key.End)
+			else if(e == KeyCode.End)
 				i = 1001;
-			else if(e.Key == Key.PageUp)
+			else if(e == KeyCode.PageUp)
 				i = 1002;
-			else if(e.Key == Key.PageDown)
+			else if(e == KeyCode.PageDown)
 				i = 1003;
 			else
 			{
 				//TODO: This is bad for performance.
-				i = (int)e.ScanCode;
+				i = (int) e;
 			}
 
 			InputSubscribable?.keyReleased(sender, new RsKeyEventArgs(i, (char)i));
 		}
 
-		private void keyPressed(object sender, KeyboardKeyEventArgs e)
+		private void keyPressed(object sender, KeyCode e)
 		{
 			int i = 0;
-			if(e.Key == Key.Enter)
+			if(e == KeyCode.Return)
 				i = 10;
-			else if(e.Key == Key.Left)
+			else if(e == KeyCode.LeftArrow)
 				i = 1;
-			else if(e.Key == Key.Right)
+			else if(e == KeyCode.RightArrow)
 				i = 2;
-			else if(e.Key == Key.Up)
+			else if(e == KeyCode.UpArrow)
 				i = 3;
-			else if(e.Key == Key.Down)
+			else if(e == KeyCode.DownArrow)
 				i = 4;
-			else if(e.Key == Key.Back || e.Key == Key.Delete)
+			else if(e == KeyCode.Backspace || e == KeyCode.Delete)
 				i = 8;
-			else if(e.Key == Key.ControlLeft || e.Key == Key.ControlRight)
+			else if(e == KeyCode.LeftControl || e == KeyCode.RightControl)
 				i = 5;
-			else if(e.Key == Key.Tab)
+			else if(e == KeyCode.Tab)
 				i = 9;
-			else if((int)e.Key >= (int)Key.F1 && (int)e.Key <= (int)Key.F12)
-				i = 1008 + (int)e.Key - (int)Key.F1;
-			else if(e.Key == Key.Home)
+			else if((int)e >= (int)KeyCode.F1 && (int)e <= (int)KeyCode.F12)
+				i = 1008 + (int)e - (int)KeyCode.F1;
+			else if(e == KeyCode.Home)
 				i = 1000;
-			else if(e.Key == Key.End)
+			else if(e == KeyCode.End)
 				i = 1001;
-			else if(e.Key == Key.PageUp)
+			else if(e == KeyCode.PageUp)
 				i = 1002;
-			else if(e.Key == Key.PageDown)
+			else if(e == KeyCode.PageDown)
 				i = 1003;
 			else
 				return;
 
 			InputSubscribable?.keyPressed(sender, new RsKeyEventArgs(i, (char)i));
-		}*/
+		}
 
-		private void mouseMoved(object sender, object e)
+		private void mouseMoved()
 		{
-			//InputSubscribable?.mouseMoved(sender, TransformMouseEventCoordinates(e));
+			//TODO: Is this a hack to specify left-mouse on move?
+			InputSubscribable?.mouseMoved(this, TransformMouseEventCoordinates(MouseButton.LeftMouse));
 		}
 
 		private void mouseReleased(object sender, MouseButton e)
