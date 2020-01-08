@@ -139,49 +139,7 @@ namespace Rs317.Sharp
 
 		private void closeRequest(OnDemandData request)
 		{
-			try
-			{
-				if(socket == null)
-				{
-					long currentTime = TimeService.CurrentTimeInMilliseconds();
-					if(currentTime - lastRequestTime < 4000L)
-						return;
-					lastRequestTime = currentTime;
-					socket = clientInstance.openSocket(43594).ConfigureAwait(false).GetAwaiter().GetResult();
-					inputStream = socket.GetStream();
-					outputStream = socket.GetStream();
-					outputStream.WriteByte(15);
-					for(int j = 0; j < 8; j++)
-						inputStream.ReadByte();
-
-					loopCycle = 0;
-				}
-
-				payload[0] = (byte)request.dataType;
-				payload[1] = (byte)(request.id >> 8);
-				payload[2] = (byte)request.id;
-				if(request.incomplete)
-					payload[3] = 2;
-				else if(!clientInstance.isLoggedIn)
-					payload[3] = 1;
-				else
-					payload[3] = 0;
-				outputStream.Write(payload, 0, 4);
-				writeLoopCycle = 0;
-				failedRequests = -10000;
-				return;
-			}
-			catch(SocketException ioexception)
-			{
-			}
-
-			try
-			{
-				socket.Close();
-			}
-			catch(Exception _ex)
-			{
-			}
+			//HelloKitty: Removed remote content downloading. Not something I'm interested in supporting.
 
 			socket = null;
 			inputStream = null;
