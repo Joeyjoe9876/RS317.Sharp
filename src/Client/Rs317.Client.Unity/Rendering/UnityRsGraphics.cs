@@ -74,9 +74,10 @@ namespace Rs317.Sharp
 			{
 				TextureCreationRequestQueue.TryDequeue(out var request);
 				Texture2D texture = new Texture2D(request.Width, request.Height, TextureFormat.BGRA32, false, false);
+				texture.wrapMode = TextureWrapMode.Clamp;
 
 				//Point mode is important otherwise the filtering will cause bleeding by mips at the seams.
-				texture.filterMode = FilterMode.Point;
+				//texture.filterMode = FilterMode.Point;
 
 				TextureDictionary[request.Name] = texture;
 				request.CompleteRequest(texture);
