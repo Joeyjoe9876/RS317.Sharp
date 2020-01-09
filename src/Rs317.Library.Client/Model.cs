@@ -904,7 +904,7 @@ namespace Rs317.Sharp
 
 			if(flatShading)
 			{
-				handleShading(lightMod, magnitude, lightX, lightY, lightZ);
+				//handleShading(lightMod, magnitude, lightX, lightY, lightZ);
 			}
 			else
 			{
@@ -1114,17 +1114,13 @@ namespace Rs317.Sharp
 				{
 					int colour = triangleColours[triangle];
 					VertexNormal vertexNormal = base.vertexNormals[x];
-					int lightness = intensity
-									+ (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
-									/ (falloff * vertexNormal.magnitude);
+					int lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z) / (falloff * vertexNormal.magnitude);
 					triangleHSLA[triangle] = mixLightness(colour, lightness, 0);
 					vertexNormal = base.vertexNormals[y];
-					lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
-								/ (falloff * vertexNormal.magnitude);
+					lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z) / (falloff * vertexNormal.magnitude);
 					triangleHSLB[triangle] = mixLightness(colour, lightness, 0);
 					vertexNormal = base.vertexNormals[z];
-					lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
-								/ (falloff * vertexNormal.magnitude);
+					lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z) / (falloff * vertexNormal.magnitude);
 					triangleHSLC[triangle] = mixLightness(colour, lightness, 0);
 				}
 				else if((triangleDrawType[triangle] & 1) == 0)
@@ -1132,17 +1128,13 @@ namespace Rs317.Sharp
 					int colour = triangleColours[triangle];
 					int drawType = triangleDrawType[triangle];
 					VertexNormal vertexNormal = base.vertexNormals[x];
-					int lightness = intensity
-									+ (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
-									/ (falloff * vertexNormal.magnitude);
+					int lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z) / (falloff * vertexNormal.magnitude);
 					triangleHSLA[triangle] = mixLightness(colour, lightness, drawType);
 					vertexNormal = base.vertexNormals[y];
-					lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
-								/ (falloff * vertexNormal.magnitude);
+					lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z) / (falloff * vertexNormal.magnitude);
 					triangleHSLB[triangle] = mixLightness(colour, lightness, drawType);
 					vertexNormal = base.vertexNormals[z];
-					lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
-								/ (falloff * vertexNormal.magnitude);
+					lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z) / (falloff * vertexNormal.magnitude);
 					triangleHSLC[triangle] = mixLightness(colour, lightness, drawType);
 				}
 			}
@@ -1158,7 +1150,6 @@ namespace Rs317.Sharp
 						return;
 
 			}
-
 			triangleColours = null;
 		}
 
