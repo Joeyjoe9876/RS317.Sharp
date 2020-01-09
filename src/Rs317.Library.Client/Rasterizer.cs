@@ -1024,7 +1024,6 @@ namespace Rs317.Sharp
 				i7 = (xB - xA << 16) / (yB - yA);
 				j7 = (zB - zA << 16) / (yB - yA);
 			}
-
 			int k7 = 0;
 			int l7 = 0;
 			if(yC != yB)
@@ -1032,7 +1031,6 @@ namespace Rs317.Sharp
 				k7 = (xC - xB << 16) / (yC - yB);
 				l7 = (zC - zB << 16) / (yC - yB);
 			}
-
 			int i8 = 0;
 			int j8 = 0;
 			if(yC != yA)
@@ -1040,7 +1038,6 @@ namespace Rs317.Sharp
 				i8 = (xA - xC << 16) / (yA - yC);
 				j8 = (zA - zC << 16) / (yA - yC);
 			}
-
 			if(yA <= yB && yA <= yC)
 			{
 				if(yA >= DrawingArea.bottomY)
@@ -1061,7 +1058,6 @@ namespace Rs317.Sharp
 						zA -= j7 * yA;
 						yA = 0;
 					}
-
 					xB <<= 16;
 					zB <<= 16;
 					if(yB < 0)
@@ -1070,7 +1066,6 @@ namespace Rs317.Sharp
 						zB -= l7 * yB;
 						yB = 0;
 					}
-
 					int k8 = yA - centreY;
 					l4 += j5 * k8;
 					k5 += i6 * k8;
@@ -1082,8 +1077,7 @@ namespace Rs317.Sharp
 						yA = lineOffsets[yA];
 						while(--yB >= 0)
 						{
-							method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5,
-								l5, k6);
+							method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 							xC += i8;
 							xA += i7;
 							zC += j8;
@@ -1093,11 +1087,9 @@ namespace Rs317.Sharp
 							k5 += i6;
 							j6 += l6;
 						}
-
 						while(--yC >= 0)
 						{
-							method379(DrawingArea.pixels, texture, yA, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5,
-								l5, k6);
+							method379(DrawingArea.pixels, texture, yA, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 							xC += i8;
 							xB += k7;
 							zC += j8;
@@ -1107,17 +1099,14 @@ namespace Rs317.Sharp
 							k5 += i6;
 							j6 += l6;
 						}
-
 						return;
 					}
-
 					yC -= yB;
 					yB -= yA;
 					yA = lineOffsets[yA];
 					while(--yB >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
 						xC += i8;
 						xA += i7;
 						zC += j8;
@@ -1127,11 +1116,9 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					while(--yC >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yA, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yA, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
 						xC += i8;
 						xB += k7;
 						zC += j8;
@@ -1141,10 +1128,8 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					return;
 				}
-
 				xB = xA <<= 16;
 				zB = zA <<= 16;
 				if(yA < 0)
@@ -1155,7 +1140,6 @@ namespace Rs317.Sharp
 					zA -= j7 * yA;
 					yA = 0;
 				}
-
 				xC <<= 16;
 				zC <<= 16;
 				if(yC < 0)
@@ -1164,7 +1148,6 @@ namespace Rs317.Sharp
 					zC -= l7 * yC;
 					yC = 0;
 				}
-
 				int l8 = yA - centreY;
 				l4 += j5 * l8;
 				k5 += i6 * l8;
@@ -1176,8 +1159,7 @@ namespace Rs317.Sharp
 					yA = lineOffsets[yA];
 					while(--yC >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yA, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yA, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 						xB += i8;
 						xA += i7;
 						zB += j8;
@@ -1187,11 +1169,9 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					while(--yB >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 						xC += k7;
 						xA += i7;
 						zC += l7;
@@ -1201,17 +1181,14 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					return;
 				}
-
 				yB -= yC;
 				yC -= yA;
 				yA = lineOffsets[yA];
 				while(--yC >= 0)
 				{
-					method379(DrawingArea.pixels, texture, yA, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
-						k6);
+					method379(DrawingArea.pixels, texture, yA, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 					xB += i8;
 					xA += i7;
 					zB += j8;
@@ -1221,11 +1198,9 @@ namespace Rs317.Sharp
 					k5 += i6;
 					j6 += l6;
 				}
-
 				while(--yB >= 0)
 				{
-					method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
-						k6);
+					method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
 					xC += k7;
 					xA += i7;
 					zC += l7;
@@ -1235,10 +1210,8 @@ namespace Rs317.Sharp
 					k5 += i6;
 					j6 += l6;
 				}
-
 				return;
 			}
-
 			if(yB <= yC)
 			{
 				if(yB >= DrawingArea.bottomY)
@@ -1259,7 +1232,6 @@ namespace Rs317.Sharp
 						zB -= l7 * yB;
 						yB = 0;
 					}
-
 					xC <<= 16;
 					zC <<= 16;
 					if(yC < 0)
@@ -1268,7 +1240,6 @@ namespace Rs317.Sharp
 						zC -= j8 * yC;
 						yC = 0;
 					}
-
 					int i9 = yB - centreY;
 					l4 += j5 * i9;
 					k5 += i6 * i9;
@@ -1280,8 +1251,7 @@ namespace Rs317.Sharp
 						yB = lineOffsets[yB];
 						while(--yC >= 0)
 						{
-							method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5,
-								l5, k6);
+							method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 							xA += i7;
 							xB += k7;
 							zA += j7;
@@ -1291,11 +1261,9 @@ namespace Rs317.Sharp
 							k5 += i6;
 							j6 += l6;
 						}
-
 						while(--yA >= 0)
 						{
-							method379(DrawingArea.pixels, texture, yB, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5,
-								l5, k6);
+							method379(DrawingArea.pixels, texture, yB, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
 							xA += i7;
 							xC += i8;
 							zA += j7;
@@ -1305,17 +1273,14 @@ namespace Rs317.Sharp
 							k5 += i6;
 							j6 += l6;
 						}
-
 						return;
 					}
-
 					yA -= yC;
 					yC -= yB;
 					yB = lineOffsets[yB];
 					while(--yC >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 						xA += i7;
 						xB += k7;
 						zA += j7;
@@ -1325,11 +1290,9 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					while(--yA >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yB, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yB, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 						xA += i7;
 						xC += i8;
 						zA += j7;
@@ -1339,10 +1302,8 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					return;
 				}
-
 				xC = xB <<= 16;
 				zC = zB <<= 16;
 				if(yB < 0)
@@ -1353,7 +1314,6 @@ namespace Rs317.Sharp
 					zB -= l7 * yB;
 					yB = 0;
 				}
-
 				xA <<= 16;
 				zA <<= 16;
 				if(yA < 0)
@@ -1362,7 +1322,6 @@ namespace Rs317.Sharp
 					zA -= j8 * yA;
 					yA = 0;
 				}
-
 				int j9 = yB - centreY;
 				l4 += j5 * j9;
 				k5 += i6 * j9;
@@ -1374,8 +1333,7 @@ namespace Rs317.Sharp
 					yB = lineOffsets[yB];
 					while(--yA >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yB, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yB, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 						xC += i7;
 						xB += k7;
 						zC += j7;
@@ -1385,11 +1343,9 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					while(--yC >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 						xA += i8;
 						xB += k7;
 						zA += j8;
@@ -1399,17 +1355,14 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					return;
 				}
-
 				yC -= yA;
 				yA -= yB;
 				yB = lineOffsets[yB];
 				while(--yA >= 0)
 				{
-					method379(DrawingArea.pixels, texture, yB, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
-						k6);
+					method379(DrawingArea.pixels, texture, yB, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
 					xC += i7;
 					xB += k7;
 					zC += j7;
@@ -1419,11 +1372,9 @@ namespace Rs317.Sharp
 					k5 += i6;
 					j6 += l6;
 				}
-
 				while(--yC >= 0)
 				{
-					method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
-						k6);
+					method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 					xA += i8;
 					xB += k7;
 					zA += j8;
@@ -1433,10 +1384,8 @@ namespace Rs317.Sharp
 					k5 += i6;
 					j6 += l6;
 				}
-
 				return;
 			}
-
 			if(yC >= DrawingArea.bottomY)
 				return;
 			if(yA > DrawingArea.bottomY)
@@ -1455,7 +1404,6 @@ namespace Rs317.Sharp
 					zC -= j8 * yC;
 					yC = 0;
 				}
-
 				xA <<= 16;
 				zA <<= 16;
 				if(yA < 0)
@@ -1464,7 +1412,6 @@ namespace Rs317.Sharp
 					zA -= j7 * yA;
 					yA = 0;
 				}
-
 				int k9 = yC - centreY;
 				l4 += j5 * k9;
 				k5 += i6 * k9;
@@ -1476,8 +1423,7 @@ namespace Rs317.Sharp
 					yC = lineOffsets[yC];
 					while(--yA >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
 						xB += k7;
 						xC += i8;
 						zB += l7;
@@ -1487,11 +1433,9 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					while(--yB >= 0)
 					{
-						method379(DrawingArea.pixels, texture, yC, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
-							k6);
+						method379(DrawingArea.pixels, texture, yC, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 						xB += k7;
 						xA += i7;
 						zB += l7;
@@ -1501,17 +1445,14 @@ namespace Rs317.Sharp
 						k5 += i6;
 						j6 += l6;
 					}
-
 					return;
 				}
-
 				yB -= yA;
 				yA -= yC;
 				yC = lineOffsets[yC];
 				while(--yA >= 0)
 				{
-					method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
-						k6);
+					method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 					xB += k7;
 					xC += i8;
 					zB += l7;
@@ -1521,11 +1462,9 @@ namespace Rs317.Sharp
 					k5 += i6;
 					j6 += l6;
 				}
-
 				while(--yB >= 0)
 				{
-					method379(DrawingArea.pixels, texture, yC, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
-						k6);
+					method379(DrawingArea.pixels, texture, yC, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 					xB += k7;
 					xA += i7;
 					zB += l7;
@@ -1535,10 +1474,8 @@ namespace Rs317.Sharp
 					k5 += i6;
 					j6 += l6;
 				}
-
 				return;
 			}
-
 			xA = xC <<= 16;
 			zA = zC <<= 16;
 			if(yC < 0)
@@ -1549,7 +1486,6 @@ namespace Rs317.Sharp
 				zC -= j8 * yC;
 				yC = 0;
 			}
-
 			xB <<= 16;
 			zB <<= 16;
 			if(yB < 0)
@@ -1558,7 +1494,6 @@ namespace Rs317.Sharp
 				zB -= j7 * yB;
 				yB = 0;
 			}
-
 			int l9 = yC - centreY;
 			l4 += j5 * l9;
 			k5 += i6 * l9;
@@ -1570,8 +1505,7 @@ namespace Rs317.Sharp
 				yC = lineOffsets[yC];
 				while(--yB >= 0)
 				{
-					method379(DrawingArea.pixels, texture, yC, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
-						k6);
+					method379(DrawingArea.pixels, texture, yC, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
 					xA += k7;
 					xC += i8;
 					zA += l7;
@@ -1581,11 +1515,9 @@ namespace Rs317.Sharp
 					k5 += i6;
 					j6 += l6;
 				}
-
 				while(--yA >= 0)
 				{
-					method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
-						k6);
+					method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
 					xB += i7;
 					xC += i8;
 					zB += j7;
@@ -1595,10 +1527,8 @@ namespace Rs317.Sharp
 					k5 += i6;
 					j6 += l6;
 				}
-
 				return;
 			}
-
 			yA -= yB;
 			yB -= yC;
 			yC = lineOffsets[yC];
@@ -1614,7 +1544,6 @@ namespace Rs317.Sharp
 				k5 += i6;
 				j6 += l6;
 			}
-
 			while(--yA >= 0)
 			{
 				method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
