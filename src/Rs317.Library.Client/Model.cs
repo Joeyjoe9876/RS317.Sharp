@@ -904,7 +904,7 @@ namespace Rs317.Sharp
 
 			if(flatShading)
 			{
-				//handleShading(lightMod, magnitude, lightX, lightY, lightZ);
+				handleShading(lightMod, magnitude, lightX, lightY, lightZ);
 			}
 			else
 			{
