@@ -929,7 +929,7 @@ namespace Rs317.Sharp
 					if(y <= secondModel.maxY)
 					{
 						int x = model.verticesX[vertex] - posX;
-						if(x >= secondModel.maxY && x <= secondModel.maxX)
+						if(x >= secondModel.minX && x <= secondModel.maxX)
 						{
 							int z = model.verticesZ[vertex] - posZ;
 							if(z >= secondModel.minZ && z <= secondModel.maxZ)
