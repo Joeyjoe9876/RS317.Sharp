@@ -149,7 +149,7 @@ namespace Rs317.Sharp
 
 		private int[][][] heightMap;
 
-		private Tile[][][] groundArray;
+		public Tile[][][] groundArray { get; private set; }
 
 		private int currentPositionZ;
 
@@ -192,6 +192,8 @@ namespace Rs317.Sharp
 		private static int curveCosineX;
 
 		private static InteractiveObject[] interactiveObjects = new InteractiveObject[100];
+
+		public int[][][] groundColorArray { get; private set; }
 
 		private static int[] faceOffsetX2 = { 53, -53, -53, 53 };
 
@@ -280,6 +282,7 @@ namespace Rs317.Sharp
 			mapSizeX = width;
 			mapSizeY = length;
 			groundArray = CollectionUtilities.Create3DJaggedArray<Tile>(height, width, length);
+			groundColorArray = CollectionUtilities.Create3DJaggedArray<int>(height, 105, 105);
 			anIntArrayArrayArray445 = CollectionUtilities.Create3DJaggedArray<int>(height, width + 1, length + 1);
 			this.heightMap = heightMap;
 			InitializeTileShapePoints();
