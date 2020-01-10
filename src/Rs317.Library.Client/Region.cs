@@ -482,25 +482,6 @@ namespace Rs317.Sharp
 			return tileShadowIntensity[_plane][x][y];
 		}
 
-		public int GetFloorColor(int plane, int x, int y)
-		{
-			int underlayFloorId = underlayFloorIds[plane, x, y] & 0xff;
-			int overlayFloorId = overlayFloorIds[plane, x, y] & 0xff;
-			if (underlayFloorId > 0 || overlayFloorId > 0)
-			{
-				if (underlayFloorId > 0)
-				{
-					if (underlayFloorId < FloorDefinition.cache.Length)
-					{
-						FloorDefinition floor = FloorDefinition.cache[underlayFloorId - 1];
-						return floor.rgbColour;
-					}
-				}
-			}
-
-			return 0;
-		}
-
 		public void createRegion(CollisionMap[] collisionMap, WorldController worldController)
 		{
 			for(int zPlane = 0; zPlane < 4; zPlane++)
@@ -666,10 +647,6 @@ namespace Rs317.Sharp
 									int lightIntensityNW = tileLightIntensity[x, y + 1];
 									int hslBitsetOriginal = -1;
 									int hslBitsetRandomised = -1;
-
-									//Custom hack to get ground color exposed.
-									worldController.groundColorArray[_plane][x][y] = GetFloorColor(_plane, x, y);
-
 									if(underlayFloorId > 0)
 									{
 										int h = (hue * 256) / hueDivisor;
