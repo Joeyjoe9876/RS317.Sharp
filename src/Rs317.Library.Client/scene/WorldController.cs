@@ -914,44 +914,44 @@ namespace Rs317.Sharp
 
 		private void mergeNormals(Model model, Model secondModel, int posX, int posY, int posZ, bool flag)
 		{
-			anInt488++;
-			int count = 0;
-			int[] vertices = secondModel.verticesX;
-			int vertexCount = secondModel.vertexCount;
+			//anInt1646 - minX
 
-			for(int vertex = 0; vertex < model.vertexCount; vertex++)
+			anInt488++;
+			int l = 0;
+			int[] ai = secondModel.verticesX;
+			int i1 = secondModel.vertexCount;
+			for(int j1 = 0; j1 < model.vertexCount; j1++)
 			{
-				VertexNormal vertexNormal = model.vertexNormals[vertex];
-				VertexNormal offsetVertexNormal = model.vertexNormalOffset[vertex];
-				if(offsetVertexNormal.magnitude != 0)
+				VertexNormal class33 = model.vertexNormals[j1];
+				VertexNormal class33_1 = model.vertexNormalOffset[j1];
+				if(class33_1.magnitude != 0)
 				{
-					int y = model.verticesY[vertex] - posY;
-					if(y <= secondModel.maxY)
+					int i2 = model.verticesY[j1] - posY;
+					if(i2 <= secondModel.maxY) //anInt1651
 					{
-						int x = model.verticesX[vertex] - posX;
-						if(x >= secondModel.maxY && x <= secondModel.maxX)
+						int j2 = model.verticesX[j1] - posX;
+						if(j2 >= secondModel.minX && j2 <= secondModel.maxX) //anInt1647
 						{
-							int z = model.verticesZ[vertex] - posZ;
-							if(z >= secondModel.minZ && z <= secondModel.maxZ)
+							int k2 = model.verticesZ[j1] - posZ;
+							if(k2 >= secondModel.minZ && k2 <= secondModel.maxZ)
 							{
-								for(int v = 0; v < vertexCount; v++)
+								for(int l2 = 0; l2 < i1; l2++)
 								{
-									VertexNormal vertexNormal2 = secondModel.vertexNormals[v];
-									VertexNormal offsetVertexNormal2 = secondModel.vertexNormalOffset[v];
-									if(x == vertices[v] && z == secondModel.verticesZ[v] && y == secondModel.verticesY[v]
-										&& offsetVertexNormal2.magnitude != 0)
+									VertexNormal class33_2 = secondModel.vertexNormals[l2];
+									VertexNormal class33_3 = secondModel.vertexNormalOffset[l2];
+									if(j2 == ai[l2] && k2 == secondModel.verticesZ[l2] && i2 == secondModel.verticesY[l2] && class33_3.magnitude != 0)
 									{
-										vertexNormal.x += offsetVertexNormal2.x;
-										vertexNormal.y += offsetVertexNormal2.y;
-										vertexNormal.z += offsetVertexNormal2.z;
-										vertexNormal.magnitude += offsetVertexNormal2.magnitude;
-										vertexNormal2.x += offsetVertexNormal.x;
-										vertexNormal2.y += offsetVertexNormal.y;
-										vertexNormal2.z += offsetVertexNormal.z;
-										vertexNormal2.magnitude += offsetVertexNormal.magnitude;
-										count++;
-										anIntArray486[vertex] = anInt488;
-										anIntArray487[v] = anInt488;
+										class33.x += class33_3.x;
+										class33.y += class33_3.y;
+										class33.z += class33_3.z;
+										class33.magnitude += class33_3.magnitude;
+										class33_2.x += class33_1.x;
+										class33_2.y += class33_1.y;
+										class33_2.z += class33_1.z;
+										class33_2.magnitude += class33_1.magnitude;
+										l++;
+										anIntArray486[j1] = anInt488;
+										anIntArray487[l2] = anInt488;
 									}
 								}
 
@@ -961,21 +961,15 @@ namespace Rs317.Sharp
 				}
 			}
 
-			if(count < 3 || !flag)
+			if(l < 3 || !flag)
 				return;
+			for(int k1 = 0; k1 < model.triangleCount; k1++)
+				if(anIntArray486[model.triangleX[k1]] == anInt488 && anIntArray486[model.triangleY[k1]] == anInt488 && anIntArray486[model.triangleZ[k1]] == anInt488)
+					model.triangleDrawType[k1] = -1;
 
-			for(int triangle = 0; triangle < model.triangleCount; triangle++)
-				if(anIntArray486[model.triangleX[triangle]] == anInt488
-					&& anIntArray486[model.triangleY[triangle]] == anInt488
-					&& anIntArray486[model.triangleZ[triangle]] == anInt488)
-					model.triangleDrawType[triangle] = -1;
-
-			for(int triangle = 0; triangle < secondModel.triangleCount; triangle++)
-				if(anIntArray487[secondModel.triangleX[triangle]] == anInt488
-					&& anIntArray487[secondModel.triangleY[triangle]] == anInt488
-					&& anIntArray487[secondModel.triangleZ[triangle]] == anInt488)
-					secondModel.triangleDrawType[triangle] = -1;
-
+			for(int l1 = 0; l1 < secondModel.triangleCount; l1++)
+				if(anIntArray487[secondModel.triangleX[l1]] == anInt488 && anIntArray487[secondModel.triangleY[l1]] == anInt488 && anIntArray487[secondModel.triangleZ[l1]] == anInt488)
+					secondModel.triangleDrawType[l1] = -1;
 		}
 
 		private bool method320(int x, int y, int z)
@@ -2594,3 +2588,4 @@ namespace Rs317.Sharp
 		}
 	}
 }
+ 
