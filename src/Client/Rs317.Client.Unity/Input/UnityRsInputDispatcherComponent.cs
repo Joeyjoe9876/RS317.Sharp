@@ -257,6 +257,15 @@ namespace Rs317.Sharp
 			InputSubscribable?.mouseReleased(sender, TransformMouseEventCoordinates(e));
 		}
 
+		//Unity calls this on window focus changes
+		void OnApplicationFocus(bool hasFocus)
+		{
+			if(hasFocus)
+				InputSubscribable?.focusGained(this, EventArgs.Empty);
+			else
+				InputSubscribable?.focusLost(this, EventArgs.Empty);
+		}
+
 		//TODO: Reimplement the drag event.
 		/*private void mouseDragged(object sender, DragEventArgs e)
 		{
