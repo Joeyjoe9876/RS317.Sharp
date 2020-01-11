@@ -12303,8 +12303,7 @@ namespace Rs317.Sharp
 				minimapImage = new Sprite(512, 512);
 				Archive archiveVersions = requestArchive(5, "update list", "versionlist", expectedCRCs[5], 60);
 				drawLoadingText(60, "Connecting to update server");
-				onDemandFetcher = new OnDemandFetcher();
-				onDemandFetcher.start(archiveVersions, this);
+				StartOnDemandFetcher(archiveVersions);
 				Animation.init(onDemandFetcher.getAnimCount());
 				Model.init(onDemandFetcher.fileCount(0), onDemandFetcher);
 				if(!lowMemory)
@@ -12710,6 +12709,12 @@ namespace Rs317.Sharp
 			}
 
 			loadingError = true;
+		}
+
+		protected virtual void StartOnDemandFetcher(Archive archiveVersions)
+		{
+			onDemandFetcher = new OnDemandFetcher();
+			onDemandFetcher.start(archiveVersions, this);
 		}
 
 		private void stopMidi()
