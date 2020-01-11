@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Glader.Essentials;
+using SixLabors.ImageSharp.PixelFormats;
 using UnityEngine;
 
 namespace Rs317.Sharp
@@ -20,9 +21,18 @@ namespace Rs317.Sharp
 		[SerializeField]
 		private UnityRsInputDispatcherComponent InputObject;
 
+		private void AOTSetup()
+		{
+			//ImageSharp doesn't work on WebGL.
+			if(Application.platform != RuntimePlatform.WebGLPlayer)
+				SixLabors.ImageSharp.Advanced.AotCompilerTools.Seed<Rgba32>();
+		}
+
 		//Called on scene start, which starts the underlying client.
 		private async Task Start()
 		{
+			AOTSetup();
+
 			//Important for cross-thread interaction for creating "images".
 			UnityAsyncHelper.InitializeSyncContext();
 			Texture.allowThreadedTextureCreation = true;
@@ -58,11 +68,12 @@ namespace Rs317.Sharp
 			}
 
 			//Get back onto the main thread.
-			await new UnityYieldAwaitable();
+			if (Application.platform != RuntimePlatform.WebGLPlayer)
+				await new UnityYieldAwaitable();
 			
 			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
 
-			RsUnityClient client1 = new RsUnityClient(configuration, GraphicsObject);
+			RsUnityClient client1 = new RsUnityClient(configuration, GraphicsObject, this);
 			InputObject.InputSubscribable = client1;
 			GraphicsObject.GameStateHookable = client1;
 			//windowsFormApplication.RegisterInputSubscriber(client1);

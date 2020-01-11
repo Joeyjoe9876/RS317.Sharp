@@ -7,15 +7,15 @@ namespace Rs317.Sharp
 {
 	public abstract class RSApplet<TGraphicsType> : IRunnable, IRunnableStarter, IMouseInputQueryable, IInputCallbackSubscriber //Instead of that Java stuff we just implement Windows form.
 	{
-		private int gameState;
+		protected int gameState;
 
-		private int delayTime;
+		protected int delayTime;
 
-		int minDelay;
+		protected int minDelay;
 
-		private long[] otims;
+		protected long[] otims;
 
-		public int fps { get; private set; }
+		public int fps { get; set; }
 
 		public bool debugRequested { get; set; }
 
@@ -40,29 +40,29 @@ namespace Rs317.Sharp
 
 		public int mouseY { get; private set; }
 
-		private int eventMouseButton;
+		protected int eventMouseButton;
 
-		private int eventClickX;
+		protected int eventClickX;
 
-		private int eventClickY;
+		protected int eventClickY;
 
-		private long eventClickTime;
+		protected long eventClickTime;
 
 		public int clickType { get; protected set; }
 
-		protected int clickX { get; private set; }
+		protected int clickX { get; set; }
 
-		protected int clickY { get; private set; }
+		protected int clickY { get; set; }
 
-		protected long clickTime { get; private set; }
+		protected long clickTime { get; set; }
 
 		protected int[] keyStatus { get; private set; }
 
 		private int[] inputBuffer;
 
-		private int readIndex;
+		protected int readIndex;
 
-		private int writeIndex;
+		protected int writeIndex;
 
 		protected RSApplet()
 		{
@@ -304,7 +304,7 @@ namespace Rs317.Sharp
 		{
 		}
 
-		private void exit()
+		protected void exit()
 		{
 			gameState = -2;
 			cleanUpForQuit();
@@ -428,7 +428,7 @@ namespace Rs317.Sharp
 			delayTime = 1000 / frameRate;
 		}
 
-		public void StartRunnable(IRunnable runnable, int priority)
+		public virtual void StartRunnable(IRunnable runnable, int priority)
 		{
 			//Run it on the threadpool instead.
 			Task.Factory.StartNew(runnable.run, priority < 1 ? TaskCreationOptions.LongRunning : TaskCreationOptions.None);

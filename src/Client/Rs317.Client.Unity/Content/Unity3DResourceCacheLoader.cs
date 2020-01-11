@@ -17,7 +17,8 @@ namespace Rs317.Sharp
 
 		public async Task<Stream> LoadCacheDatFileAsync()
 		{
-			await new UnityYieldAwaitable();
+			if(Application.platform != RuntimePlatform.WebGLPlayer)
+				await new UnityYieldAwaitable();
 
 			string cachePath = Path.Combine(CacheResourceDirectoryPath, $"main_file_cache.dat{BinaryUnityResourceExtension}");
 			TextAsset load = Resources.Load<TextAsset>(cachePath);
@@ -32,7 +33,8 @@ namespace Rs317.Sharp
 
 		public async Task<Stream> LoadCacheIndexFileAsync(int index)
 		{
-			await new UnityYieldAwaitable();
+			if(Application.platform != RuntimePlatform.WebGLPlayer)
+				await new UnityYieldAwaitable();
 
 			string cachePath = Path.Combine(CacheResourceDirectoryPath, $"main_file_cache.idx{index}");
 			TextAsset load = Resources.Load<TextAsset>(cachePath);

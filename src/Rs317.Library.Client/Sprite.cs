@@ -13,6 +13,9 @@ namespace Rs317.Sharp
 {
 	public sealed class Sprite : DrawingArea, ITexture
 	{
+		//Custom: This is a hack that allows implementations to override the image loading of the Sprite ctor that depends on SixLabors.
+		public static Func<byte[], int[]> ExternalLoadImageHook { get; set; } = null;
+
 #region ITexture
 		public int[] Pixels => pixels;
 
@@ -111,18 +114,31 @@ namespace Rs317.Sharp
 		{
 			try
 			{
-				using(Image<Rgba32> loadedImage = Image.Load(new MemoryStream(abyte0)))
+				if (ExternalLoadImageHook != null)
 				{
-					width = loadedImage.Width;
-					height = loadedImage.Height;
+					width = 765;
+					height = 503;
 					maxWidth = width;
 					maxHeight = height;
-					offsetX = 0;
-					offsetY = 0;
 
-					//RS2Sharp actually maps TO Argb and then back to get the color value of the titlescreen.
-					//TODO: Let's try to avoid an allocation here.
-					pixels = loadedImage.GetPixelSpan().ToArray().Select(p => Color.FromArgb(p.R, p.G, p.B).ToArgb()).ToArray();
+					//TODO: This ia hack to assume size
+					pixels = ExternalLoadImageHook?.Invoke(abyte0);
+				}
+				else
+				{
+					using(Image<Rgba32> loadedImage = Image.Load(new MemoryStream(abyte0)))
+					{
+						width = loadedImage.Width;
+						height = loadedImage.Height;
+						maxWidth = width;
+						maxHeight = height;
+						offsetX = 0;
+						offsetY = 0;
+
+						//RS2Sharp actually maps TO Argb and then back to get the color value of the titlescreen.
+						//TODO: Let's try to avoid an allocation here.
+						pixels = loadedImage.GetPixelSpan().ToArray().Select(p => Color.FromArgb(p.R, p.G, p.B).ToArgb()).ToArray();
+					}
 				}
 			}
 			catch(Exception _ex)
