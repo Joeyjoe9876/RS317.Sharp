@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Glader.Essentials;
 using UnityEngine;
 
 namespace Rs317.Sharp
@@ -23,6 +24,7 @@ namespace Rs317.Sharp
 		private async Task Start()
 		{
 			//Important for cross-thread interaction for creating "images".
+			UnityAsyncHelper.InitializeSyncContext();
 			Texture.allowThreadedTextureCreation = true;
 			UnitySystemConsoleRedirector.Redirect();
 			AppDomain.CurrentDomain.UnhandledException += (sender, args) => Debug.LogError($"Unhandled Exception: {args.ExceptionObject.ToString()}");
@@ -45,22 +47,26 @@ namespace Rs317.Sharp
 		{
 			Debug.Log($"Starting client.");
 
-			Task clientRunningAwaitable = signlink.startpriv(IPAddress.Parse("127.0.0.1"));
+			try
+			{
+				await signlink.startpriv(IPAddress.Parse("127.0.0.1"), new Unity3DResourceCacheLoader());
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Failed to load signlink/cache. Reason: {e}");
+				throw;
+			}
+
+			//Get back onto the main thread.
+			await new UnityYieldAwaitable();
+			
 			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
-
-			//Wait for signlink
-			while(!signlink.IsSignLinkThreadActive)
-				await Task.Delay(50)
-					.ConfigureAwait(true);
-
-			Debug.Log($"Signlink started.");
 
 			RsUnityClient client1 = new RsUnityClient(configuration, GraphicsObject);
 			InputObject.InputSubscribable = client1;
 			GraphicsObject.GameStateHookable = client1;
 			//windowsFormApplication.RegisterInputSubscriber(client1);
 			client1.createClientFrame(765, 503);
-			
 
 			Debug.Log($"Client frame created.");
 		}

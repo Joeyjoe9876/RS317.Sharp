@@ -168,8 +168,7 @@ namespace Rs317.Sharp
 			urlreq = null;
 			socketip = inetaddress;
 
-			//TODO: This design is so shit, why would anyone do this.
-			return Task.Factory.StartNew(async () => { await new signlink(cacheLoader).run(); }, TaskCreationOptions.LongRunning);
+			return new signlink(cacheLoader).run();
 		}
 
 		public static Task startpriv(IPAddress inetaddress)
