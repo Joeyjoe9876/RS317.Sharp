@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
@@ -15,15 +16,15 @@ namespace Rs317.Sharp
 			Directory = directory ?? throw new ArgumentNullException(nameof(directory));
 		}
 
-		public Stream LoadCacheDatFile()
+		public Task<Stream> LoadCacheDatFileAsync()
 		{
 			//Logic from old Signlik run
-			return new FileStream(Path.Combine(Directory, "main_file_cache.dat"), FileMode.Open);
+			return Task.FromResult((Stream)new FileStream(Path.Combine(Directory, "main_file_cache.dat"), FileMode.Open));
 		}
 
-		public Stream LoadCacheIndexFile(int index)
+		public Task<Stream> LoadCacheIndexFileAsync(int index)
 		{
-			return new FileStream(Path.Combine(Directory, $"main_file_cache.idx{index}"), FileMode.Open);
+			return Task.FromResult((Stream)new FileStream(Path.Combine(Directory, $"main_file_cache.idx{index}"), FileMode.Open));
 		}
 	}
 }

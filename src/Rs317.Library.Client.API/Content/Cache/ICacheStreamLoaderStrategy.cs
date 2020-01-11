@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
@@ -12,13 +13,13 @@ namespace Rs317.Sharp
 		/// Loads the Cache.dat file as a stream.
 		/// </summary>
 		/// <returns>A stream containing the cache.dat file.</returns>
-		Stream LoadCacheDatFile();
+		Task<Stream> LoadCacheDatFileAsync();
 
 		/// <summary>
 		/// Loads the idx cache file with the provided <see cref="index"/>.
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns>Stream containing the index file.</returns>
-		Stream LoadCacheIndexFile(int index);
+		Task<Stream> LoadCacheIndexFileAsync(int index);
 	}
 }

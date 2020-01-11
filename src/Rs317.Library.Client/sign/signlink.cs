@@ -169,7 +169,7 @@ namespace Rs317.Sharp
 			socketip = inetaddress;
 
 			//TODO: This design is so shit, why would anyone do this.
-			return Task.Factory.StartNew(async () => { new signlink(cacheLoader).run(); }, TaskCreationOptions.LongRunning);
+			return Task.Factory.StartNew(async () => { await new signlink(cacheLoader).run(); }, TaskCreationOptions.LongRunning);
 		}
 
 		public static Task startpriv(IPAddress inetaddress)
@@ -261,7 +261,7 @@ namespace Rs317.Sharp
 			CacheLoader = cacheLoader ?? throw new ArgumentNullException(nameof(cacheLoader));
 		}
 
-		public void run()
+		public async Task run()
 		{
 			//Always indicate we are running, even if we're about to fail.
 			IsSignLinkThreadActive = true;
@@ -271,10 +271,12 @@ namespace Rs317.Sharp
 				//uid = getuid(cacheDirectoryPath);
 				uid = 0;
 
-				cache_dat = CacheLoader.LoadCacheDatFile();
+				cache_dat = await CacheLoader.LoadCacheDatFileAsync()
+					.ConfigureAwait(false);
 
 				for (int j = 0; j < 5; j++)
-					cache_idx[j] = CacheLoader.LoadCacheIndexFile(j);
+					cache_idx[j] = await CacheLoader.LoadCacheIndexFileAsync(j)
+						.ConfigureAwait(false);
 			}
 			catch(Exception exception)
 			{
