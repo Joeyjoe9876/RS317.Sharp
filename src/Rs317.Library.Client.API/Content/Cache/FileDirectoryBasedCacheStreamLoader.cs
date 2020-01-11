@@ -6,7 +6,7 @@ using System.Text;
 namespace Rs317.Sharp
 {
 	//Default implementation based on the original RSClient handling.
-	public sealed class FileDirectoryBasedCacheStreamLoader : ICacheStreamLoader
+	public sealed class FileDirectoryBasedCacheStreamLoader : ICacheStreamLoaderStrategy
 	{
 		private string Directory { get; }
 

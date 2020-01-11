@@ -6,7 +6,7 @@ using System.Text;
 namespace Rs317.Sharp
 {
 	//TODO: make async
-	public interface ICacheStreamLoader
+	public interface ICacheStreamLoaderStrategy
 	{
 		/// <summary>
 		/// Loads the Cache.dat file as a stream.
