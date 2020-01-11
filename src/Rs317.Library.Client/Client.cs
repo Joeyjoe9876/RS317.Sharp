@@ -182,7 +182,7 @@ namespace Rs317.Sharp
 		private String[] chatNames;
 		private String[] chatMessages;
 		private int animationTimePassed;
-		private WorldController worldController;
+		public static WorldController worldController;
 		private IndexedImage[] sideIconImage;
 		private int menuScreenArea;
 		private int menuOffsetX;
@@ -432,7 +432,10 @@ namespace Rs317.Sharp
 		private int chatboxScrollMax;
 		private String promptInput;
 		private int anInt1213;
-		private int[][][] intGroundArray;
+
+		//TODO: make this non-static again in the future.
+		public static int[][][] intGroundArray;
+
 		private long serverSessionKey;
 		private int loginScreenFocus;
 		private IndexedImage[] modIcons;
