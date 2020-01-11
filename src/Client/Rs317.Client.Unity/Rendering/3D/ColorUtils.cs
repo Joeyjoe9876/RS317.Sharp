@@ -169,6 +169,12 @@ namespace Rs317.Sharp
 			return new Color(r, g, b, (byte)a);
 		}
 
+
+		public static int ColorToRGB(Color32 rgbColor)
+		{
+			return ((int)rgbColor.r << 16) + ((int)rgbColor.g << 8) + ((int)rgbColor.b);
+		}
+
 		/// <summary>
 		/// Converts a RGB color code to a color object.
 		/// </summary>
