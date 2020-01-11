@@ -195,6 +195,8 @@ namespace Rs317.Sharp
 
 		public int[][][] groundColorArray { get; private set; }
 
+		public int[][][] groundColorAmbientOcculusionArray { get; private set; }
+
 		private static int[] faceOffsetX2 = { 53, -53, -53, 53 };
 
 		private static int[] faceOffsetY2 = { -53, -53, 53, 53 };
@@ -283,6 +285,7 @@ namespace Rs317.Sharp
 			mapSizeY = length;
 			groundArray = CollectionUtilities.Create3DJaggedArray<Tile>(height, width, length);
 			groundColorArray = CollectionUtilities.Create3DJaggedArray<int>(height, 105, 105);
+			groundColorAmbientOcculusionArray = CollectionUtilities.Create3DJaggedArray<int>(height, 105, 105);
 			anIntArrayArrayArray445 = CollectionUtilities.Create3DJaggedArray<int>(height, width + 1, length + 1);
 			this.heightMap = heightMap;
 			InitializeTileShapePoints();
