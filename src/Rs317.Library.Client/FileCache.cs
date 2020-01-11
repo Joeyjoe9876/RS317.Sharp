@@ -10,11 +10,11 @@ namespace Rs317.Sharp
 	public sealed class FileCache
 	{
 		private static byte[] buffer = new byte[520];
-		private FileStream dataFile;
-		private FileStream indexFile;
+		private Stream dataFile;
+		private Stream indexFile;
 		private int storeId;
 
-		public FileCache(FileStream data, FileStream index, int storeId)
+		public FileCache(Stream data, Stream index, int storeId)
 		{
 			this.storeId = storeId;
 			this.dataFile = data;
@@ -205,7 +205,7 @@ namespace Rs317.Sharp
 		}
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		private void seek(FileStream file, int position)
+		private void seek(Stream file, int position)
 		{
 			if(file == null) throw new ArgumentNullException(nameof(file));
 

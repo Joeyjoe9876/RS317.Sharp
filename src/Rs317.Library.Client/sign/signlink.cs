@@ -222,8 +222,8 @@ namespace Rs317.Sharp
 		public static int uid;
 
 		public static int storeid = 32;
-		public static FileStream cache_dat = null;
-		public static FileStream[] cache_idx = new FileStream[5];
+		public static Stream cache_dat = null;
+		public static Stream[] cache_idx = new Stream[5];
 		public static bool sunjava;
 		public static Object applet = null;
 		public static bool IsSignLinkThreadActive { get; private set; }
