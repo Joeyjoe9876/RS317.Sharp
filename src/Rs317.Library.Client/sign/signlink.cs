@@ -265,11 +265,8 @@ namespace Rs317.Sharp
 		{
 			//Always indicate we are running, even if we're about to fail.
 			IsSignLinkThreadActive = true;
-			String cacheDirectoryPath;
 			try
 			{
-				cacheDirectoryPath = findcachedir();
-
 				//TODO: Renable UID loading one day.
 				//uid = getuid(cacheDirectoryPath);
 				uid = 0;
