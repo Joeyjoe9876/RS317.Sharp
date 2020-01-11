@@ -157,8 +157,10 @@ namespace Rs317.Sharp
 				Console.WriteLine($"Error: {s}");
 		}
 
-		public static Task startpriv(IPAddress inetaddress)
+		public static Task startpriv(IPAddress inetaddress, ICacheStreamLoaderStrategy cacheLoader)
 		{
+			if (cacheLoader == null) throw new ArgumentNullException(nameof(cacheLoader));
+
 			if(IsSignLinkThreadActive)
 				throw new InvalidOperationException($"Cannot call this method when thread is active.");
 
@@ -167,7 +169,12 @@ namespace Rs317.Sharp
 			socketip = inetaddress;
 
 			//TODO: This design is so shit, why would anyone do this.
-			return Task.Factory.StartNew(async () => { new signlink().run(); }, TaskCreationOptions.LongRunning);
+			return Task.Factory.StartNew(async () => { new signlink(cacheLoader).run(); }, TaskCreationOptions.LongRunning);
+		}
+
+		public static Task startpriv(IPAddress inetaddress)
+		{
+			return startpriv(inetaddress, new FileDirectoryBasedCacheStreamLoader(findcachedir()));
 		}
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
@@ -247,8 +254,11 @@ namespace Rs317.Sharp
 		public static bool shouldReportErrors = true;
 		public static String errorname = "";
 
-		private signlink()
+		private ICacheStreamLoaderStrategy CacheLoader { get; }
+
+		private signlink(ICacheStreamLoaderStrategy cacheLoader)
 		{
+			CacheLoader = cacheLoader ?? throw new ArgumentNullException(nameof(cacheLoader));
 		}
 
 		public void run()
@@ -259,20 +269,15 @@ namespace Rs317.Sharp
 			try
 			{
 				cacheDirectoryPath = findcachedir();
-				uid = getuid(cacheDirectoryPath);
 
-				if(File.Exists($"{cacheDirectoryPath}main_file_cache.dat"))
-				{
-					//Just like RS2Sharp we skip the part where
-					//it checks if the cache is too large.
-					/*if(file.exists() && file.length() > 0x3200000L)
-						file.delete();*/
-				}
+				//TODO: Renable UID loading one day.
+				//uid = getuid(cacheDirectoryPath);
+				uid = 0;
 
-				cache_dat = new FileStream($"{cacheDirectoryPath}main_file_cache.dat", FileMode.Open);
-				for(int j = 0; j < 5; j++)
-					cache_idx[j] = new FileStream($"{cacheDirectoryPath}main_file_cache.idx{j}", FileMode.Open);
+				cache_dat = CacheLoader.LoadCacheDatFile();
 
+				for (int j = 0; j < 5; j++)
+					cache_idx[j] = CacheLoader.LoadCacheIndexFile(j);
 			}
 			catch(Exception exception)
 			{
