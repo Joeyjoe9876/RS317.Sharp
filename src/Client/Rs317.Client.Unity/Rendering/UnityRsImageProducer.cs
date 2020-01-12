@@ -12,6 +12,10 @@ namespace Rs317.Sharp
 	{
 		private Task<TextureCreationResult> Image { get; }
 
+		//Temp buff used for efficient copy to NativeArray
+		//Unity3D native array set is SLOW.
+		private int[] TempBufferPixels { get; }
+
 		public UnityRsImageProducer(int width, int height, string name, IRSGraphicsProvider<UnityRsGraphics> graphicsProvider)
 			: base(width, height, name)
 		{
@@ -20,6 +24,7 @@ namespace Rs317.Sharp
 				lock (graphicsProvider.SyncObj)
 				{
 					Image = graphicsProvider.GameGraphics.CreateTexture(new TextureCreationRequest(width, height, name));
+					TempBufferPixels = new int[width * height];
 				}
 			}
 			catch (Exception e)
@@ -64,9 +69,15 @@ namespace Rs317.Sharp
 					int value = base.pixels[index];
 
 					//The 255 << 24 is the alpha bits that must be set.
-					ptr[index] = value + (255 << 24);
+					//ptr[index] = value + (255 << 24);
+					TempBufferPixels[index] = value + (255 << 24);
 				}
 			}
+
+			//Doing temp buffer and copy yielded 33% performance gain. Important for WebGL because main thread is doing this writing.
+			//This should be faster than making calls to Unit3D's much slower SET API.
+			//Profiled in the editor.
+			NativeArray<int>.Copy(TempBufferPixels, ptr);
 		}
 	}
 }

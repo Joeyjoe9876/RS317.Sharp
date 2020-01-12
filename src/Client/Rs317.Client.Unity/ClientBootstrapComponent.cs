@@ -4,8 +4,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Glader.Essentials;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace Rs317.Sharp
 {
@@ -21,18 +23,16 @@ namespace Rs317.Sharp
 		[SerializeField]
 		private UnityRsInputDispatcherComponent InputObject;
 
+		[Preserve] //important to keep in AOT builds.
 		private void AOTSetup()
 		{
 			//ImageSharp doesn't work on WebGL.
-			if(Application.platform != RuntimePlatform.WebGLPlayer)
-				SixLabors.ImageSharp.Advanced.AotCompilerTools.Seed<Rgba32>();
+			SixLabors.ImageSharp.Advanced.AotCompilerTools.Seed<Rgba32>();
 		}
 
 		//Called on scene start, which starts the underlying client.
 		private async Task Start()
 		{
-			AOTSetup();
-
 			//Important for cross-thread interaction for creating "images".
 			UnityAsyncHelper.InitializeSyncContext();
 			Texture.allowThreadedTextureCreation = true;
@@ -68,9 +68,9 @@ namespace Rs317.Sharp
 			}
 
 			//Get back onto the main thread.
-			if (Application.platform != RuntimePlatform.WebGLPlayer)
+			if (!RsUnityPlatform.isWebGLBuild)
 				await new UnityYieldAwaitable();
-			
+
 			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
 
 			RsUnityClient client1 = new RsUnityClient(configuration, GraphicsObject, this);

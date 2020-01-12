@@ -17,7 +17,7 @@ namespace Rs317.Sharp
 
 		public async Task<Stream> LoadCacheDatFileAsync()
 		{
-			if(Application.platform != RuntimePlatform.WebGLPlayer)
+			if(!RsUnityPlatform.isWebGLBuild)
 				await new UnityYieldAwaitable();
 
 			string cachePath = Path.Combine(CacheResourceDirectoryPath, $"main_file_cache.dat{BinaryUnityResourceExtension}");
@@ -33,7 +33,7 @@ namespace Rs317.Sharp
 
 		public async Task<Stream> LoadCacheIndexFileAsync(int index)
 		{
-			if(Application.platform != RuntimePlatform.WebGLPlayer)
+			if(!RsUnityPlatform.isWebGLBuild)
 				await new UnityYieldAwaitable();
 
 			string cachePath = Path.Combine(CacheResourceDirectoryPath, $"main_file_cache.idx{index}");

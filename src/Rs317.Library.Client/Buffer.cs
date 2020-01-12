@@ -364,7 +364,5 @@ namespace Rs317.Sharp
 			for (int i = startPosition; i < startPosition + length; i++)
 				dest[i] = buffer[position++];
 		}
-
-		// removed useless static initializer
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Sockets;
@@ -7,71 +8,71 @@ using System.Threading;
 namespace Rs317.Sharp
 {
 
-	public sealed class OnDemandFetcher : IRunnable
+	public class OnDemandFetcher : IRunnable
 	{
 		private int totalFiles;
 
-		private DoubleEndedQueue requested;
+		protected DoubleEndedQueue requested;
 
-		private int highestPriority;
+		protected int highestPriority;
 
 		public String statusString;
 
-		private int writeLoopCycle;
+		protected int writeLoopCycle;
 
 		private long lastRequestTime;
 
-		private int[] mapIndices3;
+		protected int[] mapIndices3;
 
 		//private CRC32 crc32;
 
-		private byte[] payload;
+		protected byte[] payload;
 
 		public int onDemandCycle;
 
-		private byte[][] filePriorities;
+		protected byte[][] filePriorities;
 
-		private IBaseClient clientInstance;
+		protected IBaseClient clientInstance;
 
 		private DoubleEndedQueue passiveRequests;
 
 		private int completedSize;
 
-		private int expectedSize;
+		protected int expectedSize;
 
-		private int[] musicPriorities;
+		protected int[] musicPriorities;
 
 		public int failedRequests;
 
-		private int[] mapIndices2;
+		protected int[] mapIndices2;
 
 		private int filesLoaded;
 
-		private bool running;
+		protected bool running;
 
-		private NetworkStream outputStream;
+		protected NetworkStream outputStream;
 
-		private int[] mapIndices4;
+		protected int[] mapIndices4;
 
-		private bool waiting;
+		protected bool waiting;
 
 		private DoubleEndedQueue complete;
 
 		private byte[] gzipInputBuffer;
-		private int[] frames;
+		protected int[] frames;
 		private CacheableQueue nodeSubList;
-		private NetworkStream inputStream;
-		private TcpClient socket;
-		private int[][] versions;
-		private int[][] crcs;
-		private int uncompletedCount;
+		protected NetworkStream inputStream;
+		protected TcpClient socket;
+		protected int[][] versions;
+		protected int[][] crcs;
+		protected int uncompletedCount;
 		private int completedCount;
 		private DoubleEndedQueue unrequested;
 		private OnDemandData current;
 		private DoubleEndedQueue mandatoryRequests;
-		private int[] mapIndices1;
-		private byte[] modelIndices;
-		private int loopCycle;
+		protected int[] mapIndices1;
+		protected byte[] modelIndices;
+		protected int loopCycle;
 
 		public OnDemandFetcher()
 		{
@@ -92,7 +93,7 @@ namespace Rs317.Sharp
 			mandatoryRequests = new DoubleEndedQueue();
 		}
 
-		private void checkReceived()
+		protected void checkReceived()
 		{
 			OnDemandData request;
 			lock(mandatoryRequests)
@@ -137,7 +138,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void closeRequest(OnDemandData request)
+		protected void closeRequest(OnDemandData request)
 		{
 			//HelloKitty: Removed remote content downloading. Not something I'm interested in supporting.
 
@@ -236,7 +237,7 @@ namespace Rs317.Sharp
 			return onDemandData;
 		}
 
-		private void handleFailed()
+		protected void handleFailed()
 		{
 			uncompletedCount = 0;
 			completedCount = 0;
@@ -280,7 +281,7 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private void method568()
+		protected void method568()
 		{
 			while(uncompletedCount == 0 && completedCount < 10)
 			{
@@ -379,7 +380,7 @@ namespace Rs317.Sharp
 				}
 		}
 
-		private void readData()
+		protected void readData()
 		{
 			try
 			{

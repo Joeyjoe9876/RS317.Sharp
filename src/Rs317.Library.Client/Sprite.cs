@@ -14,7 +14,7 @@ namespace Rs317.Sharp
 	public sealed class Sprite : DrawingArea, ITexture
 	{
 		//Custom: This is a hack that allows implementations to override the image loading of the Sprite ctor that depends on SixLabors.
-		public static Func<byte[], int[]> ExternalLoadImageHook { get; set; } = null;
+		public static Func<byte[], LoadedImagePixels> ExternalLoadImageHook { get; set; } = null;
 
 #region ITexture
 		public int[] Pixels => pixels;
@@ -116,13 +116,17 @@ namespace Rs317.Sharp
 			{
 				if (ExternalLoadImageHook != null)
 				{
-					width = 765;
-					height = 503;
+					//TODO: This ia hack to assume size
+					LoadedImagePixels image = ExternalLoadImageHook?.Invoke(abyte0);
+
+					width = image.Width;
+					height = image.Height;
 					maxWidth = width;
 					maxHeight = height;
+					offsetX = 0;
+					offsetY = 0;
 
-					//TODO: This ia hack to assume size
-					pixels = ExternalLoadImageHook?.Invoke(abyte0);
+					pixels = image.Pixels;
 				}
 				else
 				{
@@ -143,7 +147,7 @@ namespace Rs317.Sharp
 			}
 			catch(Exception _ex)
 			{
-				Console.WriteLine("Error converting jpg");
+				Console.WriteLine($"Error converting jpg. Reason: {_ex}");
 			}
 		}
 

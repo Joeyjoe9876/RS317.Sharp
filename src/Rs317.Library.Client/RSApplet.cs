@@ -19,11 +19,11 @@ namespace Rs317.Sharp
 
 		public bool debugRequested { get; set; }
 
-		protected int width { get; private set; }
+		protected int width { get; set; }
 
-		protected int height { get; private set; }
+		protected int height { get; set; }
 
-		protected IRSGraphicsProvider<TGraphicsType> gameGraphics { get; private set; }
+		protected IRSGraphicsProvider<TGraphicsType> gameGraphics { get; set; }
 
 		protected BaseRsImageProducer<TGraphicsType> fullGameScreen { get; set; }
 
@@ -80,7 +80,7 @@ namespace Rs317.Sharp
 		{
 		}
 
-		public void createClientFrame(int width, int height)
+		public virtual void createClientFrame(int width, int height)
 		{
 			this.width = width;
 			this.height = height;

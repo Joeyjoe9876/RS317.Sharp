@@ -85,7 +85,7 @@ namespace Rs317.Sharp
 		private DoubleEndedQueue[,,] groundArray;
 		private int[] anIntArray828;
 		private int[] anIntArray829;
-		private volatile bool currentlyDrawingFlames;
+		protected volatile bool currentlyDrawingFlames;
 		private TcpClient jaggrabSocket;
 		private int loginScreenState;
 		private Default317Buffer textStream;
@@ -119,15 +119,15 @@ namespace Rs317.Sharp
 		private IndexedImage redStone3_2;
 		private IndexedImage redStone1_4;
 		private IndexedImage redStone2_4;
-		private Sprite mapFlag;
-		private Sprite mapMarker;
+		protected Sprite mapFlag;
+		protected Sprite mapMarker;
 		private bool abool872;
 		private int[] cameraJitter;
 		private int currentTrackId;
 		private bool[] customCameraActive;
 		private int playerWeight;
-		private MouseDetection mouseDetection;
-		private volatile bool shouldDrawFlames;
+		protected MouseDetection mouseDetection;
+		protected volatile bool shouldDrawFlames;
 		private String reportAbuseInput;
 		private int playerListId;
 		private bool menuOpen;
@@ -165,7 +165,7 @@ namespace Rs317.Sharp
 		private int plane;
 		private int[] skillLevel;
 		private long[] ignoreListAsLongs;
-		private bool loadingError;
+		protected bool loadingError;
 		private int SCROLLBAR_GRIP_LOWLIGHT;
 		private int[] cameraFrequency;
 		private int[,] tileRenderCount;
@@ -183,7 +183,7 @@ namespace Rs317.Sharp
 		private String[] chatMessages;
 		private int animationTimePassed;
 		public static WorldController worldController;
-		private IndexedImage[] sideIconImage;
+		protected IndexedImage[] sideIconImage;
 		private int menuScreenArea;
 		private int menuOffsetX;
 		private int menuOffsetY;
@@ -195,15 +195,15 @@ namespace Rs317.Sharp
 		private int currentSong;
 		private static int localWorldId = 10;
 		static int portOffset;
-		private static bool membersWorld = true;
+		protected static bool membersWorld = true;
 		private static bool lowMemory;
-		private volatile bool drawingFlames;
+		protected volatile bool drawingFlames;
 		private int spriteDrawX;
 		private int spriteDrawY;
 		private int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
 		private IndexedImage titleBoxImage;
 		private IndexedImage titleButtonImage;
-		private int[] compassHingeSize;
+		protected int[] compassHingeSize;
 		private int[] anIntArray969;
 		public FileCache[] caches { get; set; }
 		public int[] interfaceSettings;
@@ -219,20 +219,20 @@ namespace Rs317.Sharp
 		private String[] overheadTextMessage;
 		private int secondaryCameraVertical;
 		private int lastRegionId;
-		private Sprite[] hitMarkImage;
+		protected Sprite[] hitMarkImage;
 		private int cameraRandomisationCounter;
 		private int lastItemDragTime;
 		private int[] characterEditColours;
-		private static bool clientRunning;
+		protected static bool clientRunning;
 		private int anInt995;
 		private int anInt996;
 		private int cameraOffsetZ;
 		private int anInt998;
 		private int anInt999;
 		protected ISAACRandomGenerator encryption { get; private set; }
-		private Sprite minimapEdgeImage;
+		protected Sprite minimapEdgeImage;
 		private int SCROLLBAR_TRACK_COLOUR;
-		private OnDemandFetcher onDemandFetcher;
+		protected OnDemandFetcher onDemandFetcher;
 
 		//IBaseClient
 		public bool isLoggedIn => this.LoggedIn.VariableValue;
@@ -264,12 +264,12 @@ namespace Rs317.Sharp
 		private IndexedImage scrollBarUp;
 		private IndexedImage scrollBarDown;
 		private int anInt1026;
-		private IndexedImage backBase1Image;
-		private IndexedImage backBase2Image;
-		private IndexedImage backHmid1Image;
+		protected IndexedImage backBase1Image;
+		protected IndexedImage backBase2Image;
+		protected IndexedImage backHmid1Image;
 		private int[] unknownCameraVariable;
 		private bool characterModelChanged;
-		private Sprite[] mapFunctionImage;
+		protected Sprite[] mapFunctionImage;
 		public int baseX { get; private set; }
 		public int baseY { get; private set; }
 		private int anInt1036;
@@ -286,14 +286,14 @@ namespace Rs317.Sharp
 		private int anInt1048;
 		private String loadingBarText;
 		private static int loadedRegions;
-		private int[] minimapLeft;
-		private Archive archiveTitle;
+		protected int[] minimapLeft;
+		protected Archive archiveTitle;
 		private int flashingSidebar;
 		private bool multiCombatZone;
 		private DoubleEndedQueue stationaryGraphicQueue;
-		private int[] compassWidthMap;
+		protected int[] compassWidthMap;
 		private RSInterface chatboxInterface;
-		private IndexedImage[] mapSceneImage;
+		protected IndexedImage[] mapSceneImage;
 		private static int drawCycle;
 		private int trackCount;
 		private int SCROLLBAR_GRIP_FOREGROUND;
@@ -322,12 +322,12 @@ namespace Rs317.Sharp
 		private int lastMouseX;
 		private int lastMouseY;
 		private int anInt1089;
-		private int[] expectedCRCs;
+		protected int[] expectedCRCs;
 		private int[] menuActionData2;
 		private int[] menuActionData3;
 		private int[] menuActionId;
 		private int[] menuActionData1;
-		private Sprite[] headIcons;
+		protected Sprite[] headIcons;
 		private int anInt1098;
 		private int anInt1099;
 		private int anInt1100;
@@ -347,7 +347,7 @@ namespace Rs317.Sharp
 		private static int mouseClickCounter;
 		private int membership;
 		private String chatboxInputNeededString;
-		private Sprite minimapCompassImage;
+		protected Sprite minimapCompassImage;
 		private BaseRsImageProducer<TGraphicsType> chatSettingImageProducer;
 		private BaseRsImageProducer<TGraphicsType> bottomSideIconImageProducer;
 		private BaseRsImageProducer<TGraphicsType> topSideIconImageProducer;
@@ -399,13 +399,13 @@ namespace Rs317.Sharp
 		private long songStartTime;
 		public String enteredUsername { get; set; }
 		public String enteredPassword { get; set; }
-		private bool genericLoadingError;
+		protected bool genericLoadingError;
 		private int[] objectTypes = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 		private int reportAbuseInterfaceID;
 		private DoubleEndedQueue spawnObjectList;
-		private int[] chatboxLineOffsets;
-		private int[] sidebarOffsets;
-		private int[] viewportOffsets;
+		protected int[] chatboxLineOffsets;
+		protected int[] sidebarOffsets;
+		protected int[] viewportOffsets;
 		private byte[][] terrainData;
 		private int cameraVertical;
 		private int cameraHorizontal;
@@ -417,16 +417,16 @@ namespace Rs317.Sharp
 		protected IBufferWriteable stream { get; private set; }
 		private int lastAddress;
 		private int splitPrivateChat;
-		private IndexedImage inventoryBackgroundImage;
-		private IndexedImage minimapBackgroundImage;
-		private IndexedImage chatBackgroundImage;
+		protected IndexedImage inventoryBackgroundImage;
+		protected IndexedImage minimapBackgroundImage;
+		protected IndexedImage chatBackgroundImage;
 		private String[] menuActionName;
 		private Sprite flameLeftBackground2;
 		private Sprite flameRightBackground2;
 		private int[] cameraAmplitude;
 		private static bool flagged;
 		private int[] trackIds;
-		private int flameCycle;
+		protected int flameCycle;
 		private int minimapRotation;
 		private int randomisationMinimapRotation;
 		private int chatboxScrollMax;
@@ -444,10 +444,10 @@ namespace Rs317.Sharp
 		private int hintIconNpcId;
 		private bool redrawChatbox;
 		private int inputDialogState;
-		private int nextSong;
-		private bool songChanging;
-		private int[] minimapLineWidth;
-		private CollisionMap[] currentCollisionMap;
+		protected int nextSong;
+		protected bool songChanging;
+		protected int[] minimapLineWidth;
+		protected CollisionMap[] currentCollisionMap;
 		private bool updateChatSettings;
 		private int[] mapCoordinates;
 		private int[] terrainDataIds;
@@ -467,26 +467,26 @@ namespace Rs317.Sharp
 		private int chatEffectsDisabled;
 		private int[] trackDelay;
 		private int inTutorial;
-		private bool rsAlreadyLoaded;
+		protected bool rsAlreadyLoaded;
 		private int oneMouseButton;
 		private int minimapRandomisationCounter;
 		private bool welcomeScreenRaised;
 		private bool messagePromptRaised;
 		private int songStartOffset;
-		private byte[,,] tileFlags;
+		protected byte[,,] tileFlags;
 		private int prevSong;
 		private int destinationX;
 		private int destinationY;
-		private Sprite minimapImage;
+		protected Sprite minimapImage;
 		private int arbitraryDestination;
 		private int renderCount;
 		protected String loginMessage1;
 		protected String loginMessage2;
 		public int playerPositionX;
 		public int playerPositionY;
-		private GameFont fontSmall;
-		private GameFont fontPlain;
-		private GameFont fontBold;
+		protected GameFont fontSmall;
+		protected GameFont fontPlain;
+		protected GameFont fontBold;
 		private int anInt1275;
 		private int chatboxInterfaceId;
 		private int cameraRandomisationH;
@@ -1861,7 +1861,7 @@ namespace Rs317.Sharp
 
 		}
 
-		private void calcFlamesPosition()
+		protected void calcFlamesPosition()
 		{
 			char c = '\u0100';
 			for(int j = 10; j < 117; j++)
@@ -2243,7 +2243,7 @@ namespace Rs317.Sharp
 			spawnRequest.face = face;
 		}
 
-		private void connectServer()
+		protected void connectServer()
 		{
 			/*
 			 * int j = 5; expectedCRCs[8] = 0; int k = 0; while(expectedCRCs[8] == 0) {
@@ -3358,7 +3358,7 @@ namespace Rs317.Sharp
 			redrawTab = true;
 		}
 
-		private void doFlamesDrawing()
+		protected void doFlamesDrawing()
 		{
 			char c = '\u0100';
 			if(anInt1040 > 0)
@@ -3952,7 +3952,7 @@ namespace Rs317.Sharp
 			Rasterizer.lineOffsets = viewportOffsets;
 		}
 
-		private void drawFlames()
+		protected virtual void drawFlames()
 		{
 			drawingFlames = true;
 			try
@@ -5071,7 +5071,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void drawLogo()
+		protected void drawLogo()
 		{
 			byte[] titleData = archiveTitle.decompressFile("title.dat");
 			Sprite sprite = new Sprite(titleData, this);
@@ -5631,7 +5631,7 @@ namespace Rs317.Sharp
 			return "http://127.0.0.1:" + (80 + portOffset);
 		}
 
-		private String getDocumentBaseHost()
+		protected String getDocumentBaseHost()
 		{
 			return "localhost";
 		}
@@ -8028,7 +8028,7 @@ namespace Rs317.Sharp
 			return name.Equals(localPlayer.name, StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		private void loadError()
+		protected void loadError()
 		{
 			//RS2Sharp has deleted this too.
 		}
@@ -8310,7 +8310,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void loadTitleScreen()
+		protected void loadTitleScreen()
 		{
 			titleBoxImage = new IndexedImage(archiveTitle, "titlebox", 0);
 			titleButtonImage = new IndexedImage(archiveTitle, "titlebutton", 0);
@@ -8393,10 +8393,15 @@ namespace Rs317.Sharp
 			drawLoadingText(10, "Connecting to fileserver");
 			if(!currentlyDrawingFlames)
 			{
-				shouldDrawFlames = true;
-				currentlyDrawingFlames = true;
-				startRunnable(this, 2);
+				StartFlameDrawing();
 			}
+		}
+
+		protected virtual void StartFlameDrawing()
+		{
+			shouldDrawFlames = true;
+			currentlyDrawingFlames = true;
+			startRunnable(this, 2);
 		}
 
 		private void login(String playerUsername, String playerPassword, bool recoveredConnection)
@@ -10705,7 +10710,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void processOnDemandQueue()
+		protected void processOnDemandQueue()
 		{
 			do
 			{
@@ -11607,7 +11612,7 @@ namespace Rs317.Sharp
 			return signlink.wavereplay();
 		}
 
-		private Archive requestArchive(int i, String s, String s1, int j, int k)
+		protected Archive requestArchive(int i, String s, String s1, int j, int k)
 		{
 			byte[] abyte0 = null;
 			int l = 5;
@@ -12230,7 +12235,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private static bool wasClientStartupCalled = false;
+		protected static bool wasClientStartupCalled = false;
 
 		public override void startUp()
 		{
@@ -12466,140 +12471,7 @@ namespace Rs317.Sharp
 				}
 
 				drawLoadingText(80, "Unpacking media");
-				inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0);
-				chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0);
-				minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0);
-				backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0);
-				backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0);
-				backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0);
-				for(int icon = 0; icon < 13; icon++)
-					sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon);
-
-				minimapCompassImage = new Sprite(archiveMedia, "compass", 0);
-				minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0);
-				minimapEdgeImage.trim();
-				try
-				{
-					for(int i = 0; i < 100; i++)
-						mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i);
-
-				}
-				catch(Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
-
-				try
-				{
-					for(int i = 0; i < 100; i++)
-						mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i);
-
-				}
-				catch(Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
-
-				try
-				{
-					for(int i = 0; i < 20; i++)
-					{
-						hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i);
-					}
-
-				}
-				catch(Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
-
-				try
-				{
-					for(int i = 0; i < 20; i++)
-					{
-						headIcons[i] = new Sprite(archiveMedia, "headicons", i);
-					}
-				}
-				catch(Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-					throw;
-				}
-
-				mapFlag = new Sprite(archiveMedia, "mapmarker", 0);
-				mapMarker = new Sprite(archiveMedia, "mapmarker", 1);
-				for(int i = 0; i < 8; i++)
-					crosses[i] = new Sprite(archiveMedia, "cross", i);
-
-				mapDotItem = new Sprite(archiveMedia, "mapdots", 0);
-				mapDotNPC = new Sprite(archiveMedia, "mapdots", 1);
-				mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2);
-				mapDotFriend = new Sprite(archiveMedia, "mapdots", 3);
-				mapDotTeam = new Sprite(archiveMedia, "mapdots", 4);
-				scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0);
-				scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1);
-				redStone1 = new IndexedImage(archiveMedia, "redstone1", 0);
-				redStone2 = new IndexedImage(archiveMedia, "redstone2", 0);
-				redStone3 = new IndexedImage(archiveMedia, "redstone3", 0);
-				redStone1_2 = new IndexedImage(archiveMedia, "redstone1", 0);
-				redStone1_2.flipHorizontally();
-				redStone2_2 = new IndexedImage(archiveMedia, "redstone2", 0);
-				redStone2_2.flipHorizontally();
-				redStone1_3 = new IndexedImage(archiveMedia, "redstone1", 0);
-				redStone1_3.flipVertically();
-				redStone2_3 = new IndexedImage(archiveMedia, "redstone2", 0);
-				redStone2_3.flipVertically();
-				redStone3_2 = new IndexedImage(archiveMedia, "redstone3", 0);
-				redStone3_2.flipVertically();
-				redStone1_4 = new IndexedImage(archiveMedia, "redstone1", 0);
-				redStone1_4.flipHorizontally();
-				redStone1_4.flipVertically();
-				redStone2_4 = new IndexedImage(archiveMedia, "redstone2", 0);
-				redStone2_4.flipHorizontally();
-				redStone2_4.flipVertically();
-				for(int i = 0; i < 2; i++)
-					modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i);
-
-				Sprite sprite = new Sprite(archiveMedia, "backleft1", 0);
-				backLeftIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP1));
-				sprite.drawInverse(0, 0);
-				sprite = new Sprite(archiveMedia, "backleft2", 0);
-				backLeftIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP2));
-				sprite.drawInverse(0, 0);
-				sprite = new Sprite(archiveMedia, "backright1", 0);
-				backRightIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP1));
-				sprite.drawInverse(0, 0);
-				sprite = new Sprite(archiveMedia, "backright2", 0);
-				backRightIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP2));
-				sprite.drawInverse(0, 0);
-				sprite = new Sprite(archiveMedia, "backtop1", 0);
-				backTopIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backTopIP1));
-				sprite.drawInverse(0, 0);
-				sprite = new Sprite(archiveMedia, "backvmid1", 0);
-				backVmidIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP1));
-				sprite.drawInverse(0, 0);
-				sprite = new Sprite(archiveMedia, "backvmid2", 0);
-				backVmidIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2));
-				sprite.drawInverse(0, 0);
-				sprite = new Sprite(archiveMedia, "backvmid3", 0);
-				backVmidIP3 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP3));
-				sprite.drawInverse(0, 0);
-				sprite = new Sprite(archiveMedia, "backhmid2", 0);
-				backVmidIP2_2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2_2));
-				sprite.drawInverse(0, 0);
-				int randomRed = (int)(StaticRandomGenerator.Next() * 21D) - 10;
-				int randomGreen = (int)(StaticRandomGenerator.Next() * 21D) - 10;
-				int randomBlue = (int)(StaticRandomGenerator.Next() * 21D) - 10;
-				int randomColour = (int)(StaticRandomGenerator.Next() * 41D) - 20;
-				for(int i = 0; i < 100; i++)
-				{
-					if(mapFunctionImage[i] != null)
-						mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
-							randomBlue + randomColour);
-					if(mapSceneImage[i] != null)
-						mapSceneImage[i].mixPalette(randomRed + randomColour, randomGreen + randomColour,
-							randomBlue + randomColour);
-				}
+				InitializeUnpackedMedia(archiveMedia);
 
 				drawLoadingText(83, "Unpacking textures");
 				Rasterizer.unpackTextures(archiveTextures);
@@ -12700,7 +12572,7 @@ namespace Rs317.Sharp
 				//TODO: Disabled censor
 				//Censor.load(archiveWord);
 				mouseDetection = new MouseDetection(this);
-				startRunnable(mouseDetection, 10);
+				//startRunnable(mouseDetection, 10);
 				return;
 			}
 			catch(Exception exception)
@@ -12709,6 +12581,141 @@ namespace Rs317.Sharp
 			}
 
 			loadingError = true;
+		}
+
+		protected void InitializeUnpackedMedia(Archive archiveMedia)
+		{
+			inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0);
+			chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0);
+			minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0);
+			backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0);
+			backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0);
+			backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0);
+			for (int icon = 0; icon < 13; icon++)
+				sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon);
+
+			minimapCompassImage = new Sprite(archiveMedia, "compass", 0);
+			minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0);
+			minimapEdgeImage.trim();
+			try
+			{
+				for (int i = 0; i < 100; i++)
+					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i);
+			}
+			catch (Exception _ex)
+			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+			}
+
+			try
+			{
+				for (int i = 0; i < 100; i++)
+					mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i);
+			}
+			catch (Exception _ex)
+			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+			}
+
+			try
+			{
+				for (int i = 0; i < 20; i++)
+				{
+					hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i);
+				}
+			}
+			catch (Exception _ex)
+			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+			}
+
+			try
+			{
+				for (int i = 0; i < 20; i++)
+				{
+					headIcons[i] = new Sprite(archiveMedia, "headicons", i);
+				}
+			}
+			catch (Exception _ex)
+			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+				throw;
+			}
+
+			mapFlag = new Sprite(archiveMedia, "mapmarker", 0);
+			mapMarker = new Sprite(archiveMedia, "mapmarker", 1);
+			for (int i = 0; i < 8; i++)
+				crosses[i] = new Sprite(archiveMedia, "cross", i);
+
+			mapDotItem = new Sprite(archiveMedia, "mapdots", 0);
+			mapDotNPC = new Sprite(archiveMedia, "mapdots", 1);
+			mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2);
+			mapDotFriend = new Sprite(archiveMedia, "mapdots", 3);
+			mapDotTeam = new Sprite(archiveMedia, "mapdots", 4);
+			scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0);
+			scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1);
+			redStone1 = new IndexedImage(archiveMedia, "redstone1", 0);
+			redStone2 = new IndexedImage(archiveMedia, "redstone2", 0);
+			redStone3 = new IndexedImage(archiveMedia, "redstone3", 0);
+			redStone1_2 = new IndexedImage(archiveMedia, "redstone1", 0);
+			redStone1_2.flipHorizontally();
+			redStone2_2 = new IndexedImage(archiveMedia, "redstone2", 0);
+			redStone2_2.flipHorizontally();
+			redStone1_3 = new IndexedImage(archiveMedia, "redstone1", 0);
+			redStone1_3.flipVertically();
+			redStone2_3 = new IndexedImage(archiveMedia, "redstone2", 0);
+			redStone2_3.flipVertically();
+			redStone3_2 = new IndexedImage(archiveMedia, "redstone3", 0);
+			redStone3_2.flipVertically();
+			redStone1_4 = new IndexedImage(archiveMedia, "redstone1", 0);
+			redStone1_4.flipHorizontally();
+			redStone1_4.flipVertically();
+			redStone2_4 = new IndexedImage(archiveMedia, "redstone2", 0);
+			redStone2_4.flipHorizontally();
+			redStone2_4.flipVertically();
+			for (int i = 0; i < 2; i++)
+				modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i);
+
+			Sprite sprite = new Sprite(archiveMedia, "backleft1", 0);
+			backLeftIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP1));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backleft2", 0);
+			backLeftIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP2));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backright1", 0);
+			backRightIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP1));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backright2", 0);
+			backRightIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP2));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backtop1", 0);
+			backTopIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backTopIP1));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backvmid1", 0);
+			backVmidIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP1));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backvmid2", 0);
+			backVmidIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backvmid3", 0);
+			backVmidIP3 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP3));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backhmid2", 0);
+			backVmidIP2_2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2_2));
+			sprite.drawInverse(0, 0);
+			int randomRed = (int) (StaticRandomGenerator.Next() * 21D) - 10;
+			int randomGreen = (int) (StaticRandomGenerator.Next() * 21D) - 10;
+			int randomBlue = (int) (StaticRandomGenerator.Next() * 21D) - 10;
+			int randomColour = (int) (StaticRandomGenerator.Next() * 41D) - 20;
+			for (int i = 0; i < 100; i++)
+			{
+				if (mapFunctionImage[i] != null)
+					mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
+						randomBlue + randomColour);
+				if (mapSceneImage[i] != null)
+					mapSceneImage[i].mixPalette(randomRed + randomColour, randomGreen + randomColour,
+						randomBlue + randomColour);
+			}
 		}
 
 		protected virtual void StartOnDemandFetcher(Archive archiveVersions)
