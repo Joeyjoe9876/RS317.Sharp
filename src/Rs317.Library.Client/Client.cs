@@ -87,7 +87,7 @@ namespace Rs317.Sharp
 		private int[] anIntArray829;
 		protected volatile bool currentlyDrawingFlames;
 		private TcpClient jaggrabSocket;
-		private int loginScreenState;
+		private TitleScreenState loginScreenState;
 		private Default317Buffer textStream;
 		private NPC[] npcs;
 		private int npcCount;
@@ -5000,7 +5000,7 @@ namespace Rs317.Sharp
 				fontBold.drawCentredTextWithPotentialShadow("Existing User", _x, __y + 5, 0xFFFFFF, true);
 			}
 
-			if(loginScreenState == 2)
+			if(loginScreenState == TitleScreenState.LoginBox)
 			{
 				int _y = y / 2 - 40;
 				if(loginMessage1.Length > 0)
@@ -5036,7 +5036,7 @@ namespace Rs317.Sharp
 				}
 			}
 
-			if(loginScreenState == 3)
+			if(loginScreenState == TitleScreenState.NewUserBox)
 			{
 				fontBold.drawCentredTextWithPotentialShadow("Create a free account", x / 2, y / 2 - 60, 0xFFFF00, true);
 				int _y = y / 2 - 35;
@@ -10342,7 +10342,7 @@ namespace Rs317.Sharp
 				if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= y - 20
 					&& base.clickY <= y + 20)
 				{
-					loginScreenState = 3;
+					loginScreenState = TitleScreenState.NewUserBox;
 					loginScreenFocus = 0;
 				}
 
@@ -10352,13 +10352,13 @@ namespace Rs317.Sharp
 				{
 					loginMessage1 = "";
 					loginMessage2 = "Enter your username & password.";
-					loginScreenState = 2;
+					loginScreenState = TitleScreenState.LoginBox;
 					loginScreenFocus = 0;
 				}
 			}
 			else
 			{
-				if(loginScreenState == 2)
+				if(loginScreenState == TitleScreenState.LoginBox)
 				{
 					int y = base.height / 2 - 40;
 					y += 30;
@@ -10372,6 +10372,8 @@ namespace Rs317.Sharp
 					int x = base.width / 2 - 80;
 					int _y = base.height / 2 + 50;
 					_y += 20;
+
+					//This is called when on the Login UI the button Login is pressed.
 					if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= _y - 20
 						&& base.clickY <= _y + 20)
 					{
@@ -10382,6 +10384,8 @@ namespace Rs317.Sharp
 					}
 
 					x = base.width / 2 + 80;
+
+					//This is called when the Login UI pressed Cancel
 					if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= _y - 20
 						&& base.clickY <= _y + 20)
 					{
@@ -10431,7 +10435,8 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				if(loginScreenState == 3)
+				//This happens when NewUser is clicked.
+				if(loginScreenState == TitleScreenState.NewUserBox)
 				{
 					int x = base.width / 2;
 					int y = base.height / 2 + 50;
