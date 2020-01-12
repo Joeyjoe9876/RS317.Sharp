@@ -437,7 +437,7 @@ namespace Rs317.Sharp
 		public static int[][][] intGroundArray;
 
 		private long serverSessionKey;
-		private int loginScreenFocus;
+		private TitleScreenUIElement loginScreenFocus;
 		private IndexedImage[] modIcons;
 		private long lastClickTime;
 		private int currentTabId;
@@ -5021,7 +5021,7 @@ namespace Rs317.Sharp
 				_y += 15;
 				fontBold.drawTextWithPotentialShadow(
 					"Password: " + TextClass.asterisksForString(enteredPassword)
-								 + ((loginScreenFocus == 1) & (tick % 40 < 20) ? "@yel@|" : ""),
+								 + ((loginScreenFocus == TitleScreenUIElement.PasswordInputField) & (tick % 40 < 20) ? "@yel@|" : ""),
 					x / 2 - 88, _y, 0xFFFFFF, true);
 				_y += 15;
 				if(!originalLoginScreen)
@@ -10343,7 +10343,7 @@ namespace Rs317.Sharp
 					&& base.clickY <= y + 20)
 				{
 					loginScreenState = TitleScreenState.NewUserBox;
-					loginScreenFocus = 0;
+					loginScreenFocus = TitleScreenUIElement.Default;
 				}
 
 				x = base.width / 2 + 80;
@@ -10353,7 +10353,7 @@ namespace Rs317.Sharp
 					loginMessage1 = "";
 					loginMessage2 = "Enter your username & password.";
 					loginScreenState = TitleScreenState.LoginBox;
-					loginScreenFocus = 0;
+					loginScreenFocus = TitleScreenUIElement.Default;
 				}
 			}
 			else
@@ -10364,10 +10364,10 @@ namespace Rs317.Sharp
 					y += 30;
 					y += 25;
 					if(base.clickType == 1 && base.clickY >= y - 15 && base.clickY < y)
-						loginScreenFocus = 0;
+						loginScreenFocus = TitleScreenUIElement.Default;
 					y += 15;
 					if(base.clickType == 1 && base.clickY >= y - 15 && base.clickY < y)
-						loginScreenFocus = 1;
+						loginScreenFocus = TitleScreenUIElement.PasswordInputField;
 					y += 15;
 					int x = base.width / 2 - 80;
 					int _y = base.height / 2 + 50;
@@ -10408,23 +10408,23 @@ namespace Rs317.Sharp
 							break;
 						}
 
-						if(loginScreenFocus == 0)
+						if(loginScreenFocus == TitleScreenUIElement.Default)
 						{
 							if(character == 8 && enteredUsername.Length > 0)
 								enteredUsername = enteredUsername.Substring(0, enteredUsername.Length - 1);
 							if(character == 9 || character == 10 || character == 13)
-								loginScreenFocus = 1;
+								loginScreenFocus = TitleScreenUIElement.PasswordInputField;
 							if(validCharacter)
 								enteredUsername += (char)character;
 							if(enteredUsername.Length > 12)
 								enteredUsername = enteredUsername.Substring(0, 12);
 						}
-						else if(loginScreenFocus == 1)
+						else if(loginScreenFocus == TitleScreenUIElement.PasswordInputField)
 						{
 							if(character == 8 && enteredPassword.Length > 0)
 								enteredPassword = enteredPassword.Substring(0, enteredPassword.Length - 1);
 							if(character == 9 || character == 10 || character == 13)
-								loginScreenFocus = 0;
+								loginScreenFocus = TitleScreenUIElement.Default;
 							if(validCharacter)
 								enteredPassword += (char)character;
 							if(enteredPassword.Length > 20)
