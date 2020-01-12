@@ -73,13 +73,21 @@ namespace Rs317.Sharp
 
 			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
 
-			RsUnityClient client1 = new RsUnityClient(configuration, GraphicsObject, this);
+			RsUnityClient client1 = CreateRsClient(configuration);
 			InputObject.InputSubscribable = client1;
 			GraphicsObject.GameStateHookable = client1;
 			//windowsFormApplication.RegisterInputSubscriber(client1);
 			client1.createClientFrame(765, 503);
 
 			Debug.Log($"Client frame created.");
+		}
+
+		private RsUnityClient CreateRsClient(ClientConfiguration configuration)
+		{
+			if(RsUnityPlatform.isWebGLBuild)
+				return new RsUnityWebGLClient(configuration, GraphicsObject, this);
+			else
+				return new RsUnityClient(configuration, GraphicsObject);
 		}
 	}
 }
