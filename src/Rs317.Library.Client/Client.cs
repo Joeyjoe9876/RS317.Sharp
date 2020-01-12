@@ -87,7 +87,7 @@ namespace Rs317.Sharp
 		private int[] anIntArray829;
 		protected volatile bool currentlyDrawingFlames;
 		private TcpClient jaggrabSocket;
-		private HookableVariable<TitleScreenState> LoginScreenState { get; } = new HookableVariable<TitleScreenState>(TitleScreenState.Default);
+		public HookableVariable<TitleScreenState> LoginScreenState { get; } = new HookableVariable<TitleScreenState>(TitleScreenState.Default);
 		private Default317Buffer textStream;
 		private NPC[] npcs;
 		private int npcCount;
@@ -437,7 +437,7 @@ namespace Rs317.Sharp
 		public static int[][][] intGroundArray;
 
 		private long serverSessionKey;
-		private HookableVariable<TitleScreenUIElement> LoginScreenFocus { get; } = new HookableVariable<TitleScreenUIElement>(TitleScreenUIElement.Default);
+		public HookableVariable<TitleScreenUIElement> LoginScreenFocus { get; } = new HookableVariable<TitleScreenUIElement>(TitleScreenUIElement.Default);
 		private IndexedImage[] modIcons;
 		private long lastClickTime;
 		private int currentTabId;
