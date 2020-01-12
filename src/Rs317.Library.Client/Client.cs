@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
-	public abstract class Client<TGraphicsType> : RSApplet<TGraphicsType>, IBaseClient, IMouseInputQueryable, IGameStateHookable
+	public abstract class Client<TGraphicsType> : RSApplet<TGraphicsType>, IBaseClient, IMouseInputQueryable, IGameStateHookable, IUITitleScreenStateHookable
 	{
 		public IBufferFactory BufferFactory { get; }
 
@@ -87,7 +87,7 @@ namespace Rs317.Sharp
 		private int[] anIntArray829;
 		protected volatile bool currentlyDrawingFlames;
 		private TcpClient jaggrabSocket;
-		private TitleScreenState loginScreenState;
+		private HookableVariable<TitleScreenState> LoginScreenState { get; } = new HookableVariable<TitleScreenState>(TitleScreenState.Default);
 		private Default317Buffer textStream;
 		private NPC[] npcs;
 		private int npcCount;
@@ -437,7 +437,7 @@ namespace Rs317.Sharp
 		public static int[][][] intGroundArray;
 
 		private long serverSessionKey;
-		private TitleScreenUIElement loginScreenFocus;
+		private HookableVariable<TitleScreenUIElement> LoginScreenFocus { get; } = new HookableVariable<TitleScreenUIElement>(TitleScreenUIElement.Default);
 		private IndexedImage[] modIcons;
 		private long lastClickTime;
 		private int currentTabId;
@@ -4984,7 +4984,7 @@ namespace Rs317.Sharp
 			titleBoxImage.draw(0, 0);
 			int x = 360;
 			int y = 200;
-			if(loginScreenState == TitleScreenState.Default)
+			if(LoginScreenState == TitleScreenState.Default)
 			{
 				int _y = y / 2 + 80;
 				fontSmall.drawCentredTextWithPotentialShadow(onDemandFetcher.statusString, x / 2, _y, 0x75A9A9, true);
@@ -5000,7 +5000,7 @@ namespace Rs317.Sharp
 				fontBold.drawCentredTextWithPotentialShadow("Existing User", _x, __y + 5, 0xFFFFFF, true);
 			}
 
-			if(loginScreenState == TitleScreenState.LoginBox)
+			if(LoginScreenState == TitleScreenState.LoginBox)
 			{
 				int _y = y / 2 - 40;
 				if(loginMessage1.Length > 0)
@@ -5016,12 +5016,12 @@ namespace Rs317.Sharp
 				}
 
 				fontBold.drawTextWithPotentialShadow(
-					"Username: " + enteredUsername + ((loginScreenFocus == 0) & (tick % 40 < 20) ? "@yel@|" : ""),
+					"Username: " + enteredUsername + ((LoginScreenFocus == TitleScreenUIElement.Default) & (tick % 40 < 20) ? "@yel@|" : ""),
 					x / 2 - 90, _y, 0xFFFFFF, true);
 				_y += 15;
 				fontBold.drawTextWithPotentialShadow(
 					"Password: " + TextClass.asterisksForString(enteredPassword)
-								 + ((loginScreenFocus == TitleScreenUIElement.PasswordInputField) & (tick % 40 < 20) ? "@yel@|" : ""),
+								 + ((LoginScreenFocus == TitleScreenUIElement.PasswordInputField) & (tick % 40 < 20) ? "@yel@|" : ""),
 					x / 2 - 88, _y, 0xFFFFFF, true);
 				_y += 15;
 				if(!originalLoginScreen)
@@ -5036,7 +5036,7 @@ namespace Rs317.Sharp
 				}
 			}
 
-			if(loginScreenState == TitleScreenState.NewUserBox)
+			if(LoginScreenState == TitleScreenState.NewUserBox)
 			{
 				fontBold.drawCentredTextWithPotentialShadow("Create a free account", x / 2, y / 2 - 60, 0xFFFF00, true);
 				int _y = y / 2 - 35;
@@ -8810,7 +8810,7 @@ namespace Rs317.Sharp
 
 			socket = null;
 			LoggedIn.Update(false);
-			loginScreenState = TitleScreenState.Default;
+			LoginScreenState.Update(TitleScreenState.Default);
 			// myUsername = "";
 			// myPassword = "";
 			resetModelCaches();
@@ -10334,7 +10334,7 @@ namespace Rs317.Sharp
 
 		private void updateLogin()
 		{
-			if(loginScreenState == TitleScreenState.Default)
+			if(LoginScreenState == TitleScreenState.Default)
 			{
 				int x = base.width / 2 - 80;
 				int y = base.height / 2 + 20;
@@ -10342,8 +10342,8 @@ namespace Rs317.Sharp
 				if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= y - 20
 					&& base.clickY <= y + 20)
 				{
-					loginScreenState = TitleScreenState.NewUserBox;
-					loginScreenFocus = TitleScreenUIElement.Default;
+					LoginScreenState.Update(TitleScreenState.NewUserBox);
+					LoginScreenFocus.Update(TitleScreenUIElement.Default);
 				}
 
 				x = base.width / 2 + 80;
@@ -10352,22 +10352,22 @@ namespace Rs317.Sharp
 				{
 					loginMessage1 = "";
 					loginMessage2 = "Enter your username & password.";
-					loginScreenState = TitleScreenState.LoginBox;
-					loginScreenFocus = TitleScreenUIElement.Default;
+					LoginScreenState.Update(TitleScreenState.LoginBox);
+					LoginScreenFocus.Update(TitleScreenUIElement.Default);
 				}
 			}
 			else
 			{
-				if(loginScreenState == TitleScreenState.LoginBox)
+				if(LoginScreenState == TitleScreenState.LoginBox)
 				{
 					int y = base.height / 2 - 40;
 					y += 30;
 					y += 25;
 					if(base.clickType == 1 && base.clickY >= y - 15 && base.clickY < y)
-						loginScreenFocus = TitleScreenUIElement.Default;
+						LoginScreenFocus.Update(TitleScreenUIElement.Default);
 					y += 15;
 					if(base.clickType == 1 && base.clickY >= y - 15 && base.clickY < y)
-						loginScreenFocus = TitleScreenUIElement.PasswordInputField;
+						LoginScreenFocus.Update(TitleScreenUIElement.PasswordInputField);
 					y += 15;
 					int x = base.width / 2 - 80;
 					int _y = base.height / 2 + 50;
@@ -10389,7 +10389,7 @@ namespace Rs317.Sharp
 					if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= _y - 20
 						&& base.clickY <= _y + 20)
 					{
-						loginScreenState = TitleScreenState.Default;
+						LoginScreenState.Update(TitleScreenState.Default);
 						// myUsername = "";
 						// myPassword = "";
 					}
@@ -10408,23 +10408,23 @@ namespace Rs317.Sharp
 							break;
 						}
 
-						if(loginScreenFocus == TitleScreenUIElement.Default)
+						if(LoginScreenFocus == TitleScreenUIElement.Default)
 						{
 							if(character == 8 && enteredUsername.Length > 0)
 								enteredUsername = enteredUsername.Substring(0, enteredUsername.Length - 1);
 							if(character == 9 || character == 10 || character == 13)
-								loginScreenFocus = TitleScreenUIElement.PasswordInputField;
+								LoginScreenFocus.Update(TitleScreenUIElement.PasswordInputField);
 							if(validCharacter)
 								enteredUsername += (char)character;
 							if(enteredUsername.Length > 12)
 								enteredUsername = enteredUsername.Substring(0, 12);
 						}
-						else if(loginScreenFocus == TitleScreenUIElement.PasswordInputField)
+						else if(LoginScreenFocus == TitleScreenUIElement.PasswordInputField)
 						{
 							if(character == 8 && enteredPassword.Length > 0)
 								enteredPassword = enteredPassword.Substring(0, enteredPassword.Length - 1);
 							if(character == 9 || character == 10 || character == 13)
-								loginScreenFocus = TitleScreenUIElement.Default;
+								LoginScreenFocus.Update(TitleScreenUIElement.Default);
 							if(validCharacter)
 								enteredPassword += (char)character;
 							if(enteredPassword.Length > 20)
@@ -10436,14 +10436,14 @@ namespace Rs317.Sharp
 				}
 
 				//This happens when NewUser is clicked.
-				if(loginScreenState == TitleScreenState.NewUserBox)
+				if(LoginScreenState == TitleScreenState.NewUserBox)
 				{
 					int x = base.width / 2;
 					int y = base.height / 2 + 50;
 					y += 20;
 					if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= y - 20
 						&& base.clickY <= y + 20)
-						loginScreenState = TitleScreenState.Default;
+						LoginScreenState.Update(TitleScreenState.Default);
 				}
 			}
 		}
