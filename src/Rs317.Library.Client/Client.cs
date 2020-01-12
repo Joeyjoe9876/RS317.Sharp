@@ -4984,7 +4984,7 @@ namespace Rs317.Sharp
 			titleBoxImage.draw(0, 0);
 			int x = 360;
 			int y = 200;
-			if(loginScreenState == 0)
+			if(loginScreenState == TitleScreenState.Default)
 			{
 				int _y = y / 2 + 80;
 				fontSmall.drawCentredTextWithPotentialShadow(onDemandFetcher.statusString, x / 2, _y, 0x75A9A9, true);
@@ -8810,7 +8810,7 @@ namespace Rs317.Sharp
 
 			socket = null;
 			LoggedIn.Update(false);
-			loginScreenState = 0;
+			loginScreenState = TitleScreenState.Default;
 			// myUsername = "";
 			// myPassword = "";
 			resetModelCaches();
@@ -10334,7 +10334,7 @@ namespace Rs317.Sharp
 
 		private void updateLogin()
 		{
-			if(loginScreenState == 0)
+			if(loginScreenState == TitleScreenState.Default)
 			{
 				int x = base.width / 2 - 80;
 				int y = base.height / 2 + 20;
@@ -10389,7 +10389,7 @@ namespace Rs317.Sharp
 					if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= _y - 20
 						&& base.clickY <= _y + 20)
 					{
-						loginScreenState = 0;
+						loginScreenState = TitleScreenState.Default;
 						// myUsername = "";
 						// myPassword = "";
 					}
@@ -10443,7 +10443,7 @@ namespace Rs317.Sharp
 					y += 20;
 					if(base.clickType == 1 && base.clickX >= x - 75 && base.clickX <= x + 75 && base.clickY >= y - 20
 						&& base.clickY <= y + 20)
-						loginScreenState = 0;
+						loginScreenState = TitleScreenState.Default;
 				}
 			}
 		}
