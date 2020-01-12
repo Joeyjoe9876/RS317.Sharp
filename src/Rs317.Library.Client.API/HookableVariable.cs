@@ -55,7 +55,7 @@ namespace Rs317.Sharp
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal void Update(TVariableType value)
+		public void Update(TVariableType value)
 		{
 			try
 			{
