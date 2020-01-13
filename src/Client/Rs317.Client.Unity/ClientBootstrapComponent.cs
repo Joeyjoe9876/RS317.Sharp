@@ -88,6 +88,8 @@ namespace Rs317.Sharp
 				return new RsUnityWebGLClient(configuration, GraphicsObject, this);
 			else if(RsUnityPlatform.isPlaystationBuild)
 				return new RsUnityPS4Client(configuration, GraphicsObject);
+			else if(RsUnityPlatform.isAndroidMobileBuild)
+				return new RsUnityAndroidClient(configuration, GraphicsObject);
 			else
 				return new RsUnityClient(configuration, GraphicsObject);
 		}
