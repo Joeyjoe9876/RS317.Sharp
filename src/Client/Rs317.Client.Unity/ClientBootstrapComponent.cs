@@ -8,6 +8,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using UnityEngine;
 using UnityEngine.Scripting;
+using UnityEngine.Serialization;
 
 namespace Rs317.Sharp
 {
@@ -15,10 +16,13 @@ namespace Rs317.Sharp
 	/// This is the component that should be attached in the scene.
 	/// It's what actually starts the entire RSClient within Unity3D.
 	/// </summary>
-	public sealed class ClientBootstrapComponent : MonoBehaviour
+	public class ClientBootstrapComponent : MonoBehaviour
 	{
+		[FormerlySerializedAs(nameof(GraphicsObject))]
 		[SerializeField]
-		private UnityRsGraphics GraphicsObject;
+		private UnityRsGraphics _GraphicsObject;
+
+		protected UnityRsGraphics GraphicsObject => _GraphicsObject;
 
 		[SerializeField]
 		private UnityRsInputDispatcherComponent InputObject;
@@ -31,7 +35,7 @@ namespace Rs317.Sharp
 		}
 
 		//Called on scene start, which starts the underlying client.
-		private async Task Start()
+		protected virtual async Task Start()
 		{
 			//Important for cross-thread interaction for creating "images".
 			UnityAsyncHelper.InitializeSyncContext();
@@ -76,13 +80,12 @@ namespace Rs317.Sharp
 			RsUnityClient client1 = CreateRsClient(configuration);
 			InputObject.InputSubscribable = client1;
 			GraphicsObject.GameStateHookable = client1;
-			//windowsFormApplication.RegisterInputSubscriber(client1);
 			client1.createClientFrame(765, 503);
 
 			Debug.Log($"Client frame created.");
 		}
 
-		private RsUnityClient CreateRsClient(ClientConfiguration configuration)
+		protected virtual RsUnityClient CreateRsClient(ClientConfiguration configuration)
 		{
 			if(RsUnityPlatform.isWebGLBuild)
 				return new RsUnityWebGLClient(configuration, GraphicsObject, this);
