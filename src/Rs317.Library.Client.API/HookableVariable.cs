@@ -55,11 +55,11 @@ namespace Rs317.Sharp
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public void Update(TVariableType value)
+		public void Update(TVariableType value, bool forceUpdate = false)
 		{
 			try
 			{
-				if (!Equals(value, VariableValue))
+				if (forceUpdate || !Equals(value, VariableValue))
 					OnVariableValueChanged?.Invoke(this, new HookableVariableValueChangedEventArgs<TVariableType>(VariableValue, value));
 			}
 			catch (Exception e)
