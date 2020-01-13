@@ -397,8 +397,8 @@ namespace Rs317.Sharp
 		private int minimapZoom;
 		private int randomisationMinimapZoom;
 		private long songStartTime;
-		public String enteredUsername { get; set; }
-		public String enteredPassword { get; set; }
+		public String EnteredUsername { get; set; }
+		public String EnteredPassword { get; set; }
 		protected bool genericLoadingError;
 		private int[] objectTypes = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 		private int reportAbuseInterfaceID;
@@ -645,8 +645,8 @@ namespace Rs317.Sharp
 			loadGeneratedMap = false;
 			cutsceneActive = false;
 			randomisationMinimapZoom = 1;
-			enteredUsername = "";
-			enteredPassword = "";
+			EnteredUsername = "";
+			EnteredPassword = "";
 			genericLoadingError = false;
 			reportAbuseInterfaceID = -1;
 			spawnObjectList = new DoubleEndedQueue();
@@ -3938,7 +3938,7 @@ namespace Rs317.Sharp
 				if(localPlayer != null && localPlayer.name != null)
 					localPlayerName = localPlayer.name;
 				else
-					localPlayerName = TextClass.formatName(enteredUsername);
+					localPlayerName = TextClass.formatName(EnteredUsername);
 				textDrawingArea.drawText(localPlayerName + ":", 4, 90, 0);
 				textDrawingArea.drawText(inputString + "*", 6 + textDrawingArea.getTextDisplayedWidth(localPlayerName + ": "), 90,
 					255);
@@ -5016,11 +5016,11 @@ namespace Rs317.Sharp
 				}
 
 				fontBold.drawTextWithPotentialShadow(
-					"Username: " + enteredUsername + ((LoginScreenFocus == TitleScreenUIElement.Default) & (tick % 40 < 20) ? "@yel@|" : ""),
+					"Username: " + EnteredUsername + ((LoginScreenFocus == TitleScreenUIElement.Default) & (tick % 40 < 20) ? "@yel@|" : ""),
 					x / 2 - 90, _y, 0xFFFFFF, true);
 				_y += 15;
 				fontBold.drawTextWithPotentialShadow(
-					"Password: " + TextClass.asterisksForString(enteredPassword)
+					"Password: " + TextClass.asterisksForString(EnteredPassword)
 								 + ((LoginScreenFocus == TitleScreenUIElement.PasswordInputField) & (tick % 40 < 20) ? "@yel@|" : ""),
 					x / 2 - 88, _y, 0xFFFFFF, true);
 				_y += 15;
@@ -5603,7 +5603,7 @@ namespace Rs317.Sharp
 			RSSocket rsSocket = socket;
 			LoggedIn.Update(false);
 			loginFailures = 0;
-			login(enteredUsername, enteredPassword, true);
+			login(EnteredUsername, EnteredPassword, true);
 			if(!LoggedIn)
 				logout();
 			try
@@ -8050,7 +8050,7 @@ namespace Rs317.Sharp
 				int successful = initialiseRegionLoading();
 				if(successful != 0 && TimeService.CurrentTimeInMilliseconds() - loadRegionTime > 360000L)
 				{
-					signlink.reporterror(enteredUsername + " glcfb " + serverSessionKey + "," + successful + "," + lowMemory
+					signlink.reporterror(EnteredUsername + " glcfb " + serverSessionKey + "," + successful + "," + lowMemory
 										 + "," + caches[0] + "," + onDemandFetcher.immediateRequestCount() + "," + plane + "," + regionX
 										 + "," + regionY);
 					loadRegionTime = TimeService.CurrentTimeInMilliseconds();
@@ -10364,10 +10364,10 @@ namespace Rs317.Sharp
 					y += 30;
 					y += 25;
 					if(base.clickType == 1 && base.clickY >= y - 15 && base.clickY < y)
-						LoginScreenFocus.Update(TitleScreenUIElement.Default);
+						LoginScreenFocus.Update(TitleScreenUIElement.Default, true);
 					y += 15;
 					if(base.clickType == 1 && base.clickY >= y - 15 && base.clickY < y)
-						LoginScreenFocus.Update(TitleScreenUIElement.PasswordInputField);
+						LoginScreenFocus.Update(TitleScreenUIElement.PasswordInputField, true);
 					y += 15;
 					int x = base.width / 2 - 80;
 					int _y = base.height / 2 + 50;
@@ -10410,25 +10410,25 @@ namespace Rs317.Sharp
 
 						if(LoginScreenFocus == TitleScreenUIElement.Default)
 						{
-							if(character == 8 && enteredUsername.Length > 0)
-								enteredUsername = enteredUsername.Substring(0, enteredUsername.Length - 1);
+							if(character == 8 && EnteredUsername.Length > 0)
+								EnteredUsername = EnteredUsername.Substring(0, EnteredUsername.Length - 1);
 							if(character == 9 || character == 10 || character == 13)
 								LoginScreenFocus.Update(TitleScreenUIElement.PasswordInputField);
 							if(validCharacter)
-								enteredUsername += (char)character;
-							if(enteredUsername.Length > 12)
-								enteredUsername = enteredUsername.Substring(0, 12);
+								EnteredUsername += (char)character;
+							if(EnteredUsername.Length > UIInputConstants.MAX_USERNAME_INPUT_LIMIT)
+								EnteredUsername = EnteredUsername.Substring(0, UIInputConstants.MAX_USERNAME_INPUT_LIMIT);
 						}
 						else if(LoginScreenFocus == TitleScreenUIElement.PasswordInputField)
 						{
-							if(character == 8 && enteredPassword.Length > 0)
-								enteredPassword = enteredPassword.Substring(0, enteredPassword.Length - 1);
+							if(character == 8 && EnteredPassword.Length > 0)
+								EnteredPassword = EnteredPassword.Substring(0, EnteredPassword.Length - 1);
 							if(character == 9 || character == 10 || character == 13)
 								LoginScreenFocus.Update(TitleScreenUIElement.Default);
 							if(validCharacter)
-								enteredPassword += (char)character;
-							if(enteredPassword.Length > 20)
-								enteredPassword = enteredPassword.Substring(0, 20);
+								EnteredPassword += (char)character;
+							if(EnteredPassword.Length > UIInputConstants.MAX_PASSWORD_INPUT_LIMIT)
+								EnteredPassword = EnteredPassword.Substring(0, UIInputConstants.MAX_PASSWORD_INPUT_LIMIT);
 						}
 					} while(true);
 
@@ -10450,7 +10450,7 @@ namespace Rs317.Sharp
 
 		protected virtual void OnLoginButtonClicked()
 		{
-			login(enteredUsername, enteredPassword, false);
+			login(EnteredUsername, EnteredPassword, false);
 		}
 
 		private void processMenuClick()
@@ -13280,7 +13280,7 @@ namespace Rs317.Sharp
 
 			if(npcsToUpdate > npcCount)
 			{
-				signlink.reporterror(enteredUsername + " Too many npcs");
+				signlink.reporterror(EnteredUsername + " Too many npcs");
 				throw new Exception("eek");
 			}
 
@@ -13352,14 +13352,14 @@ namespace Rs317.Sharp
 			if(stream.position != packetSize)
 			{
 				signlink.reporterror(
-					enteredUsername + " size mismatch in getnpcpos - pos:" + stream.position + " psize:" + packetSize);
+					EnteredUsername + " size mismatch in getnpcpos - pos:" + stream.position + " psize:" + packetSize);
 				throw new Exception("eek");
 			}
 
 			for(int n = 0; n < npcCount; n++)
 				if(npcs[npcIds[n]] == null)
 				{
-					signlink.reporterror(enteredUsername + " null entry in npc list - pos:" + n + " size:" + npcCount);
+					signlink.reporterror(EnteredUsername + " null entry in npc list - pos:" + n + " size:" + npcCount);
 					throw new Exception("eek");
 				}
 		}
@@ -13375,7 +13375,7 @@ namespace Rs317.Sharp
 
 			if(playersToUpdate > localPlayerCount)
 			{
-				signlink.reporterror(enteredUsername + " Too many players");
+				signlink.reporterror(EnteredUsername + " Too many players");
 				throw new Exception("eek");
 			}
 
@@ -13678,7 +13678,7 @@ namespace Rs317.Sharp
 				if(players[localPlayers[p]] == null)
 				{
 					signlink.reporterror(
-						enteredUsername + " null entry in pl list - pos:" + p + " size:" + localPlayerCount);
+						EnteredUsername + " null entry in pl list - pos:" + p + " size:" + localPlayerCount);
 					throw new Exception("eek");
 				}
 		}

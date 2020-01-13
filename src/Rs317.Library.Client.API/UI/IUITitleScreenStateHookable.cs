@@ -9,5 +9,9 @@ namespace Rs317.Sharp
 		HookableVariable<TitleScreenState> LoginScreenState { get; }
 
 		HookableVariable<TitleScreenUIElement> LoginScreenFocus { get; }
+
+		String EnteredUsername { get; set; }
+
+		String EnteredPassword { get; set; }
 	}
 }

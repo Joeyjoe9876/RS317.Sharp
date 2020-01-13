@@ -9,8 +9,8 @@ namespace Rs317.GladMMO
 	{
 		public string Text
 		{
-			get => Client.enteredPassword;
-			set => Client.enteredPassword = value;
+			get => Client.EnteredPassword;
+			set => Client.EnteredPassword = value;
 		}
 
 		private GladMMOOpenTkClient Client { get; }
