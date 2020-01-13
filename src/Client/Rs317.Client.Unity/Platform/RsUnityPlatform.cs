@@ -10,5 +10,7 @@ namespace Rs317.Sharp
 		public static bool isWebGLBuild => Application.platform == RuntimePlatform.WebGLPlayer;
 
 		public static bool isPlaystationBuild => Application.platform == RuntimePlatform.PS4 || Application.platform == RuntimePlatform.PS3;
+
+		public static bool isAndroidMobileBuild => Application.platform == RuntimePlatform.Android;
 	}
 }

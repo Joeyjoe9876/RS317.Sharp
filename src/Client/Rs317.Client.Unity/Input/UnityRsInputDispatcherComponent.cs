@@ -93,6 +93,14 @@ namespace Rs317.Sharp
 			if(Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
 				mouseMoved();
 
+			//TODO: Make sperate input implementations
+			//On mobile right now we handle keyboard input differently.
+			if(!RsUnityPlatform.isAndroidMobileBuild)
+				PollKeyboardInput();
+		}
+
+		private void PollKeyboardInput()
+		{
 			//This is ridiculous, but it's the only way to detect which keys are pressed.
 			foreach (KeyCode keyCode in KeyCodes)
 			{
@@ -107,13 +115,13 @@ namespace Rs317.Sharp
 				{
 					keyPressed(this, keyCode);
 				}
-				else if(Input.GetKeyUp(keyCode)) //can't be both
+				else if (Input.GetKeyUp(keyCode)) //can't be both
 					keyReleased(this, keyCode);
 			}
 
 			//For typing we can iterate all typed keys since last frame.
 			//https://docs.unity3d.com/ScriptReference/Input-inputString.html
-			for(int i = 0; i < Input.inputString.Length; i++)
+			for (int i = 0; i < Input.inputString.Length; i++)
 				keyTyped(this, Input.inputString[i]);
 
 			//The inputstring will not have the backspace
@@ -126,11 +134,11 @@ namespace Rs317.Sharp
 					//It's being held down and therefore
 					//lastBackspacePress actually is the last time it was pressed.
 					//From there we can determine how many times we need to backspace
-					int backspaceCount = (int)((Time.time - lastBackspacePress) / BackSpaceRateSeconds);
-					for(int i = 0; i < backspaceCount; i++)
+					int backspaceCount = (int) ((Time.time - lastBackspacePress) / BackSpaceRateSeconds);
+					for (int i = 0; i < backspaceCount; i++)
 						keyPressed(this, KeyCode.Backspace);
 
-					if(backspaceCount > 0)
+					if (backspaceCount > 0)
 						lastBackspacePress = Time.time;
 				}
 				else
