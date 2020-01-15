@@ -12,15 +12,18 @@ namespace Rs317.GladMMO
 	{
 		private IZoneDataRepository ZoneDataRepository { get; }
 
-		public ZoneIdInitializable([JetBrains.Annotations.NotNull] IZoneDataRepository zoneDataRepository)
+		private IZoneDataService ZoneDataServiceClient { get; }
+
+		public ZoneIdInitializable([JetBrains.Annotations.NotNull] IZoneDataRepository zoneDataRepository, [JetBrains.Annotations.NotNull] IZoneDataService zoneDataServiceClient)
 		{
 			ZoneDataRepository = zoneDataRepository ?? throw new ArgumentNullException(nameof(zoneDataRepository));
+			ZoneDataServiceClient = zoneDataServiceClient ?? throw new ArgumentNullException(nameof(zoneDataServiceClient));
 		}
 
-		public Task OnGameInitialized()
+		public async Task OnGameInitialized()
 		{
-			ZoneDataRepository.UpdateZoneId(170);
-			return Task.CompletedTask;
+			var anyZoneConnectionEndpointAsync = await ZoneDataServiceClient.GetAnyZoneConnectionEndpointAsync();
+			ZoneDataRepository.UpdateZoneId(anyZoneConnectionEndpointAsync.Result.ZoneId);
 		}
 	}
 }
