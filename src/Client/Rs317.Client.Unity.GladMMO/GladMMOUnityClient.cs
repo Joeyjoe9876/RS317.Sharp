@@ -71,8 +71,6 @@ namespace Rs317.GladMMO
 			for(int counter = 1; counter < maxPathSize; counter++)
 			{
 				currentIndex--;
-				stream.putShort(walkingQueueX[currentIndex]);
-				stream.putShort(walkingQueueY[currentIndex]);
 				pathPoints.Add(new Vector3(walkingQueueX[currentIndex] + baseX, 0, walkingQueueY[currentIndex] + baseY));
 			}
 
