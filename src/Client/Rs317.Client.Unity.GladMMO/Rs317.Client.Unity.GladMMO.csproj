@@ -8,6 +8,7 @@
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="GladNet3.Serializer.ProtobufNet" Version="3.0.48" />
+    <PackageReference Include="System.Threading.Channels" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +54,9 @@
     <Reference Include="GladMMO.Models.ServiceDiscovery">
       <HintPath>..\..\..\lib\GladMMO\Client\GladMMO.Models.ServiceDiscovery.dll</HintPath>
     </Reference>
+    <Reference Include="GladMMO.Models.ZoneManager">
+      <HintPath>..\..\..\lib\GladMMO\Client\GladMMO.Models.ZoneManager.dll</HintPath>
+    </Reference>
     <Reference Include="GladMMO.Network.Common">
       <HintPath>..\..\..\lib\GladMMO\Client\GladMMO.Network.Common.dll</HintPath>
     </Reference>
@@ -89,6 +93,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Engine\Instance\EventListeners\Entity\OnNetworkEntityVisible\" />
     <Folder Include="Engine\Instance\EventListeners\Group\" />
     <Folder Include="Engine\Instance\EventListeners\OnAvatarPrefabCompletedDownload\" />
     <Folder Include="Engine\Instance\EventListeners\OnCameraInputChanged\" />

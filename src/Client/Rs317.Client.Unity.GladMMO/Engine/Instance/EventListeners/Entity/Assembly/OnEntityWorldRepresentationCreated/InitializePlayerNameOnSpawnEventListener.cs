@@ -32,11 +32,21 @@ namespace Rs317.GladMMO
 
 			Task.Factory.StartNew(async () =>
 			{
-				ResponseModel<NameQueryResponse, NameQueryResponseCode> responseModel = await NameQueryService.RetrievePlayerNameAsync(args.EntityGuid.RawGuidValue)
-					.ConfigureAwait(false);
+				try
+				{
+					ResponseModel<NameQueryResponse, NameQueryResponseCode> responseModel = await NameQueryService.RetrievePlayerNameAsync(args.EntityGuid.RawGuidValue)
+						.ConfigureAwait(false);
 
-				if (responseModel.isSuccessful)
-					args.WorldReprensetation.SetName(responseModel.Result.EntityName);
+					if(responseModel.isSuccessful)
+						args.WorldReprensetation.SetName(responseModel.Result.EntityName);
+				}
+				catch (Exception e)
+				{
+					if(Logger.IsErrorEnabled)
+						Logger.Error($"Failed to query name for Player: {args.EntityGuid}. Reason: {e}");
+
+					throw;
+				}
 			});
 		}
 	}

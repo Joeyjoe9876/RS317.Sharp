@@ -16,6 +16,8 @@ namespace Rs317.GladMMO
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
+			builder.RegisterModule<ZoneServerServiceDependencyAutofacModule>();
+
 			//Register all required Authentication/Title modules.
 			builder.RegisterModule<AuthenticationDependencyAutofacModule>();
 			builder.RegisterModule(new CommonGameDependencyModule(GameSceneType.TitleScreen, "http://192.168.0.12:5000", typeof(GladMMOUnityClient).Assembly));
