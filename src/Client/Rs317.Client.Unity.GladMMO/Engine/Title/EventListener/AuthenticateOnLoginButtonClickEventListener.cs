@@ -28,6 +28,10 @@ namespace Rs317.GladMMO
 
 		public event EventHandler<AuthenticationResultEventArgs> OnAuthenticationResultRecieved;
 
+		//This helps us track auth state so we don't authenticate multiple times
+		//if they click multiple times.
+		private bool isAuthenticationRequestPending = false;
+
 		public AuthenticateOnLoginButtonClickEventListener(ILoginButtonClickedEventSubscribable subscriptionService, 
 			IAuthenticationService authService,
 			[KeyFilter(ClientUIDependencyKey.UserName)] IUIText userNameField,
@@ -47,7 +51,13 @@ namespace Rs317.GladMMO
 
 		protected override void OnEventFired(object source, EventArgs args)
 		{
-			Console.WriteLine($"Auth: {UserNameField.Text}:{PasswordField.Text}");
+			Console.WriteLine($"Auth: {UserNameField.Text}:{PasswordField.Text} IsAlreadyPending: {isAuthenticationRequestPending}");
+			
+			if (isAuthenticationRequestPending)
+				return;
+
+			isAuthenticationRequestPending = true;
+
 			Task.Factory.StartNew(async () =>
 			{
 				PlayerAccountJWTModel jwtModel = null;
@@ -73,18 +83,31 @@ namespace Rs317.GladMMO
 				}
 				finally
 				{
-					if(Logger.IsDebugEnabled)
-						Logger.Debug($"Auth Response for User: {UserNameField.Text} Result: {jwtModel?.isTokenValid} OptionalError: {jwtModel?.Error} OptionalErrorDescription: {jwtModel?.ErrorDescription}");
-
-					if (jwtModel != null && jwtModel.isTokenValid)
+					try
 					{
-						AuthTokenRepository.Update(jwtModel.AccessToken);
+						if (Logger.IsDebugEnabled)
+							Logger.Debug($"Auth Response for User: {UserNameField.Text} Result: {jwtModel?.isTokenValid} OptionalError: {jwtModel?.Error} OptionalErrorDescription: {jwtModel?.ErrorDescription}");
 
-						GameQueueable.Enqueue(() =>
+						if (jwtModel != null && jwtModel.isTokenValid)
 						{
-							//Even if it's null, we should broadcast the event.
-							OnAuthenticationResultRecieved?.Invoke(this, new AuthenticationResultEventArgs(jwtModel));
-						});
+							AuthTokenRepository.Update(jwtModel.AccessToken);
+
+							GameQueueable.Enqueue(() =>
+							{
+								//Even if it's null, we should broadcast the event.
+								OnAuthenticationResultRecieved?.Invoke(this, new AuthenticationResultEventArgs(jwtModel));
+							});
+						}
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(e);
+						throw;
+					}
+					finally
+					{
+						//Make this this ALWAYS happens.
+						isAuthenticationRequestPending = false;
 					}
 				}
 			});
