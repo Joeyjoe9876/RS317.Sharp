@@ -8435,9 +8435,9 @@ namespace Rs317.Sharp
 				for (int ignoredByte = 0; ignoredByte < 8; ignoredByte++)
 					socket.read();
 
-				int responseCode = socket.read();
-				int initialResponseCode = responseCode;
-				if (responseCode == 0)
+				ConnectionInitializationResponseCode responseCode = (ConnectionInitializationResponseCode) socket.read();
+				ConnectionInitializationResponseCode initialResponseCode = responseCode;
+				if (responseCode == ConnectionInitializationResponseCode.Success)
 				{
 					socket.read(inStream.buffer, 8);
 					inStream.position = 0;
@@ -8480,10 +8480,10 @@ namespace Rs317.Sharp
 
 					encryption = new ISAACRandomGenerator(seed);
 					socket.write(loginStream.position, loginStream.buffer);
-					responseCode = socket.read();
+					responseCode = (ConnectionInitializationResponseCode) socket.read();
 				}
 
-				if (responseCode == 1)
+				if (responseCode == ConnectionInitializationResponseCode.TryAgainLater)
 				{
 					try
 					{
@@ -8498,97 +8498,97 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				if (responseCode == 2)
+				if (responseCode == ConnectionInitializationResponseCode.SuccessfulLogin)
 				{
 					HandleLoginSuccessful((ClientPrivilegeType) socket.read(), socket.read() == 1);
 					return;
 				}
 
-				if (responseCode == 3)
+				if (responseCode == ConnectionInitializationResponseCode.InvalidCredentials)
 				{
 					loginMessage1 = "";
 					loginMessage2 = "Invalid username or password.";
 					return;
 				}
 
-				if (responseCode == 4)
+				if (responseCode == ConnectionInitializationResponseCode.Banned)
 				{
 					loginMessage1 = "Your account has been disabled.";
 					loginMessage2 = "Please check your message-center for details.";
 					return;
 				}
 
-				if (responseCode == 5)
+				if (responseCode == ConnectionInitializationResponseCode.AlreadyLoggedIn)
 				{
 					loginMessage1 = "Your account is already logged in.";
 					loginMessage2 = "Try again in 60 secs...";
 					return;
 				}
 
-				if (responseCode == 6)
+				if (responseCode == ConnectionInitializationResponseCode.ClientOutOfDate)
 				{
 					loginMessage1 = "RuneScape has been updated!";
 					loginMessage2 = "Please reload this page.";
 					return;
 				}
 
-				if (responseCode == 7)
+				if (responseCode == ConnectionInitializationResponseCode.WorldFull)
 				{
 					loginMessage1 = "This world is full.";
 					loginMessage2 = "Please use a different world.";
 					return;
 				}
 
-				if (responseCode == 8)
+				if (responseCode == ConnectionInitializationResponseCode.UnknownFailure)
 				{
 					loginMessage1 = "Unable to connect.";
 					loginMessage2 = "Login server offline.";
 					return;
 				}
 
-				if (responseCode == 9)
+				if (responseCode == ConnectionInitializationResponseCode.TooManyConcurrentConnections)
 				{
 					loginMessage1 = "Login limit exceeded.";
 					loginMessage2 = "Too many connections from your address.";
 					return;
 				}
 
-				if (responseCode == 10)
+				if (responseCode == ConnectionInitializationResponseCode.BadSessionId)
 				{
 					loginMessage1 = "Unable to connect.";
 					loginMessage2 = "Bad session id.";
 					return;
 				}
 
-				if (responseCode == 11)
+				if (responseCode == ConnectionInitializationResponseCode.Rejected)
 				{
 					loginMessage2 = "Login server rejected session.";
 					loginMessage2 = "Please try again.";
 					return;
 				}
 
-				if (responseCode == 12)
+				if (responseCode == ConnectionInitializationResponseCode.RequiresMembership)
 				{
 					loginMessage1 = "You need a members account to login to this world.";
 					loginMessage2 = "Please subscribe, or use a different world.";
 					return;
 				}
 
-				if (responseCode == 13)
+				if (responseCode == ConnectionInitializationResponseCode.IncompleteLogin)
 				{
 					loginMessage1 = "Could not complete login.";
 					loginMessage2 = "Please try using a different world.";
 					return;
 				}
 
-				if (responseCode == 14)
+				if (responseCode == ConnectionInitializationResponseCode.ServerMaintence)
 				{
 					loginMessage1 = "The server is being updated.";
 					loginMessage2 = "Please wait 1 minute and try again.";
 					return;
 				}
 
-				if (responseCode == 15)
+				if (responseCode == ConnectionInitializationResponseCode.UnknownSuccessState)
 				{
 					LoggedIn.Update(true);
 					stream.position = 0;
@@ -8606,28 +8606,28 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				if (responseCode == 16)
+				if (responseCode == ConnectionInitializationResponseCode.LoginsThrottled)
 				{
 					loginMessage1 = "Login attempts exceeded.";
 					loginMessage2 = "Please wait 1 minute and try again.";
 					return;
 				}
 
-				if (responseCode == 17)
+				if (responseCode == ConnectionInitializationResponseCode.InvalidLoginArea)
 				{
 					loginMessage1 = "You are standing in a members-only area.";
 					loginMessage2 = "To play on this world move to a free area first";
 					return;
 				}
 
-				if (responseCode == 20)
+				if (responseCode == ConnectionInitializationResponseCode.TryAnotherServer)
 				{
 					loginMessage1 = "Invalid loginserver requested";
 					loginMessage2 = "Please try using a different world.";
 					return;
 				}
 
-				if (responseCode == 21)
+				if (responseCode == ConnectionInitializationResponseCode.SessionExistsOnAnotherServer)
 				{
 					for (int s = socket.read(); s >= 0; s--)
 					{
@@ -8648,7 +8648,7 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				if (responseCode == -1)
+				if (responseCode == (ConnectionInitializationResponseCode) (-1))
 				{
 					if (initialResponseCode == 0)
 					{

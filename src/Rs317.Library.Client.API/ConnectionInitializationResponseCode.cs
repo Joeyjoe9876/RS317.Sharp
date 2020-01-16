@@ -7,7 +7,7 @@ namespace Rs317.Sharp
 	/// <summary>
 	/// Enumeration of known response codes to the connection initialization.
 	/// </summary>
-	public enum ConnectionInitializationResponseCode : byte
+	public enum ConnectionInitializationResponseCode : sbyte
 	{
 		Success = 0,
 
@@ -82,6 +82,7 @@ namespace Rs317.Sharp
 		ServerMaintence = 14,
 
 		//TODO: 15
+		UnknownSuccessState = 15,
 
 		/// <summary>
 		/// Login attempts exceeded. Please wait 1 minute and try again.
