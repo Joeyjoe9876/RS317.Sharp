@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Glader.Essentials;
 using GladMMO;
+using Rs317.Sharp;
 
 namespace Rs317.GladMMO
 {
@@ -20,7 +21,7 @@ namespace Rs317.GladMMO
 		protected override void OnEventFired(object source, AuthenticationResultEventArgs args)
 		{
 			//We should just complete the authentication process.
-			Client.HandleLoginSuccessful(3, false);
+			Client.HandleLoginSuccessful(ClientPrivilegeType.Administrator, false);
 		}
 	}
 }
