@@ -12242,7 +12242,6 @@ namespace Rs317.Sharp
 
 		protected static bool wasClientStartupCalled = false;
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
 		public override void startUp()
 		{
 			if(!wasClientStartupCalled)

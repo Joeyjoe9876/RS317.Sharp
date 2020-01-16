@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -307,12 +306,10 @@ namespace Rs317.Sharp
 
 		protected void exit()
 		{
-			Console.WriteLine($"Critical Failure. Exit called.");
 			gameState = -2;
 			cleanUpForQuit();
 		}
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
 		public virtual void run()
 		{
 			try
