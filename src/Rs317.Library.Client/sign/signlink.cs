@@ -277,10 +277,14 @@ namespace Rs317.Sharp
 					cache_idx[j] = await CacheLoader.LoadCacheIndexFileAsync(j)
 						.ConfigureAwait(false);
 			}
-			catch(Exception exception)
+			catch (Exception exception)
 			{
 				signlink.reporterror($"Failed to load cache. Reason: {exception.Message} \n StackTrack: {exception.StackTrace}");
 				throw new InvalidOperationException($"Failed to load cache. Reason: {exception.Message} \n StackTrack: {exception.StackTrace}", exception);
+			}
+			finally
+			{
+				IsSignLinkThreadActive = false;
 			}
 		}
 	}
