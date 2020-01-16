@@ -15,11 +15,11 @@ namespace Rs317.Sharp
 
 		void Teleport(int x, int y);
 
+		void DirectSetPosition(int x, int y);
+
 		void SetName(string name);
 
 		void SetLevel(int level);
-
-		void DirectSetPosition(int x, int y);
 
 		/// <summary>
 		/// Sets the last update tick as the current tick.

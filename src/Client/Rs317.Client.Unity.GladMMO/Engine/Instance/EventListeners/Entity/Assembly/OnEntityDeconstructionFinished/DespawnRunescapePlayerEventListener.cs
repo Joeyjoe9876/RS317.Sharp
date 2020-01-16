@@ -31,12 +31,27 @@ namespace Rs317.Sharp
 
 		protected override void OnEventFired(object source, EntityDeconstructionFinishedEventArgs args)
 		{
+			if (args.EntityGuid.EntityType != EntityType.Player)
+				return;
+
 			if(Logger.IsInfoEnabled)
 				Logger.Info($"Nulling despawned player.");
 
 			//RS client just sets a player reference to null when it's suppose to despawn
 			//It's stupid, but it can't be helped. It's what Jagex did.
 			Client.players[args.EntityGuid.EntityId] = null;
+
+			//Internally the RS client will track observed and local
+			//player count as well as update based on PID in the local
+			//mapping collections (local players, playersobserved and etc)
+			//so the pid must be removed and other elments shifted downard
+			//while also decrementing the count
+			//This prevents the multiple update ticks per entity
+			//if they relog or something.
+			Client.localPlayerCount--;
+			Client.playersObservedCount--;
+			Client.localPlayers.Remove(args.EntityGuid.EntityId);
+			Client.playersObserved.Remove(args.EntityGuid.EntityId);
 		}
 	}
 }

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
@@ -137,9 +139,9 @@ namespace Rs317.Sharp
 		public int LOCAL_PLAYER_ID { get; private set; }
 		public Player[] players;
 		public int localPlayerCount;
-		public int[] localPlayers;
+		public List<int> localPlayers;
 		public int playersObservedCount;
-		public int[] playersObserved;
+		public List<int> playersObserved;
 		private Default317Buffer[] playerAppearanceData;
 		private int cameraRandomisationA;
 		private int nextCameraRandomisationA;
@@ -557,8 +559,11 @@ namespace Rs317.Sharp
 			MAX_ENTITY_COUNT = 2048;
 			LOCAL_PLAYER_ID = 2047;
 			players = new Player[MAX_ENTITY_COUNT];
-			localPlayers = new int[MAX_ENTITY_COUNT];
-			playersObserved = new int[MAX_ENTITY_COUNT];
+
+			//The below change really does not change the amount of bytes in memory used
+			//since it was statically sized before.
+			localPlayers = new List<int>(Enumerable.Repeat<int>(0, MAX_ENTITY_COUNT)); //the reason we do this is for GladMMO ease of use.
+			playersObserved = new List<int>(Enumerable.Repeat<int>(0, MAX_ENTITY_COUNT)); //the reason we do this is for GladMMO ease of use.
 			playerAppearanceData = new Default317Buffer[MAX_ENTITY_COUNT];
 			nextCameraRandomisationA = 1;
 			wayPoints = new int[104, 104];
@@ -3277,6 +3282,7 @@ namespace Rs317.Sharp
 				stream.putLEShortA(actionInformation2 + baseX);
 				stream.putShort(actionTarget >> 14 & 0x7FFF);
 				stream.putShortA(actionInformation1 + baseY);
+				Console.WriteLine($"Clicked ActionTarget: {actionTarget} ObjectId: {actionTarget >> 14 & 0x7FFF} at X: {actionInformation2 + baseX} Y: {actionInformation1 + baseY}");
 			}
 
 			if(menuAction == 1125)
