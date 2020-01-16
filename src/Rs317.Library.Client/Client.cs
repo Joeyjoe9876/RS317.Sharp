@@ -1097,7 +1097,8 @@ namespace Rs317.Sharp
 
 						}
 
-						menuActionName[menuActionRow] = $"Examine @cya@{goObject.name} @gre@(@whi@{objectId}@gre@) (@whi@{(x + baseX)},{(y + baseY)}@gre@)";
+						
+						menuActionName[menuActionRow] = $"Examine @cya@{goObject.name} @gre@(@whi@{objectId}@gre@) Hash: {hash} (@whi@{(x + baseX)},{(y + baseY)}@gre@)";
 						menuActionId[menuActionRow] = 1226;
 						menuActionData1[menuActionRow] = goObject.id << 14;
 						menuActionData2[menuActionRow] = x;
