@@ -46,6 +46,11 @@ namespace Rs317.GladMMO
 				.As<INetworkEntityVisibilityLostEventSubscribable>()
 				.As<IPeerMessageHandler<GameServerPacketPayload, GameClientPacketPayload>>()
 				.SingleInstance();
+
+			//This is needed for handling the network disconnection checks
+			builder.RegisterType<ConnectionCheckDebugTickable>()
+				.As<IGameTickable>()
+				.SingleInstance();
 		}
 	}
 }
