@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Common", "src\Rs317.Common\Rs317.Common.csproj", "{E6E5E86D-268F-4AB7-89BB-A9A833EAE437}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Client.WF", "src\Client\Rs317.Client.WF\Rs317.Client.WF.csproj", "{1F758C13-3D4C-4553-B5F6-C5AA534BDF14}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{DBB10E5D-C6F0-4964-9D1C-9648ED4FAA68}"
@@ -19,15 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Library.Client", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{66FB0C3C-CC40-4FB8-804A-FD4515D2E34A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Library.Client.API", "src\Rs317.Library.Client.API\Rs317.Library.Client.API.csproj", "{D2E731DF-FE55-42CE-BECC-DA3610F1F916}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Library.Client.API", "src\Rs317.Library.Client.API\Rs317.Library.Client.API.csproj", "{D2E731DF-FE55-42CE-BECC-DA3610F1F916}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Client.Unity", "src\Client\Rs317.Client.Unity\Rs317.Client.Unity.csproj", "{B85369F2-730E-4092-993B-9D79C11CB429}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Client.Unity", "src\Client\Rs317.Client.Unity\Rs317.Client.Unity.csproj", "{B85369F2-730E-4092-993B-9D79C11CB429}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Client.Unity.GladMMO", "src\Client\Rs317.Client.Unity.GladMMO\Rs317.Client.Unity.GladMMO.csproj", "{8C1C6FF7-89CD-4A76-A8AA-665EE7F1D914}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{552191CE-B270-47E5-BA98-C16A403BF7C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Tools.AOT.LinkFileGenerator", "src\Tools\Rs317.Tools.AOT.LinkFileGenerator\Rs317.Tools.AOT.LinkFileGenerator.csproj", "{67932A36-FB06-45D8-A9AA-7A98F374BE7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Tools.AOT.LinkFileGenerator", "src\Tools\Rs317.Tools.AOT.LinkFileGenerator\Rs317.Tools.AOT.LinkFileGenerator.csproj", "{67932A36-FB06-45D8-A9AA-7A98F374BE7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E6E5E86D-268F-4AB7-89BB-A9A833EAE437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6E5E86D-268F-4AB7-89BB-A9A833EAE437}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6E5E86D-268F-4AB7-89BB-A9A833EAE437}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6E5E86D-268F-4AB7-89BB-A9A833EAE437}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F758C13-3D4C-4553-B5F6-C5AA534BDF14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F758C13-3D4C-4553-B5F6-C5AA534BDF14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F758C13-3D4C-4553-B5F6-C5AA534BDF14}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -72,7 +66,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E6E5E86D-268F-4AB7-89BB-A9A833EAE437} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{1F758C13-3D4C-4553-B5F6-C5AA534BDF14} = {DBB10E5D-C6F0-4964-9D1C-9648ED4FAA68}
 		{DBB10E5D-C6F0-4964-9D1C-9648ED4FAA68} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{8D85AD7F-FE6E-4794-B4C3-D4A63DCD10DF} = {DBB10E5D-C6F0-4964-9D1C-9648ED4FAA68}

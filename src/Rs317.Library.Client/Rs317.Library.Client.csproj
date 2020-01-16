@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rs317.Common\Rs317.Common.csproj" />
     <ProjectReference Include="..\Rs317.Library.Client.API\Rs317.Library.Client.API.csproj" />
   </ItemGroup>
 
