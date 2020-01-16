@@ -14,6 +14,17 @@ namespace GladMMO
 
 		public int CurrentY { get; private set; }
 
+		public WorldObjectStub(int currentX, int currentY)
+		{
+			CurrentX = currentX;
+			CurrentY = currentY;
+		}
+
+		public WorldObjectStub()
+		{
+			
+		}
+
 		public void setPos(int x, int y)
 		{
 			CurrentX = x;
@@ -22,7 +33,8 @@ namespace GladMMO
 
 		public void Teleport(int x, int y)
 		{
-
+			CurrentX = x;
+			CurrentY = y;
 		}
 
 		public void SetName(string name)
@@ -36,6 +48,12 @@ namespace GladMMO
 		}
 
 		public void DirectSetPosition(int x, int y)
+		{
+			CurrentX = x;
+			CurrentY = y;
+		}
+
+		public void SetLastUpdateTick(int currentTick)
 		{
 
 		}
@@ -52,17 +70,13 @@ namespace GladMMO
 
 		private ILocalCharacterDataRepository CharacterDataRepository { get; }
 
-		private IReadonlyEntityGuidMappable<IMovementData> MovementDataMappable { get; }
-
 		public EntityCreatingCreateWorldObjectRepresentationEventListener(IEntityCreationStartingEventSubscribable subscriptionService,
 			[NotNull] RsUnityClient client,
-			[JetBrains.Annotations.NotNull] ILocalCharacterDataRepository characterDataRepository,
-			[JetBrains.Annotations.NotNull] IReadonlyEntityGuidMappable<IMovementData> movementDataMappable)
+			[JetBrains.Annotations.NotNull] ILocalCharacterDataRepository characterDataRepository)
 			: base(subscriptionService)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 			CharacterDataRepository = characterDataRepository ?? throw new ArgumentNullException(nameof(characterDataRepository));
-			MovementDataMappable = movementDataMappable ?? throw new ArgumentNullException(nameof(movementDataMappable));
 		}
 
 		protected override void OnEventFired(object source, EntityCreationStartingEventArgs args)
@@ -92,8 +106,9 @@ namespace GladMMO
 					Client.players[args.EntityGuid.EntityId].appearance = new int[12] { 0, 0, 0, 0, 275, 0, 285, 295, 259, 291, 300, 266 };
 					Client.players[args.EntityGuid.EntityId].name = "Unknown";
 
-					IMovementData movementData = MovementDataMappable.RetrieveEntity(args.EntityGuid);
-					Client.players[args.EntityGuid.EntityId].setPos((int)movementData.InitialPosition.x - Client.baseX, (int)movementData.InitialPosition.z - Client.baseY);
+					//Position for the WorldObject is initialized
+					//at the movement generator creation time.
+					//InitializePosition(args.EntityGuid);
 
 					Client.localPlayers[Client.localPlayerCount++] = args.EntityGuid.EntityId;
 					Client.playersObserved[Client.playersObservedCount++] = args.EntityGuid.EntityId;

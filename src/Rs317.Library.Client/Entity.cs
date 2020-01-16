@@ -201,6 +201,11 @@ namespace Rs317.Sharp
 			this.y = y * 128 + boundaryDimension * 64;
 		}
 
+		public void SetLastUpdateTick(int currentTick)
+		{
+			lastUpdateTick = currentTick;
+		}
+
 		public void updateHitData(int type, int damage, int currentTime)
 		{
 			for(int hit = 0; hit < 4; hit++)

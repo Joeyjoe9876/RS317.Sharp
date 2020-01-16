@@ -10,11 +10,11 @@ namespace Rs317
 {
 	public sealed class PathMovementGenerator : Rs317.Sharp.BaseMovementGenerator<PathBasedMovementData>
 	{
-		public GladMMOUnityClient Client { get; }
+		public RsUnityClient Client { get; }
 
 		private int CurrentPathIndex = 0;
 
-		public PathMovementGenerator([NotNull] PathBasedMovementData pathData, [NotNull] GladMMOUnityClient client)
+		public PathMovementGenerator([NotNull] PathBasedMovementData pathData, [NotNull] RsUnityClient client)
 			: base(pathData)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
@@ -39,7 +39,7 @@ namespace Rs317
 
 			//the reason we double this is because we want to save some 600 ms tick diff for the actual update.
 			//After Start is called the InternalUpdate will be called by the root caller
-			while(diff >= RsClientConstants.RsClientTicksInTicks) 
+			while(diff >= RsClientConstants.RsClientTicksInTicks)
 			{
 				//only teleport if we're afew ticks behind.
 				TickPathForward(entity, currentTime, diff >= RsClientConstants.RsClientTicksInTicks * 2);

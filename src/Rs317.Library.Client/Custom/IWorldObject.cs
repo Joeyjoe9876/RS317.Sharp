@@ -20,5 +20,10 @@ namespace Rs317.Sharp
 		void SetLevel(int level);
 
 		void DirectSetPosition(int x, int y);
+
+		/// <summary>
+		/// Sets the last update tick as the current tick.
+		/// </summary>
+		void SetLastUpdateTick(int currentTick);
 	}
 }
