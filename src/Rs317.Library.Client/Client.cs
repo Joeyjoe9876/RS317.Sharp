@@ -2565,6 +2565,7 @@ namespace Rs317.Sharp
 					flag8 = promptUserForInput(rsInterface);
 				if(flag8)
 				{
+					//2458 means logout button was pressed.
 					stream.putOpcode(185);
 					stream.putShort(actionInformation1);
 				}
