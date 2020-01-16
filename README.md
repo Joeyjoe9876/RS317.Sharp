@@ -8,14 +8,14 @@ Special thanks to the developer of [RS2Sharp](https://www.rune-server.ee/runesca
 
 Rs317.Sharp is made up of the core Library of the RS engine as well as some code that allows for easily creating implementations of the client. Currently, two implementations exist.
 
-**[Rs317.Client.WF](https://github.com/HelloKitty/RS317.Sharp/tree/master/src/Rs317.Client.WF):** Is the Winforms/GDI+ implementation that renders similarly to the Java applet version by pushing bitmaps to the screen.
+**[Rs317.Client.WF](https://github.com/HelloKitty/RS317.Sharp/tree/master/src/Client/Rs317.Client.WF):** Is the Winforms/GDI+ implementation that renders similarly to the Java applet version by pushing bitmaps to the screen.
 
 
 
-**[Rs317.Client.OpenTK](https://github.com/HelloKitty/RS317.Sharp/tree/master/src/Rs317.Client.OpenTK):** Is the OpenGL/OpenTK implementation that also, as of the time of this documentation, pushes bitmaps to the screen via OpenGL. However, because it's GPU rendered it allows for psuedo-antialiasing and Resizable. Eventually it should/could support rendering the gameview as OpenGL meshes.
+**[Rs317.Client.OpenTK](https://github.com/HelloKitty/RS317.Sharp/tree/master/src/Client/Rs317.Client.OpenTK):** Is the OpenGL/OpenTK implementation that also, as of the time of this documentation, pushes bitmaps to the screen via OpenGL. However, because it's GPU rendered it allows for psuedo-antialiasing and Resizable. Eventually it should/could support rendering the gameview as OpenGL meshes.
 
 
-**[Rs317.Client.Unity3D](https://github.com/HelloKitty/RS317.Sharp/tree/master/src/Rs317.Client.Unity):** Is the Unity3D implementation. It has similar feature set as the OpenTK client including resizeable mode and psuedo-antialiasing. It does not yet support rendering 3D.
+**[Rs317.Client.Unity3D](https://github.com/HelloKitty/RS317.Sharp/tree/master/src/Client/Rs317.Client.Unity):** Is the Unity3D implementation. It has similar feature set as the OpenTK client including resizeable mode and psuedo-antialiasing. It does not yet support rendering 3D.
 
 ## FAQ
 
