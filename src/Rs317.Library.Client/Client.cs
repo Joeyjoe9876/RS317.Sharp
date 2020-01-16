@@ -112,7 +112,7 @@ namespace Rs317.Sharp
 		private int cameraPositionY;
 		private int cameraVerticalRotation;
 		private int cameraHorizontalRotation;
-		private int playerRights;
+		private ClientPrivilegeType playerRights;
 		private int[] skillExperience;
 		private IndexedImage redStone1_3;
 		private IndexedImage redStone2_3;
@@ -1261,7 +1261,7 @@ namespace Rs317.Sharp
 				{
 					if(y > _y - 14 && y <= _y && chatName != localPlayer.name)
 					{
-						if(playerRights >= 1)
+						if(playerRights.isPrivilegeElevated())
 						{
 							menuActionName[menuActionRow] = "Report abuse @whi@" + chatName;
 							menuActionId[menuActionRow] = 606;
@@ -1284,7 +1284,7 @@ namespace Rs317.Sharp
 				{
 					if(y > _y - 14 && y <= _y)
 					{
-						if(playerRights >= 1)
+						if(playerRights.isPrivilegeElevated())
 						{
 							menuActionName[menuActionRow] = "Report abuse @whi@" + chatName;
 							menuActionId[menuActionRow] = 606;
@@ -1839,7 +1839,7 @@ namespace Rs317.Sharp
 								width = 450;
 							if(base.mouseX < 4 + width)
 							{
-								if(playerRights >= 1)
+								if(playerRights.isPrivilegeElevated())
 								{
 									menuActionName[menuActionRow] = "Report abuse @whi@" + chatName;
 									menuActionId[menuActionRow] = 2606;
@@ -3826,17 +3826,17 @@ namespace Rs317.Sharp
 						int type = chatTypes[m];
 						int y = (70 - rowCount * 14) + anInt1089;
 						String name = chatNames[m];
-						byte playerRights = 0;
+						ClientPrivilegeType playerRights = ClientPrivilegeType.Regular;
 						if(name != null && name.StartsWith("@cr1@"))
 						{
 							name = name.Substring(5);
-							playerRights = 1;
+							playerRights = ClientPrivilegeType.PlayerModerator;
 						}
 
 						if(name != null && name.StartsWith("@cr2@"))
 						{
 							name = name.Substring(5);
-							playerRights = 2;
+							playerRights = ClientPrivilegeType.Administrator;
 						}
 
 						if(type == 0)
@@ -3852,13 +3852,13 @@ namespace Rs317.Sharp
 							if(y > 0 && y < 110)
 							{
 								int x = 4;
-								if(playerRights == 1)
+								if(playerRights == ClientPrivilegeType.PlayerModerator)
 								{
 									modIcons[0].draw(x, y - 12);
 									x += 14;
 								}
 
-								if(playerRights == 2)
+								if(playerRights == ClientPrivilegeType.Administrator)
 								{
 									modIcons[1].draw(x, y - 12);
 									x += 14;
@@ -3880,13 +3880,13 @@ namespace Rs317.Sharp
 								int x = 4;
 								textDrawingArea.drawText("From", x, y, 0);
 								x += textDrawingArea.getTextDisplayedWidth("From ");
-								if(playerRights == 1)
+								if(playerRights == ClientPrivilegeType.PlayerModerator)
 								{
 									modIcons[0].draw(x, y - 12);
 									x += 14;
 								}
 
-								if(playerRights == 2)
+								if(playerRights == ClientPrivilegeType.Administrator)
 								{
 									modIcons[1].draw(x, y - 12);
 									x += 14;
@@ -4225,7 +4225,7 @@ namespace Rs317.Sharp
 			}
 
 			if(type == 613)
-				if(playerRights >= 1)
+				if(playerRights.isPrivilegeElevated())
 				{
 					if(reportAbuseMute)
 					{
@@ -5498,17 +5498,17 @@ namespace Rs317.Sharp
 				{
 					int chatType = chatTypes[m];
 					String chatName = chatNames[m];
-					byte playerRights = 0;
+					ClientPrivilegeType playerRights = ClientPrivilegeType.Regular;
 					if(chatName != null && chatName.StartsWith("@cr1@"))
 					{
 						chatName = chatName.Substring(5);
-						playerRights = 1;
+						playerRights = ClientPrivilegeType.PlayerModerator;
 					}
 
 					if(chatName != null && chatName.StartsWith("@cr2@"))
 					{
 						chatName = chatName.Substring(5);
-						playerRights = 2;
+						playerRights = ClientPrivilegeType.Administrator;
 					}
 
 					if((chatType == 3 || chatType == 7) && (chatType == 7 || isChatAllowedFrom(privateChatMode, chatName)))
@@ -5518,13 +5518,13 @@ namespace Rs317.Sharp
 						textDrawingArea.drawText("From", x, y, 0);
 						textDrawingArea.drawText("From", x, y - 1, 0x00FFFF);
 						x += textDrawingArea.getTextDisplayedWidth("From ");
-						if(playerRights == 1)
+						if(playerRights == ClientPrivilegeType.PlayerModerator)
 						{
 							modIcons[0].draw(x, y - 12);
 							x += 14;
 						}
 
-						if(playerRights == 2)
+						if(playerRights == ClientPrivilegeType.Administrator)
 						{
 							modIcons[1].draw(x, y - 12);
 							x += 14;
@@ -6548,7 +6548,7 @@ namespace Rs317.Sharp
 			{
 				long nameAsLong = inStream.getLong();
 				int messageId = inStream.getInt();
-				int playerRights = inStream.getUnsignedByte();
+				ClientPrivilegeType playerRights = (ClientPrivilegeType) inStream.getUnsignedByte();
 				bool ignored = false;
 				for(int message = 0; message < 100; message++)
 				{
@@ -6558,7 +6558,7 @@ namespace Rs317.Sharp
 					break;
 				}
 
-				if(playerRights <= 1)
+				if(playerRights != ClientPrivilegeType.Administrator)
 				{
 					for(int p = 0; p < ignoreCount; p++)
 					{
@@ -6575,15 +6575,15 @@ namespace Rs317.Sharp
 						privateMessages[privateMessagePointer] = messageId;
 						privateMessagePointer = (privateMessagePointer + 1) % 100;
 						String message = TextInput.readFromStream(packetSize - 13, inStream);
-						if(playerRights != 3)
+						if(playerRights != ClientPrivilegeType.Administrator)
 						{
 							//I disabled censorship for now.
 							//message = Censor.censor(message);
 						}
 
-						if(playerRights == 2 || playerRights == 3)
+						if(playerRights == ClientPrivilegeType.Administrator || playerRights == ClientPrivilegeType.SuperAdministrator)
 							pushMessage(message, 7, "@cr2@" + TextClass.formatName(TextClass.longToName(nameAsLong)));
-						else if(playerRights == 1)
+						else if(playerRights == ClientPrivilegeType.Regular)
 							pushMessage(message, 7, "@cr1@" + TextClass.formatName(TextClass.longToName(nameAsLong)));
 						else
 							pushMessage(message, 3, TextClass.formatName(TextClass.longToName(nameAsLong)));
@@ -8500,7 +8500,7 @@ namespace Rs317.Sharp
 
 				if (responseCode == 2)
 				{
-					HandleLoginSuccessful(socket.read(), socket.read() == 1);
+					HandleLoginSuccessful((ClientPrivilegeType) socket.read(), socket.read() == 1);
 					return;
 				}
 
@@ -8703,7 +8703,7 @@ namespace Rs317.Sharp
 		}
 
 		//TODO: switch to enum rights.
-		public void HandleLoginSuccessful(int playerRights, bool isAccountFlagged)
+		public void HandleLoginSuccessful(ClientPrivilegeType playerRights, bool isAccountFlagged)
 		{
 			this.playerRights = playerRights;
 			flagged = isAccountFlagged;
@@ -9374,7 +9374,7 @@ namespace Rs317.Sharp
 
 					if((c == 13 || c == 10) && inputString.Length > 0)
 					{
-						if(playerRights == 2)
+						if(playerRights == ClientPrivilegeType.Administrator)
 						{
 							if(inputString.Equals("::clientdrop"))
 								dropClient();
@@ -9521,9 +9521,9 @@ namespace Rs317.Sharp
 							localPlayer.chatColour = colour;
 							localPlayer.chatEffect = effect;
 							localPlayer.textCycle = 150;
-							if(playerRights == 2)
+							if(playerRights == ClientPrivilegeType.Administrator)
 								pushMessage(localPlayer.overheadTextMessage, 2, "@cr2@" + localPlayer.name);
-							else if(playerRights == 1)
+							else if(playerRights == ClientPrivilegeType.PlayerModerator)
 								pushMessage(localPlayer.overheadTextMessage, 2, "@cr1@" + localPlayer.name);
 							else
 								pushMessage(localPlayer.overheadTextMessage, 2, localPlayer.name);

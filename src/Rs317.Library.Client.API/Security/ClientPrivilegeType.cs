@@ -20,5 +20,7 @@ namespace Rs317.Sharp
 		/// The JMOD privilege.
 		/// </summary>
 		Administrator = 2,
+
+		SuperAdministrator = 3,
 	}
 }
