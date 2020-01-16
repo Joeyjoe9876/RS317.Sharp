@@ -29,6 +29,12 @@ namespace Rs317.Sharp
 		//Must be set because it exists in the scene. Bad design choice by me, sorry.
 		public IGameStateHookable GameStateHookable { get; set; }
 
+		[SerializeField]
+		private int DrawableSize = 0;
+
+		[SerializeField]
+		private int InGameDrawableSize = 0;
+
 		public void DrawImageToScreen(string imageName, int x, int y)
 		{
 			DrawQueue.Enqueue(() =>
@@ -68,6 +74,9 @@ namespace Rs317.Sharp
 
 		private void Update()
 		{
+			DrawableSize = DrawablesList.Count;
+			InGameDrawableSize = InGameDrawablesList.Count;
+
 			//We need to create a texture if one is requested
 			//has to be done on the main thread in Unity3D
 			if (!TextureCreationRequestQueue.IsEmpty)
@@ -81,14 +90,30 @@ namespace Rs317.Sharp
 
 				TextureDictionary[request.Name] = texture;
 				request.CompleteRequest(texture);
+
+				//If we already have a drawable with this name
+				//we need to remove it from the current draw list
+				//This can happen going from the game back to the titlescreen
+				//and etc.
+				if (Drawables.ContainsKey(request.Name))
+				{
+					if(!IsIngameImage(request.Name))
+					{
+						DrawablesList.Remove(Drawables[request.Name]);
+					}
+					else
+						InGameDrawablesList.Remove(Drawables[request.Name]);
+				}
+
 				Drawables[request.Name] = new TextureDrawable(texture);
 
-				if (!IsIngameImage(request.Name))
+				if(!IsIngameImage(request.Name))
 				{
 					DrawablesList.Add(Drawables[request.Name]);
 				}
 				else
 					InGameDrawablesList.Add(Drawables[request.Name]);
+				
 			}
 		}
 
