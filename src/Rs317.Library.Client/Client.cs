@@ -8796,7 +8796,7 @@ namespace Rs317.Sharp
 			setupGameplayScreen();
 		}
 
-		private void logout()
+		public void logout()
 		{
 			try
 			{
