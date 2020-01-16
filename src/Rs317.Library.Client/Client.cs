@@ -98,7 +98,7 @@ namespace Rs317.Sharp
 		private int secondMostRecentOpcode;
 		private int thirdMostRecentOpcode;
 		private String clickToContinueString;
-		private int privateChatMode;
+		private ChatModeType privateChatMode;
 		private IBufferWriteable loginStream;
 		private bool effectsEnabled;
 		private int[] currentFlameColours;
@@ -463,7 +463,7 @@ namespace Rs317.Sharp
 		private int atInventoryIndex;
 		private int atInventoryInterfaceType;
 		private byte[][] objectData;
-		private int tradeMode;
+		private ChatModeType tradeMode;
 		private int chatEffectsDisabled;
 		private int[] trackDelay;
 		private int inTutorial;
@@ -498,7 +498,7 @@ namespace Rs317.Sharp
 		private int lastItemSelectedInterface;
 		private int useItemId;
 		private String selectedItemName;
-		private int publicChatMode;
+		private ChatModeType publicChatMode;
 		protected static int currentWalkingQueueSize { get; set; }
 		private int currentTrackLoop;
 
@@ -1257,7 +1257,7 @@ namespace Rs317.Sharp
 				if(chatType == 0)
 					rowCount++;
 				if((chatType == 1 || chatType == 2)
-					&& (chatType == 1 || publicChatMode == 0 || publicChatMode == 1 && isFriendOrSelf(chatName)))
+					&& (chatType == 1 || isChatAllowedFrom(publicChatMode, chatName)))
 				{
 					if(y > _y - 14 && y <= _y && chatName != localPlayer.name)
 					{
@@ -1280,7 +1280,7 @@ namespace Rs317.Sharp
 				}
 
 				if((chatType == 3 || chatType == 7) && splitPrivateChat == 0
-													 && (chatType == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(chatName)))
+													 && (chatType == 7 || isChatAllowedFrom(privateChatMode, chatName)))
 				{
 					if(y > _y - 14 && y <= _y)
 					{
@@ -1302,7 +1302,7 @@ namespace Rs317.Sharp
 					rowCount++;
 				}
 
-				if(chatType == 4 && (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(chatName)))
+				if(chatType == 4 && (isChatAllowedFrom(tradeMode, chatName)))
 				{
 					if(y > _y - 14 && y <= _y)
 					{
@@ -1314,9 +1314,9 @@ namespace Rs317.Sharp
 					rowCount++;
 				}
 
-				if((chatType == 5 || chatType == 6) && splitPrivateChat == 0 && privateChatMode < 2)
+				if((chatType == 5 || chatType == 6) && splitPrivateChat == 0 && privateChatMode < ChatModeType.Off)
 					rowCount++;
-				if(chatType == 8 && (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(chatName)))
+				if(chatType == 8 && (isChatAllowedFrom(tradeMode, chatName)))
 				{
 					if(y > _y - 14 && y <= _y)
 					{
@@ -1329,6 +1329,11 @@ namespace Rs317.Sharp
 				}
 			}
 
+		}
+
+		private bool isChatAllowedFrom(ChatModeType mode, string name)
+		{
+			return mode == ChatModeType.On || mode == ChatModeType.FriendsOnly && isFriendOrSelf(name);
 		}
 
 		private bool buildFriendsListMenu(RSInterface rsInterface)
@@ -1824,8 +1829,7 @@ namespace Rs317.Sharp
 						chatName = chatName.Substring(5);
 					}
 
-					if((chatType == 3 || chatType == 7) && (chatType == 7 || privateChatMode == 0
-																		   || privateChatMode == 1 && isFriendOrSelf(chatName)))
+					if((chatType == 3 || chatType == 7) && (chatType == 7 || isChatAllowedFrom(privateChatMode, chatName)))
 					{
 						int height = 329 - line * 13;
 						if(base.mouseX > 4 && base.mouseY - 4 > height - 10 && base.mouseY - 4 <= height + 3)
@@ -1855,7 +1859,7 @@ namespace Rs317.Sharp
 							return;
 					}
 
-					if((chatType == 5 || chatType == 6) && privateChatMode < 2 && ++line >= 5)
+					if((chatType == 5 || chatType == 6) && privateChatMode.isEnabled() && ++line >= 5)
 						return;
 				}
 
@@ -3843,7 +3847,7 @@ namespace Rs317.Sharp
 						}
 
 						if((type == 1 || type == 2)
-							&& (type == 1 || publicChatMode == 0 || publicChatMode == 1 && isFriendOrSelf(name)))
+							&& (type == 1 || isChatAllowedFrom(publicChatMode, name)))
 						{
 							if(y > 0 && y < 110)
 							{
@@ -3869,7 +3873,7 @@ namespace Rs317.Sharp
 						}
 
 						if((type == 3 || type == 7) && splitPrivateChat == 0
-													 && (type == 7 || privateChatMode == 0 || privateChatMode == 1 && isFriendOrSelf(name)))
+													 && (type == 7 || isChatAllowedFrom(privateChatMode, name)))
 						{
 							if(y > 0 && y < 110)
 							{
@@ -3896,21 +3900,21 @@ namespace Rs317.Sharp
 							rowCount++;
 						}
 
-						if(type == 4 && (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(name)))
+						if(type == 4 && (isChatAllowedFrom(tradeMode, name)))
 						{
 							if(y > 0 && y < 110)
 								textDrawingArea.drawText(name + " " + chatMessages[m], 4, y, 0x800080);
 							rowCount++;
 						}
 
-						if(type == 5 && splitPrivateChat == 0 && privateChatMode < 2)
+						if(type == 5 && splitPrivateChat == 0 && privateChatMode.isEnabled())
 						{
 							if(y > 0 && y < 110)
 								textDrawingArea.drawText(chatMessages[m], 4, y, 0x800000);
 							rowCount++;
 						}
 
-						if(type == 6 && splitPrivateChat == 0 && privateChatMode < 2)
+						if(type == 6 && splitPrivateChat == 0 && privateChatMode.isEnabled())
 						{
 							if(y > 0 && y < 110)
 							{
@@ -3922,7 +3926,7 @@ namespace Rs317.Sharp
 							rowCount++;
 						}
 
-						if(type == 8 && (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(name)))
+						if(type == 8 && (isChatAllowedFrom(tradeMode, name)))
 						{
 							if(y > 0 && y < 110)
 								textDrawingArea.drawText(name + " " + chatMessages[m], 4, y, 0x7e3200);
@@ -4528,27 +4532,27 @@ namespace Rs317.Sharp
 				chatSettingImageProducer.initDrawingArea();
 				backBase1Image.draw(0, 0);
 				fontPlain.drawCentredTextWithPotentialShadow("Public chat", 55, 28, 0xFFFFFF, true);
-				if(publicChatMode == 0)
+				if(publicChatMode == ChatModeType.On)
 					fontPlain.drawCentredTextWithPotentialShadow("On", 55, 41, 0x00FF00, true);
-				if(publicChatMode == 1)
+				if(publicChatMode == ChatModeType.FriendsOnly)
 					fontPlain.drawCentredTextWithPotentialShadow("Friends", 55, 41, 0xFFFF00, true);
-				if(publicChatMode == 2)
+				if(publicChatMode == ChatModeType.Off)
 					fontPlain.drawCentredTextWithPotentialShadow("Off", 55, 41, 0xFF0000, true);
-				if(publicChatMode == 3)
+				if(publicChatMode == ChatModeType.Hide)
 					fontPlain.drawCentredTextWithPotentialShadow("Hide", 55, 41, 0x00FFFF, true);
 				fontPlain.drawCentredTextWithPotentialShadow("Private chat", 184, 28, 0xFFFFFF, true);
-				if(privateChatMode == 0)
+				if(privateChatMode == ChatModeType.On)
 					fontPlain.drawCentredTextWithPotentialShadow("On", 184, 41, 0x00FF00, true);
-				if(privateChatMode == 1)
+				if(privateChatMode == ChatModeType.FriendsOnly)
 					fontPlain.drawCentredTextWithPotentialShadow("Friends", 184, 41, 0xFFFF00, true);
-				if(privateChatMode == 2)
+				if(privateChatMode == ChatModeType.Off)
 					fontPlain.drawCentredTextWithPotentialShadow("Off", 184, 41, 0xFF0000, true);
 				fontPlain.drawCentredTextWithPotentialShadow("Trade/compete", 324, 28, 0xFFFFFF, true);
-				if(tradeMode == 0)
+				if(tradeMode == ChatModeType.On)
 					fontPlain.drawCentredTextWithPotentialShadow("On", 324, 41, 0x00FF00, true);
-				if(tradeMode == 1)
+				if(tradeMode == ChatModeType.FriendsOnly)
 					fontPlain.drawCentredTextWithPotentialShadow("Friends", 324, 41, 0xFFFF00, true);
-				if(tradeMode == 2)
+				if(tradeMode == ChatModeType.Off)
 					fontPlain.drawCentredTextWithPotentialShadow("Off", 324, 41, 0xFF0000, true);
 				fontPlain.drawCentredTextWithPotentialShadow("Report abuse", 458, 33, 0xFFFFFF, true);
 				chatSettingImageProducer.drawGraphics(453, base.gameGraphics, 0);
@@ -5507,8 +5511,7 @@ namespace Rs317.Sharp
 						playerRights = 2;
 					}
 
-					if((chatType == 3 || chatType == 7) && (chatType == 7 || privateChatMode == 0
-																		   || privateChatMode == 1 && isFriendOrSelf(chatName)))
+					if((chatType == 3 || chatType == 7) && (chatType == 7 || isChatAllowedFrom(privateChatMode, chatName)))
 					{
 						int y = 329 - updating * 13;
 						int x = 4;
@@ -5533,7 +5536,7 @@ namespace Rs317.Sharp
 							return;
 					}
 
-					if(chatType == 5 && privateChatMode < 2)
+					if(chatType == 5 && privateChatMode.isEnabled())
 					{
 						int y = 329 - updating * 13;
 						textDrawingArea.drawText(chatMessages[m], 4, y, 0);
@@ -5542,7 +5545,7 @@ namespace Rs317.Sharp
 							return;
 					}
 
-					if(chatType == 6 && privateChatMode < 2)
+					if(chatType == 6 && privateChatMode.isEnabled())
 					{
 						int y = 329 - updating * 13;
 						textDrawingArea.drawText("To " + chatName + ": " + chatMessages[m], 4, y, 0);
@@ -6404,9 +6407,9 @@ namespace Rs317.Sharp
 		{
 			if(packetOpcode == 206)
 			{
-				publicChatMode = inStream.getUnsignedByte();
-				privateChatMode = inStream.getUnsignedByte();
-				tradeMode = inStream.getUnsignedByte();
+				publicChatMode = (ChatModeType) inStream.getUnsignedByte();
+				privateChatMode = (ChatModeType) inStream.getUnsignedByte();
+				tradeMode = (ChatModeType) inStream.getUnsignedByte();
 				updateChatSettings = true;
 				redrawChatbox = true;
 				packetOpcode = -1;
@@ -8019,7 +8022,7 @@ namespace Rs317.Sharp
 			return true;
 		}
 
-		private bool isFriendOrSelf(String name)
+		public bool isFriendOrSelf(String name)
 		{
 			if(name == null)
 				return false;
@@ -9269,14 +9272,14 @@ namespace Rs317.Sharp
 							//TODO: Censor is disabled.
 							//promptInput = Censor.censor(promptInput);
 							pushMessage(promptInput, 6, TextClass.formatName(TextClass.longToName(privateMessageTarget)));
-							if(privateChatMode == 2)
+							if(privateChatMode == ChatModeType.Off)
 							{
-								privateChatMode = 1;
+								privateChatMode = ChatModeType.On;
 								updateChatSettings = true;
 								stream.putOpcode(95);
-								stream.put(publicChatMode);
-								stream.put(privateChatMode);
-								stream.put(tradeMode);
+								stream.put((int) publicChatMode);
+								stream.put((int) privateChatMode);
+								stream.put((int) tradeMode);
 							}
 						}
 
@@ -9524,14 +9527,14 @@ namespace Rs317.Sharp
 								pushMessage(localPlayer.overheadTextMessage, 2, "@cr1@" + localPlayer.name);
 							else
 								pushMessage(localPlayer.overheadTextMessage, 2, localPlayer.name);
-							if(publicChatMode == 2)
+							if(publicChatMode == ChatModeType.Off)
 							{
-								publicChatMode = 3;
+								publicChatMode = ChatModeType.Hide;
 								updateChatSettings = true;
 								stream.putOpcode(95);
-								stream.put(publicChatMode);
-								stream.put(privateChatMode);
-								stream.put(tradeMode);
+								stream.put((int) publicChatMode);
+								stream.put((int) privateChatMode);
+								stream.put((int) tradeMode);
 							}
 						}
 
@@ -10229,35 +10232,35 @@ namespace Rs317.Sharp
 			{
 				if(base.clickX >= 6 && base.clickX <= 106 && base.clickY >= 467 && base.clickY <= 499)
 				{
-					publicChatMode = (publicChatMode + 1) % 4;
+					publicChatMode = (ChatModeType) (((int)publicChatMode + 1) % 4);
 					updateChatSettings = true;
 					redrawChatbox = true;
 					stream.putOpcode(95);
-					stream.put(publicChatMode);
-					stream.put(privateChatMode);
-					stream.put(tradeMode);
+					stream.put((int) publicChatMode);
+					stream.put((int) privateChatMode);
+					stream.put((int) tradeMode);
 				}
 
 				if(base.clickX >= 135 && base.clickX <= 235 && base.clickY >= 467 && base.clickY <= 499)
 				{
-					privateChatMode = (privateChatMode + 1) % 3;
+					privateChatMode = (ChatModeType) (((int)privateChatMode + 1) % 3);
 					updateChatSettings = true;
 					redrawChatbox = true;
 					stream.putOpcode(95);
-					stream.put(publicChatMode);
-					stream.put(privateChatMode);
-					stream.put(tradeMode);
+					stream.put((int) publicChatMode);
+					stream.put((int) privateChatMode);
+					stream.put((int) tradeMode);
 				}
 
 				if(base.clickX >= 273 && base.clickX <= 373 && base.clickY >= 467 && base.clickY <= 499)
 				{
-					tradeMode = (tradeMode + 1) % 3;
+					tradeMode = (ChatModeType) (((int)tradeMode + 1) % 3);
 					updateChatSettings = true;
 					redrawChatbox = true;
 					stream.putOpcode(95);
-					stream.put(publicChatMode);
-					stream.put(privateChatMode);
-					stream.put(tradeMode);
+					stream.put((int)publicChatMode);
+					stream.put((int)privateChatMode);
+					stream.put((int)tradeMode);
 				}
 
 				if(base.clickX >= 412 && base.clickX <= 512 && base.clickY >= 467 && base.clickY <= 499)
@@ -12805,8 +12808,9 @@ namespace Rs317.Sharp
 						}
 					}
 
-					if(target.overheadTextMessage != null && (entity >= localPlayerCount || publicChatMode == 0
-																						  || publicChatMode == 3 || publicChatMode == 1 && isFriendOrSelf(((Player)target).name)))
+					//We don't include Hide in isChatAllowedFrom because most calls didn't reference it.
+					if(target.overheadTextMessage != null && (entity >= localPlayerCount || publicChatMode == ChatModeType.Hide
+																						 || isChatAllowedFrom(publicChatMode, ((Player)target).name)))
 					{
 						calculateEntityScreenPosition(((target)), target.height);
 						if(spriteDrawX > -1 && overheadMessage < overheadMessageCount)

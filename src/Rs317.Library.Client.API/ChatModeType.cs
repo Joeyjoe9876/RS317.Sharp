@@ -19,5 +19,7 @@ namespace Rs317.Sharp
 		FriendsOnly = 1,
 
 		Off = 2,
+
+		Hide = 3
 	}
 }
