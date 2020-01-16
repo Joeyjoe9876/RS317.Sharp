@@ -28,11 +28,6 @@ namespace Rs317.Sharp
 			Task clientRunningAwaitable = signlink.startpriv(IPAddress.Parse("127.0.0.1"));
 			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
 
-			//Wait for signlink
-			while(!signlink.IsSignLinkThreadActive)
-				await Task.Delay(50)
-					.ConfigureAwait(false);
-
 			OpenTkImageProducerFactory imageProducerFactory = new OpenTkImageProducerFactory();
 			OpenTKClient client = CreateOpenTkClient(configuration, imageProducerFactory);
 
