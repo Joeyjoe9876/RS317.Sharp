@@ -8,48 +8,120 @@ using UnityEngine;
 
 namespace Rs317
 {
-	public sealed class PathMovementGenerator : IMovementGenerator<IWorldObject>
+	public sealed class PathMovementGenerator : Rs317.Sharp.BaseMovementGenerator<PathBasedMovementData>
 	{
-		private PathBasedMovementData MovementData { get; }
-
 		public GladMMOUnityClient Client { get; }
 
 		private int CurrentPathIndex = 0;
 
-		public PathMovementGenerator([NotNull] PathBasedMovementData pathData, GladMMOUnityClient client)
+		public PathMovementGenerator([NotNull] PathBasedMovementData pathData, [NotNull] GladMMOUnityClient client)
+			: base(pathData)
 		{
-			MovementData = pathData ?? throw new ArgumentNullException(nameof(pathData));
-			Client = client;
+			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
-		public void Update(IWorldObject entity, long currentTime)
+		protected override Vector3 Start(IWorldObject entity, long currentTime)
 		{
-			if (CurrentPathIndex >= MovementData.MovementPath.Count)
+			long diff = currentTime - MovementData.TimeStamp;
+
+			if(diff <= 0)
+				return ComputeCurrentPosition(entity);
+
+			//Guard against short paths.
+			if (MovementData.MovementPath.Count < 1)
+			{
+				StopGenerator();
+				return ComputeCurrentPosition(entity);
+			}
+
+			//Now we need to find out if we need to tick the path
+			//forward afew ticks if the diff is bigger than a tick
+
+			//the reason we double this is because we want to save some 600 ms tick diff for the actual update.
+			//After Start is called the InternalUpdate will be called by the root caller
+			while(diff >= RsClientConstants.RsClientTicksInTicks) 
+			{
+				//only teleport if we're afew ticks behind.
+				TickPathForward(entity, currentTime, diff >= RsClientConstants.RsClientTicksInTicks * 2);
+
+				//The TickForward handles stopping when it needs to.
+				if (isFinished)
+					return ComputeCurrentPosition(entity);
+
+				//Subtract a tick, then we'll potentially repeat this.
+				diff -= RsClientConstants.RsClientTicksInTicks;
+			}
+
+			return ComputeCurrentPosition(entity);
+		}
+
+		public override void Update(IWorldObject entity, long currentTime)
+		{
+			//it's possible after starting that it has finally become finished.
+			//I encountered this with clientside pathing from Runescape emulation lol.
+			if(isFinished)
 				return;
 
-			int xOffset = (int)MovementData.MovementPath[CurrentPathIndex].x - Client.baseX;
-			int yOffset = (int)MovementData.MovementPath[CurrentPathIndex].z - Client.baseY;
-
-			int localYOffset = Math.Sign((int)yOffset - (int)entity.CurrentY);
-			int localXOffset = Math.Sign((int)xOffset - (int)entity.CurrentX);
-
-			if(localYOffset == 0 && 0 == localXOffset)
+			if (!isStarted)
 			{
-				CurrentPathIndex++;
-				Update(entity, currentTime);
+				CurrentPosition = Start(entity, currentTime);
+				isStarted = true;
 			}
 			else
 			{
-				entity.setPos(entity.CurrentX + localXOffset, entity.CurrentY + localYOffset);
+				//It was just easier for this RS path generator to not update after Start.
+				CurrentPosition = InternalUpdate(entity, currentTime); //don't update if we called Start
 			}
 		}
 
-		public Vector3 CurrentPosition { get; }
+		private bool isPathEndReached()
+		{
+			return (CurrentPathIndex) >= (MovementData.MovementPath.Count - 1);
+		}
 
-		public bool isStarted { get; }
+		private static Vector3 ComputeCurrentPosition(IWorldObject entity)
+		{
+			return new Vector3(entity.CurrentX, 0.0f, entity.CurrentY);
+		}
 
-		public bool isFinished { get; }
+		protected override Vector3 InternalUpdate(IWorldObject entity, long currentTime)
+		{
+			if(isFinished)
+				return new Vector3(entity.CurrentX, 0.0f, entity.CurrentY);
 
-		public bool isRunning { get; } = true;
+			TickPathForward(entity, currentTime);
+
+			return new Vector3(entity.CurrentX, 0.0f, entity.CurrentY);
+		}
+
+		private void TickPathForward(IWorldObject entity, long currentTime, bool instant = false)
+		{
+			int xOffset = (int) MovementData.MovementPath[CurrentPathIndex].x - Client.baseX;
+			int yOffset = (int) MovementData.MovementPath[CurrentPathIndex].z - Client.baseY;
+
+			int localYOffset = Math.Sign((int) yOffset - (int) entity.CurrentY);
+			int localXOffset = Math.Sign((int) xOffset - (int) entity.CurrentX);
+
+			if (localYOffset == 0 && 0 == localXOffset)
+			{
+				//If we have no Y or X diff this tick and we're on the final path
+				//point then it's over.
+				if (isPathEndReached())
+				{
+					StopGenerator();
+					return;
+				}
+
+				CurrentPathIndex++;
+				InternalUpdate(entity, currentTime);
+			}
+			else
+			{
+				if(instant)
+					entity.DirectSetPosition(entity.CurrentX + localXOffset, entity.CurrentY + localYOffset);
+				else
+					entity.setPos(entity.CurrentX + localXOffset, entity.CurrentY + localYOffset);
+			}
+		}
 	}
 }
