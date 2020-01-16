@@ -13,8 +13,12 @@ namespace Rs317.Sharp
 		//Lowercase name perserved due to java.
 		void setPos(int x, int y);
 
+		void Teleport(int x, int y);
+
 		void SetName(string name);
 
 		void SetLevel(int level);
+
+		void DirectSetPosition(int x, int y);
 	}
 }

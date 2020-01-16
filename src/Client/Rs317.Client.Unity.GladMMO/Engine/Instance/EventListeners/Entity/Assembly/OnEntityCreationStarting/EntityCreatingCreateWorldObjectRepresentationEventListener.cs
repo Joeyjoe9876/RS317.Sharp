@@ -20,12 +20,22 @@ namespace GladMMO
 			CurrentY = y;
 		}
 
+		public void Teleport(int x, int y)
+		{
+
+		}
+
 		public void SetName(string name)
 		{
 
 		}
 
 		public void SetLevel(int level)
+		{
+
+		}
+
+		public void DirectSetPosition(int x, int y)
 		{
 
 		}

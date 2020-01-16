@@ -186,13 +186,19 @@ namespace Rs317.Sharp
 				}
 			}
 
+			DirectSetPosition(x, y);
+		}
+
+		public void DirectSetPosition(int x, int y)
+		{
 			waypointCount = 0;
 			stepsRemaining = 0;
 			stepsDelayed = 0;
 			waypointX[0] = x;
 			waypointY[0] = y;
-			this.x = waypointX[0] * 128 + boundaryDimension * 64;
-			this.y = waypointY[0] * 128 + boundaryDimension * 64;
+
+			this.x = x * 128 + boundaryDimension * 64;
+			this.y = y * 128 + boundaryDimension * 64;
 		}
 
 		public void updateHitData(int type, int damage, int currentTime)
@@ -214,6 +220,11 @@ namespace Rs317.Sharp
 		public void setPos(int x, int y)
 		{
 			setPos(x, y, false);
+		}
+
+		public void Teleport(int x, int y)
+		{
+			setPos(x, y, true);
 		}
 
 		public abstract void SetName(string name);
