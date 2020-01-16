@@ -18,24 +18,32 @@ namespace GladMMO
 
 		private IReadonlyKnownEntitySet KnonwnEntities { get; }
 
+		private RsUnityClient Client { get; }
+
 		/// <inheritdoc />
 		public MovementSimulationTickable(
 			IReadonlyEntityGuidMappable<IMovementGenerator<IWorldObject>> movementGenerators,
 			IReadonlyEntityGuidMappable<IWorldObject> worldObjectMap,
 			INetworkTimeService timeService,
-			[NotNull] IReadonlyKnownEntitySet knonwnEntities)
+			[NotNull] IReadonlyKnownEntitySet knonwnEntities,
+			[JetBrains.Annotations.NotNull] RsUnityClient client)
 		{
 			MovementGenerators = movementGenerators ?? throw new ArgumentNullException(nameof(movementGenerators));
 			WorldObjectMap = worldObjectMap ?? throw new ArgumentNullException(nameof(worldObjectMap));
 			TimeService = timeService ?? throw new ArgumentNullException(nameof(timeService));
 			KnonwnEntities = knonwnEntities ?? throw new ArgumentNullException(nameof(knonwnEntities));
+			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}
 
 		/// <inheritdoc />
 		public void OnGameFixedTick()
 		{
-			foreach(var entry in MovementGenerators.EnumerateWithGuid(KnonwnEntities))
-				entry.ComponentValue.Update(WorldObjectMap.RetrieveEntity(entry.EntityGuid), TimeService.CurrentRemoteTime);
+			foreach (var entry in MovementGenerators.EnumerateWithGuid(KnonwnEntities))
+			{
+				IWorldObject worldObject = WorldObjectMap.RetrieveEntity(entry.EntityGuid);
+				worldObject.SetLastUpdateTick(Client.CurrentTick);
+				entry.ComponentValue.Update(worldObject, TimeService.CurrentRemoteTime);
+			}
 		}
 	}
 }
