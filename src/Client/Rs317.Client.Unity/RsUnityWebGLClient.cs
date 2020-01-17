@@ -486,7 +486,6 @@ namespace Rs317.Sharp
 			WorldController.setupViewport(500, 800, 512, 334, ai);
 
 			GameObject.clientInstance = this;
-			GameObjectDefinition.clientInstance = this;
 			EntityDefinition.clientInstance = this;
 
 			//TODO: Disabled censor
