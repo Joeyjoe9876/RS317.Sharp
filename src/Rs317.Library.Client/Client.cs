@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
-	public abstract class Client<TGraphicsType> : RSApplet<TGraphicsType>, IBaseClient, IMouseInputQueryable, IGameStateHookable, IUITitleScreenStateHookable
+	public abstract class Client<TGraphicsType> : RSApplet<TGraphicsType>, IBaseClient, IMouseInputQueryable, IGameStateHookable, IUITitleScreenStateHookable, IInterfaceSettingsProvider
 	{
 		public IBufferFactory BufferFactory { get; }
 
@@ -1052,7 +1052,7 @@ namespace Rs317.Sharp
 				{
 					GameObjectDefinition goObject = GameObjectDefinition.getDefinition(objectId);
 					if(goObject.childIds != null)
-						goObject = goObject.getChildDefinition();
+						goObject = goObject.getChildDefinition(this);
 					if(goObject == null)
 						continue;
 					if(itemSelected)
@@ -1103,7 +1103,7 @@ namespace Rs317.Sharp
 						}
 
 						
-						menuActionName[menuActionRow] = $"Examine @cya@{goObject.name} @gre@(@whi@{objectId}@gre@) Hash: {hash} (@whi@{(x + baseX)},{(y + baseY)}@gre@)";
+						menuActionName[menuActionRow] = $"Examine @cya@{goObject.name} @gre@(@whi@{objectId}@gre@) Hash: {hash} Type: {type} (@whi@{(x + baseX)},{(y + baseY)}@gre@)";
 						menuActionId[menuActionRow] = 1226;
 						menuActionData1[menuActionRow] = goObject.id << 14;
 						menuActionData2[menuActionRow] = x;
@@ -12582,7 +12582,6 @@ namespace Rs317.Sharp
 				WorldController.setupViewport(500, 800, 512, 334, ai);
 
 				GameObject.clientInstance = this;
-				GameObjectDefinition.clientInstance = this;
 				EntityDefinition.clientInstance = this;
 
 				//TODO: Disabled censor

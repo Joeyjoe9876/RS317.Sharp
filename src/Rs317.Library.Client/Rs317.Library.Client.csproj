@@ -15,7 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rs317.Library.Cache\Rs317.Library.Cache.csproj" />
     <ProjectReference Include="..\Rs317.Library.Client.API\Rs317.Library.Client.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bzip2\" />
+    <Folder Include="collection\" />
   </ItemGroup>
 
 </Project>
