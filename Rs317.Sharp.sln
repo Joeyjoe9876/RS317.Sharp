@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Library.Cache", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Library.Common", "src\Rs317.Library.Common\Rs317.Library.Common.csproj", "{BADC991D-0B89-4C80-9D26-3EB1E21E49E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Tools.Cache.Parser", "src\Tools\Rs317.Tools.Cache.Parser\Rs317.Tools.Cache.Parser.csproj", "{2EE622FF-AD89-4DE2-ABDE-DA77D66B4590}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{BADC991D-0B89-4C80-9D26-3EB1E21E49E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BADC991D-0B89-4C80-9D26-3EB1E21E49E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BADC991D-0B89-4C80-9D26-3EB1E21E49E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EE622FF-AD89-4DE2-ABDE-DA77D66B4590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EE622FF-AD89-4DE2-ABDE-DA77D66B4590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EE622FF-AD89-4DE2-ABDE-DA77D66B4590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE622FF-AD89-4DE2-ABDE-DA77D66B4590}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{67932A36-FB06-45D8-A9AA-7A98F374BE7F} = {552191CE-B270-47E5-BA98-C16A403BF7C6}
 		{8F1CD7F2-D4FB-433E-9860-4BDA12EEA44B} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{BADC991D-0B89-4C80-9D26-3EB1E21E49E6} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
+		{2EE622FF-AD89-4DE2-ABDE-DA77D66B4590} = {552191CE-B270-47E5-BA98-C16A403BF7C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D68657D2-EEFE-4C81-83F0-DDB62718EAB9}

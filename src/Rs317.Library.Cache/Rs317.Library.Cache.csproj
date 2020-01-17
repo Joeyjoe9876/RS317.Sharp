@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Reinterpret.Net" Version="2.0.7" />
+    <PackageReference Include="SharpZipLib" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rs317.Library.Client.API\Rs317.Library.Client.API.csproj" />
+    <ProjectReference Include="..\Rs317.Library.Common\Rs317.Library.Common.csproj" />
+  </ItemGroup>
+
+</Project>
