@@ -22,8 +22,6 @@ namespace Rs317.Sharp
 
 		private long lastRequestTime;
 
-		protected int[] mapIndices3;
-
 		//private CRC32 crc32;
 
 		protected byte[] payload;
@@ -44,15 +42,11 @@ namespace Rs317.Sharp
 
 		public int failedRequests;
 
-		protected int[] mapIndices2;
-
 		private int filesLoaded;
 
 		protected bool running;
 
 		protected NetworkStream outputStream;
-
-		protected int[] mapIndices4;
 
 		protected bool waiting;
 
@@ -70,7 +64,7 @@ namespace Rs317.Sharp
 		private DoubleEndedQueue unrequested;
 		private OnDemandData current;
 		private DoubleEndedQueue mandatoryRequests;
-		protected int[] mapIndices1;
+		protected IReadOnlyList<MapIndex> MapIndices { get; private set; }
 		protected byte[] modelIndices;
 		protected int loopCycle;
 
@@ -181,12 +175,12 @@ namespace Rs317.Sharp
 		public int getMapId(int type, int mapX, int mapY)
 		{
 			int coordinates = (mapX << 8) + mapY;
-			for(int pointer = 0; pointer < mapIndices1.Length; pointer++)
-				if(mapIndices1[pointer] == coordinates)
+			for(int pointer = 0; pointer < MapIndices.Count; pointer++)
+				if(MapIndices[pointer].PackedCoordinates == coordinates)
 					if(type == 0)
-						return mapIndices2[pointer];
+						return MapIndices[pointer].TerrainId;
 					else
-						return mapIndices3[pointer];
+						return MapIndices[pointer].ObjectFileId;
 			return -1;
 		}
 
@@ -275,8 +269,8 @@ namespace Rs317.Sharp
 
 		public bool method564(int i)
 		{
-			for(int k = 0; k < mapIndices1.Length; k++)
-				if(mapIndices3[k] == i)
+			for(int k = 0; k < MapIndices.Count; k++)
+				if(MapIndices[k].ObjectFileId == i)
 					return true;
 			return false;
 		}
@@ -371,12 +365,12 @@ namespace Rs317.Sharp
 
 		public void preloadRegions(bool flag)
 		{
-			int j = mapIndices1.Length;
+			int j = MapIndices.Count;
 			for(int k = 0; k < j; k++)
-				if(flag || mapIndices4[k] != 0)
+				if(flag || MapIndices[k].isMembers)
 				{
-					setPriority((byte)2, 3, mapIndices3[k]);
-					setPriority((byte)2, 3, mapIndices2[k]);
+					setPriority((byte)2, 3, MapIndices[k].ObjectFileId);
+					setPriority((byte)2, 3, MapIndices[k].TerrainId);
 				}
 		}
 
@@ -699,23 +693,11 @@ namespace Rs317.Sharp
 				else
 					modelIndices[k1] = 0;
 
-			abyte2 = streamLoader.decompressFile("map_index");
-			Default317Buffer stream2 = new Default317Buffer(abyte2);
-			j1 = abyte2.Length / 7;
-			mapIndices1 = new int[j1];
-			mapIndices2 = new int[j1];
-			mapIndices3 = new int[j1];
-			mapIndices4 = new int[j1];
-			for(int i2 = 0; i2 < j1; i2++)
-			{
-				mapIndices1[i2] = stream2.getUnsignedLEShort();
-				mapIndices2[i2] = stream2.getUnsignedLEShort();
-				mapIndices3[i2] = stream2.getUnsignedLEShort();
-				mapIndices4[i2] = stream2.getUnsignedByte();
-			}
+			MapIndexArchiveDeserializer mapIndexDeserializer = new MapIndexArchiveDeserializer(streamLoader);
+			MapIndices = mapIndexDeserializer.Deserialize();
 
 			abyte2 = streamLoader.decompressFile("anim_index");
-			stream2 = new Default317Buffer(abyte2);
+			Default317Buffer stream2 = new Default317Buffer(abyte2);
 			j1 = abyte2.Length / 2;
 			frames = new int[j1];
 			for(int j2 = 0; j2 < j1; j2++)
