@@ -20,14 +20,18 @@ namespace Rs317.Sharp
 		/// </summary>
 		public int Y { get; set; }
 
-		public TextureDrawable([NotNull] Texture2D texture)
+		//Null is ok, Unity API uses a default material in that case.
+		private Material OptionalMaterialToDrawWith { get; }
+
+		public TextureDrawable([NotNull] Texture2D texture, Material optionalMaterialToDrawWith = null)
 		{
 			Texture = texture ?? throw new ArgumentNullException(nameof(texture));
+			OptionalMaterialToDrawWith = optionalMaterialToDrawWith;
 		}
 
 		public void Draw()
 		{
-			Graphics.DrawTexture(CalculateScreenRect(Texture, X, Y), Texture);
+			Graphics.DrawTexture(CalculateScreenRect(Texture, X, Y), Texture, OptionalMaterialToDrawWith);
 		}
 
 		private Rect CalculateScreenRect(Texture2D image, int x, int y)

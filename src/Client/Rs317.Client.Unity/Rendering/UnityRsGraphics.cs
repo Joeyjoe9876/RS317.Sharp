@@ -30,38 +30,62 @@ namespace Rs317.Sharp
 		public IGameStateHookable GameStateHookable { get; set; }
 
 		[SerializeField]
+		private bool ReorderDrawablesOnUpdate = true;
+
+		[SerializeField]
+		private Material OptionalRenderMaterial;
+
+		[SerializeField]
 		private int DrawableSize = 0;
 
 		[SerializeField]
 		private int InGameDrawableSize = 0;
 
+		void Start()
+		{
+			if(OptionalRenderMaterial == null)
+				Debug.LogWarning($"Warning. If {nameof(OptionalRenderMaterial)} on {nameof(UnityRsGraphics)} is null the WebGL no-alpha critical optimization may not work, screen may not render.");
+		}
+
 		public void DrawImageToScreen(string imageName, int x, int y)
 		{
-			DrawQueue.Enqueue(() =>
+			//WebGL doesn't need to defer this to a different thread.
+			if (RsUnityPlatform.isWebGLBuild)
 			{
-				Drawables[imageName].X = x;
-				Drawables[imageName].Y = y;
+				UpdateDrawableTexture(imageName, x, y);
+			}
+			else
+				DrawQueue.Enqueue(() => { UpdateDrawableTexture(imageName, x, y); });
+		}
 
-				lock(SyncObj)
-					TextureDictionary[imageName].Apply(false);
+		private void UpdateDrawableTexture(string imageName, int x, int y)
+		{
+			TextureDrawable drawable = Drawables[imageName];
+			drawable.X = x;
+			drawable.Y = y;
 
-				if (!IsIngameImage(imageName))
+			lock (SyncObj)
+				TextureDictionary[imageName].Apply(false);
+
+			if (ReorderDrawablesOnUpdate)
+			{
+				if(!IsIngameImage(imageName))
 				{
 					//TODO: Avoid shifting cost.
 					//Remove from the list and then re-add
 					//so that freshly updated textures are forced on top.
-					DrawablesList.Remove(Drawables[imageName]);
-					DrawablesList.Add(Drawables[imageName]);
+					DrawablesList.Remove(drawable);
+					DrawablesList.Add(drawable);
 				}
 				else
 				{
 					//TODO: Avoid shifting cost.
 					//Remove from the list and then re-add
 					//so that freshly updated textures are forced on top.
-					InGameDrawablesList.Remove(Drawables[imageName]);
-					InGameDrawablesList.Add(Drawables[imageName]);
+					InGameDrawablesList.Remove(drawable);
+					InGameDrawablesList.Add(drawable);
 				}
-			});
+			}
 		}
 
 		public Task<TextureCreationResult> CreateTexture(TextureCreationRequest request)
@@ -105,7 +129,7 @@ namespace Rs317.Sharp
 						InGameDrawablesList.Remove(Drawables[request.Name]);
 				}
 
-				Drawables[request.Name] = new TextureDrawable(texture);
+				Drawables[request.Name] = new TextureDrawable(texture, OptionalRenderMaterial);
 
 				if(!IsIngameImage(request.Name))
 				{

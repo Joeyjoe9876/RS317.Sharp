@@ -61,23 +61,10 @@ namespace Rs317.Sharp
 		{
 			NativeArray<int> ptr = Image.Result.NativePtr;
 
-			for(int y = 0; y < height; y++)
-			{
-				for(int x = 0; x < width; x++)
-				{
-					int index = (x + y * width);
-					int value = base.pixels[index];
-
-					//The 255 << 24 is the alpha bits that must be set.
-					//ptr[index] = value + (255 << 24);
-					TempBufferPixels[index] = value + (255 << 24);
-				}
-			}
-
 			//Doing temp buffer and copy yielded 33% performance gain. Important for WebGL because main thread is doing this writing.
 			//This should be faster than making calls to Unit3D's much slower SET API.
 			//Profiled in the editor.
-			NativeArray<int>.Copy(TempBufferPixels, ptr);
+			NativeArray<int>.Copy(base.pixels, ptr);
 		}
 	}
 }
