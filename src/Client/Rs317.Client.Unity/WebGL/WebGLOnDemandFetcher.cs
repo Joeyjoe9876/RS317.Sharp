@@ -66,6 +66,19 @@ namespace Rs317.Sharp
 			clientInstance = client;
 		}
 
+		public IEnumerator preloadRegionsCoroutine(bool flag)
+		{
+			int j = MapIndices.Count;
+			for(int k = 0; k < j; k++)
+				if(flag || MapIndices[k].isMembers)
+				{
+					setPriority((byte)2, 3, MapIndices[k].ObjectFileId);
+					yield return null;
+					setPriority((byte)2, 3, MapIndices[k].TerrainId);
+					yield return null;
+				}
+		}
+
 		public IEnumerator RunCoroutine()
 		{
 			while(running)
@@ -83,7 +96,7 @@ namespace Rs317.Sharp
 					if(!waiting)
 						break;
 					waiting = false;
-					checkReceived();
+					checkReceived(false);
 					handleFailed();
 					if(uncompletedCount == 0 && j >= 5)
 						break;
