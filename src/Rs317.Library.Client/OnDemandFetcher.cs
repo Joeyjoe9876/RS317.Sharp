@@ -64,7 +64,7 @@ namespace Rs317.Sharp
 		private DoubleEndedQueue unrequested;
 		private OnDemandData current;
 		private DoubleEndedQueue mandatoryRequests;
-		protected IReadOnlyList<MapIndex> MapIndices { get; private set; }
+		protected IReadOnlyList<MapIndex> MapIndices { get; set; }
 		protected byte[] modelIndices;
 		protected int loopCycle;
 

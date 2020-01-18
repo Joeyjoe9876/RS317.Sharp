@@ -45,23 +45,11 @@ namespace Rs317.Sharp
 				else
 					modelIndices[k1] = 0;
 
-			abyte2 = streamLoader.decompressFile("map_index");
-			Default317Buffer stream2 = new Default317Buffer(abyte2);
-			j1 = abyte2.Length / 7;
-			mapIndices1 = new int[j1];
-			mapIndices2 = new int[j1];
-			mapIndices3 = new int[j1];
-			mapIndices4 = new int[j1];
-			for(int i2 = 0; i2 < j1; i2++)
-			{
-				mapIndices1[i2] = stream2.getUnsignedLEShort();
-				mapIndices2[i2] = stream2.getUnsignedLEShort();
-				mapIndices3[i2] = stream2.getUnsignedLEShort();
-				mapIndices4[i2] = stream2.getUnsignedByte();
-			}
+			MapIndexArchiveDeserializer mapIndexDeserializer = new MapIndexArchiveDeserializer(streamLoader);
+			MapIndices = mapIndexDeserializer.Deserialize();
 
 			abyte2 = streamLoader.decompressFile("anim_index");
-			stream2 = new Default317Buffer(abyte2);
+			Default317Buffer stream2 = new Default317Buffer(abyte2);
 			j1 = abyte2.Length / 2;
 			frames = new int[j1];
 			for(int j2 = 0; j2 < j1; j2++)
