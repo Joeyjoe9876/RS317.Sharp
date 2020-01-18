@@ -22,12 +22,12 @@ namespace Rs317.Sharp
 		/// <summary>
 		/// The packed coordinates.
 		/// </summary>
-		private int PackedCoordinates { get; }
+		public int PackedCoordinates { get; }
 
 		/// <summary>
 		/// The terrain file id.
 		/// </summary>
-		private int TerrainId { get; }
+		public int TerrainId { get; }
 
 		public int X => (PackedCoordinates >> 8 & 0xFF) * MapConstants.MAP_WIDTH;
 
