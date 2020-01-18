@@ -47,7 +47,7 @@ namespace Rs317.Sharp
 
 		public bool isValid { get; } = true;
 
-		public Sprite(Archive streamLoader, String target, int archiveId)
+		public Sprite(Archive streamLoader, String target, int archiveId, Default317Buffer optionalIndexStream = null)
 		{
 			try
 			{
@@ -55,7 +55,8 @@ namespace Rs317.Sharp
 					return;
 
 				Default317Buffer dataStream = new Default317Buffer(streamLoader.decompressFile(target + ".dat"));
-				Default317Buffer indexStream = new Default317Buffer(streamLoader.decompressFile("index.dat"));
+				Default317Buffer indexStream = optionalIndexStream != null ? optionalIndexStream : new Default317Buffer(streamLoader.decompressFile("index.dat"));
+
 				indexStream.position = dataStream.getUnsignedLEShort();
 				maxWidth = indexStream.getUnsignedLEShort();
 				maxHeight = indexStream.getUnsignedLEShort();

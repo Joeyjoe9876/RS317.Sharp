@@ -22,12 +22,12 @@ namespace Rs317.Sharp
 
 		public bool isValid { get; } = true;
 
-		public IndexedImage(Archive archive, String name, int id)
+		public IndexedImage(Archive archive, String name, int id, Default317Buffer optionalMetaDataBuffer = null)
 		{
 			try
 			{
 				Default317Buffer imageBuffer = new Default317Buffer(archive.decompressFile(name + ".dat"));
-				Default317Buffer metadataBuffer = new Default317Buffer(archive.decompressFile("index.dat"));
+				Default317Buffer metadataBuffer = optionalMetaDataBuffer != null ? optionalMetaDataBuffer : new Default317Buffer(archive.decompressFile("index.dat"));
 
 				metadataBuffer.position = imageBuffer.getUnsignedLEShort();
 				resizeWidth = metadataBuffer.getUnsignedLEShort();

@@ -116,11 +116,11 @@ namespace Rs317.Sharp
 		private int cameraHorizontalRotation;
 		private ClientPrivilegeType playerRights;
 		private int[] skillExperience;
-		private IndexedImage redStone1_3;
-		private IndexedImage redStone2_3;
-		private IndexedImage redStone3_2;
-		private IndexedImage redStone1_4;
-		private IndexedImage redStone2_4;
+		protected IndexedImage redStone1_3;
+		protected IndexedImage redStone2_3;
+		protected IndexedImage redStone3_2;
+		protected IndexedImage redStone1_4;
+		protected IndexedImage redStone2_4;
 		protected Sprite mapFlag;
 		protected Sprite mapMarker;
 		private bool abool872;
@@ -149,15 +149,15 @@ namespace Rs317.Sharp
 		private int friendListStatus;
 		private int[,] wayPoints;
 		private int SCROLLBAR_GRIP_HIGHLIGHT;
-		private BaseRsImageProducer<TGraphicsType> backLeftIP1;
-		private BaseRsImageProducer<TGraphicsType> backLeftIP2;
-		private BaseRsImageProducer<TGraphicsType> backRightIP1;
-		private BaseRsImageProducer<TGraphicsType> backRightIP2;
-		private BaseRsImageProducer<TGraphicsType> backTopIP1;
-		private BaseRsImageProducer<TGraphicsType> backVmidIP1;
-		private BaseRsImageProducer<TGraphicsType> backVmidIP2;
-		private BaseRsImageProducer<TGraphicsType> backVmidIP3;
-		private BaseRsImageProducer<TGraphicsType> backVmidIP2_2;
+		protected BaseRsImageProducer<TGraphicsType> backLeftIP1;
+		protected BaseRsImageProducer<TGraphicsType> backLeftIP2;
+		protected BaseRsImageProducer<TGraphicsType> backRightIP1;
+		protected BaseRsImageProducer<TGraphicsType> backRightIP2;
+		protected BaseRsImageProducer<TGraphicsType> backTopIP1;
+		protected BaseRsImageProducer<TGraphicsType> backVmidIP1;
+		protected BaseRsImageProducer<TGraphicsType> backVmidIP2;
+		protected BaseRsImageProducer<TGraphicsType> backVmidIP3;
+		protected BaseRsImageProducer<TGraphicsType> backVmidIP2_2;
 		private byte[] animatedPixels;
 		private int bankInsertMode;
 		private int crossX;
@@ -263,8 +263,8 @@ namespace Rs317.Sharp
 		private int minimapState;
 		private int sameClickPositionCounter;
 		private int loadingStage;
-		private IndexedImage scrollBarUp;
-		private IndexedImage scrollBarDown;
+		protected IndexedImage scrollBarUp;
+		protected IndexedImage scrollBarDown;
 		private int anInt1026;
 		protected IndexedImage backBase1Image;
 		protected IndexedImage backBase2Image;
@@ -309,11 +309,11 @@ namespace Rs317.Sharp
 		private int minimapHintCount;
 		private int[] minimapHintX;
 		private int[] minimapHintY;
-		private Sprite mapDotItem;
-		private Sprite mapDotNPC;
-		private Sprite mapDotPlayer;
-		private Sprite mapDotFriend;
-		private Sprite mapDotTeam;
+		protected Sprite mapDotItem;
+		protected Sprite mapDotNPC;
+		protected Sprite mapDotPlayer;
+		protected Sprite mapDotFriend;
+		protected Sprite mapDotTeam;
 		private int loadingBarPercentage;
 		public bool loadingMap { get; set; }
 		private String[] friendsList;
@@ -367,14 +367,14 @@ namespace Rs317.Sharp
 		private String spellTooltip;
 		private Sprite[] minimapHint;
 		private bool inTutorialIsland;
-		private IndexedImage redStone1;
-		private IndexedImage redStone2;
-		private IndexedImage redStone3;
-		private IndexedImage redStone1_2;
-		private IndexedImage redStone2_2;
+		protected IndexedImage redStone1;
+		protected IndexedImage redStone2;
+		protected IndexedImage redStone3;
+		protected IndexedImage redStone1_2;
+		protected IndexedImage redStone2_2;
 		private int playerEnergy;
 		private bool continuedDialogue;
-		private Sprite[] crosses;
+		protected Sprite[] crosses;
 		private bool musicEnabled;
 		private IndexedImage[] flameRuneImage;
 		private bool redrawTab;
@@ -440,7 +440,7 @@ namespace Rs317.Sharp
 
 		private long serverSessionKey;
 		public HookableVariable<TitleScreenUIElement> LoginScreenFocus { get; } = new HookableVariable<TitleScreenUIElement>(TitleScreenUIElement.Default);
-		private IndexedImage[] modIcons;
+		protected IndexedImage[] modIcons;
 		private long lastClickTime;
 		private int currentTabId;
 		private int hintIconNpcId;
@@ -10726,7 +10726,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		protected void processOnDemandQueue()
+		protected void processOnDemandQueue(bool shouldProcessAll = true)
 		{
 			do
 			{
@@ -10772,6 +10772,12 @@ namespace Rs317.Sharp
 						}
 
 					}
+
+					//Callers may not want to process all of them
+					//This can help stagger the load, useful for the WebGL implementation.
+					if (!shouldProcessAll)
+						return;
+
 				} while(onDemandData.dataType != 93 || !onDemandFetcher.method564((int)onDemandData.id));
 
 				Console.WriteLine($"Debug: Spinning demand fetcher outer loop.");
@@ -12600,22 +12606,25 @@ namespace Rs317.Sharp
 
 		protected void InitializeUnpackedMedia(Archive archiveMedia)
 		{
-			inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0);
-			chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0);
-			minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0);
-			backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0);
-			backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0);
-			backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0);
-			for (int icon = 0; icon < 13; icon++)
-				sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon);
+			//Load the index.dat once.
+			Default317Buffer metadataBuffer = new Default317Buffer(archiveMedia.decompressFile("index.dat"));
 
-			minimapCompassImage = new Sprite(archiveMedia, "compass", 0);
-			minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0);
+			inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0, metadataBuffer);
+			chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0, metadataBuffer);
+			minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0, metadataBuffer);
+			backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0, metadataBuffer);
+			backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0, metadataBuffer);
+			backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0, metadataBuffer);
+			for (int icon = 0; icon < 13; icon++)
+				sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon, metadataBuffer);
+
+			minimapCompassImage = new Sprite(archiveMedia, "compass", 0, metadataBuffer);
+			minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0, metadataBuffer);
 			minimapEdgeImage.trim();
 			try
 			{
 				for (int i = 0; i < 100; i++)
-					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i);
+					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i, metadataBuffer);
 			}
 			catch (Exception _ex)
 			{
@@ -12625,7 +12634,7 @@ namespace Rs317.Sharp
 			try
 			{
 				for (int i = 0; i < 100; i++)
-					mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i);
+					mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i, metadataBuffer);
 			}
 			catch (Exception _ex)
 			{
@@ -12636,7 +12645,7 @@ namespace Rs317.Sharp
 			{
 				for (int i = 0; i < 20; i++)
 				{
-					hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i);
+					hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i, metadataBuffer);
 				}
 			}
 			catch (Exception _ex)
@@ -12648,7 +12657,7 @@ namespace Rs317.Sharp
 			{
 				for (int i = 0; i < 20; i++)
 				{
-					headIcons[i] = new Sprite(archiveMedia, "headicons", i);
+					headIcons[i] = new Sprite(archiveMedia, "headicons", i, metadataBuffer);
 				}
 			}
 			catch (Exception _ex)
@@ -12657,65 +12666,65 @@ namespace Rs317.Sharp
 				throw;
 			}
 
-			mapFlag = new Sprite(archiveMedia, "mapmarker", 0);
-			mapMarker = new Sprite(archiveMedia, "mapmarker", 1);
+			mapFlag = new Sprite(archiveMedia, "mapmarker", 0, metadataBuffer);
+			mapMarker = new Sprite(archiveMedia, "mapmarker", 1, metadataBuffer);
 			for (int i = 0; i < 8; i++)
-				crosses[i] = new Sprite(archiveMedia, "cross", i);
+				crosses[i] = new Sprite(archiveMedia, "cross", i, metadataBuffer);
 
-			mapDotItem = new Sprite(archiveMedia, "mapdots", 0);
-			mapDotNPC = new Sprite(archiveMedia, "mapdots", 1);
-			mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2);
-			mapDotFriend = new Sprite(archiveMedia, "mapdots", 3);
-			mapDotTeam = new Sprite(archiveMedia, "mapdots", 4);
-			scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0);
-			scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1);
-			redStone1 = new IndexedImage(archiveMedia, "redstone1", 0);
-			redStone2 = new IndexedImage(archiveMedia, "redstone2", 0);
-			redStone3 = new IndexedImage(archiveMedia, "redstone3", 0);
-			redStone1_2 = new IndexedImage(archiveMedia, "redstone1", 0);
+			mapDotItem = new Sprite(archiveMedia, "mapdots", 0, metadataBuffer);
+			mapDotNPC = new Sprite(archiveMedia, "mapdots", 1, metadataBuffer);
+			mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2, metadataBuffer);
+			mapDotFriend = new Sprite(archiveMedia, "mapdots", 3, metadataBuffer);
+			mapDotTeam = new Sprite(archiveMedia, "mapdots", 4, metadataBuffer);
+			scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0, metadataBuffer);
+			scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1, metadataBuffer);
+			redStone1 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			redStone2 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			redStone3 = new IndexedImage(archiveMedia, "redstone3", 0, metadataBuffer);
+			redStone1_2 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
 			redStone1_2.flipHorizontally();
-			redStone2_2 = new IndexedImage(archiveMedia, "redstone2", 0);
+			redStone2_2 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
 			redStone2_2.flipHorizontally();
-			redStone1_3 = new IndexedImage(archiveMedia, "redstone1", 0);
+			redStone1_3 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
 			redStone1_3.flipVertically();
-			redStone2_3 = new IndexedImage(archiveMedia, "redstone2", 0);
+			redStone2_3 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
 			redStone2_3.flipVertically();
-			redStone3_2 = new IndexedImage(archiveMedia, "redstone3", 0);
+			redStone3_2 = new IndexedImage(archiveMedia, "redstone3", 0, metadataBuffer);
 			redStone3_2.flipVertically();
-			redStone1_4 = new IndexedImage(archiveMedia, "redstone1", 0);
+			redStone1_4 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
 			redStone1_4.flipHorizontally();
 			redStone1_4.flipVertically();
-			redStone2_4 = new IndexedImage(archiveMedia, "redstone2", 0);
+			redStone2_4 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
 			redStone2_4.flipHorizontally();
 			redStone2_4.flipVertically();
 			for (int i = 0; i < 2; i++)
-				modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i);
+				modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i, metadataBuffer);
 
-			Sprite sprite = new Sprite(archiveMedia, "backleft1", 0);
+			Sprite sprite = new Sprite(archiveMedia, "backleft1", 0, metadataBuffer);
 			backLeftIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP1));
 			sprite.drawInverse(0, 0);
-			sprite = new Sprite(archiveMedia, "backleft2", 0);
+			sprite = new Sprite(archiveMedia, "backleft2", 0, metadataBuffer);
 			backLeftIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP2));
 			sprite.drawInverse(0, 0);
-			sprite = new Sprite(archiveMedia, "backright1", 0);
+			sprite = new Sprite(archiveMedia, "backright1", 0, metadataBuffer);
 			backRightIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP1));
 			sprite.drawInverse(0, 0);
-			sprite = new Sprite(archiveMedia, "backright2", 0);
+			sprite = new Sprite(archiveMedia, "backright2", 0, metadataBuffer);
 			backRightIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP2));
 			sprite.drawInverse(0, 0);
-			sprite = new Sprite(archiveMedia, "backtop1", 0);
+			sprite = new Sprite(archiveMedia, "backtop1", 0, metadataBuffer);
 			backTopIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backTopIP1));
 			sprite.drawInverse(0, 0);
-			sprite = new Sprite(archiveMedia, "backvmid1", 0);
+			sprite = new Sprite(archiveMedia, "backvmid1", 0, metadataBuffer);
 			backVmidIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP1));
 			sprite.drawInverse(0, 0);
-			sprite = new Sprite(archiveMedia, "backvmid2", 0);
+			sprite = new Sprite(archiveMedia, "backvmid2", 0, metadataBuffer);
 			backVmidIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2));
 			sprite.drawInverse(0, 0);
-			sprite = new Sprite(archiveMedia, "backvmid3", 0);
+			sprite = new Sprite(archiveMedia, "backvmid3", 0, metadataBuffer);
 			backVmidIP3 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP3));
 			sprite.drawInverse(0, 0);
-			sprite = new Sprite(archiveMedia, "backhmid2", 0);
+			sprite = new Sprite(archiveMedia, "backhmid2", 0, metadataBuffer);
 			backVmidIP2_2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2_2));
 			sprite.drawInverse(0, 0);
 			int randomRed = (int) (StaticRandomGenerator.Next() * 21D) - 10;

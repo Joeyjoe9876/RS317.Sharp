@@ -87,7 +87,7 @@ namespace Rs317.Sharp
 			mandatoryRequests = new DoubleEndedQueue();
 		}
 
-		protected void checkReceived()
+		protected void checkReceived(bool handleMultipleRequests = true)
 		{
 			OnDemandData request;
 			lock(mandatoryRequests)
@@ -97,29 +97,41 @@ namespace Rs317.Sharp
 
 			while(request != null)
 			{
-				waiting = true;
-				byte[] data = null;
-				if(clientInstance.caches[0] != null)
-					data = clientInstance.caches[request.dataType + 1].decompress((int)request.id);
-				if(!crcMatches(versions[request.dataType][request.id],
-					crcs[request.dataType][request.id], data))
-					data = null;
-				lock(mandatoryRequests)
-				{
-					if(data == null)
-					{
-						unrequested.pushBack(request);
-					}
-					else
-					{
-						request.InitializeBuffer(data);
-						lock(complete)
-						{
-							complete.pushBack(request);
-						}
-					}
+				HandleOneRequest(request);
 
+				//If multiple requests aren't to be handled then we should just break here.
+				if(!handleMultipleRequests)
+					break;
+
+				lock (mandatoryRequests)
+				{
 					request = (OnDemandData)mandatoryRequests.popFront();
+				}
+			}
+		}
+
+		private void HandleOneRequest(OnDemandData request)
+		{
+			waiting = true;
+			byte[] data = null;
+			if (clientInstance.caches[0] != null)
+				data = clientInstance.caches[request.dataType + 1].decompress((int) request.id);
+			if (!crcMatches(versions[request.dataType][request.id],
+				crcs[request.dataType][request.id], data))
+				data = null;
+			lock (mandatoryRequests)
+			{
+				if (data == null)
+				{
+					unrequested.pushBack(request);
+				}
+				else
+				{
+					request.InitializeBuffer(data);
+					lock (complete)
+					{
+						complete.pushBack(request);
+					}
 				}
 			}
 		}
