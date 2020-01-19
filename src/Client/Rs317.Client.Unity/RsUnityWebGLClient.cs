@@ -542,7 +542,9 @@ namespace Rs317.Sharp
 					mapSceneImage[sharedMediaUnpackIterator] = new IndexedImage(archiveMedia, "mapscene", sharedMediaUnpackIterator, metadataBuffer);
 					sharedMediaUnpackIterator++;
 
-					if (sharedMediaUnpackIterator < 100)
+					//Hack to prevent exception in WebGL.
+					//Error: Unexpected Exception: Failed to generate IndexedImage for: mapscene id: 72. Reason: Index was outside the bounds of the array.
+					if(sharedMediaUnpackIterator < 72)
 						return false;
 				}
 				catch (Exception _ex)
@@ -550,8 +552,12 @@ namespace Rs317.Sharp
 					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 				}
 			else if (hackTracker == 11)
-				try
+			{
+				//Skip so that WebGL doesn't break.
+				//Error: Unexpected Exception: Failed to generate Sprite for: mapfunction id: 0. Reason: Index was outside the bounds of the array.
+				/*try
 				{
+
 					//We share the tracker and manually step through the iteration
 					//to reduce GC pressure.
 					//for(int i = 0; i < 100; i++)
@@ -565,9 +571,12 @@ namespace Rs317.Sharp
 				catch (Exception _ex)
 				{
 					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
+				}*/
+			}
 			else if (hackTracker == 12)
-				try
+			{
+				//Error: Unexpected Exception: Failed to generate Sprite for: hitmarks id: 0.Reason: Index was outside the bounds of the array.
+				/*try
 				{
 					//We share the tracker and manually step through the iteration
 					//to reduce GC pressure.
@@ -578,10 +587,11 @@ namespace Rs317.Sharp
 					if(sharedMediaUnpackIterator < 20)
 						return false;
 				}
-				catch (Exception _ex)
+				catch(Exception _ex)
 				{
 					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
+				}*/
+			}
 			else if (hackTracker == 13)
 				try
 				{
