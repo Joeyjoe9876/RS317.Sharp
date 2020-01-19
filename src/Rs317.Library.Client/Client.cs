@@ -289,7 +289,7 @@ namespace Rs317.Sharp
 		private String loadingBarText;
 		private static int loadedRegions;
 		protected int[] minimapLeft;
-		protected Archive archiveTitle;
+		public Archive archiveTitle;
 		private int flashingSidebar;
 		private bool multiCombatZone;
 		private DoubleEndedQueue stationaryGraphicQueue;
@@ -486,9 +486,9 @@ namespace Rs317.Sharp
 		protected String loginMessage2;
 		public int playerPositionX;
 		public int playerPositionY;
-		protected GameFont fontSmall;
-		protected GameFont fontPlain;
-		protected GameFont fontBold;
+		public GameFont fontSmall;
+		public GameFont fontPlain;
+		public GameFont fontBold;
 		private int anInt1275;
 		private int chatboxInterfaceId;
 		private int cameraRandomisationH;
@@ -11634,7 +11634,7 @@ namespace Rs317.Sharp
 			return signlink.wavereplay();
 		}
 
-		protected Archive requestArchive(int i, String s, String s1, int j, int k)
+		public Archive requestArchive(int i, String s, String s1, int j, int k)
 		{
 			byte[] abyte0 = null;
 			int l = 5;

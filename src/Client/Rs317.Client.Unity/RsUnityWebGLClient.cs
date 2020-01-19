@@ -69,10 +69,7 @@ namespace Rs317.Sharp
 
 		public override void StartRunnable(IRunnable runnable, int priority)
 		{
-			Debug.Log($"WebGL Runnable Called: {runnable.GetType().Name}");
-			//Webgl doesn't support threading very well, if at all
-			//so we need to handle runnables differently
-			ClientMonoBehaviour.StartCoroutine(RunnableRunCoroutine(runnable));
+			throw new InvalidOperationException($"WebGL doesn't support manual startables.");
 		}
 
 		public override void createClientFrame(int width, int height)
@@ -108,6 +105,7 @@ namespace Rs317.Sharp
 
 		protected override void StartFlameDrawing()
 		{
+			Debug.Log($"Starting flames drawing.");
 			shouldDrawFlames = true;
 			currentlyDrawingFlames = true;
 			ClientMonoBehaviour.StartCoroutine(DrawFlamesCoroutine());
@@ -115,11 +113,7 @@ namespace Rs317.Sharp
 
 		public override void run()
 		{
-			if(shouldDrawFlames)
-			{
-				ClientMonoBehaviour.StartCoroutine(DrawFlamesCoroutine());
-			}
-			else
+			if(!shouldDrawFlames)
 			{
 				//If it's webgl, we need to implement it on the main thread
 				//as a coroutine. Otherwise WebGL will just not work due to
@@ -140,11 +134,8 @@ namespace Rs317.Sharp
 			{
 				flameCycle++;
 				calcFlamesPosition();
-				yield return null; //these exist to reduce the greed on the main thread in WebGL.
 				calcFlamesPosition();
-				yield return null; //these exist to reduce the greed on the main thread in WebGL.
 				doFlamesDrawing();
-				yield return null; //these exist to reduce the greed on the main thread in WebGL.
 				if(++currentLoop > 10)
 				{
 					long currentTime = TimeService.CurrentTimeInMilliseconds();
@@ -221,14 +212,11 @@ namespace Rs317.Sharp
 			fontSmall = new GameFont("p11_full", archiveTitle, false);
 			fontPlain = new GameFont("p12_full", archiveTitle, false);
 			fontBold = new GameFont("b12_full", archiveTitle, false);
-			GameFont fontFancy = new GameFont("q8_full", archiveTitle, true);
 			drawLogo();
 			loadTitleScreen();
 			Archive archiveConfig = requestArchive(2, "config", "config", expectedCRCs[2], 30);
-			Archive archiveInterface = requestArchive(3, "interface", "interface", expectedCRCs[3], 35);
-			Archive archiveMedia = requestArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
 			Archive archiveTextures = requestArchive(6, "textures", "textures", expectedCRCs[6], 45);
-			Archive archiveWord = requestArchive(7, "chat system", "wordenc", expectedCRCs[7], 50);
+			//Archive archiveWord = requestArchive(7, "chat system", "wordenc", expectedCRCs[7], 50);
 			Archive archiveSounds = requestArchive(8, "sound effects", "sounds", expectedCRCs[8], 55);
 			tileFlags = new byte[4, 104, 104];
 			intGroundArray = CollectionUtilities.Create3DJaggedArray<int>(4, 105, 105);
@@ -247,9 +235,9 @@ namespace Rs317.Sharp
 			onDemandFetcher.request(2, nextSong);
 			while(onDemandFetcher.immediateRequestCount() > 0)
 			{
-				processOnDemandQueue();
+				processOnDemandQueue(false);
 
-				yield return new WaitForSeconds(0.1f);
+				yield return null;
 
 				if(onDemandFetcher.failedRequests > 3)
 				{
@@ -280,7 +268,7 @@ namespace Rs317.Sharp
 					throw;
 				}
 
-				yield return new WaitForSeconds(0.1f);
+				yield return null;
 
 				if(onDemandFetcher.failedRequests > 3)
 				{
@@ -304,49 +292,36 @@ namespace Rs317.Sharp
 				int remaining = fileRequestCount - onDemandFetcher.immediateRequestCount();
 				if(remaining > 0)
 					drawLoadingText(70, "Loading models - " + (remaining * 100) / fileRequestCount + "%");
-				processOnDemandQueue();
+				processOnDemandQueue(false);
 
-				yield return new WaitForSeconds(0.1f);
+				yield return null;
 			}
 
-			GC.Collect();
 			if(caches[0] != null)
 			{
 				drawLoadingText(75, "Requesting maps");
-				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 47, 48));
-				yield return null;
+				/*onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 47, 48));
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 47, 48));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 48, 48));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 48, 48));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 49, 48));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 49, 48));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 47, 47));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 47, 47));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 48, 47));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 48, 47));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 48, 148));
-				yield return null;
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 48, 148));
-				yield return null;
 				fileRequestCount = onDemandFetcher.immediateRequestCount();
 				while(onDemandFetcher.immediateRequestCount() > 0)
 				{
 					int remaining = fileRequestCount - onDemandFetcher.immediateRequestCount();
 					if(remaining > 0)
 						drawLoadingText(75, "Loading maps - " + (remaining * 100) / fileRequestCount + "%");
-					processOnDemandQueue();
+					processOnDemandQueue(false);
 
 					yield return new WaitForSeconds(0.1f);
-				}
+				}*/
 			}
 
 			fileRequestCount = onDemandFetcher.fileCount(0);
@@ -374,25 +349,18 @@ namespace Rs317.Sharp
 					onDemandFetcher.setPriority(priority, 0, id);
 			}
 
-			onDemandFetcher.preloadRegions(membersWorld);
+			//Don't need to even preload.
+			//yield return ((WebGLOnDemandFetcher)onDemandFetcher).preloadRegionsCoroutine(membersWorld);
 
 			//Remove low memory check.
-			int count = onDemandFetcher.fileCount(2);
+			/*int count = onDemandFetcher.fileCount(2);
 			for(int id = 1; id < count; id++)
 				if(onDemandFetcher.midiIdEqualsOne(id))
-					onDemandFetcher.setPriority((byte)1, 2, id);
+					onDemandFetcher.setPriority((byte)1, 2, id);*/
 
-			drawLoadingText(80, "Unpacking media");
+			//We don't unpack media here on WebGL because it
+			//causes memory problems.
 
-			//Default cache can cause some errors, so wecan surpress them here.
-			try
-			{
-				InitializeUnpackedMedia(archiveMedia);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine($"Media Error: {e}");
-			}
 
 			drawLoadingText(83, "Unpacking textures");
 			Rasterizer.unpackTextures(archiveTextures);
@@ -412,13 +380,55 @@ namespace Rs317.Sharp
 
 			//Removed low memory check
 			drawLoadingText(90, "Unpacking sounds");
-			byte[] soundData = archiveSounds.decompressFile("sounds.dat");
-			Default317Buffer stream = new Default317Buffer(soundData);
-			Effect.load(stream);
 
-			drawLoadingText(95, "Unpacking interfaces");
-			GameFont[] fonts = { fontSmall, fontPlain, fontBold, fontFancy };
-			RSInterface.unpack(archiveInterface, fonts, archiveMedia);
+			//Sound loading disabled in WebGL.
+			/*byte[] soundData = archiveSounds.decompressFile("sounds.dat");
+			Effect.load(new Default317Buffer(soundData));*/
+
+			isStartupCoroutineFinished = true;
+		}
+
+		private int PendingInterfaceUnpackTracker = 0;
+
+		//Returns true when finished.
+		public bool HandlePendingInterfaceUnpackingAsync(Archive archiveInterface, Archive archiveMedia, GameFont[] fonts)
+		{
+			if (PendingInterfaceUnpackTracker == 0)
+			{
+				drawLoadingText(95, "Unpacking interfaces");
+				PendingInterfaceUnpackTracker++;
+				return false;
+			}
+			else if (PendingInterfaceUnpackTracker == 1)
+			{
+				RSInterface.InitializeUnpackFields(archiveInterface);
+				PendingInterfaceUnpackTracker++;
+				return false;
+			}
+			else if (PendingInterfaceUnpackTracker == 2)
+			{
+				long currentMemory = GC.GetTotalMemory(false);
+				//There are so many interfaces that we'd be waiting a minute if we unpacked them 1 per frame.
+				for (int i = 0; i < 15; i++)
+				{
+					if(!RSInterface.unpack(archiveInterface, fonts, archiveMedia, false))
+						break;
+
+					//If we've doubled the allocated memory, we should early break from this.
+					if (GC.GetTotalMemory(false) > currentMemory * 1.5)
+						return false;
+
+					if (i == 14)
+						return false;
+				}
+			}
+
+			isUnpackedInterfaceFinished = true;
+			return true;
+		}
+
+		private IEnumerator PostEngineInitializationCoroutine()
+		{
 			drawLoadingText(100, "Preparing game engine");
 			for(int _y = 0; _y < 33; _y++)
 			{
@@ -450,7 +460,7 @@ namespace Rs317.Sharp
 				for(int _x = 25; _x < 172; _x++)
 				{
 					if(minimapBackgroundImage.pixels[_x + _y * minimapBackgroundImage.width] == 0
-						&& (_x > 34 || _y > 34))
+					   && (_x > 34 || _y > 34))
 					{
 						if(min == 999)
 							min = _x;
@@ -492,14 +502,287 @@ namespace Rs317.Sharp
 			//Censor.load(archiveWord);
 			mouseDetection = new MouseDetection(this);
 			//startRunnable(mouseDetection, 10);
-			yield break;
+
+			isUnpackedContentFinished = true;
+			yield return null;
 		}
+
+		private int hackTracker = 0;
+		int sharedMediaUnpackIterator = 0;
+
+		internal bool QueueUpAllMediaUnpacking(WebGLMediaLoaderHack loader, Archive archiveMedia, Default317Buffer metadataBuffer)
+		{
+			if (hackTracker == 0)
+				inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0, metadataBuffer);
+			else if (hackTracker == 1)
+				chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0, metadataBuffer);
+			else if (hackTracker == 2)
+				minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0, metadataBuffer);
+			else if (hackTracker == 3)
+				backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0, metadataBuffer);
+			else if (hackTracker == 4)
+				backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0, metadataBuffer);
+			else if (hackTracker == 5)
+				backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0, metadataBuffer);
+			else if (hackTracker == 6)
+				for (int icon = 0; icon < 13; icon++)
+					sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon, metadataBuffer);
+			else if (hackTracker == 7)
+				minimapCompassImage = new Sprite(archiveMedia, "compass", 0, metadataBuffer);
+			else if (hackTracker == 8)
+				minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0, metadataBuffer);
+			else if (hackTracker == 9)
+				minimapEdgeImage.trim();
+			else if (hackTracker == 10)
+				try
+				{
+					//We share the tracker and manually step through the iteration
+					//to reduce GC pressure.
+					//for (sharedIterator = 0; sharedIterator < 100; sharedIterator++)
+					mapSceneImage[sharedMediaUnpackIterator] = new IndexedImage(archiveMedia, "mapscene", sharedMediaUnpackIterator, metadataBuffer);
+					sharedMediaUnpackIterator++;
+
+					if (sharedMediaUnpackIterator < 100)
+						return false;
+				}
+				catch (Exception _ex)
+				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+				}
+			else if (hackTracker == 11)
+				try
+				{
+					//We share the tracker and manually step through the iteration
+					//to reduce GC pressure.
+					//for(int i = 0; i < 100; i++)
+					mapFunctionImage[sharedMediaUnpackIterator] = new Sprite(archiveMedia, "mapfunction", sharedMediaUnpackIterator, metadataBuffer);
+
+					sharedMediaUnpackIterator++;
+
+					if(sharedMediaUnpackIterator < 100)
+						return false;
+				}
+				catch (Exception _ex)
+				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+				}
+			else if (hackTracker == 12)
+				try
+				{
+					//We share the tracker and manually step through the iteration
+					//to reduce GC pressure.
+					//for(int i = 0; i < 20; i++)
+					hitMarkImage[sharedMediaUnpackIterator] = new Sprite(archiveMedia, "hitmarks", sharedMediaUnpackIterator, metadataBuffer);
+
+					sharedMediaUnpackIterator++;
+					if(sharedMediaUnpackIterator < 20)
+						return false;
+				}
+				catch (Exception _ex)
+				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+				}
+			else if (hackTracker == 13)
+				try
+				{
+					//We share the tracker and manually step through the iteration
+					//to reduce GC pressure.
+					//for (int i = 0; i < 20; i++)
+					headIcons[sharedMediaUnpackIterator] = new Sprite(archiveMedia, "headicons", sharedMediaUnpackIterator, metadataBuffer);
+
+					sharedMediaUnpackIterator++;
+					if(sharedMediaUnpackIterator < 20)
+						return false;
+				}
+				catch (Exception _ex)
+				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+					throw;
+				}
+			else if (hackTracker == 14)
+				mapFlag = new Sprite(archiveMedia, "mapmarker", 0, metadataBuffer);
+			else if (hackTracker == 15)
+				mapMarker = new Sprite(archiveMedia, "mapmarker", 1, metadataBuffer);
+			else if (hackTracker == 16)
+			{
+				//We share the tracker and manually step through the iteration
+				//to reduce GC pressure.
+				//for(int i = 0; i < 8; i++)
+				crosses[sharedMediaUnpackIterator] = new Sprite(archiveMedia, "cross", sharedMediaUnpackIterator, metadataBuffer);
+
+				sharedMediaUnpackIterator++;
+				if(sharedMediaUnpackIterator < 8)
+					return false;
+			}
+			else if (hackTracker == 17)
+				mapDotItem = new Sprite(archiveMedia, "mapdots", 0, metadataBuffer);
+			else if (hackTracker == 18)
+				mapDotNPC = new Sprite(archiveMedia, "mapdots", 1, metadataBuffer);
+			else if (hackTracker == 19)
+				mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2, metadataBuffer);
+			else if (hackTracker == 20)
+				mapDotFriend = new Sprite(archiveMedia, "mapdots", 3, metadataBuffer);
+			else if (hackTracker == 21)
+				mapDotTeam = new Sprite(archiveMedia, "mapdots", 4, metadataBuffer);
+			else if (hackTracker == 22)
+				scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0, metadataBuffer);
+			else if (hackTracker == 23)
+				scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1, metadataBuffer);
+			else if (hackTracker == 24)
+				redStone1 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			else if (hackTracker == 25)
+				redStone2 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			else if (hackTracker == 26)
+				redStone3 = new IndexedImage(archiveMedia, "redstone3", 0, metadataBuffer);
+			else if (hackTracker == 27)
+				redStone1_2 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			else if (hackTracker == 28)
+				redStone1_2.flipHorizontally();
+			else if (hackTracker == 29)
+				redStone2_2 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			else if (hackTracker == 30)
+				redStone2_2.flipHorizontally();
+			else if (hackTracker == 31)
+				redStone1_3 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			else if (hackTracker == 32)
+				redStone1_3.flipVertically();
+			else if (hackTracker == 33)
+				redStone2_3 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			else if (hackTracker == 34)
+				redStone2_3.flipVertically();
+			else if (hackTracker == 35)
+				redStone3_2 = new IndexedImage(archiveMedia, "redstone3", 0, metadataBuffer);
+			else if (hackTracker == 36)
+				redStone3_2.flipVertically();
+			else if (hackTracker == 37)
+				redStone1_4 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			else if (hackTracker == 38)
+				redStone1_4.flipHorizontally();
+			else if (hackTracker == 39)
+				redStone1_4.flipVertically();
+			else if (hackTracker == 40)
+				redStone2_4 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			else if (hackTracker == 41)
+				redStone2_4.flipHorizontally();
+			else if (hackTracker == 42)
+				redStone2_4.flipVertically();
+			else if (hackTracker == 43)
+				for (int i = 0; i < 2; i++)
+					modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i, metadataBuffer);
+			else if (hackTracker == 44)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backleft1", 0, metadataBuffer);
+				backLeftIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP1));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 45)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backleft2", 0, metadataBuffer);
+				backLeftIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP2));
+				sprite.drawInverse(0, 0);
+			}
+			else if(hackTracker == 46)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backleft2", 0, metadataBuffer);
+				backLeftIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP2));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 47)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backright1", 0, metadataBuffer);
+				backRightIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP1));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 48)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backright2", 0, metadataBuffer);
+				backRightIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP2));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 49)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backtop1", 0, metadataBuffer);
+				backTopIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backTopIP1));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 50)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backvmid1", 0, metadataBuffer);
+				backVmidIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP1));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 51)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backvmid2", 0, metadataBuffer);
+				backVmidIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 52)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backvmid3", 0, metadataBuffer);
+				backVmidIP3 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP3));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 53)
+			{
+				Sprite sprite = new Sprite(archiveMedia, "backhmid2", 0, metadataBuffer);
+				backVmidIP2_2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2_2));
+				sprite.drawInverse(0, 0);
+			}
+			else if (hackTracker == 54)
+			{
+				int randomRed = (int)(StaticRandomGenerator.Next() * 21D) - 10;
+				int randomGreen = (int)(StaticRandomGenerator.Next() * 21D) - 10;
+				int randomBlue = (int)(StaticRandomGenerator.Next() * 21D) - 10;
+				int randomColour = (int)(StaticRandomGenerator.Next() * 41D) - 20;
+				for(int i = 0; i < 100; i++)
+				{
+					if(mapFunctionImage[i] != null)
+						mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
+							randomBlue + randomColour);
+					if(mapSceneImage[i] != null)
+						mapSceneImage[i].mixPalette(randomRed + randomColour, randomGreen + randomColour,
+							randomBlue + randomColour);
+				}
+			}
+			else if (hackTracker == 55)
+			{
+				ClientMonoBehaviour.StartCoroutine(PostEngineInitializationCoroutine());
+				return true;
+			}
+
+			sharedMediaUnpackIterator = 0;
+			hackTracker++;
+			return false;
+		}
+
+		private bool isUnpackedContentFinished = false;
+
+		private bool isUnpackedInterfaceFinished = false;
+
+		private bool isStartupCoroutineFinished = false;
 
 		private IEnumerator AppletRunCoroutine()
 		{
 			Console.WriteLine($"Loading.");
 			drawLoadingText(0, "Loading...");
-			yield return StartupCoroutine();
+			ClientMonoBehaviour.StartCoroutine(StartupCoroutine());
+
+			while (!isStartupCoroutineFinished)
+				yield return null;
+
+			WebGLMediaLoaderHack loader = new UnityEngine.GameObject("MediaLoader").AddComponent<WebGLMediaLoaderHack>();
+			loader.Client = this;
+
+			while (!isUnpackedContentFinished)
+				yield return null;
+
+			WebGLInterfaceUnpackLoaderHack loader2 = new UnityEngine.GameObject("InterfaceLoader").AddComponent<WebGLInterfaceUnpackLoaderHack>();
+			loader2.Client = this;
+
+			while (!isUnpackedInterfaceFinished)
+				yield return null;
+
 			int opos = 0;
 			int ratio = 256;
 			int delay = 1;
@@ -556,11 +839,11 @@ namespace Rs317.Sharp
 				if(delay < minDelay)
 					delay = minDelay;
 
-				if(delay > 1)
+				if (delay > 1)
 					//Delay is in milliseconds, so we need to convert to seconds.
-					yield return new WaitForSeconds((float)delay / 1000.0f);
-				else if(delay == 1)
-					yield return new WaitForEndOfFrame();
+					yield return new WaitForSeconds((float) delay / 1000.0f);
+				else
+					yield return null;
 
 				for(; count < 256; count += ratio)
 				{
@@ -571,6 +854,9 @@ namespace Rs317.Sharp
 					eventMouseButton = 0;
 					processGameLoop();
 					readIndex = writeIndex;
+
+					//After each process we should yield from thread time.
+					yield return null;
 				}
 
 				count &= 0xff;

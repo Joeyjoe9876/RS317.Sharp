@@ -1,26 +1,33 @@
 using System;
+using System.Collections.Generic;
 
 namespace Rs317.Sharp
 {
 	public sealed class RSInterface
 	{
+		private static Default317Buffer indexStream;
+
 		private static Sprite getImage(int spriteId, Archive streamLoader, String spriteName)
 		{
 			long spriteHash = (TextClass.spriteNameToHash(spriteName) << 8) + spriteId;
-			Sprite sprite = (Sprite) spriteCache.get(spriteHash);
-			if (sprite != null)
-				return sprite;
+
+			if (spriteCache.ContainsKey(spriteHash))
+				return spriteCache[spriteHash];
+			
 			try
 			{
-				sprite = new Sprite(streamLoader, spriteName, spriteId);
-				spriteCache.put(sprite, spriteHash);
+				if(indexStream == null)
+					indexStream = new Default317Buffer(streamLoader.decompressFile("index.dat"));
+
+				Sprite sprite = new Sprite(streamLoader, spriteName, spriteId, indexStream);
+				spriteCache.Add(spriteHash, sprite);
+
+				return sprite;
 			}
 			catch (Exception _ex)
 			{
 				throw;
 			}
-
-			return sprite;
 		}
 
 		public static void setModel(Model model)
@@ -32,13 +39,42 @@ namespace Rs317.Sharp
 				modelCache.put(model, (modelType << 16) + modelId);
 		}
 
-		public static void unpack(Archive streamLoader, GameFont[] fonts, Archive mediaArchive)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="streamLoader"></param>
+		/// <param name="fonts"></param>
+		/// <param name="mediaArchive"></param>
+		/// <param name="shouldHandleAll"></param>
+		/// <returns>Indicates if there is more to unpack after calling. True: More. False: Done</returns>
+		public static bool unpack(Archive streamLoader, GameFont[] fonts, Archive mediaArchive, bool shouldHandleAll = true)
 		{
-			spriteCache = new Cache(50000);
-			Default317Buffer stream = new Default317Buffer(streamLoader.decompressFile("data"));
-			int parentId = -1;
+			//Only need to init once if we're handling them all.
+			if(shouldHandleAll)
+				InitializeUnpackFields(streamLoader);
+
+			return HandleInterfaceUnpacking(fonts, mediaArchive, shouldHandleAll);
+		}
+
+		//If using async not handing all approach then we need to call this directly.
+		public static void InitializeUnpackFields(Archive streamLoader)
+		{
+			spriteCache = new Dictionary<long, Sprite>(50000);
+			stream = new Default317Buffer(streamLoader.decompressFile("data"));
+			parentId = -1;
 			int interfaceCount = stream.getUnsignedLEShort();
 			cache = new RSInterface[interfaceCount];
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="fonts"></param>
+		/// <param name="mediaArchive"></param>
+		/// <param name="shouldHandleAll"></param>
+		/// <returns>Indicates if there is more interface to unpack. True: More. False: Done.</returns>
+		private static bool HandleInterfaceUnpacking(GameFont[] fonts, Archive mediaArchive, bool shouldHandleAll = true)
+		{
 			while (stream.position < stream.buffer.Length)
 			{
 				int id = stream.getUnsignedLEShort();
@@ -72,7 +108,6 @@ namespace Rs317.Sharp
 						rsInterface.conditionType[c] = stream.getUnsignedByte();
 						rsInterface.conditionValue[c] = stream.getUnsignedLEShort();
 					}
-
 				}
 
 				int opcodeCount = stream.getUnsignedByte();
@@ -85,9 +120,7 @@ namespace Rs317.Sharp
 						rsInterface.opcodes[c] = new int[subOpcodeCount];
 						for (int s = 0; s < subOpcodeCount; s++)
 							rsInterface.opcodes[c][s] = stream.getUnsignedLEShort();
-
 					}
-
 				}
 
 				if (rsInterface.type == 0)
@@ -104,7 +137,6 @@ namespace Rs317.Sharp
 						rsInterface.childX[child] = stream.getShort();
 						rsInterface.childY[child] = stream.getShort();
 					}
-
 				}
 
 				if (rsInterface.type == 1)
@@ -150,7 +182,6 @@ namespace Rs317.Sharp
 						if (rsInterface.actions[action].Length == 0)
 							rsInterface.actions[action] = null;
 					}
-
 				}
 
 				if (rsInterface.type == 3)
@@ -249,7 +280,6 @@ namespace Rs317.Sharp
 						if (rsInterface.actions[active].Length == 0)
 							rsInterface.actions[active] = null;
 					}
-
 				}
 
 				if (rsInterface.actionType == 2 || rsInterface.type == 2)
@@ -278,9 +308,14 @@ namespace Rs317.Sharp
 							rsInterface.tooltip = "Continue";
 					}
 				}
+
+				if (!shouldHandleAll)
+					return stream.position < stream.buffer.Length;
 			}
 
 			spriteCache = null;
+			stream = null;
+			return false;
 		}
 
 		public Sprite spriteDefault;
@@ -315,7 +350,7 @@ namespace Rs317.Sharp
 		public bool itemDeletesDragged;
 		public int parentID;
 		public int spellUsableOn;
-		private static Cache spriteCache;
+		private static Dictionary<long, Sprite> spriteCache;
 		public int colourActiveHover;
 		public int[] children;
 		public int[] childX;
@@ -349,6 +384,10 @@ namespace Rs317.Sharp
 		public int modelRotationX;
 		public int modelRotationY;
 		public int[] childY;
+
+		//Custom: Added to make the unpacking async.
+		private static int parentId;
+		private static Default317Buffer stream;
 
 		public RSInterface()
 		{
