@@ -39,7 +39,7 @@ namespace Rs317.Sharp
 				isDirty = false;
 		}
 
-		public override int[] pixels
+		/*public override int[] pixels
 		{
 			get
 			{
@@ -47,7 +47,7 @@ namespace Rs317.Sharp
 				accessedPixelBuffer = true;
 				return base.pixels;
 			}
-		}
+		}*/
 
 		protected override void OnBeforeInternalDrawGraphics(int x, int z, IRSGraphicsProvider<OpenTKRsGraphicsContext> graphicsObject)
 		{
@@ -56,6 +56,7 @@ namespace Rs317.Sharp
 
 		protected override void InternalDrawGraphics(int x, int y, IRSGraphicsProvider<OpenTKRsGraphicsContext> rsGraphicsProvider, bool force = false)
 		{
+			throw new NotImplementedException($"TODO: Reimplement drawing for OpenTK. Removed Virtual pixel array optimization broke it.");
 			ImageLocation = new Rectangle(x, y, width, height);
 
 			//It's only dirty if they accessed the pixel buffer.

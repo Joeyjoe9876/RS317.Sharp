@@ -6,7 +6,7 @@ namespace Rs317.Sharp
 {
 	public abstract class BaseRsImageProducer<TGraphicsType> : INameable
 	{
-		public virtual int[] pixels { get; }
+		public int[] pixels { get; }
 
 		public int width { get; }
 
