@@ -122,13 +122,14 @@ namespace Rs317.Sharp
 			}
 		}
 
+		private WaitForSeconds flamesWaitable = new WaitForSeconds(0.025f);
+
 		private IEnumerator DrawFlamesCoroutine()
 		{
 			Debug.Log($"Starting flame drawing.");
 			drawingFlames = true;
 
 			long startTime = TimeService.CurrentTimeInMilliseconds();
-			int currentLoop = 0;
 			int interval = 20;
 			while(currentlyDrawingFlames)
 			{
@@ -136,18 +137,14 @@ namespace Rs317.Sharp
 				calcFlamesPosition();
 				calcFlamesPosition();
 				doFlamesDrawing();
-				if(++currentLoop > 10)
-				{
-					long currentTime = TimeService.CurrentTimeInMilliseconds();
-					int difference = (int)(currentTime - startTime) / 10 - interval;
-					interval = 40 - difference;
-					if(interval < 5)
-						interval = 5;
-					currentLoop = 0;
-					startTime = currentTime;
-				}
 
-				yield return new WaitForSeconds((float)interval / 1000.0f);
+				/*long currentTime = TimeService.CurrentTimeInMilliseconds();
+				int difference = (int)(currentTime - startTime) / 10 - interval;
+				interval = 40 - difference;
+				if(interval < 5)
+					interval = 5;
+				startTime = currentTime;*/
+				yield return flamesWaitable;
 			}
 
 			drawingFlames = false;
