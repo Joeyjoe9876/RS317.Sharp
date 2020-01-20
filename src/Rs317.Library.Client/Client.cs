@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -8698,6 +8695,7 @@ namespace Rs317.Sharp
 			catch (Exception _ex) //not only IO, any exception. Otherwise it's broken for failed to reach remote host AND other problems.
 			{
 				loginMessage1 = "";
+				Console.WriteLine($"Unknown Connection Error: {_ex}");
 			}
 
 			loginMessage2 = "Error connecting to server.";
@@ -8705,7 +8703,7 @@ namespace Rs317.Sharp
 
 		protected void ConnectToGameServer()
 		{
-			socket = new RSSocket(this, openSocket(43594 + portOffset).ConfigureAwait(false).GetAwaiter().GetResult());
+			socket = new RSSocket(this, openSocket(43594 + portOffset));
 		}
 
 		//TODO: switch to enum rights.
@@ -9645,7 +9643,7 @@ namespace Rs317.Sharp
 				jaggrabSocket = null;
 			}
 
-			jaggrabSocket = openSocket(43595).ConfigureAwait(false).GetAwaiter().GetResult();
+			jaggrabSocket = openSocketAsync(43595).ConfigureAwait(false).GetAwaiter().GetResult();
 			jaggrabSocket.SendTimeout = 10000;
 			jaggrabSocket.ReceiveTimeout = 10000;
 			NetworkStream inputstream = jaggrabSocket.GetStream();
@@ -9660,7 +9658,18 @@ namespace Rs317.Sharp
 		/// </summary>
 		/// <exception cref=""></exception>
 		/// <returns></returns>
-		public Task<TcpClient> openSocket(int port)
+		public Task<TcpClient> openSocketAsync(int port)
+		{
+			return signlink.openSocketAsync(port);
+		}
+
+		//TODO: Add exception documentation
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <exception cref=""></exception>
+		/// <returns></returns>
+		public TcpClient openSocket(int port)
 		{
 			return signlink.openSocket(port);
 		}

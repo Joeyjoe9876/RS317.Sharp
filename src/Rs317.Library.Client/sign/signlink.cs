@@ -108,7 +108,7 @@ namespace Rs317.Sharp
 		}
 
 		//TODO: Do we need to re-add the syncronization?
-		public static async Task<TcpClient> openSocket(int port)
+		public static async Task<TcpClient> openSocketAsync(int port)
 		{
 			if(port < 0) throw new ArgumentOutOfRangeException(nameof(port));
 
@@ -119,6 +119,21 @@ namespace Rs317.Sharp
 
 			await client.ConnectAsync(socketip, port)
 				.ConfigureAwait(false);
+
+			//TODO: Should we check if it's connected??
+			return client;
+		}
+
+		public static TcpClient openSocket(int port)
+		{
+			if(port < 0) throw new ArgumentOutOfRangeException(nameof(port));
+
+			//I think the rest of the codebase assumes we DON'T actually
+			//mantain a single tcp client state.
+
+			TcpClient client = new TcpClient();
+
+			client.Connect(socketip, port);
 
 			//TODO: Should we check if it's connected??
 			return client;
