@@ -25,7 +25,7 @@ namespace Rs317.GladMMO
 		public static IPeerPayloadSendService<GameClientPacketPayload> SendService { get; set; }
 
 		public GladMMOUnityClient(ClientConfiguration config, UnityRsGraphics graphicsObject, GameManager gameManagerService) 
-			: base(config, graphicsObject)
+			: base(config, graphicsObject, new DefaultRunnableStarterStrategy(), new DefaultRsSocketFactory(new DefaultRunnableStarterStrategy()))
 		{
 			GameManagerService = gameManagerService;
 			this.LoggedIn.OnVariableValueChanged += GameManagerService.OnLoginStateChanged;

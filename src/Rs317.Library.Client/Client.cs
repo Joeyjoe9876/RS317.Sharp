@@ -501,6 +501,8 @@ namespace Rs317.Sharp
 		protected static int currentWalkingQueueSize { get; set; }
 		private int currentTrackLoop;
 
+		protected IRsSocketFactory SocketFactory { get; }
+
 		static Client()
 		{
 			EXPERIENCE_TABLE = new int[99];
@@ -514,12 +516,15 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public Client(ClientConfiguration config, IBufferFactory bufferFactory, IRunnableStarter runnableStarterStrategy)
+		public Client(ClientConfiguration config, IBufferFactory bufferFactory, IRunnableStarter runnableStarterStrategy, IRsSocketFactory socketFactory)
 			: base(runnableStarterStrategy)
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 			if (bufferFactory == null) throw new ArgumentNullException(nameof(bufferFactory));
+			if (socketFactory == null) throw new ArgumentNullException(nameof(socketFactory));
+
 			BufferFactory = bufferFactory;
+			SocketFactory = socketFactory;
 
 			if(!config.isLowMemory)
 				setHighMem();

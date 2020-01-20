@@ -87,6 +87,7 @@ namespace Rs317.Sharp
 
 		protected virtual RsUnityClient CreateRsClient(ClientConfiguration configuration)
 		{
+			
 			if(RsUnityPlatform.isWebGLBuild)
 				return new RsUnityWebGLClient(configuration, GraphicsObject, this);
 			else if(RsUnityPlatform.isPlaystationBuild)
@@ -94,7 +95,10 @@ namespace Rs317.Sharp
 			else if(RsUnityPlatform.isAndroidMobileBuild)
 				return new RsUnityAndroidClient(configuration, GraphicsObject);
 			else
-				return new RsUnityClient(configuration, GraphicsObject, new DefaultRunnableStarterStrategy());
+			{
+				IRunnableStarter runnableStarter = new DefaultRunnableStarterStrategy();
+				return new RsUnityClient(configuration, GraphicsObject, runnableStarter, new DefaultRsSocketFactory(runnableStarter));
+			}
 		}
 	}
 }

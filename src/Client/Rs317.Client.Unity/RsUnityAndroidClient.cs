@@ -15,7 +15,7 @@ namespace Rs317.Sharp
 	public sealed class RsUnityAndroidClient : RsUnityClient
 	{
 		public RsUnityAndroidClient(ClientConfiguration config, UnityRsGraphics graphicsObject) 
-			: base(config, graphicsObject, new DefaultRunnableStarterStrategy())
+			: base(config, graphicsObject, new DefaultRunnableStarterStrategy(), new DefaultRsSocketFactory(new DefaultRunnableStarterStrategy()))
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 
