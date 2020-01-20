@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Runtime.CompilerServices;
 using Reinterpret.Net;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -60,6 +61,13 @@ namespace Rs317.Sharp
 				indexStream.position = dataStream.getUnsignedLEShort();
 				maxWidth = indexStream.getUnsignedLEShort();
 				maxHeight = indexStream.getUnsignedLEShort();
+
+				if (!IsDataAvailable(indexStream))
+				{
+					InitializeAsEmpty();
+					return;
+				}
+
 				int length = indexStream.getUnsignedByte();
 				int[] pixels = new int[length];
 				for(int p = 0; p < length - 1; p++)
@@ -76,30 +84,80 @@ namespace Rs317.Sharp
 					indexStream.position++;
 				}
 
-				offsetX = indexStream.getUnsignedByte();
-				offsetY = indexStream.getUnsignedByte();
-				width = indexStream.getUnsignedLEShort();
-				height = indexStream.getUnsignedLEShort();
-				int type = indexStream.getUnsignedByte();
-				int pixelCount = width * height;
-				this.pixels = new int[pixelCount];
-				if(type == 0)
+				if(!IsDataAvailable(indexStream))
 				{
-					for(int p = 0; p < pixelCount; p++)
-						this.pixels[p] = pixels[dataStream.getUnsignedByte()];
-
+					InitializeAsEmpty();
 					return;
 				}
 
-				if(type == 1)
+				offsetX = indexStream.getUnsignedByte();
+
+				if(!IsDataAvailable(indexStream))
 				{
-					for(int x = 0; x < width; x++)
+					InitializeAsEmpty();
+					return;
+				}
+
+				offsetY = indexStream.getUnsignedByte();
+				width = indexStream.getUnsignedLEShort();
+				height = indexStream.getUnsignedLEShort();
+
+				if(!IsDataAvailable(indexStream))
+				{
+					InitializeAsEmpty();
+					return;
+				}
+
+				int type = indexStream.getUnsignedByte();
+				int pixelCount = width * height;
+
+				//Custom: Below are some sanity checks that are custom but help guard against known clean cache data issues.
+				bool isEnoughDataAvailable = pixelCount <= (dataStream.buffer.Length - dataStream.position);
+
+				//Don't let corrupt image data, in default cache, cause BIG allocation (bad for WebGL)
+				//or allocate/read for empty images.
+				if (pixelCount <= 0 || pixelCount > int.MaxValue / 100 || !isEnoughDataAvailable || dataStream.position < 0) //sometimes happens!!
+				{
+					width = 0;
+					height = 0;
+					this.pixels = Array.Empty<int>();
+					return;
+				}
+
+				this.pixels = new int[pixelCount];
+
+				try
+				{
+					if(type == 0)
 					{
-						for(int y = 0; y < height; y++)
-							this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
+						for(int p = 0; p < pixelCount; p++)
+							this.pixels[p] = pixels[dataStream.getUnsignedByte()];
 
+						return;
 					}
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine($"Failed to read image type: {type}. PixelCount: {pixelCount} StreamLength: {dataStream.buffer.Length} Position: {dataStream.position} Reason: {e}");
+					throw;
+				}
 
+				try
+				{
+					if(type == 1)
+					{
+						for(int x = 0; x < width; x++)
+						{
+							for(int y = 0; y < height; y++)
+								this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
+
+						}
+					}
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine($"Failed to read image type: {type}. PixelCount: {pixelCount} Reason: {e}");
+					throw;
 				}
 			}
 			catch (Exception e)
@@ -109,6 +167,19 @@ namespace Rs317.Sharp
 				//Don't throw, this is just a data error. Not an engine fault.
 				throw new InvalidOperationException($"Failed to generate Sprite for: {target} id: {id}. Reason: {e.Message}\nStack: {e.StackTrace}", e);
 			}
+		}
+
+		private void InitializeAsEmpty()
+		{
+			width = 0;
+			height = 0;
+			this.pixels = Array.Empty<int>();
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static bool IsDataAvailable(Default317Buffer dataStream)
+		{
+			return dataStream.position <= dataStream.buffer.Length - 1;
 		}
 
 		public Sprite(byte[] abyte0, object component) //not referenced.
