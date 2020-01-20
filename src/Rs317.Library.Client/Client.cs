@@ -514,7 +514,8 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public Client(ClientConfiguration config, IBufferFactory bufferFactory)
+		public Client(ClientConfiguration config, IBufferFactory bufferFactory, IRunnableStarter runnableStarterStrategy)
+			: base(runnableStarterStrategy)
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 			if (bufferFactory == null) throw new ArgumentNullException(nameof(bufferFactory));
@@ -8703,7 +8704,7 @@ namespace Rs317.Sharp
 
 		protected void ConnectToGameServer()
 		{
-			socket = new RSSocket(this, openSocket(43594 + portOffset));
+			socket = new RSSocket(this.RunnableStarterStrategy, openSocket(43594 + portOffset));
 		}
 
 		//TODO: switch to enum rights.
@@ -12255,14 +12256,8 @@ namespace Rs317.Sharp
 		{
 			if(priority > 10)
 				priority = 10;
-			if(signlink.applet != null)
-			{
-				signlink.startThread(runnable, priority);
-			}
-			else
-			{
-				base.StartRunnable(runnable, priority);
-			}
+
+			RunnableStarterStrategy.StartRunnable(runnable, priority);
 		}
 
 		protected static bool wasClientStartupCalled = false;

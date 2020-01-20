@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
-	public abstract class RSApplet<TGraphicsType> : IRunnable, IRunnableStarter, IMouseInputQueryable, IInputCallbackSubscriber //Instead of that Java stuff we just implement Windows form.
+	public abstract class RSApplet<TGraphicsType> : IRunnable, IMouseInputQueryable, IInputCallbackSubscriber //Instead of that Java stuff we just implement Windows form.
 	{
 		protected int gameState;
 
@@ -64,8 +64,11 @@ namespace Rs317.Sharp
 
 		protected int writeIndex;
 
-		protected RSApplet()
+		protected IRunnableStarter RunnableStarterStrategy { get; }
+
+		protected RSApplet(IRunnableStarter runnableStarterStrategy)
 		{
+			RunnableStarterStrategy = runnableStarterStrategy ?? throw new ArgumentNullException(nameof(runnableStarterStrategy));
 			delayTime = 20;
 			minDelay = 1;
 			otims = new long[10];
@@ -88,7 +91,7 @@ namespace Rs317.Sharp
 			signlink.applet = this;
 			gameGraphics = CreateGraphicsProvider();
 			fullGameScreen = CreateNewImageProducer(this.width, height, nameof(fullGameScreen));
-			StartRunnable(this, 1);
+			RunnableStarterStrategy.StartRunnable(this, 1);
 		}
 
 		protected abstract IRSGraphicsProvider<TGraphicsType> CreateGraphicsProvider();
@@ -426,12 +429,6 @@ namespace Rs317.Sharp
 		void setFrameRate(int frameRate)
 		{
 			delayTime = 1000 / frameRate;
-		}
-
-		public virtual void StartRunnable(IRunnable runnable, int priority)
-		{
-			//Run it on the threadpool instead.
-			Task.Factory.StartNew(runnable.run, priority < 1 ? TaskCreationOptions.LongRunning : TaskCreationOptions.None);
 		}
 
 		public virtual void startUp()

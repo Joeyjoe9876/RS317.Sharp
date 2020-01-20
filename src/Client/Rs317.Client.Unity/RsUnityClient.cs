@@ -12,8 +12,8 @@ namespace Rs317.Sharp
 	{
 		public UnityRsGraphics GraphicsObject { get; }
 
-		public RsUnityClient(ClientConfiguration config, UnityRsGraphics graphicsObject)
-			: base(config, new DefaultBufferFactory())
+		public RsUnityClient(ClientConfiguration config, UnityRsGraphics graphicsObject, IRunnableStarter runnableStarterStrategy)
+			: base(config, new DefaultBufferFactory(), runnableStarterStrategy)
 		{
 			if(config == null) throw new ArgumentNullException(nameof(config));
 			GraphicsObject = graphicsObject ?? throw new ArgumentNullException(nameof(graphicsObject));

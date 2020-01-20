@@ -14,7 +14,7 @@ namespace Rs317.Sharp
 		private IFactoryCreateable<OpenTKImageProducer, ImageProducerFactoryCreationContext> ImageProducerFactory { get; }
 
 		public OpenTKClient(ClientConfiguration config, OpenTKRsGraphicsContext graphicsObject, IFactoryCreateable<OpenTKImageProducer, ImageProducerFactoryCreationContext> imageProducerFactory, IBufferFactory bufferFactory) 
-			: base(config, bufferFactory)
+			: base(config, bufferFactory, new DefaultRunnableStarterStrategy())
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 

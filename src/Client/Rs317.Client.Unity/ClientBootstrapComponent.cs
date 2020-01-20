@@ -94,7 +94,7 @@ namespace Rs317.Sharp
 			else if(RsUnityPlatform.isAndroidMobileBuild)
 				return new RsUnityAndroidClient(configuration, GraphicsObject);
 			else
-				return new RsUnityClient(configuration, GraphicsObject);
+				return new RsUnityClient(configuration, GraphicsObject, new DefaultRunnableStarterStrategy());
 		}
 	}
 }
