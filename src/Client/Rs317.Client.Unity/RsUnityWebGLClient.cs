@@ -284,7 +284,7 @@ namespace Rs317.Sharp
 			if(caches[0] != null)
 			{
 				drawLoadingText(75, "Requesting maps");
-				/*onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 47, 48));
+				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 47, 48));
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 47, 48));
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 48, 48));
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 48, 48));
@@ -305,7 +305,7 @@ namespace Rs317.Sharp
 					processOnDemandQueue(false);
 
 					yield return new WaitForSeconds(0.1f);
-				}*/
+				}
 			}
 
 			fileRequestCount = onDemandFetcher.fileCount(0);
@@ -334,17 +334,16 @@ namespace Rs317.Sharp
 			}
 
 			//Don't need to even preload.
-			//yield return ((WebGLOnDemandFetcher)onDemandFetcher).preloadRegionsCoroutine(membersWorld);
+			yield return ((WebGLOnDemandFetcher)onDemandFetcher).preloadRegionsCoroutine(membersWorld);
 
 			//Remove low memory check.
-			/*int count = onDemandFetcher.fileCount(2);
+			int count = onDemandFetcher.fileCount(2);
 			for(int id = 1; id < count; id++)
 				if(onDemandFetcher.midiIdEqualsOne(id))
-					onDemandFetcher.setPriority((byte)1, 2, id);*/
+					onDemandFetcher.setPriority((byte)1, 2, id);
 
 			//We don't unpack media here on WebGL because it
 			//causes memory problems.
-
 
 			drawLoadingText(83, "Unpacking textures");
 			Rasterizer.unpackTextures(archiveTextures);
@@ -366,8 +365,8 @@ namespace Rs317.Sharp
 			drawLoadingText(90, "Unpacking sounds");
 
 			//Sound loading disabled in WebGL.
-			/*byte[] soundData = archiveSounds.decompressFile("sounds.dat");
-			Effect.load(new Default317Buffer(soundData));*/
+			byte[] soundData = archiveSounds.decompressFile("sounds.dat");
+			Effect.load(new Default317Buffer(soundData));
 
 			isStartupCoroutineFinished = true;
 		}
@@ -539,7 +538,7 @@ namespace Rs317.Sharp
 			{
 				//Skip so that WebGL doesn't break.
 				//Error: Unexpected Exception: Failed to generate Sprite for: mapfunction id: 0. Reason: Index was outside the bounds of the array.
-				/*try
+				try
 				{
 
 					//We share the tracker and manually step through the iteration
@@ -555,12 +554,12 @@ namespace Rs317.Sharp
 				catch (Exception _ex)
 				{
 					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}*/
+				}
 			}
 			else if (hackTracker == 12)
 			{
 				//Error: Unexpected Exception: Failed to generate Sprite for: hitmarks id: 0.Reason: Index was outside the bounds of the array.
-				/*try
+				try
 				{
 					//We share the tracker and manually step through the iteration
 					//to reduce GC pressure.
@@ -574,7 +573,7 @@ namespace Rs317.Sharp
 				catch(Exception _ex)
 				{
 					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}*/
+				}
 			}
 			else if (hackTracker == 13)
 				try
