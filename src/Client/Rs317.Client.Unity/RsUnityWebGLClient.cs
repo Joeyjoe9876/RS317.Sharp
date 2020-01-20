@@ -17,7 +17,7 @@ namespace Rs317.Sharp
 		private MonoBehaviour ClientMonoBehaviour { get; }
 
 		public RsUnityWebGLClient(ClientConfiguration config, UnityRsGraphics graphicsObject, [NotNull] MonoBehaviour clientMonoBehaviour) 
-			: base(config, graphicsObject)
+			: base(config, graphicsObject, new WebGLRunnableStarterStrategy(), new DefaultRsSocketFactory(new WebGLSocketThreadRunnableStarterStrategy()))
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 
@@ -65,11 +65,6 @@ namespace Rs317.Sharp
 		protected override BaseRsImageProducer<UnityRsGraphics> CreateNewImageProducer(int xSize, int ySize, string producerName)
 		{
 			return new UnityRsImageProducer(xSize, ySize, producerName, gameGraphics);
-		}
-
-		public override void StartRunnable(IRunnable runnable, int priority)
-		{
-			throw new InvalidOperationException($"WebGL doesn't support manual startables.");
 		}
 
 		public override void createClientFrame(int width, int height)
@@ -129,8 +124,6 @@ namespace Rs317.Sharp
 			Debug.Log($"Starting flame drawing.");
 			drawingFlames = true;
 
-			long startTime = TimeService.CurrentTimeInMilliseconds();
-			int interval = 20;
 			while(currentlyDrawingFlames)
 			{
 				flameCycle++;
@@ -138,12 +131,6 @@ namespace Rs317.Sharp
 				calcFlamesPosition();
 				doFlamesDrawing();
 
-				/*long currentTime = TimeService.CurrentTimeInMilliseconds();
-				int difference = (int)(currentTime - startTime) / 10 - interval;
-				interval = 40 - difference;
-				if(interval < 5)
-					interval = 5;
-				startTime = currentTime;*/
 				yield return flamesWaitable;
 			}
 
