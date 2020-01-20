@@ -137,6 +137,11 @@ namespace Rs317.Sharp
 			drawingFlames = false;
 		}
 
+		protected override void StopDrawingFlames()
+		{
+			currentlyDrawingFlames = false;
+		}
+
 		public override void startUp()
 		{
 			if (!RsUnityPlatform.isWebGLBuild)
