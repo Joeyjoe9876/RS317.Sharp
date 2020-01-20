@@ -9597,19 +9597,7 @@ namespace Rs317.Sharp
 
 		private void nullLoader()
 		{
-			currentlyDrawingFlames = false;
-			while(drawingFlames)
-			{
-				currentlyDrawingFlames = false;
-				try
-				{
-					Thread.Sleep(50);
-				}
-				catch(Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
-			}
+			StopDrawingFlames();
 
 			titleBoxImage = null;
 			titleButtonImage = null;
@@ -9624,6 +9612,23 @@ namespace Rs317.Sharp
 			anIntArray829 = null;
 			flameLeftBackground2 = null;
 			flameRightBackground2 = null;
+		}
+
+		protected virtual void StopDrawingFlames()
+		{
+			currentlyDrawingFlames = false;
+			while (drawingFlames)
+			{
+				currentlyDrawingFlames = false;
+				try
+				{
+					Thread.Sleep(50);
+				}
+				catch (Exception _ex)
+				{
+					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+				}
+			}
 		}
 
 		//TODO: Add exception documentation
