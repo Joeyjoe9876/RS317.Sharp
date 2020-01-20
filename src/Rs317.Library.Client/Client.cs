@@ -5028,12 +5028,11 @@ namespace Rs317.Sharp
 				}
 
 				fontBold.drawTextWithPotentialShadow(
-					"Username: " + EnteredUsername + ((LoginScreenFocus == TitleScreenUIElement.Default) & (tick % 40 < 20) ? "@yel@|" : ""),
+					$"Username: {EnteredUsername}{((LoginScreenFocus == TitleScreenUIElement.Default) & (tick % 40 < 20) ? "@yel@|" : "")}",
 					x / 2 - 90, _y, 0xFFFFFF, true);
 				_y += 15;
 				fontBold.drawTextWithPotentialShadow(
-					"Password: " + TextClass.asterisksForString(EnteredPassword)
-								 + ((LoginScreenFocus == TitleScreenUIElement.PasswordInputField) & (tick % 40 < 20) ? "@yel@|" : ""),
+					$"Password: {TextClass.asterisksForString(EnteredPassword)}{((LoginScreenFocus == TitleScreenUIElement.PasswordInputField) & (tick % 40 < 20) ? "@yel@|" : "")}",
 					x / 2 - 88, _y, 0xFFFFFF, true);
 				_y += 15;
 				if(!originalLoginScreen)
