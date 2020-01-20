@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Rs317.Sharp
 {
-	public sealed class RSSocket : IRunnable
+	public sealed class RSSocket : IRunnable, IRsSocket
 	{
 		private NetworkStream inputStream;
 

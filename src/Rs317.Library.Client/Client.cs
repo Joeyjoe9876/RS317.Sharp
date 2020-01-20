@@ -391,7 +391,7 @@ namespace Rs317.Sharp
 		private BaseRsImageProducer<TGraphicsType> gameScreenImageProducer;
 		private BaseRsImageProducer<TGraphicsType> chatboxImageProducer;
 		private int daysSinceRecoveryChange;
-		protected RSSocket socket { get; private set; }
+		protected IRsSocket socket { get; private set; }
 		private int privateMessagePointer;
 		private int minimapZoom;
 		private int randomisationMinimapZoom;
@@ -5613,7 +5613,7 @@ namespace Rs317.Sharp
 			gameScreenImageProducer.drawGraphics(4, base.gameGraphics, 4);
 			minimapState = 0;
 			destinationX = 0;
-			RSSocket rsSocket = socket;
+			IRsSocket rsSocket = socket;
 			LoggedIn.Update(false);
 			loginFailures = 0;
 			login(EnteredUsername, EnteredPassword, true);
@@ -8707,9 +8707,9 @@ namespace Rs317.Sharp
 			loginMessage2 = "Error connecting to server.";
 		}
 
-		protected void ConnectToGameServer()
+		protected IRsSocket ConnectToGameServer()
 		{
-			socket = new RSSocket(this.RunnableStarterStrategy, openSocket(43594 + portOffset));
+			return socket = SocketFactory.Create(new SocketCreationContext(signlink.socketip.ToString(), 43594 + portOffset));
 		}
 
 		//TODO: switch to enum rights.
@@ -10242,8 +10242,7 @@ namespace Rs317.Sharp
 			Console.WriteLine("draw-cycle:" + drawCycle);
 			Console.WriteLine("ptype:" + packetOpcode);
 			Console.WriteLine("psize:" + packetSize);
-			if(socket != null)
-				socket.printDebug();
+
 			base.debugRequested = true;
 		}
 

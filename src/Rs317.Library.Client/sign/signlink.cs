@@ -249,7 +249,7 @@ namespace Rs317.Sharp
 		public static Object applet = null;
 		public static bool IsSignLinkThreadActive { get; private set; }
 		private static int threadliveid;
-		private static IPAddress socketip;
+		public static IPAddress socketip { get; private set; }
 		private static int socketreq;
 		private static TcpClient socket = null;
 		public static String dns = null;
