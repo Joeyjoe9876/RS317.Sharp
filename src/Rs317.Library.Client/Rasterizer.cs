@@ -1813,120 +1813,199 @@ namespace Rs317.Sharp
 
 		}
 
-		private static void method379(int[] ai, ReadOnlySpan<int> texture, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
+		private unsafe static void method379(int[] ai, ReadOnlySpan<int> texture, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
 			int k2, int l2, int i3)
 		{
-			int i = 0; // was parameter
-			int j = 0; // was parameter
-			if(l >= i1)
-				return;
-			int j3;
-			int k3;
-			if(restrictEdges)
+			//This is a major performance beneficial change that removes the significant burden of Span indexer.
+			//Profiled the indexer was eating 40% of frametime, though deep profiling dramatically impacts this
+			//with 100,000+ calls to the indexer per frame.
+			fixed (int* texturePtr = texture)
 			{
-				j3 = (k1 - j1) / (i1 - l);
-				if(i1 > DrawingArea.centerX)
-					i1 = DrawingArea.centerX;
-				if(l < 0)
-				{
-					j1 -= l * j3;
-					l = 0;
-				}
-
+				int i = 0; // was parameter
+				int j = 0; // was parameter
 				if(l >= i1)
 					return;
-				k3 = i1 - l >> 3;
-				j3 <<= 12;
-				j1 <<= 9;
-			}
-			else
-			{
-				if(i1 - l > 7)
+				int j3;
+				int k3;
+				if(restrictEdges)
 				{
+					j3 = (k1 - j1) / (i1 - l);
+					if(i1 > DrawingArea.centerX)
+						i1 = DrawingArea.centerX;
+					if(l < 0)
+					{
+						j1 -= l * j3;
+						l = 0;
+					}
+
+					if(l >= i1)
+						return;
 					k3 = i1 - l >> 3;
-					j3 = (k1 - j1) * anIntArray1468[k3] >> 6;
+					j3 <<= 12;
+					j1 <<= 9;
 				}
 				else
 				{
-					k3 = 0;
-					j3 = 0;
+					if(i1 - l > 7)
+					{
+						k3 = i1 - l >> 3;
+						j3 = (k1 - j1) * anIntArray1468[k3] >> 6;
+					}
+					else
+					{
+						k3 = 0;
+						j3 = 0;
+					}
+
+					j1 <<= 9;
 				}
 
-				j1 <<= 9;
-			}
+				k += l;
+				int j4 = 0;
+				int l4 = 0;
+				int l6 = l - centreX;
+				l1 += (k2 >> 3) * l6;
+				i2 += (l2 >> 3) * l6;
+				j2 += (i3 >> 3) * l6;
+				int l5 = j2 >> 14;
+				if(l5 != 0)
+				{
+					i = l1 / l5;
+					j = i2 / l5;
+					if(i < 0)
+						i = 0;
+					else if(i > 16256)
+						i = 16256;
+				}
 
-			k += l;
-			int j4 = 0;
-			int l4 = 0;
-			int l6 = l - centreX;
-			l1 += (k2 >> 3) * l6;
-			i2 += (l2 >> 3) * l6;
-			j2 += (i3 >> 3) * l6;
-			int l5 = j2 >> 14;
-			if(l5 != 0)
-			{
-				i = l1 / l5;
-				j = i2 / l5;
-				if(i < 0)
-					i = 0;
-				else if(i > 16256)
-					i = 16256;
-			}
+				l1 += k2;
+				i2 += l2;
+				j2 += i3;
+				l5 = j2 >> 14;
+				if(l5 != 0)
+				{
+					j4 = l1 / l5;
+					l4 = i2 / l5;
+					if(j4 < 7)
+						j4 = 7;
+					else if(j4 > 16256)
+						j4 = 16256;
+				}
 
-			l1 += k2;
-			i2 += l2;
-			j2 += i3;
-			l5 = j2 >> 14;
-			if(l5 != 0)
-			{
-				j4 = l1 / l5;
-				l4 = i2 / l5;
-				if(j4 < 7)
-					j4 = 7;
-				else if(j4 > 16256)
-					j4 = 16256;
-			}
+				int j7 = j4 - i >> 3;
+				int l7 = l4 - j >> 3;
+				i += j1 & 0x600000;
+				int j8 = j1 >> 23;
+				if(opaque)
+				{
+					while(k3-- > 0)
+					{
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i += j7;
+						j += l7;
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i += j7;
+						j += l7;
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i += j7;
+						j += l7;
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i += j7;
+						j += l7;
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i += j7;
+						j += l7;
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i += j7;
+						j += l7;
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i += j7;
+						j += l7;
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i = j4;
+						j = l4;
+						l1 += k2;
+						i2 += l2;
+						j2 += i3;
+						int i6 = j2 >> 14;
+						if(i6 != 0)
+						{
+							j4 = l1 / i6;
+							l4 = i2 / i6;
+							if(j4 < 7)
+								j4 = 7;
+							else if(j4 > 16256)
+								j4 = 16256;
+						}
 
-			int j7 = j4 - i >> 3;
-			int l7 = l4 - j >> 3;
-			i += j1 & 0x600000;
-			int j8 = j1 >> 23;
-			if(opaque)
-			{
+						j7 = j4 - i >> 3;
+						l7 = l4 - j >> 3;
+						j1 += j3;
+						i += j1 & 0x600000;
+						j8 = j1 >> 23;
+					}
+
+					for(k3 = i1 - l & 7; k3-- > 0;)
+					{
+						ai[k++] = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8);
+						i += j7;
+						j += l7;
+					}
+
+					return;
+				}
+
 				while(k3-- > 0)
 				{
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					int i9;
+					if((i9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = i9;
+					k++;
 					i += j7;
 					j += l7;
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					if((i9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = i9;
+					k++;
 					i += j7;
 					j += l7;
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					if((i9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = i9;
+					k++;
 					i += j7;
 					j += l7;
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					if((i9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = i9;
+					k++;
 					i += j7;
 					j += l7;
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					if((i9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = i9;
+					k++;
 					i += j7;
 					j += l7;
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					if((i9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = i9;
+					k++;
 					i += j7;
 					j += l7;
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					if((i9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = i9;
+					k++;
 					i += j7;
 					j += l7;
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					if((i9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = i9;
+					k++;
 					i = j4;
 					j = l4;
 					l1 += k2;
 					i2 += l2;
 					j2 += i3;
-					int i6 = j2 >> 14;
-					if(i6 != 0)
+					int j6 = j2 >> 14;
+					if(j6 != 0)
 					{
-						j4 = l1 / i6;
-						l4 = i2 / i6;
+						j4 = l1 / j6;
+						l4 = i2 / j6;
 						if(j4 < 7)
 							j4 = 7;
 						else if(j4 > 16256)
@@ -1940,90 +2019,16 @@ namespace Rs317.Sharp
 					j8 = j1 >> 23;
 				}
 
-				for(k3 = i1 - l & 7; k3-- > 0;)
+				for(int l3 = i1 - l & 7; l3-- > 0;)
 				{
-					ai[k++] = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8);
+					int j9;
+					if((j9 = (int)((uint)texturePtr[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
+						ai[k] = j9;
+					k++;
 					i += j7;
 					j += l7;
 				}
-
-				return;
 			}
-
-			while(k3-- > 0)
-			{
-				int i9;
-				if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = i9;
-				k++;
-				i += j7;
-				j += l7;
-				if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = i9;
-				k++;
-				i += j7;
-				j += l7;
-				if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = i9;
-				k++;
-				i += j7;
-				j += l7;
-				if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = i9;
-				k++;
-				i += j7;
-				j += l7;
-				if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = i9;
-				k++;
-				i += j7;
-				j += l7;
-				if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = i9;
-				k++;
-				i += j7;
-				j += l7;
-				if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = i9;
-				k++;
-				i += j7;
-				j += l7;
-				if((i9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = i9;
-				k++;
-				i = j4;
-				j = l4;
-				l1 += k2;
-				i2 += l2;
-				j2 += i3;
-				int j6 = j2 >> 14;
-				if(j6 != 0)
-				{
-					j4 = l1 / j6;
-					l4 = i2 / j6;
-					if(j4 < 7)
-						j4 = 7;
-					else if(j4 > 16256)
-						j4 = 16256;
-				}
-
-				j7 = j4 - i >> 3;
-				l7 = l4 - j >> 3;
-				j1 += j3;
-				i += j1 & 0x600000;
-				j8 = j1 >> 23;
-			}
-
-			for(int l3 = i1 - l & 7; l3-- > 0;)
-			{
-				int j9;
-				if((j9 = (int)((uint)texture[(j & 0x3f80) + (i >> 7)] >> j8)) != 0)
-					ai[k] = j9;
-				k++;
-				i += j7;
-				j += l7;
-			}
-
 		}
 
 		public static void nullLoader()
