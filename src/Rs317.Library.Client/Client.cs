@@ -8440,9 +8440,12 @@ namespace Rs317.Sharp
 				stream.position = 0;
 				stream.put(14);
 				stream.put(nameHash);
+				Console.WriteLine($"Right before initial socket write.");
 				socket.write(2, stream.buffer);
 				for (int ignoredByte = 0; ignoredByte < 8; ignoredByte++)
 					socket.read();
+
+				Console.WriteLine($"Reading connection init code.");
 
 				ConnectionInitializationResponseCode responseCode = (ConnectionInitializationResponseCode) socket.read();
 				ConnectionInitializationResponseCode initialResponseCode = responseCode;
@@ -8709,6 +8712,7 @@ namespace Rs317.Sharp
 
 		protected IRsSocket ConnectToGameServer()
 		{
+			Console.WriteLine($"Connecting to Server: {signlink.socketip.ToString()}:{43594 + portOffset}");
 			return socket = SocketFactory.Create(new SocketCreationContext(signlink.socketip.ToString(), 43594 + portOffset));
 		}
 
@@ -9630,54 +9634,7 @@ namespace Rs317.Sharp
 		/// <returns></returns>
 		private NetworkStream openJagGrabInputStream(String s)
 		{
-			// if(!abool872)
-			// if(signlink.mainapp != null)
-			// return signlink.openurl(s);
-			// else
-			// return new DataInputStream((new URL(getCodeBase(), s)).openStream());
-			if(jaggrabSocket != null)
-			{
-				try
-				{
-					jaggrabSocket.Close();
-				}
-				catch(Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
-
-				jaggrabSocket = null;
-			}
-
-			jaggrabSocket = openSocketAsync(43595).ConfigureAwait(false).GetAwaiter().GetResult();
-			jaggrabSocket.SendTimeout = 10000;
-			jaggrabSocket.ReceiveTimeout = 10000;
-			NetworkStream inputstream = jaggrabSocket.GetStream();
-			NetworkStream outputstream = jaggrabSocket.GetStream();
-			outputstream.Write(ASCIIEncoding.ASCII.GetBytes("JAGGRAB /" + s + "\n\n"), 0, ("JAGGRAB /" + s + "\n\n").Length);
-			return inputstream;
-		}
-
-		//TODO: Add exception documentation
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <exception cref=""></exception>
-		/// <returns></returns>
-		public Task<TcpClient> openSocketAsync(int port)
-		{
-			return signlink.openSocketAsync(port);
-		}
-
-		//TODO: Add exception documentation
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <exception cref=""></exception>
-		/// <returns></returns>
-		public TcpClient openSocket(int port)
-		{
-			return signlink.openSocket(port);
+			throw new NotImplementedException($"Jag Grab is not implemented.");
 		}
 
 		private void parseGroupPacket(IBufferReadable stream, int opcode)

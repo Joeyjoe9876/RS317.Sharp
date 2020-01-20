@@ -12,8 +12,6 @@ namespace Rs317.Sharp
 
 		void startRunnable(IRunnable runnable, int priority);
 
-		Task<TcpClient> openSocketAsync(int port);
-
 		bool isLoggedIn { get; }
 
 		int CurrentTick { get; }
