@@ -17,7 +17,7 @@ namespace Rs317.Sharp
 		private MonoBehaviour ClientMonoBehaviour { get; }
 
 		public RsUnityWebGLClient(ClientConfiguration config, UnityRsGraphics graphicsObject, [NotNull] MonoBehaviour clientMonoBehaviour) 
-			: base(config, graphicsObject, new WebGLRunnableStarterStrategy(), new DefaultRsSocketFactory(new WebGLSocketThreadRunnableStarterStrategy()))
+			: base(config, graphicsObject, new WebGLRunnableStarterStrategy(), new WebGLTcpClientRsSocketFactory())
 		{
 			if (config == null) throw new ArgumentNullException(nameof(config));
 
