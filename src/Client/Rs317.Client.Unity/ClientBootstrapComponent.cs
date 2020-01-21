@@ -93,10 +93,13 @@ namespace Rs317.Sharp
 		{
 			if (RsUnityPlatform.isWebGLBuild)
 			{
+				//Used for Task.Delay in WebGL (Task.Delay doesn't work in WebGL directly)
+				WebGLUnityTaskDelayFactory delayFactory = new UnityEngine.GameObject("Task Delayer").AddComponent<WebGLUnityTaskDelayFactory>();
+
 				if (RsUnityPlatform.isInEditor)
-					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new DefaultWebSocketClientFactory());
+					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new DefaultWebSocketClientFactory(), delayFactory);
 				else
-					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new WebGLWebSocketFactory());
+					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new WebGLWebSocketFactory(), delayFactory);
 			}
 			else if(RsUnityPlatform.isPlaystationBuild)
 				return new RsUnityPS4Client(configuration, GraphicsObject);

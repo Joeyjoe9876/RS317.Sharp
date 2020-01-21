@@ -14,14 +14,17 @@ namespace Rs317.Sharp
 {
 	public sealed class RsUnityWebGLClient : RsUnityClient
 	{
+		private ITaskDelayFactory TaskDelayFactory { get; }
+
 		private MonoBehaviour ClientMonoBehaviour { get; }
 
-		public RsUnityWebGLClient(ClientConfiguration config, UnityRsGraphics graphicsObject, [NotNull] MonoBehaviour clientMonoBehaviour) 
-			: this(config, graphicsObject, clientMonoBehaviour, new WebGLTcpClientRsSocketFactory())
+		public RsUnityWebGLClient(ClientConfiguration config, UnityRsGraphics graphicsObject, [NotNull] MonoBehaviour clientMonoBehaviour, ITaskDelayFactory taskDelayFactory) 
+			: this(config, graphicsObject, clientMonoBehaviour, new WebGLTcpClientRsSocketFactory(), taskDelayFactory)
 		{
+
 		}
 
-		public RsUnityWebGLClient(ClientConfiguration config, UnityRsGraphics graphicsObject, [NotNull] MonoBehaviour clientMonoBehaviour, IRsSocketFactory socketFactory)
+		public RsUnityWebGLClient(ClientConfiguration config, UnityRsGraphics graphicsObject, [NotNull] MonoBehaviour clientMonoBehaviour, IRsSocketFactory socketFactory, ITaskDelayFactory taskDelayFactory)
 			: base(config, graphicsObject, new WebGLRunnableStarterStrategy(), socketFactory)
 		{
 			if(config == null) throw new ArgumentNullException(nameof(config));
@@ -30,6 +33,7 @@ namespace Rs317.Sharp
 
 			//Only need to override this for WebGL.
 			Sprite.ExternalLoadImageHook += ExternalLoadImageHook;
+			TaskDelayFactory = taskDelayFactory;
 		}
 
 		private LoadedImagePixels ExternalLoadImageHook(byte[] arg)
@@ -92,7 +96,7 @@ namespace Rs317.Sharp
 			//Webgl requires a non-blocking archive loading system.
 			/*onDemandFetcher = new OnDemandFetcher();
 			onDemandFetcher.start(archiveVersions, this);*/
-			WebGLOnDemandFetcher fetcher = new WebGLOnDemandFetcher();
+			WebGLOnDemandFetcher fetcher = new WebGLOnDemandFetcher(TaskDelayFactory);
 			onDemandFetcher = fetcher;
 			fetcher.Initialize(archiveVersions, this);
 			ClientMonoBehaviour.StartCoroutine(fetcher.RunCoroutine());
@@ -139,12 +143,7 @@ namespace Rs317.Sharp
 			currentlyDrawingFlames = false;
 		}
 
-		public override void startUp()
-		{
-			ClientMonoBehaviour.StartCoroutine(StartupCoroutine());
-		}
-
-		public IEnumerator StartupCoroutine()
+		public async Task StartupCoroutine()
 		{
 			if(!wasClientStartupCalled)
 				wasClientStartupCalled = true;
@@ -156,7 +155,7 @@ namespace Rs317.Sharp
 			if(clientRunning)
 			{
 				rsAlreadyLoaded = true;
-				yield break;
+				return;
 			}
 
 			clientRunning = true;
@@ -181,7 +180,7 @@ namespace Rs317.Sharp
 			if(!validHost)
 			{
 				genericLoadingError = true;
-				yield break;
+				return;
 			}
 
 			if(signlink.cache_dat != null)
@@ -220,12 +219,12 @@ namespace Rs317.Sharp
 			{
 				processOnDemandQueue(false);
 
-				yield return null;
+				await TaskDelayFactory.Create(1);
 
 				if(onDemandFetcher.failedRequests > 3)
 				{
 					loadError();
-					yield break;
+					return;
 				}
 			}
 
@@ -251,12 +250,12 @@ namespace Rs317.Sharp
 					throw;
 				}
 
-				yield return null;
+				await TaskDelayFactory.Create(1);
 
 				if(onDemandFetcher.failedRequests > 3)
 				{
 					loadError();
-					yield break;
+					return;
 				}
 			}
 
@@ -277,7 +276,7 @@ namespace Rs317.Sharp
 					drawLoadingText(70, "Loading models - " + (remaining * 100) / fileRequestCount + "%");
 				processOnDemandQueue(false);
 
-				yield return null;
+				await TaskDelayFactory.Create(1);
 			}
 
 			if(caches[0] != null)
@@ -303,7 +302,7 @@ namespace Rs317.Sharp
 						drawLoadingText(75, "Loading maps - " + (remaining * 100) / fileRequestCount + "%");
 					processOnDemandQueue(false);
 
-					yield return new WaitForSeconds(0.1f);
+					await TaskDelayFactory.Create(100);
 				}
 			}
 
@@ -333,7 +332,7 @@ namespace Rs317.Sharp
 			}
 
 			//Don't need to even preload.
-			yield return ((WebGLOnDemandFetcher)onDemandFetcher).preloadRegionsCoroutine(membersWorld);
+			await ((WebGLOnDemandFetcher)onDemandFetcher).preloadRegionsCoroutine(membersWorld);
 
 			//Remove low memory check.
 			int count = onDemandFetcher.fileCount(2);
@@ -366,8 +365,6 @@ namespace Rs317.Sharp
 			//Sound loading disabled in WebGL.
 			byte[] soundData = archiveSounds.decompressFile("sounds.dat");
 			Effect.load(new Default317Buffer(soundData));
-
-			isStartupCoroutineFinished.SetResult(true);
 		}
 
 		private int PendingInterfaceUnpackTracker = 0;
@@ -752,15 +749,12 @@ namespace Rs317.Sharp
 
 		private TaskCompletionSource<bool> isUnpackedInterfaceFinished = new TaskCompletionSource<bool>();
 
-		private TaskCompletionSource<bool> isStartupCoroutineFinished = new TaskCompletionSource<bool>();
-
 		private async Task AppletRunCoroutine()
 		{
 			Console.WriteLine($"Loading.");
 			drawLoadingText(0, "Loading...");
-			ClientMonoBehaviour.StartCoroutine(StartupCoroutine());
 
-			await isStartupCoroutineFinished.Task;
+			await StartupCoroutine();
 
 			WebGLMediaLoaderHack loader = new UnityEngine.GameObject("MediaLoader").AddComponent<WebGLMediaLoaderHack>();
 			loader.Client = this;
@@ -829,7 +823,7 @@ namespace Rs317.Sharp
 					delay = minDelay;
 
 				if (delay > 1)
-					await Task.Delay(delay);
+					await TaskDelayFactory.Create(delay);
 
 				for(; count < 256; count += ratio)
 				{

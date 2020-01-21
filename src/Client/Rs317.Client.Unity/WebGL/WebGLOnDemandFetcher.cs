@@ -3,12 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Rs317.Sharp
 {
 	public sealed class WebGLOnDemandFetcher : OnDemandFetcher
 	{
+		private ITaskDelayFactory TaskDelayFactory { get; }
+
+		public WebGLOnDemandFetcher([NotNull] ITaskDelayFactory taskDelayFactory)
+		{
+			TaskDelayFactory = taskDelayFactory ?? throw new ArgumentNullException(nameof(taskDelayFactory));
+		}
+
 		public void Initialize(Archive streamLoader, IBaseClient client)
 		{
 			String[] strings = { "model_version", "anim_version", "midi_version", "map_version" };
@@ -66,16 +75,16 @@ namespace Rs317.Sharp
 			clientInstance = client;
 		}
 
-		public IEnumerator preloadRegionsCoroutine(bool flag)
+		public async Task preloadRegionsCoroutine(bool flag)
 		{
 			int j = MapIndices.Count;
 			for(int k = 0; k < j; k++)
 				if(flag || MapIndices[k].isMembers)
 				{
 					setPriority((byte)2, 3, MapIndices[k].ObjectFileId);
-					yield return null;
+					await TaskDelayFactory.Create(1);
 					setPriority((byte)2, 3, MapIndices[k].TerrainId);
-					yield return null;
+					await TaskDelayFactory.Create(1);
 				}
 		}
 
