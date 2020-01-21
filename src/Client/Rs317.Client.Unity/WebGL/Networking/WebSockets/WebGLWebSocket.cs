@@ -32,7 +32,7 @@ namespace Rs317.Sharp
 
 		public event WebSocketCloseEventHandler OnClose;
 
-		public WebGLWebSocket(string url, int instanceId)
+		public WebGLWebSocket(int instanceId)
 		{
 			this.instanceId = instanceId;
 		}
@@ -47,7 +47,7 @@ namespace Rs317.Sharp
 			return this.instanceId;
 		}
 
-		public Task Connect()
+		private Task Connect()
 		{
 			int ret = WebSocketConnect(this.instanceId);
 
@@ -70,6 +70,12 @@ namespace Rs317.Sharp
 		public Task Receive()
 		{
 			return Task.CompletedTask;
+		}
+
+		public async Task<bool> ConnectAsync(SocketCreationContext connectionInfo)
+		{
+			await Connect();
+			return this.State == WebSocketState.Connecting || this.State == WebSocketState.Open;
 		}
 
 		public unsafe Task Send(byte[] data, int offset, int length)

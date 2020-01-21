@@ -19,5 +19,7 @@ namespace Rs317.Sharp
 		Task Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null);
 
 		Task Receive();
+
+		Task<bool> ConnectAsync(SocketCreationContext connectionInfo);
 	}
 }

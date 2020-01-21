@@ -13,8 +13,6 @@ namespace Rs317.Sharp
 			editorWebSocketClient.OnOpen += () =>  Console.WriteLine($"Opened WebSocket.");
 			WebSocketRsSocketClientAdapter clientAdapter = new WebSocketRsSocketClientAdapter(editorWebSocketClient);
 
-			editorWebSocketClient.Connect();
-
 			return clientAdapter;
 		}
 	}

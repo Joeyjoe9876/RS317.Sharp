@@ -291,7 +291,7 @@ namespace Rs317.Sharp
 				keyStatus[i] = 0;
 		}
 
-		public virtual void processGameLoop()
+		public virtual async Task processGameLoop()
 		{
 		}
 
@@ -313,7 +313,12 @@ namespace Rs317.Sharp
 			cleanUpForQuit();
 		}
 
-		public virtual void run()
+		public virtual async Task run()
+		{
+			await StartGameEngineLoop();
+		}
+
+		protected async Task StartGameEngineLoop()
 		{
 			try
 			{
@@ -325,15 +330,15 @@ namespace Rs317.Sharp
 				int delay = 1;
 				int count = 0;
 				int intex = 0;
-				for(int otim = 0; otim < 10; otim++)
+				for (int otim = 0; otim < 10; otim++)
 					otims[otim] = TimeService.CurrentTimeInMilliseconds();
 
-				while(gameState >= 0)
+				while (gameState >= 0)
 				{
-					if(gameState > 0)
+					if (gameState > 0)
 					{
 						gameState--;
-						if(gameState == 0)
+						if (gameState == 0)
 						{
 							exit();
 							return;
@@ -345,64 +350,63 @@ namespace Rs317.Sharp
 					ratio = 300;
 					delay = 1;
 					long currentTime = TimeService.CurrentTimeInMilliseconds();
-					if(otims[opos] == 0L)
+					if (otims[opos] == 0L)
 					{
 						ratio = i2;
 						delay = j2;
 					}
-					else if(currentTime > otims[opos])
-						ratio = (int)(2560 * delayTime / (currentTime - otims[opos]));
+					else if (currentTime > otims[opos])
+						ratio = (int) (2560 * delayTime / (currentTime - otims[opos]));
 
-					if(ratio < 25)
+					if (ratio < 25)
 						ratio = 25;
-					if(ratio > 256)
+					if (ratio > 256)
 					{
 						ratio = 256;
-						delay = (int)(delayTime - (currentTime - otims[opos]) / 10L);
+						delay = (int) (delayTime - (currentTime - otims[opos]) / 10L);
 					}
 
-					if(delay > delayTime)
+					if (delay > delayTime)
 						delay = delayTime;
 					otims[opos] = currentTime;
 					opos = (opos + 1) % 10;
-					if(delay > 1)
+					if (delay > 1)
 					{
-						for(int otim = 0; otim < 10; otim++)
-							if(otims[otim] != 0L)
+						for (int otim = 0; otim < 10; otim++)
+							if (otims[otim] != 0L)
 								otims[otim] += delay;
-
 					}
 
-					if(delay < minDelay)
+					if (delay < minDelay)
 						delay = minDelay;
 					try
 					{
 						Thread.Sleep(delay);
 					}
-					catch(Exception _ex) //TODO: Log
+					catch (Exception _ex) //TODO: Log
 					{
 						intex++;
 					}
 
-					for(; count < 256; count += ratio)
+					for (; count < 256; count += ratio)
 					{
 						clickType = eventMouseButton;
 						clickX = eventClickX;
 						clickY = eventClickY;
 						clickTime = eventClickTime;
 						eventMouseButton = 0;
-						processGameLoop();
+						await processGameLoop();
 						readIndex = writeIndex;
 					}
 
 					count &= 0xff;
-					if(delayTime > 0)
+					if (delayTime > 0)
 						fps = (1000 * ratio) / (delayTime * 256);
 					processDrawing();
-					if(debugRequested)
+					if (debugRequested)
 					{
 						Console.WriteLine("ntime:" + currentTime);
-						for(int i = 0; i < 10; i++)
+						for (int i = 0; i < 10; i++)
 						{
 							int otim = ((opos - i - 1) + 20) % 10;
 							Console.WriteLine("otim" + otim + ":" + otims[otim]);
@@ -416,7 +420,7 @@ namespace Rs317.Sharp
 					}
 				}
 
-				if(gameState == -1)
+				if (gameState == -1)
 					exit();
 			}
 			catch (Exception e)

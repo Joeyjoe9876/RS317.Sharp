@@ -81,15 +81,10 @@ namespace Rs317.Sharp
 			gameGraphics = CreateGraphicsProvider();
 			fullGameScreen = CreateNewImageProducer(this.width, height, nameof(fullGameScreen));
 
-			run();
-		}
-
-		private IEnumerator RunnableRunCoroutine(IRunnable runnable)
-		{
-			yield return new WaitForEndOfFrame();
-
-			//Hope for the best, how it doesn't run infinitely or Unity will break.
-			runnable.run();
+			//Creates the Unity engine component that will start the client's
+			//GameEngine loop.
+			AsyncStartRunnableComponent component = new UnityEngine.GameObject("Applet Container").AddComponent<AsyncStartRunnableComponent>();
+			component.RunnableObject = this;
 		}
 
 		protected override void StartOnDemandFetcher(Archive archiveVersions)
@@ -111,14 +106,11 @@ namespace Rs317.Sharp
 			ClientMonoBehaviour.StartCoroutine(DrawFlamesCoroutine());
 		}
 
-		public override void run()
+		public override async Task run()
 		{
 			if(!shouldDrawFlames)
 			{
-				//If it's webgl, we need to implement it on the main thread
-				//as a coroutine. Otherwise WebGL will just not work due to
-				//threading limitations.
-				ClientMonoBehaviour.StartCoroutine(AppletRunCoroutine());
+				await AppletRunCoroutine();
 			}
 		}
 
@@ -149,10 +141,7 @@ namespace Rs317.Sharp
 
 		public override void startUp()
 		{
-			if (!RsUnityPlatform.isWebGLBuild)
-				base.startUp();
-			else
-				ClientMonoBehaviour.StartCoroutine(StartupCoroutine());
+			ClientMonoBehaviour.StartCoroutine(StartupCoroutine());
 		}
 
 		public IEnumerator StartupCoroutine()
@@ -378,7 +367,7 @@ namespace Rs317.Sharp
 			byte[] soundData = archiveSounds.decompressFile("sounds.dat");
 			Effect.load(new Default317Buffer(soundData));
 
-			isStartupCoroutineFinished = true;
+			isStartupCoroutineFinished.SetResult(true);
 		}
 
 		private int PendingInterfaceUnpackTracker = 0;
@@ -416,7 +405,7 @@ namespace Rs317.Sharp
 				}
 			}
 
-			isUnpackedInterfaceFinished = true;
+			isUnpackedInterfaceFinished.SetResult(true);
 			return true;
 		}
 
@@ -496,7 +485,7 @@ namespace Rs317.Sharp
 			mouseDetection = new MouseDetection(this);
 			//startRunnable(mouseDetection, 10);
 
-			isUnpackedContentFinished = true;
+			isUnpackedContentFinished.SetResult(true);
 			yield return null;
 		}
 
@@ -759,32 +748,29 @@ namespace Rs317.Sharp
 			return false;
 		}
 
-		private bool isUnpackedContentFinished = false;
+		private TaskCompletionSource<bool> isUnpackedContentFinished = new TaskCompletionSource<bool>();
 
-		private bool isUnpackedInterfaceFinished = false;
+		private TaskCompletionSource<bool> isUnpackedInterfaceFinished = new TaskCompletionSource<bool>();
 
-		private bool isStartupCoroutineFinished = false;
+		private TaskCompletionSource<bool> isStartupCoroutineFinished = new TaskCompletionSource<bool>();
 
-		private IEnumerator AppletRunCoroutine()
+		private async Task AppletRunCoroutine()
 		{
 			Console.WriteLine($"Loading.");
 			drawLoadingText(0, "Loading...");
 			ClientMonoBehaviour.StartCoroutine(StartupCoroutine());
 
-			while (!isStartupCoroutineFinished)
-				yield return null;
+			await isStartupCoroutineFinished.Task;
 
 			WebGLMediaLoaderHack loader = new UnityEngine.GameObject("MediaLoader").AddComponent<WebGLMediaLoaderHack>();
 			loader.Client = this;
 
-			while (!isUnpackedContentFinished)
-				yield return null;
+			await isUnpackedContentFinished.Task;
 
 			WebGLInterfaceUnpackLoaderHack loader2 = new UnityEngine.GameObject("InterfaceLoader").AddComponent<WebGLInterfaceUnpackLoaderHack>();
 			loader2.Client = this;
 
-			while (!isUnpackedInterfaceFinished)
-				yield return null;
+			await isUnpackedInterfaceFinished.Task;
 
 			int opos = 0;
 			int ratio = 256;
@@ -802,7 +788,7 @@ namespace Rs317.Sharp
 					if(gameState == 0)
 					{
 						exit();
-						yield break;
+						return;
 					}
 				}
 
@@ -843,10 +829,7 @@ namespace Rs317.Sharp
 					delay = minDelay;
 
 				if (delay > 1)
-					//Delay is in milliseconds, so we need to convert to seconds.
-					yield return new WaitForSeconds((float) delay / 1000.0f);
-				else
-					yield return null;
+					await Task.Delay(delay);
 
 				for(; count < 256; count += ratio)
 				{
@@ -855,7 +838,7 @@ namespace Rs317.Sharp
 					clickY = eventClickY;
 					clickTime = eventClickTime;
 					eventMouseButton = 0;
-					processGameLoop();
+					await processGameLoop();
 					readIndex = writeIndex;
 				}
 

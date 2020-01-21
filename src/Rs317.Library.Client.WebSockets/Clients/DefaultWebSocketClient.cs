@@ -19,8 +19,6 @@ namespace Rs317.Sharp
 
 		public event WebSocketCloseEventHandler OnClose;
 
-		private Uri EndpointUri { get; }
-
 		private ClientWebSocket m_Socket { get; set; } = new ClientWebSocket();
 
 		private byte[] InternalBuffer { get; } = new byte[8192];
@@ -31,20 +29,18 @@ namespace Rs317.Sharp
 
 		public DefaultWebSocketClient(string url)
 		{
-			EndpointUri = new Uri(url);
-
-			string protocol = EndpointUri.Scheme;
-			if(!protocol.Equals("ws") && !protocol.Equals("wss"))
-				throw new ArgumentException("Unsupported protocol: " + protocol);
-
 			m_Socket = new ClientWebSocket();
 		}
 
-		public async Task Connect()
+		public async Task Connect(Uri endpointUri)
 		{
+			string protocol = endpointUri.Scheme;
+			if(!protocol.Equals("ws") && !protocol.Equals("wss"))
+				throw new ArgumentException("Unsupported protocol: " + protocol);
+
 			try
 			{
-				await m_Socket.ConnectAsync(EndpointUri, CancellationToken.None);
+				await m_Socket.ConnectAsync(endpointUri, CancellationToken.None);
 				OnOpen?.Invoke();
 			}
 			catch(Exception ex)
@@ -132,6 +128,12 @@ namespace Rs317.Sharp
 			{
 				isReading = false;
 			}
+		}
+
+		public async Task<bool> ConnectAsync(SocketCreationContext connectionInfo)
+		{
+			await Connect(new Uri($"ws://{connectionInfo.Endpoint}:{connectionInfo.Port}"));
+			return m_Socket.State == System.Net.WebSockets.WebSocketState.Connecting || m_Socket.State == System.Net.WebSockets.WebSocketState.Open;
 		}
 
 		//TODO: Handle code better.

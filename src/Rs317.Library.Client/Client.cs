@@ -8417,7 +8417,7 @@ namespace Rs317.Sharp
 			startRunnable(this, 2);
 		}
 
-		private void login(String playerUsername, String playerPassword, bool recoveredConnection)
+		private async Task login(String playerUsername, String playerPassword, bool recoveredConnection)
 		{
 			if(!recoveredConnection)
 			{
@@ -8426,29 +8426,29 @@ namespace Rs317.Sharp
 				drawLoginScreen(true);
 			}
 
-			HandleClientAuthentication(playerUsername, playerPassword, recoveredConnection);
+			await HandleClientAuthentication(playerUsername, playerPassword, recoveredConnection);
 		}
 
-		protected virtual void HandleClientAuthentication(string playerUsername, string playerPassword, bool recoveredConnection)
+		protected virtual async Task HandleClientAuthentication(string playerUsername, string playerPassword, bool recoveredConnection)
 		{
 			signlink.errorname = playerUsername;
 			try
 			{
-				ConnectToGameServer();
+				await ConnectToGameServer();
 				long nameLong = TextClass.nameToLong(playerUsername);
 				int nameHash = (int) (nameLong >> 16 & 31L);
 				stream.position = 0;
 				stream.put(14);
 				stream.put(nameHash);
-				socket.write(2, stream.buffer);
+				await socket.write(2, stream.buffer);
 				for (int ignoredByte = 0; ignoredByte < 8; ignoredByte++)
-					socket.read();
+					await socket.read();
 
-				ConnectionInitializationResponseCode responseCode = (ConnectionInitializationResponseCode) socket.read();
+				ConnectionInitializationResponseCode responseCode = (ConnectionInitializationResponseCode) await socket.read();
 				ConnectionInitializationResponseCode initialResponseCode = responseCode;
 				if (responseCode == ConnectionInitializationResponseCode.Success)
 				{
-					socket.read(inStream.buffer, 8);
+					await socket.read(inStream.buffer, 8);
 					inStream.position = 0;
 					serverSessionKey = inStream.getLong();
 					int[] seed = new int[4];
@@ -8488,8 +8488,8 @@ namespace Rs317.Sharp
 						seed[index] += 50;
 
 					encryption = new ISAACRandomGenerator(seed);
-					socket.write(loginStream.position, loginStream.buffer);
-					responseCode = (ConnectionInitializationResponseCode) socket.read();
+					await socket.write(loginStream.position, loginStream.buffer);
+					responseCode = (ConnectionInitializationResponseCode) await socket.read();
 				}
 
 				if (responseCode == ConnectionInitializationResponseCode.TryAgainLater)
@@ -8509,7 +8509,7 @@ namespace Rs317.Sharp
 
 				if (responseCode == ConnectionInitializationResponseCode.SuccessfulLogin)
 				{
-					HandleLoginSuccessful((ClientPrivilegeType) socket.read(), socket.read() == 1);
+					HandleLoginSuccessful((ClientPrivilegeType) await socket.read(), await socket.read() == 1);
 					return;
 				}
 
@@ -8638,7 +8638,7 @@ namespace Rs317.Sharp
 
 				if (responseCode == ConnectionInitializationResponseCode.SessionExistsOnAnotherServer)
 				{
-					for (int s = socket.read(); s >= 0; s--)
+					for (int s = await socket.read(); s >= 0; s--)
 					{
 						loginMessage1 = "You have only just left another world";
 						loginMessage2 = "Your profile will be transferred in: " + s + " seconds";
@@ -8653,7 +8653,7 @@ namespace Rs317.Sharp
 						}
 					}
 
-					login(playerUsername, playerPassword, recoveredConnection);
+					await login(playerUsername, playerPassword, recoveredConnection);
 					return;
 				}
 
@@ -8673,7 +8673,7 @@ namespace Rs317.Sharp
 							}
 
 							loginFailures++;
-							login(playerUsername, playerPassword, recoveredConnection);
+							await login(playerUsername, playerPassword, recoveredConnection);
 							return;
 						}
 						else
@@ -8707,10 +8707,13 @@ namespace Rs317.Sharp
 			loginMessage2 = "Error connecting to server.";
 		}
 
-		protected IRsSocket ConnectToGameServer()
+		protected async Task<IRsSocket> ConnectToGameServer()
 		{
+			SocketCreationContext context = new SocketCreationContext(signlink.socketip.ToString(), 43594 + portOffset);
 			Console.WriteLine($"Connecting to Server: {signlink.socketip.ToString()}:{43594 + portOffset}");
-			return socket = SocketFactory.Create(new SocketCreationContext(signlink.socketip.ToString(), 43594 + portOffset));
+			socket = SocketFactory.Create(context);
+			await socket.Connect(context);
+			return socket;
 		}
 
 		//TODO: switch to enum rights.
@@ -10302,20 +10305,19 @@ namespace Rs317.Sharp
 			anInt1213 = 0;
 		}
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public override void processGameLoop()
+		public override async Task processGameLoop()
 		{
 			if(rsAlreadyLoaded || loadingError || genericLoadingError)
 				return;
 			tick++;
 			if(!LoggedIn)
-				updateLogin();
+				await updateLogin();
 			else
 				updateGame();
 			processOnDemandQueue();
 		}
 
-		private void updateLogin()
+		private async Task updateLogin()
 		{
 			if(LoginScreenState == TitleScreenState.Default)
 			{
@@ -10361,7 +10363,7 @@ namespace Rs317.Sharp
 						&& base.clickY <= _y + 20)
 					{
 						loginFailures = 0;
-						OnLoginButtonClicked();
+						await OnLoginButtonClicked();
 						if(LoggedIn)
 							return;
 					}
@@ -10431,9 +10433,9 @@ namespace Rs317.Sharp
 			}
 		}
 
-		protected virtual void OnLoginButtonClicked()
+		protected virtual async Task OnLoginButtonClicked()
 		{
-			login(EnteredUsername, EnteredPassword, false);
+			await login(EnteredUsername, EnteredPassword, false);
 		}
 
 		private void processMenuClick()
@@ -11841,7 +11843,7 @@ namespace Rs317.Sharp
 						  + ((r & 0xFF00) * alpha + (g & 0xFF00) * b & 0xFF0000) >> 8);
 		}
 
-		public override void run()
+		public override Task run()
 		{
 			if(shouldDrawFlames)
 			{
@@ -11849,8 +11851,10 @@ namespace Rs317.Sharp
 			}
 			else
 			{
-				base.run();
+				return base.run();
 			}
+
+			return Task.CompletedTask;
 		}
 
 		private void saveMidi(bool flag, byte[] abyte0)

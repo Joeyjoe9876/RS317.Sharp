@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
@@ -25,7 +26,7 @@ namespace Rs317.Sharp
 			coordsX = new int[500];
 		}
 
-		public void run()
+		public async Task run()
 		{
 			while(running)
 			{
@@ -39,13 +40,7 @@ namespace Rs317.Sharp
 					}
 				}
 
-				try
-				{
-					Thread.Sleep(50);
-				}
-				catch(Exception _ex)
-				{
-				}
+				await Task.Delay(50);
 			}
 		}
 	}

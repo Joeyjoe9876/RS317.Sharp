@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Rs317.Sharp
 {
-	public sealed class UpdateTickRunnableComponent : MonoBehaviour
+	public sealed class UpdateTickRunnableComponent : MonoBehaviour, IRunnableHandlerSettable
 	{
 		public IRunnable RunnableObject { get; set; }
 

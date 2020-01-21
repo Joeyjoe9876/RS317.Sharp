@@ -114,9 +114,8 @@ namespace Rs317.Sharp
 			string url = $"ws://{context.Endpoint}:{context.Port}";
 			int instanceId = WebSocketAllocate(url);
 
-			WebGLWebSocket socket = new WebGLWebSocket(url, instanceId);
+			WebGLWebSocket socket = new WebGLWebSocket(instanceId);
 			instances.Add(instanceId, socket);
-			socket.Connect();
 
 			//Now we make an adapter for the IRsSocket interface.
 			return new WebSocketRsSocketClientAdapter(socket);

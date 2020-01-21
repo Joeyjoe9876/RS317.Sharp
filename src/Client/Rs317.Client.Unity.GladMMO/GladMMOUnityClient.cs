@@ -41,19 +41,21 @@ namespace Rs317.GladMMO
 			//This prevents the client from disconnecting.
 		}
 
-		public override void processGameLoop()
+		public override async Task processGameLoop()
 		{
 			GameManagerService.Service();
-			base.processGameLoop();
+			await base.processGameLoop();
 		}
 
-		protected override void OnLoginButtonClicked()
+		protected override Task OnLoginButtonClicked()
 		{
 			loginMessage1 = "";
 			loginMessage2 = "Connecting to server...";
 			drawLoginScreen(true);
 
 			OnLoginButtonClickedEvent?.Invoke(this, EventArgs.Empty);
+
+			return Task.CompletedTask;
 		}
 
 		protected override void SendIdlePing()

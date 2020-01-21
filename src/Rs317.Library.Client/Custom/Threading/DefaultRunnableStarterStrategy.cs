@@ -10,7 +10,7 @@ namespace Rs317.Sharp
 		public void StartRunnable(IRunnable runnable, int priority)
 		{
 			//Run it on the threadpool instead.
-			Task.Factory.StartNew(runnable.run, priority < 1 ? TaskCreationOptions.LongRunning : TaskCreationOptions.None);
+			Task.Factory.StartNew(async () => await runnable.run(), priority < 1 ? TaskCreationOptions.LongRunning : TaskCreationOptions.None);
 		}
 	}
 }

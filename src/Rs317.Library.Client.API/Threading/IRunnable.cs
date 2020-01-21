@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
@@ -14,6 +15,6 @@ namespace Rs317.Sharp
 		/// <summary>
 		/// The run method of the runnable.
 		/// </summary>
-		void run();
+		Task run();
 	}
 }

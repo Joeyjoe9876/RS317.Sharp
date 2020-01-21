@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
@@ -532,7 +533,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public void run()
+		public async Task run()
 		{
 			try
 			{
@@ -542,13 +543,8 @@ namespace Rs317.Sharp
 					int i = 20;
 					if(highestPriority == 0 && clientInstance.caches[0] != null)
 						i = 50;
-					try
-					{
-						Thread.Sleep(i);
-					}
-					catch(Exception _ex)
-					{
-					}
+
+					await Task.Delay(i);
 
 					waiting = true;
 					for(int j = 0; j < 100; j++)

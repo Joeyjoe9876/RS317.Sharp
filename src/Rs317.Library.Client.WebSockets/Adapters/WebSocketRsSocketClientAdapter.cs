@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
@@ -39,22 +40,22 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public void write(int i, byte[] abyte0)
+		public async Task write(int i, byte[] abyte0)
 		{
-			InternalSocket.Send(abyte0, 0, i);
+			await InternalSocket.Send(abyte0, 0, i);
 		}
 
-		public void read(byte[] abyte0, int j)
+		public async Task read(byte[] abyte0, int j)
 		{
 			try
 			{
-				if(PendingBytes < j)
-					InternalSocket.Receive();
-
 				int i = 0; // was parameter
 				int k;
 				for(; j > 0; j -= k)
 				{
+					if(PendingBytes < j)
+						await InternalSocket.Receive();
+
 					lock(SyncObj)
 					{
 						if (MessageQueue.Count > 0 || LeftoverArraySegment.HasValue)
@@ -107,11 +108,11 @@ namespace Rs317.Sharp
 			}
 		}
 
-		public int read()
+		public async Task<int> read()
 		{
 			try
 			{
-				read(SingleByteBuffer, 1);
+				await read(SingleByteBuffer, 1);
 				return SingleByteBuffer[0];
 			}
 			catch (Exception e)
@@ -132,6 +133,14 @@ namespace Rs317.Sharp
 		public void close()
 		{
 			InternalSocket.Close();
+		}
+
+		public Task<bool> Connect(SocketCreationContext socketConnectionContext)
+		{
+			if (InternalSocket.State == WebSocketState.Connecting || InternalSocket.State == WebSocketState.Open)
+				return Task.FromResult(true);
+
+			return InternalSocket.ConnectAsync(socketConnectionContext);
 		}
 	}
 }

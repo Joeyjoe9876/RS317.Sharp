@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
@@ -25,6 +26,8 @@ namespace Rs317.Sharp
 
 		private bool isWriter;
 		private bool hasIOError;
+
+		private byte[] SingleByteBuffer { get; } = new byte[1];
 
 		//TODO: Add exception documentation
 		/// <summary>
@@ -87,6 +90,12 @@ namespace Rs317.Sharp
 			buffer = null;
 		}
 
+		//Default implementation is to just return, caller should connect the socket.
+		public Task<bool> Connect(SocketCreationContext socketConnectionContext)
+		{
+			return Task.FromResult(true);
+		}
+
 		public void printDebug()
 		{
 			Console.WriteLine("dummy:" + closed);
@@ -109,12 +118,15 @@ namespace Rs317.Sharp
 		/// </summary>
 		/// <exception cref=""></exception>
 		/// <returns></returns>
-		public int read()
+		public async Task<int> read()
 		{
 			if (closed)
 				return 0;
 			else
-				return inputStream.ReadByte();
+			{
+				await read(SingleByteBuffer, 1);
+				return SingleByteBuffer[0];
+			}
 		}
 
 		//TODO: Add exception documentation
@@ -123,7 +135,7 @@ namespace Rs317.Sharp
 		/// </summary>
 		/// <exception cref=""></exception>
 		/// <returns></returns>
-		public void read(byte[] abyte0, int j)
+		public async Task read(byte[] abyte0, int j)
 		{
 			int i = 0; // was parameter
 			if (closed)
@@ -131,7 +143,7 @@ namespace Rs317.Sharp
 			int k;
 			for (; j > 0; j -= k)
 			{
-				k = inputStream.Read(abyte0, i, j);
+				k = await inputStream.ReadAsync(abyte0, i, j);
 				if (k <= 0)
 					throw new IOException("EOF");
 				i += k;
@@ -139,7 +151,7 @@ namespace Rs317.Sharp
 
 		}
 
-		public void run()
+		public async Task run()
 		{
 			while (isWriter)
 			{
@@ -158,6 +170,7 @@ namespace Rs317.Sharp
 
 					if (!isWriter)
 						return;
+
 					j = writeIndex;
 					if (buffIndex >= writeIndex)
 						i = buffIndex - writeIndex;
@@ -169,7 +182,7 @@ namespace Rs317.Sharp
 				{
 					try
 					{
-						outputStream.Write(buffer, j, i);
+						await outputStream.WriteAsync(buffer, j, i);
 					}
 					catch (IOException _ex)
 					{
@@ -180,7 +193,7 @@ namespace Rs317.Sharp
 					try
 					{
 						if (buffIndex == writeIndex)
-							outputStream.Flush();
+							await outputStream.FlushAsync();
 					}
 					catch (IOException _ex)
 					{
@@ -188,6 +201,8 @@ namespace Rs317.Sharp
 					}
 				}
 			}
+
+			return;
 		}
 
 		//TODO: Add exception documentation
@@ -196,10 +211,11 @@ namespace Rs317.Sharp
 		/// </summary>
 		/// <exception cref=""></exception>
 		/// <returns></returns>
-		public void write(int i, byte[] abyte0)
+		public Task write(int i, byte[] abyte0)
 		{
 			if (closed)
-				return;
+				return Task.CompletedTask;
+
 			if (hasIOError)
 			{
 				hasIOError = false;
@@ -226,6 +242,8 @@ namespace Rs317.Sharp
 
 				Monitor.PulseAll(this);
 			}
+
+			return Task.CompletedTask;
 		}
 	}
 }
