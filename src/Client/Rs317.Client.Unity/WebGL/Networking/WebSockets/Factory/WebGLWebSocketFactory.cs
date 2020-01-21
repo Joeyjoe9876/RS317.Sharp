@@ -119,7 +119,7 @@ namespace Rs317.Sharp
 			socket.Connect();
 
 			//Now we make an adapter for the IRsSocket interface.
-			return new WebGLRsSocketClientAdapter(socket);
+			return new WebSocketRsSocketClientAdapter(socket);
 		}
 	}
 }

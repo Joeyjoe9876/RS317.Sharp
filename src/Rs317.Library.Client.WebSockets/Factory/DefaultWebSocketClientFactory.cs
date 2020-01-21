@@ -9,9 +9,12 @@ namespace Rs317.Sharp
 		public IRsSocket Create(SocketCreationContext context)
 		{
 			DefaultWebSocketClient editorWebSocketClient = new DefaultWebSocketClient($"ws://{context.Endpoint}:{context.Port}");
-			editorWebSocketClient.Connect();
+			editorWebSocketClient.OnError += msg => Console.WriteLine($"WebSocket Error: {msg}");
+			editorWebSocketClient.OnOpen += () =>  Console.WriteLine($"Opened WebSocket.");
+			WebSocketRsSocketClientAdapter clientAdapter = new WebSocketRsSocketClientAdapter(editorWebSocketClient);
+			editorWebSocketClient.Connect().GetAwaiter().GetResult();
 
-			return new WebGLRsSocketClientAdapter(editorWebSocketClient);
+			return clientAdapter;
 		}
 	}
 }

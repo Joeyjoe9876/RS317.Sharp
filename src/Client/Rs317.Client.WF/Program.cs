@@ -28,10 +28,10 @@ namespace Rs317.Sharp
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			Task clientRunningAwaitable = signlink.startpriv(IPAddress.Parse("127.0.0.1"));
-			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
+			ClientConfiguration configuration = new ClientConfiguration(localWorldId, (short) (portOffset + 1), membersWorld);
 
 			RsWinForm windowsFormApplication = new RsWinForm(765, 503);
-			RsWinFormsClient client1 = new RsWinFormsClient(configuration, windowsFormApplication.CreateGraphics());
+			RsWinFormsClient client1 = new RsWinFormsClient(configuration, windowsFormApplication.CreateGraphics(), new DefaultWebSocketClientFactory());
 			windowsFormApplication.RegisterInputSubscriber(client1);
 			client1.createClientFrame(765, 503);
 
