@@ -8440,12 +8440,9 @@ namespace Rs317.Sharp
 				stream.position = 0;
 				stream.put(14);
 				stream.put(nameHash);
-				Console.WriteLine($"Right before initial socket write.");
 				socket.write(2, stream.buffer);
 				for (int ignoredByte = 0; ignoredByte < 8; ignoredByte++)
 					socket.read();
-
-				Console.WriteLine($"Reading connection init code.");
 
 				ConnectionInitializationResponseCode responseCode = (ConnectionInitializationResponseCode) socket.read();
 				ConnectionInitializationResponseCode initialResponseCode = responseCode;
