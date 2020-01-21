@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Rs317.Library.Client.WebSockets\Rs317.Library.Client.WebSockets.csproj" />
     <ProjectReference Include="..\..\Rs317.Library.Client\Rs317.Library.Client.csproj" />
   </ItemGroup>
 

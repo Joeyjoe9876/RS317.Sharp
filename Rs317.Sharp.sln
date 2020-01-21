@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs317.Tools.Cache.Parser", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Server.WebSocket.Proxy", "src\Server\Rs317.Server.WebSocket.Proxy\Rs317.Server.WebSocket.Proxy.csproj", "{EAC6594B-6FE7-41FE-B4B3-D3CA87AFFEF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs317.Library.Client.WebSockets", "src\Rs317.Library.Client.WebSockets\Rs317.Library.Client.WebSockets.csproj", "{D5BE7260-03AE-4CD5-A477-E4AFF658DEA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{EAC6594B-6FE7-41FE-B4B3-D3CA87AFFEF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAC6594B-6FE7-41FE-B4B3-D3CA87AFFEF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAC6594B-6FE7-41FE-B4B3-D3CA87AFFEF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5BE7260-03AE-4CD5-A477-E4AFF658DEA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5BE7260-03AE-4CD5-A477-E4AFF658DEA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5BE7260-03AE-4CD5-A477-E4AFF658DEA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5BE7260-03AE-4CD5-A477-E4AFF658DEA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +111,7 @@ Global
 		{BADC991D-0B89-4C80-9D26-3EB1E21E49E6} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 		{2EE622FF-AD89-4DE2-ABDE-DA77D66B4590} = {552191CE-B270-47E5-BA98-C16A403BF7C6}
 		{EAC6594B-6FE7-41FE-B4B3-D3CA87AFFEF6} = {FD7FB0AB-93C9-4193-BDCC-D2C91ED3F443}
+		{D5BE7260-03AE-4CD5-A477-E4AFF658DEA5} = {CF2D5C30-5C0C-4DC1-B9D7-CE00218C8B96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D68657D2-EEFE-4C81-83F0-DDB62718EAB9}

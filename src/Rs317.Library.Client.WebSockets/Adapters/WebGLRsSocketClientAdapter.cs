@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using JetBrains.Annotations;
 
 namespace Rs317.Sharp
 {
@@ -17,7 +16,7 @@ namespace Rs317.Sharp
 
 		private readonly object SyncObj = new object();
 
-		public WebGLRsSocketClientAdapter([NotNull] IWebSocket internalSocket)
+		public WebGLRsSocketClientAdapter(IWebSocket internalSocket)
 		{
 			InternalSocket = internalSocket ?? throw new ArgumentNullException(nameof(internalSocket));
 
