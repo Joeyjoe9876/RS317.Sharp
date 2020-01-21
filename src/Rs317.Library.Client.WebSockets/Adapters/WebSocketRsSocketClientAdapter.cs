@@ -34,7 +34,7 @@ namespace Rs317.Sharp
 			{
 				byte[] bytes = ArrayPool<byte>.Shared.Rent(data.Count);
 				Buffer.BlockCopy(data.Array, data.Offset, bytes, 0, data.Count);
-				MessageQueue.Enqueue(new ArraySegment<byte>(bytes));
+				MessageQueue.Enqueue(new ArraySegment<byte>(bytes, 0, data.Count)); //Rent does not return exact size.
 				PendingBytes += data.Count;
 			}
 		}
@@ -123,6 +123,8 @@ namespace Rs317.Sharp
 
 		public int available()
 		{
+			InternalSocket.Receive();
+
 			lock(SyncObj)
 				return (int) PendingBytes;
 		}

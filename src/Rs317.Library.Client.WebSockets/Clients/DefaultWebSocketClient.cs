@@ -36,14 +36,14 @@ namespace Rs317.Sharp
 			string protocol = EndpointUri.Scheme;
 			if(!protocol.Equals("ws") && !protocol.Equals("wss"))
 				throw new ArgumentException("Unsupported protocol: " + protocol);
+
+			m_Socket = new ClientWebSocket();
 		}
 
 		public async Task Connect()
 		{
 			try
 			{
-				m_Socket = new ClientWebSocket();
-
 				await m_Socket.ConnectAsync(EndpointUri, CancellationToken.None);
 				OnOpen?.Invoke();
 			}

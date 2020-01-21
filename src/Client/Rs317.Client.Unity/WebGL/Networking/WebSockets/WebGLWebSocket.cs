@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Rs317.Sharp
@@ -17,9 +18,6 @@ namespace Rs317.Sharp
 
 		[DllImport("__Internal")]
 		public static extern unsafe int WebSocketSend(int instanceId, byte* dataPtr, int dataLength);
-
-		[DllImport("__Internal")]
-		public static extern int WebSocketSendText(int instanceId, string message);
 
 		[DllImport("__Internal")]
 		public static extern int WebSocketGetState(int instanceId);
@@ -69,6 +67,11 @@ namespace Rs317.Sharp
 			return Task.CompletedTask;
 		}
 
+		public Task Receive()
+		{
+			return Task.CompletedTask;
+		}
+
 		public unsafe Task Send(byte[] data, int offset, int length)
 		{
 			fixed (byte* ptr = &data[offset])
@@ -78,16 +81,6 @@ namespace Rs317.Sharp
 				if(ret < 0)
 					throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 			}
-
-			return Task.CompletedTask;
-		}
-
-		public Task SendText(string message)
-		{
-			int ret = WebSocketSendText(this.instanceId, message);
-
-			if (ret < 0)
-				throw WebSocketHelpers.GetErrorMessageFromCode(ret, null);
 
 			return Task.CompletedTask;
 		}
@@ -126,7 +119,7 @@ namespace Rs317.Sharp
 
 		public void DelegateOnMessageEvent(byte[] data)
 		{
-			this.OnMessage?.Invoke(data);
+			this.OnMessage?.Invoke(new ArraySegment<byte>(data));
 		}
 
 		public void DelegateOnErrorEvent(string errorMsg)
