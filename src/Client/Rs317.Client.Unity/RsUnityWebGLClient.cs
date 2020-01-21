@@ -852,9 +852,6 @@ namespace Rs317.Sharp
 					eventMouseButton = 0;
 					processGameLoop();
 					readIndex = writeIndex;
-
-					//After each process we should yield from thread time.
-					yield return null;
 				}
 
 				count &= 0xff;
