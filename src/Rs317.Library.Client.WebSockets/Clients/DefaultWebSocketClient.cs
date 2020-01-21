@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
-	public class EditorWebGLWebSocket : IWebSocket
+	public class DefaultWebSocketClient : IWebSocket
 	{
 		public event WebSocketOpenEventHandler OnOpen;
 
@@ -27,7 +27,7 @@ namespace Rs317.Sharp
 		private List<ArraySegment<byte>> sendBytesQueue = new List<ArraySegment<byte>>();
 		private List<ArraySegment<byte>> sendTextQueue = new List<ArraySegment<byte>>();
 
-		public EditorWebGLWebSocket(string url)
+		public DefaultWebSocketClient(string url)
 		{
 			uri = new Uri(url);
 

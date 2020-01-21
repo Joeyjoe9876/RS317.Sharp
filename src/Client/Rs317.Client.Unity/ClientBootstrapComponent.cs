@@ -94,7 +94,7 @@ namespace Rs317.Sharp
 			if (RsUnityPlatform.isWebGLBuild)
 			{
 				if (RsUnityPlatform.isInEditor)
-					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new EditorWebGLSocketFactory());
+					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new DefaultWebSocketClientFactory());
 				else
 					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new WebGLWebSocketFactory());
 			}
