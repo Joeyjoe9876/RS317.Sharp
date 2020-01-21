@@ -18,6 +18,13 @@ namespace Rs317.Sharp
 			GraphicsObject = graphicsObject ?? throw new ArgumentNullException(nameof(graphicsObject));
 		}
 
+		public RsWinFormsClient(ClientConfiguration config, Graphics graphicsObject, IRsSocketFactory socketFactory)
+			: base(config, new DefaultBufferFactory(), new DefaultRunnableStarterStrategy(), socketFactory)
+		{
+			if(config == null) throw new ArgumentNullException(nameof(config));
+			GraphicsObject = graphicsObject ?? throw new ArgumentNullException(nameof(graphicsObject));
+		}
+
 		protected override IRSGraphicsProvider<Graphics> CreateGraphicsProvider()
 		{
 			return new SystemDrawingRsGraphicsProvider(GraphicsObject);
