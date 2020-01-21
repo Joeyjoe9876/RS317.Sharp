@@ -116,6 +116,7 @@ namespace Rs317.Sharp
 
 			WebGLWebSocket socket = new WebGLWebSocket(url, instanceId);
 			instances.Add(instanceId, socket);
+			socket.Connect();
 
 			//Now we make an adapter for the IRsSocket interface.
 			return new WebGLRsSocketClientAdapter(socket);

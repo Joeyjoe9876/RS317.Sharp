@@ -9,6 +9,7 @@ namespace Rs317.Sharp
 		public IRsSocket Create(SocketCreationContext context)
 		{
 			EditorWebGLWebSocket editorWebSocketClient = new EditorWebGLWebSocket($"ws://{context.Endpoint}:{context.Port}");
+			editorWebSocketClient.Connect();
 
 			return new WebGLRsSocketClientAdapter(editorWebSocketClient);
 		}
