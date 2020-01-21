@@ -75,6 +75,10 @@ namespace Rs317.Sharp
 			if (!RsUnityPlatform.isWebGLBuild)
 				await new UnityYieldAwaitable();
 
+			//WebGL port is + 1 off normal port for Websocket proxy.
+			if (RsUnityPlatform.isWebGLBuild)
+				portOffset++;
+
 			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
 
 			RsUnityClient client1 = CreateRsClient(configuration);
