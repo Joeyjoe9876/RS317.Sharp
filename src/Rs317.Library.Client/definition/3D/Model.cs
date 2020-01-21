@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 
 namespace Rs317.Sharp
 {
@@ -1019,8 +1020,7 @@ namespace Rs317.Sharp
 		{
 			if(vertexSkins != null)
 			{
-				//TODO: Use pooled array
-				int[] ai = new int[256];
+				int[] ai = ArrayPool<int>.Shared.Rent(256);
 				int count = 0;
 				for(int vertex = 0; vertex < vertexCount; vertex++)
 				{
@@ -1043,13 +1043,15 @@ namespace Rs317.Sharp
 					vertexSkin[skin][ai[skin]++] = vertex;
 				}
 
+				//Must clear buffer because it increments initial
+				ArrayPool<int>.Shared.Return(ai, true);
 				vertexSkins = null;
 			}
 
 			if(triangleSkins != null)
 			{
 				//TODO: Use pooled array
-				int[] ai1 = new int[256];
+				int[] ai1 = ArrayPool<int>.Shared.Rent(256);
 				int count = 0;
 				for(int triangle = 0; triangle < triangleCount; triangle++)
 				{
@@ -1072,6 +1074,8 @@ namespace Rs317.Sharp
 					triangleSkin[skins][ai1[skins]++] = triangle;
 				}
 
+				//Must clear buffer because it increments initial
+				ArrayPool<int>.Shared.Return(ai1, true);
 				triangleSkins = null;
 			}
 		}
