@@ -3,7 +3,7 @@ using System.Buffers;
 
 namespace Rs317.Sharp
 {
-	public sealed class Model : Animable, IDisposable
+	public sealed class Model : Animable
 	{
 		public static Model getModel(int model)
 		{
@@ -909,10 +909,7 @@ namespace Rs317.Sharp
 			}
 			else
 			{
-				if(vertexNormalOffset != null)
-					ArrayPool<VertexNormal>.Shared.Return(vertexNormalOffset);
-
-				vertexNormalOffset = ArrayPool<VertexNormal>.Shared.Rent(vertexCount);
+				vertexNormalOffset = new VertexNormal[vertexCount];
 				for(int vertex = 0; vertex < vertexCount; vertex++)
 				{
 					VertexNormal vertexNormal = base.vertexNormals[vertex];
@@ -2192,18 +2189,6 @@ namespace Rs317.Sharp
 				verticesZ[vertex] += z;
 			}
 
-		}
-
-		public void Dispose()
-		{
-			if(vertexNormalOffset != null)
-				ArrayPool<VertexNormal>.Shared.Return(vertexNormalOffset);
-		}
-
-		//C# does not recommend dtors but this is a unique situation where I have limited control over design.
-		~Model()  // finalizer
-		{
-			Dispose();
 		}
 	}
 }
