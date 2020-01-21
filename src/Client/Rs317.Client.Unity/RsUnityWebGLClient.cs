@@ -397,7 +397,7 @@ namespace Rs317.Sharp
 			{
 				long currentMemory = GC.GetTotalMemory(false);
 				//There are so many interfaces that we'd be waiting a minute if we unpacked them 1 per frame.
-				for (int i = 0; i < 15; i++)
+				for (int i = 0; i < 60; i++)
 				{
 					if(!RSInterface.unpack(archiveInterface, fonts, archiveMedia, false))
 						break;
