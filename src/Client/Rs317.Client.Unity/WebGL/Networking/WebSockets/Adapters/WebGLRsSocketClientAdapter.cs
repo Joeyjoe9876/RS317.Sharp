@@ -39,7 +39,7 @@ namespace Rs317.Sharp
 
 		public void write(int i, byte[] abyte0)
 		{
-			InternalSocket.Send(abyte0, i);
+			InternalSocket.Send(abyte0, 0, i);
 		}
 
 		public void read(byte[] abyte0, int j)

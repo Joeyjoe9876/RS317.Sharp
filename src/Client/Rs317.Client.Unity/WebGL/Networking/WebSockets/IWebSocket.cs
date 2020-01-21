@@ -15,5 +15,7 @@ namespace Rs317.Sharp
 		WebSocketState State { get; }
 
 		Task Send(byte[] bytes, int offset, int length);
+
+		Task Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null);
 	}
 }
