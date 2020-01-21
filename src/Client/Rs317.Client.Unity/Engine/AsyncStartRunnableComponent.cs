@@ -12,7 +12,15 @@ namespace Rs317.Sharp
 
 		private async Task Start()
 		{
-			await RunnableObject.run();
+			try
+			{
+				await RunnableObject.run();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"AsyncStartRunnable Failed. Runnable: {RunnableObject?.GetType().Name} Reason: {e}");
+				throw;
+			}
 		}
 	}
 }
