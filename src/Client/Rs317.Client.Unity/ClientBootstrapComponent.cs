@@ -87,9 +87,13 @@ namespace Rs317.Sharp
 
 		protected virtual RsUnityClient CreateRsClient(ClientConfiguration configuration)
 		{
-			
-			if(RsUnityPlatform.isWebGLBuild)
-				return new RsUnityWebGLClient(configuration, GraphicsObject, this);
+			if (RsUnityPlatform.isWebGLBuild)
+			{
+				if (RsUnityPlatform.isInEditor)
+					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new EditorWebGLSocketFactory());
+				else
+					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new WebGLWebSocketFactory());
+			}
 			else if(RsUnityPlatform.isPlaystationBuild)
 				return new RsUnityPS4Client(configuration, GraphicsObject);
 			else if(RsUnityPlatform.isAndroidMobileBuild)

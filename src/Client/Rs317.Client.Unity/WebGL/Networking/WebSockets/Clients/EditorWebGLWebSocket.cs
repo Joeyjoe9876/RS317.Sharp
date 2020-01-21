@@ -223,7 +223,8 @@ namespace Rs317.Sharp
 
 		}
 
-		public async Task Close()
+		//TODO: Handle code better.
+		public async Task Close(WebSocketCloseCode code = WebSocketCloseCode.Normal, string reason = null)
 		{
 			if(State == WebSocketState.Open)
 			{
