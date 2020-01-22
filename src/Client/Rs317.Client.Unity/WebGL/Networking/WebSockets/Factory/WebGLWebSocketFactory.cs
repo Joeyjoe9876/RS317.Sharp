@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Runtime.InteropServices;
 using AOT;
+using JetBrains.Annotations;
 
 namespace Rs317.Sharp
 {
@@ -124,6 +125,13 @@ namespace Rs317.Sharp
 			}
 		}
 
+		private ITaskDelayFactory TaskDelayFactory { get; }
+
+		public WebGLWebSocketFactory([NotNull] ITaskDelayFactory taskDelayFactory)
+		{
+			TaskDelayFactory = taskDelayFactory ?? throw new ArgumentNullException(nameof(taskDelayFactory));
+		}
+
 		public IRsSocket Create(SocketCreationContext context)
 		{
 			if(!isInitialized)
@@ -132,11 +140,23 @@ namespace Rs317.Sharp
 			string url = $"ws://{context.Endpoint}:{context.Port}";
 			int instanceId = WebSocketAllocate(url);
 
-			WebGLWebSocket socket = new WebGLWebSocket(instanceId);
+			WebGLWebSocket socket = new WebGLWebSocket(instanceId, TaskDelayFactory);
 			instances.Add(instanceId, socket);
 
+			socket.OnOpen += () => SocketOnOpen(socket);
+
 			//Now we make an adapter for the IRsSocket interface.
-			return new WebSocketRsSocketClientAdapter(socket);
+			return new WebSocketRsSocketClientAdapter(socket, false);
+		}
+
+		private void SocketOnOpen([NotNull] IWebSocket openedSocket)
+		{
+			if (openedSocket == null) throw new ArgumentNullException(nameof(openedSocket));
+
+			//WebGL socket doesn't seem to be capable of pushing in bytes into the ready
+			//onrecieve method when they are reieved causing the client to just hang after
+			//logging in because it then expects to be preemptively notified of available
+			//bytes but this will be always zero with explicit calls to receieve.
 		}
 	}
 }

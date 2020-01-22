@@ -99,7 +99,7 @@ namespace Rs317.Sharp
 				if (RsUnityPlatform.isInEditor)
 					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new DefaultWebSocketClientFactory(), delayFactory);
 				else
-					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new WebGLWebSocketFactory(), delayFactory);
+					return new RsUnityWebGLClient(configuration, GraphicsObject, this, new WebGLWebSocketFactory(delayFactory), delayFactory);
 			}
 			else if(RsUnityPlatform.isPlaystationBuild)
 				return new RsUnityPS4Client(configuration, GraphicsObject);

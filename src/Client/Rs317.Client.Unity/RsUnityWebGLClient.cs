@@ -822,8 +822,9 @@ namespace Rs317.Sharp
 				if(delay < minDelay)
 					delay = minDelay;
 
-				if (delay > 1)
-					await TaskDelayFactory.Create(delay);
+				//Always await, mindelay is at least one ms and that'll be 1 frame minimum for us
+				//if we never yield frame time then critical things in WebGL enviroment can't run
+				await TaskDelayFactory.Create(delay);
 
 				for(; count < 256; count += ratio)
 				{

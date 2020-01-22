@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace Rs317.Sharp
 {
@@ -56,13 +57,17 @@ namespace Rs317.Sharp
 
 		private readonly object SyncObj = new object();
 
+		private ITaskDelayFactory TaskDelayFactory { get; }
+
 		/// <summary>
 		/// Constructor - receive JSLIB instance id of allocated socket
 		/// </summary>
 		/// <param name="instanceId">Instance identifier.</param>
-		public WebGLWebSocket(int instanceId)
+		/// <param name="taskDelayFactory"></param>
+		public WebGLWebSocket(int instanceId, [NotNull] ITaskDelayFactory taskDelayFactory)
 		{
 			this.instanceId = instanceId;
+			TaskDelayFactory = taskDelayFactory ?? throw new ArgumentNullException(nameof(taskDelayFactory));
 		}
 
 		/// <summary>
@@ -112,7 +117,12 @@ namespace Rs317.Sharp
 
 		public Task Receive()
 		{
-			lock (SyncObj)
+			//I tried very hard to implement async notification
+			//in WebGL but it just wasn't working for some reason
+			//so we'll delay until the next frame instead if there is not enough data
+			return TaskDelayFactory.Create(1);
+
+			/*lock (SyncObj)
 			{
 				//If they're calling Receive they want MORE data.
 				//They should only call this if they want more data.
@@ -121,7 +131,7 @@ namespace Rs317.Sharp
 					PendingRecieveSource = new TaskCompletionSource<bool>();
 
 				return PendingRecieveSource.Task;
-			}
+			}*/
 		}
 
 		public Task<bool> ConnectAsync(SocketCreationContext connectionInfo)

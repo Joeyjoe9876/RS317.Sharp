@@ -23,10 +23,13 @@ namespace Rs317.Sharp
 
 		private ArraySegment<byte>? LeftoverArraySegment = null;
 
-		public WebSocketRsSocketClientAdapter(IWebSocket internalSocket)
+		private bool ReceiveOnAvailableCheck { get; }
+
+		public WebSocketRsSocketClientAdapter(IWebSocket internalSocket, bool receiveOnAvailableCheck)
 		{
 			InternalSocket = internalSocket ?? throw new ArgumentNullException(nameof(internalSocket));
 
+			ReceiveOnAvailableCheck = receiveOnAvailableCheck;
 			InternalSocket.OnDataReceived += InternalSocketOnMessage;
 		}
 
@@ -54,8 +57,13 @@ namespace Rs317.Sharp
 				int k;
 				for(; j > 0; j -= k)
 				{
-					if(PendingBytes < j)
+					if (PendingBytes < j)
+					{
+						//TODO: This is a hack to prevent a race condition of the bytes having been received in the middle
+						//of this call. I've gone over it logically and this condition CAN happen and this WILL logically
+						//mitigate it.
 						await InternalSocket.Receive();
+					}
 
 					lock(SyncObj)
 					{
@@ -125,7 +133,10 @@ namespace Rs317.Sharp
 
 		public int available()
 		{
-			InternalSocket.Receive();
+			//WebGL should not do this, that's why it's optional
+			//however the non-webgl Websockets implementation HAS TO.
+			if(ReceiveOnAvailableCheck)
+				InternalSocket.Receive();
 
 			lock(SyncObj)
 				return (int) PendingBytes;
