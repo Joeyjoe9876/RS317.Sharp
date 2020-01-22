@@ -253,12 +253,10 @@ namespace Rs317.Sharp
 				//uid = getuid(cacheDirectoryPath);
 				uid = 0;
 
-				cache_dat = await CacheLoader.LoadCacheDatFileAsync()
-					.ConfigureAwait(false);
+				cache_dat = await CacheLoader.LoadCacheDatFileAsync();
 
 				for (int j = 0; j < 5; j++)
-					cache_idx[j] = await CacheLoader.LoadCacheIndexFileAsync(j)
-						.ConfigureAwait(false);
+					cache_idx[j] = await CacheLoader.LoadCacheIndexFileAsync(j);
 			}
 			catch (Exception exception)
 			{

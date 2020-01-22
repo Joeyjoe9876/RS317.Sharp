@@ -5755,7 +5755,7 @@ namespace Rs317.Sharp
 			return worldDrawPlane;
 		}
 
-		private bool handleIncomingData()
+		private async Task<bool> handleIncomingData()
 		{
 			if(socket == null)
 				return false;
@@ -5766,13 +5766,13 @@ namespace Rs317.Sharp
 					return false;
 				if(packetOpcode == -1)
 				{
-					availableBytes = ReadPacketHeader(availableBytes);
+					availableBytes = await ReadPacketHeader(availableBytes);
 				}
 
 				if(packetSize == -1)
 					if(availableBytes > 0)
 					{
-						socket.read(inStream.buffer, 1);
+						await socket.read(inStream.buffer, 1);
 						packetSize = inStream.buffer[0] & 0xFF;
 						availableBytes--;
 					}
@@ -5784,7 +5784,7 @@ namespace Rs317.Sharp
 				if(packetSize == -2)
 					if(availableBytes > 1)
 					{
-						socket.read(inStream.buffer, 2);
+						await socket.read(inStream.buffer, 2);
 						inStream.position = 0;
 						packetSize = inStream.getUnsignedLEShort();
 						availableBytes -= 2;
@@ -5797,7 +5797,7 @@ namespace Rs317.Sharp
 				if(availableBytes < packetSize)
 					return false;
 				inStream.position = 0;
-				socket.read(inStream.buffer, packetSize);
+				await socket.read(inStream.buffer, packetSize);
 				packetReadAnticheat = 0;
 				thirdMostRecentOpcode = secondMostRecentOpcode;
 				secondMostRecentOpcode = mostRecentOpcode;
@@ -5967,9 +5967,9 @@ namespace Rs317.Sharp
 		/// </summary>
 		/// <param name="currentAvailableBytes"></param>
 		/// <returns>The number of available bytes left.</returns>
-		protected virtual int ReadPacketHeader(int currentAvailableBytes)
+		protected virtual async Task<int> ReadPacketHeader(int currentAvailableBytes)
 		{
-			socket.read(inStream.buffer, 1);
+			await socket.read(inStream.buffer, 1);
 			packetOpcode = inStream.buffer[0] & 0xFF;
 			if (encryption != null)
 				packetOpcode = packetOpcode - encryption.value() & 0xFF;
@@ -8847,7 +8847,7 @@ namespace Rs317.Sharp
 			this.loginStream = BufferFactory.Create(EmptyFactoryCreationContext.Instance);
 		}
 
-		private void updateGame()
+		private async Task updateGame()
 		{
 			if(systemUpdateTime > 1)
 				systemUpdateTime--;
@@ -8856,7 +8856,7 @@ namespace Rs317.Sharp
 				idleLogout--;
 
 			for(int j = 0; j < 5; j++)
-				if(!handleIncomingData())
+				if(!await handleIncomingData())
 					break;
 
 			if(!LoggedIn)
@@ -9198,7 +9198,7 @@ namespace Rs317.Sharp
 			{
 				if(socket != null && stream.position > 0)
 				{
-					socket.write(stream.position, stream.buffer);
+					await socket.write(stream.position, stream.buffer);
 					stream.position = 0;
 					idleCounter = 0;
 				}
@@ -10313,7 +10313,7 @@ namespace Rs317.Sharp
 			if(!LoggedIn)
 				await updateLogin();
 			else
-				updateGame();
+				await updateGame();
 			processOnDemandQueue();
 		}
 

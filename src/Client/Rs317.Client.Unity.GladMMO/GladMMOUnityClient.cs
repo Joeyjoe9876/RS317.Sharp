@@ -31,9 +31,9 @@ namespace Rs317.GladMMO
 			this.LoggedIn.OnVariableValueChanged += GameManagerService.OnLoginStateChanged;
 		}
 
-		protected override int ReadPacketHeader(int currentAvailableBytes)
+		protected override Task<int> ReadPacketHeader(int currentAvailableBytes)
 		{
-			return 0;
+			return Task.FromResult<int>(0);
 		}
 
 		protected override void HandlePacketRecieveAntiCheatCheck()
