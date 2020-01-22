@@ -45,6 +45,11 @@ namespace Rs317.Sharp
 		/* If callbacks was initialized and set */
 		public static bool isInitialized = false;
 
+		static WebGLWebSocketFactory()
+		{
+			Initialize();
+		}
+
 		/*
 		 * Initialize WebSocket callbacks to JSLIB
 		 */
@@ -72,7 +77,9 @@ namespace Rs317.Sharp
 		[MonoPInvokeCallback(typeof(OnOpenCallback))]
 		public static void DelegateOnOpenEvent(int instanceId)
 		{
-			if (instances.TryGetValue(instanceId, out var instanceRef))
+			WebGLWebSocket instanceRef;
+
+			if(instances.TryGetValue(instanceId, out instanceRef))
 			{
 				instanceRef.DelegateOnOpenEvent();
 			}
@@ -81,7 +88,9 @@ namespace Rs317.Sharp
 		[MonoPInvokeCallback(typeof(OnMessageCallback))]
 		public static void DelegateOnMessageEvent(int instanceId, System.IntPtr msgPtr, int msgSize)
 		{
-			if (instances.TryGetValue(instanceId, out var instanceRef))
+			WebGLWebSocket instanceRef;
+
+			if(instances.TryGetValue(instanceId, out instanceRef))
 			{
 				byte[] msg = new byte[msgSize];
 				Marshal.Copy(msgPtr, msg, 0, msgSize);
@@ -93,17 +102,23 @@ namespace Rs317.Sharp
 		[MonoPInvokeCallback(typeof(OnErrorCallback))]
 		public static void DelegateOnErrorEvent(int instanceId, System.IntPtr errorPtr)
 		{
-			if (instances.TryGetValue(instanceId, out var instanceRef))
+			WebGLWebSocket instanceRef;
+
+			if(instances.TryGetValue(instanceId, out instanceRef))
 			{
+
 				string errorMsg = Marshal.PtrToStringAuto(errorPtr);
 				instanceRef.DelegateOnErrorEvent(errorMsg);
+
 			}
 		}
 
 		[MonoPInvokeCallback(typeof(OnCloseCallback))]
 		public static void DelegateOnCloseEvent(int instanceId, int closeCode)
 		{
-			if (instances.TryGetValue(instanceId, out var instanceRef))
+			WebGLWebSocket instanceRef;
+
+			if(instances.TryGetValue(instanceId, out instanceRef))
 			{
 				instanceRef.DelegateOnCloseEvent(closeCode);
 			}
@@ -111,6 +126,9 @@ namespace Rs317.Sharp
 
 		public IRsSocket Create(SocketCreationContext context)
 		{
+			if(!isInitialized)
+				Initialize();
+
 			string url = $"ws://{context.Endpoint}:{context.Port}";
 			int instanceId = WebSocketAllocate(url);
 
