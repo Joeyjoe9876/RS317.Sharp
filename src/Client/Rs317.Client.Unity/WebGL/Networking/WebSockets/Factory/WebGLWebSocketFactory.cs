@@ -137,7 +137,8 @@ namespace Rs317.Sharp
 			if(!isInitialized)
 				Initialize();
 
-			string url = $"ws://{context.Endpoint}:{context.Port}";
+			//WebGL from browser will use HTTPS so it required WSS
+			string url = $"wss://{context.Endpoint}:{context.Port}";
 			int instanceId = WebSocketAllocate(url);
 
 			WebGLWebSocket socket = new WebGLWebSocket(instanceId, TaskDelayFactory);

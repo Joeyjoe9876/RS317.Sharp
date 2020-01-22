@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Net.Security;
 using System.Net.WebSockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace Rs317.Sharp
 
 		public event WebSocketCloseEventHandler OnClose;
 
-		private ClientWebSocket m_Socket { get; set; } = new ClientWebSocket();
+		private ClientWebSocket m_Socket { get; }
 
 		private byte[] InternalBuffer { get; } = new byte[8192];
 
@@ -136,7 +138,7 @@ namespace Rs317.Sharp
 
 		public async Task<bool> ConnectAsync(SocketCreationContext connectionInfo)
 		{
-			await Connect(new Uri($"ws://{connectionInfo.Endpoint}:{connectionInfo.Port}"));
+			await Connect(new Uri($"wss://{connectionInfo.Endpoint}:{connectionInfo.Port}"));
 			return m_Socket.State == System.Net.WebSockets.WebSocketState.Connecting || m_Socket.State == System.Net.WebSockets.WebSocketState.Open;
 		}
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -8709,9 +8710,15 @@ namespace Rs317.Sharp
 
 		protected async Task<IRsSocket> ConnectToGameServer()
 		{
+			//Suppress cerificate verification.
+			ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+			ServicePointManager.CheckCertificateRevocationList = false;
+
 			SocketCreationContext context = new SocketCreationContext(signlink.socketip.ToString(), 43594 + portOffset);
 			Console.WriteLine($"Connecting to Server: {signlink.socketip.ToString()}:{43594 + portOffset}");
 			socket = SocketFactory.Create(context);
+
 			await socket.Connect(context);
 			return socket;
 		}
