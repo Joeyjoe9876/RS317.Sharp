@@ -1020,7 +1020,7 @@ namespace Rs317.Sharp
 		{
 			if(vertexSkins != null)
 			{
-				int[] ai = ArrayPool<int>.Shared.Rent(256);
+				int[] ai = AOTCompatibleArrayPool<int>.SharedSafe.Rent(256);
 				int count = 0;
 				for(int vertex = 0; vertex < vertexCount; vertex++)
 				{
@@ -1044,14 +1044,14 @@ namespace Rs317.Sharp
 				}
 
 				//Must clear buffer because it increments initial
-				ArrayPool<int>.Shared.Return(ai, true);
+				AOTCompatibleArrayPool<int>.SharedSafe.Return(ai, true);
 				vertexSkins = null;
 			}
 
 			if(triangleSkins != null)
 			{
 				//TODO: Use pooled array
-				int[] ai1 = ArrayPool<int>.Shared.Rent(256);
+				int[] ai1 = AOTCompatibleArrayPool<int>.SharedSafe.Rent(256);
 				int count = 0;
 				for(int triangle = 0; triangle < triangleCount; triangle++)
 				{
@@ -1075,7 +1075,7 @@ namespace Rs317.Sharp
 				}
 
 				//Must clear buffer because it increments initial
-				ArrayPool<int>.Shared.Return(ai1, true);
+				AOTCompatibleArrayPool<int>.SharedSafe.Return(ai1, true);
 				triangleSkins = null;
 			}
 		}

@@ -34,7 +34,7 @@ namespace Rs317.Sharp
 		{
 			lock(SyncObj)
 			{
-				byte[] bytes = ArrayPool<byte>.Shared.Rent(data.Count);
+				byte[] bytes = AOTCompatibleArrayPool<byte>.SharedSafe.Rent(data.Count);
 				Buffer.BlockCopy(data.Array, data.Offset, bytes, 0, data.Count);
 				MessageQueue.Enqueue(new ArraySegment<byte>(bytes, 0, data.Count)); //Rent does not return exact size.
 				PendingBytes += data.Count;
@@ -66,7 +66,7 @@ namespace Rs317.Sharp
 							if (bytes.Count == j || j > bytes.Count) //if it's exactly enough
 							{
 								Buffer.BlockCopy(bytes.Array, bytes.Offset, abyte0, i, bytes.Count);
-								ArrayPool<byte>.Shared.Return(bytes.Array);
+								AOTCompatibleArrayPool<byte>.SharedSafe.Return(bytes.Array);
 
 								//Depends on the source
 								if (LeftoverArraySegment.HasValue)
