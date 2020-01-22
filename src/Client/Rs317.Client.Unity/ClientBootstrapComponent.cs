@@ -27,6 +27,12 @@ namespace Rs317.Sharp
 		[SerializeField]
 		private UnityRsInputDispatcherComponent InputObject;
 
+		[SerializeField]
+		public string Endpoint = "127.0.0.1";
+
+		[SerializeField]
+		public short PortOffset = 0;
+
 		[Preserve] //important to keep in AOT builds.
 		private void AOTSetup()
 		{
@@ -63,7 +69,7 @@ namespace Rs317.Sharp
 
 			try
 			{
-				await signlink.startpriv(IPAddress.Parse("127.0.0.1"), new Unity3DResourceCacheLoader());
+				await signlink.startpriv(IPAddress.Parse(Endpoint), new Unity3DResourceCacheLoader());
 			}
 			catch (Exception e)
 			{
