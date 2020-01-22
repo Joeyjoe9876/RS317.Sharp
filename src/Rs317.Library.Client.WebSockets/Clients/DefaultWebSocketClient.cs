@@ -27,9 +27,13 @@ namespace Rs317.Sharp
 
 		private readonly object SyncObj = new object();
 
+		public event EventHandler<ArraySegment<byte>> OnDataReceived;
+
 		public DefaultWebSocketClient(string url)
 		{
 			m_Socket = new ClientWebSocket();
+
+			OnMessage += data => OnDataReceived?.Invoke(this, data);
 		}
 
 		public async Task Connect(Uri endpointUri)

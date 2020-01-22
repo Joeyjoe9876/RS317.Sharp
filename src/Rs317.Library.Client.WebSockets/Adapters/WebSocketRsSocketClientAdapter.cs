@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,10 +27,10 @@ namespace Rs317.Sharp
 		{
 			InternalSocket = internalSocket ?? throw new ArgumentNullException(nameof(internalSocket));
 
-			InternalSocket.OnMessage += InternalSocketOnMessage;
+			InternalSocket.OnDataReceived += InternalSocketOnMessage;
 		}
 
-		private void InternalSocketOnMessage(ArraySegment<byte> data)
+		private void InternalSocketOnMessage(object sender, ArraySegment<byte> data)
 		{
 			lock(SyncObj)
 			{

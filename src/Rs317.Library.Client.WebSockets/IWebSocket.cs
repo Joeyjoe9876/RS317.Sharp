@@ -1,16 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Rs317.Sharp
 {
 	public interface IWebSocket
 	{
-		event WebSocketOpenEventHandler OnOpen;
-
-		event WebSocketMessageEventHandler OnMessage;
-
-		event WebSocketErrorEventHandler OnError;
-
-		event WebSocketCloseEventHandler OnClose;
+		event EventHandler<ArraySegment<byte>> OnDataReceived;
 
 		WebSocketState State { get; }
 

@@ -48,6 +48,8 @@ namespace Rs317.Sharp
 		/// </summary>
 		public event WebSocketCloseEventHandler OnClose;
 
+		public event EventHandler<ArraySegment<byte>> OnDataReceived;
+
 		public WebSocketState State => GetState();
 
 		private TaskCompletionSource<bool> PendingRecieveSource { get; set; } = new TaskCompletionSource<bool>();
@@ -124,13 +126,6 @@ namespace Rs317.Sharp
 
 		public Task<bool> ConnectAsync(SocketCreationContext connectionInfo)
 		{
-			//This prevents race conditions from the adapter checking PendingBytes after OnMessage task pending compleition source notifies them
-			//they have data. If it runs BEFORE the OnMessage callback for processing then we actually have a race condition
-			//where they may see 0 bytes gained and end up back in a Recieve await for the next message and shortly after the bytes will be added to pending.
-			//THAT WOULD BE VERY BAD
-			if(OnMessage == null)
-				throw new InvalidOperationException($"WebGL websocket cannot connect until it has an {nameof(OnMessage)} callback subscriber.");
-
 			//Before connect we need to create a callback to complete the async task
 			//if the caller continues before connection was successful then we actually
 			//end up in a bad state where it'll try to send before it's connected.
@@ -161,15 +156,30 @@ namespace Rs317.Sharp
 
 		private void OnMessageRecieved(ArraySegment<byte> data)
 		{
-			//When we recieve we need to use this
-			//pending task to notify awaiters that we've actually produced
-			//new data from an incoming message.
-			lock (SyncObj)
+			try
 			{
-				if (PendingRecieveSource.Task.IsCompleted)
-					return;
+				//When we recieve we need to use this
+				//pending task to notify awaiters that we've actually produced
+				//new data from an incoming message.
+				lock(SyncObj)
+				{
+					//VERY important to always call/handle this first
+					//otherwise you will encounter a race condition, or return before handling
+					//due to the return below too.
+					//Most importantly there is a race condition for the continutation if we don't
+					//have the data received first.
+					OnDataReceived?.Invoke(this, data);
 
-				PendingRecieveSource.SetResult(true);
+					if(PendingRecieveSource.Task.IsCompleted)
+						return;
+
+					PendingRecieveSource.SetResult(true);
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"Failed to handle incoming WebGL Websocket data. Reason: {e}");
+				throw;
 			}
 		}
 
