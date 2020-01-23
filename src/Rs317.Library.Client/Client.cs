@@ -5804,7 +5804,7 @@ namespace Rs317.Sharp
 				secondMostRecentOpcode = mostRecentOpcode;
 				mostRecentOpcode = packetOpcode;
 
-				Console.WriteLine($"recv: {packetOpcode}");
+				//Console.WriteLine($"recv: {packetOpcode}");
 
 				if(HandlePacket81()) return true;
 

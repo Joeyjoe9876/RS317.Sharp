@@ -85,7 +85,7 @@ namespace Rs317.Sharp
 
 		public void putOpcode(int i)
 		{
-			Console.WriteLine($"Send: {i}");
+			//Console.WriteLine($"Send: {i}");
 			DecoratedBufferWriter.putOpcode((byte)(i + Encryptor.value()));
 		}
 
