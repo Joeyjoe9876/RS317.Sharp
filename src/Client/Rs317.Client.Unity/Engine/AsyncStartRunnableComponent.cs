@@ -15,6 +15,9 @@ namespace Rs317.Sharp
 			try
 			{
 				await RunnableObject.run();
+
+				//Once the runnable is done we don't need this.
+				UnityEngine.GameObject.Destroy(this.gameObject);
 			}
 			catch (Exception e)
 			{

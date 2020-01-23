@@ -8728,6 +8728,20 @@ namespace Rs317.Sharp
 		{
 			this.playerRights = playerRights;
 			flagged = isAccountFlagged;
+			
+			//Only run mouse detection if flagged.
+			if (isAccountFlagged)
+			{
+				//If it's not running we need to start it
+				if (!mouseDetection.running)
+				{
+					//Don't remove this, due to threading.
+					mouseDetection.running = flagged;
+					startRunnable(mouseDetection, 10);
+				}
+			}
+
+			mouseDetection.running = flagged;
 
 			lastClickTime = 0L;
 			sameClickPositionCounter = 0;
