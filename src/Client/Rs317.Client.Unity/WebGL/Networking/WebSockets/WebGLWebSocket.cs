@@ -120,9 +120,9 @@ namespace Rs317.Sharp
 			//I tried very hard to implement async notification
 			//in WebGL but it just wasn't working for some reason
 			//so we'll delay until the next frame instead if there is not enough data
-			return TaskDelayFactory.Create(1);
+			//return TaskDelayFactory.Create(1);
 
-			/*lock (SyncObj)
+			lock (SyncObj)
 			{
 				//If they're calling Receive they want MORE data.
 				//They should only call this if they want more data.
@@ -131,7 +131,7 @@ namespace Rs317.Sharp
 					PendingRecieveSource = new TaskCompletionSource<bool>();
 
 				return PendingRecieveSource.Task;
-			}*/
+			}
 		}
 
 		public Task<bool> ConnectAsync(SocketCreationContext connectionInfo)

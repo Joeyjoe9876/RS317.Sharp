@@ -59,10 +59,13 @@ namespace Rs317.Sharp
 				{
 					if (PendingBytes < j)
 					{
+						Task receiveAwaitable = InternalSocket.Receive();
+
 						//TODO: This is a hack to prevent a race condition of the bytes having been received in the middle
 						//of this call. I've gone over it logically and this condition CAN happen and this WILL logically
 						//mitigate it.
-						await InternalSocket.Receive();
+						if (PendingBytes < j)
+							await receiveAwaitable;
 					}
 
 					lock(SyncObj)
