@@ -1,3 +1,6 @@
+using System;
+using System.Runtime.CompilerServices;
+
 namespace Rs317.Sharp
 {
 	public class DrawingArea : Cacheable
@@ -14,6 +17,12 @@ namespace Rs317.Sharp
 		public static int centerX;
 		public static int viewportCentreX;
 		public static int viewportCentreY;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		protected static bool IsDataAvailable(Default317Buffer dataStream)
+		{
+			return dataStream.position <= dataStream.buffer.Length - 1;
+		}
 
 		public static void clear()
 		{

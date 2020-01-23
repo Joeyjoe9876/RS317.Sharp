@@ -51,6 +51,20 @@ namespace Rs317.Sharp
 				height = metadataBuffer.getUnsignedLEShort();
 				int type = metadataBuffer.getUnsignedByte();
 				int pixelCount = width * height;
+
+				//Custom: Below are some sanity checks that are custom but help guard against known clean cache data issues.
+				bool isEnoughDataAvailable = pixelCount <= (imageBuffer.buffer.Length - imageBuffer.position);
+
+				//Don't let corrupt image data, in default cache, cause BIG allocation (bad for WebGL)
+				//or allocate/read for empty images.
+				if(pixelCount <= 0 || pixelCount > int.MaxValue / 100 || !isEnoughDataAvailable || imageBuffer.position < 0) //sometimes happens!!
+				{
+					width = 0;
+					height = 0;
+					this.pixels = Array.Empty<byte>();
+					return;
+				}
+
 				pixels = new byte[pixelCount];
 
 				if(type == 0)

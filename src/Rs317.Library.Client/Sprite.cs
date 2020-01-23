@@ -169,17 +169,11 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private void InitializeAsEmpty()
+		protected void InitializeAsEmpty()
 		{
 			width = 0;
 			height = 0;
 			this.pixels = Array.Empty<int>();
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static bool IsDataAvailable(Default317Buffer dataStream)
-		{
-			return dataStream.position <= dataStream.buffer.Length - 1;
 		}
 
 		public Sprite(byte[] abyte0, object component) //not referenced.
