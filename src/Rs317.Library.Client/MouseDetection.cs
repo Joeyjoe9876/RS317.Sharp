@@ -8,6 +8,8 @@ namespace Rs317.Sharp
 	{
 		private IMouseInputQueryable MouseQueryable { get; }
 
+		private ITaskDelayFactory TaskDelayFactory { get; }
+
 		private readonly object syncObj = new object();
 
 		public object SyncObj => syncObj;
@@ -17,10 +19,10 @@ namespace Rs317.Sharp
 		public int[] coordsX;
 		public int coordsIndex;
 
-		public MouseDetection(IMouseInputQueryable mouseQueryable)
+		public MouseDetection(IMouseInputQueryable mouseQueryable, ITaskDelayFactory taskDelayFactory)
 		{
-			if(mouseQueryable == null) throw new ArgumentNullException(nameof(mouseQueryable));
-			MouseQueryable = mouseQueryable;
+			MouseQueryable = mouseQueryable ?? throw new ArgumentNullException(nameof(mouseQueryable));
+			TaskDelayFactory = taskDelayFactory;
 			coordsY = new int[500];
 			running = true;
 			coordsX = new int[500];
@@ -40,7 +42,7 @@ namespace Rs317.Sharp
 					}
 				}
 
-				await Task.Delay(50);
+				await TaskDelayFactory.Create(50);
 			}
 		}
 	}

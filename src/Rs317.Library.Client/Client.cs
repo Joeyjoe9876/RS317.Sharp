@@ -12569,8 +12569,8 @@ namespace Rs317.Sharp
 
 				//TODO: Disabled censor
 				//Censor.load(archiveWord);
-				mouseDetection = new MouseDetection(this);
-				//startRunnable(mouseDetection, 10);
+				mouseDetection = new MouseDetection(this, new DefaultTaskDelayFactory());
+				startRunnable(mouseDetection, 10);
 				return;
 			}
 			catch(Exception exception)
