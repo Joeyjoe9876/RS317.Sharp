@@ -8,11 +8,6 @@ using UnityEngine;
 
 namespace Rs317.Sharp
 {
-	public interface ITaskDelayFactory : IFactoryCreateable<Task, int>
-	{
-
-	}
-
 	//Task.Delay does not work in WebGL because it uses
 	//System.Timers which requires multithreading under the hood.
 	//To mitigate this we manually create and managed timers on the main thread.
