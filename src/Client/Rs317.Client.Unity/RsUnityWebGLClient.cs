@@ -98,8 +98,7 @@ namespace Rs317.Sharp
 			onDemandFetcher.start(archiveVersions, this);*/
 			WebGLOnDemandFetcher fetcher = new WebGLOnDemandFetcher(TaskDelayFactory);
 			onDemandFetcher = fetcher;
-			fetcher.Initialize(archiveVersions, this);
-			ClientMonoBehaviour.StartCoroutine(fetcher.RunCoroutine());
+			fetcher.start(archiveVersions, this);
 		}
 
 		protected override void StartFlameDrawing()
@@ -482,8 +481,8 @@ namespace Rs317.Sharp
 
 			//TODO: Disabled censor
 			//Censor.load(archiveWord);
-			mouseDetection = new MouseDetection(this);
-			//startRunnable(mouseDetection, 10);
+			mouseDetection = new MouseDetection(this, TaskDelayFactory);
+			startRunnable(mouseDetection, 10);
 		}
 
 		internal async Task LoadMediaContentAsync()

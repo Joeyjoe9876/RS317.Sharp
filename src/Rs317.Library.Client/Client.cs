@@ -12721,7 +12721,7 @@ namespace Rs317.Sharp
 
 		protected virtual void StartOnDemandFetcher(Archive archiveVersions)
 		{
-			onDemandFetcher = new OnDemandFetcher();
+			onDemandFetcher = new OnDemandFetcher(new DefaultTaskDelayFactory());
 			onDemandFetcher.start(archiveVersions, this);
 		}
 

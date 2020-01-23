@@ -69,8 +69,11 @@ namespace Rs317.Sharp
 		protected byte[] modelIndices;
 		protected int loopCycle;
 
-		public OnDemandFetcher()
+		protected ITaskDelayFactory TaskDelayFactory { get; }
+
+		public OnDemandFetcher(ITaskDelayFactory taskDelayFactory)
 		{
+			TaskDelayFactory = taskDelayFactory ?? throw new ArgumentNullException(nameof(taskDelayFactory));
 			requested = new DoubleEndedQueue();
 			statusString = "";
 			//crc32 = new CRC32();
@@ -540,11 +543,11 @@ namespace Rs317.Sharp
 				while(running)
 				{
 					onDemandCycle++;
-					int i = 20;
+					int i = 20 * 5;
 					if(highestPriority == 0 && clientInstance.caches[0] != null)
-						i = 50;
+						i = 50 * 5;
 
-					await Task.Delay(i);
+					await TaskDelayFactory.Create(i);
 
 					waiting = true;
 					for(int j = 0; j < 100; j++)
