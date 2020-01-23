@@ -9161,7 +9161,7 @@ namespace Rs317.Sharp
 
 			await manageTextInput();
 			base.idleTime++;
-			if(base.idleTime > 4500)
+			if(base.idleTime > RsNetworkConnectionConstants.MAX_IDLE_TIME_MILLISECONDS)
 			{
 				idleLogout = 250;
 				base.idleTime -= 500;
