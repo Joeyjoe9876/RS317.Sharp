@@ -36,7 +36,7 @@ namespace Rs317.GladMMO
 			return Task.FromResult<int>(0);
 		}
 
-		protected override void HandlePacketRecieveAntiCheatCheck()
+		protected override async Task HandlePacketRecieveAntiCheatCheck()
 		{
 			//This prevents the client from disconnecting.
 		}

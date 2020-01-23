@@ -5598,7 +5598,7 @@ namespace Rs317.Sharp
 			fontBold.drawAlphaTextWithShadow(s, 4, 15, 0xFFFFFF, tick / 1000);
 		}
 
-		private void dropClient()
+		private async Task dropClient()
 		{
 			if(idleLogout > 0)
 			{
@@ -5617,7 +5617,7 @@ namespace Rs317.Sharp
 			IRsSocket rsSocket = socket;
 			LoggedIn.Update(false);
 			loginFailures = 0;
-			login(EnteredUsername, EnteredPassword, true);
+			await login(EnteredUsername, EnteredPassword, true);
 			if(!LoggedIn)
 				logout();
 			try
@@ -5943,7 +5943,7 @@ namespace Rs317.Sharp
 			}
 			catch(IOException _ex)
 			{
-				dropClient();
+				await dropClient();
 			}
 			catch(Exception exception)
 			{
@@ -9026,7 +9026,7 @@ namespace Rs317.Sharp
 			loadingStages();
 			spawnGameObjects();
 			handleMusic();
-			HandlePacketRecieveAntiCheatCheck();
+			await HandlePacketRecieveAntiCheatCheck();
 			updatePlayerInstances();
 			updateNPCInstances();
 			cycleEntitySpokenText();
@@ -9159,7 +9159,7 @@ namespace Rs317.Sharp
 			for(int camera = 0; camera < 5; camera++)
 				unknownCameraVariable[camera]++;
 
-			manageTextInput();
+			await manageTextInput();
 			base.idleTime++;
 			if(base.idleTime > 4500)
 			{
@@ -9226,7 +9226,7 @@ namespace Rs317.Sharp
 			}
 			catch(IOException _ex)
 			{
-				dropClient();
+				await dropClient();
 			}
 			catch(Exception exception)
 			{
@@ -9239,14 +9239,14 @@ namespace Rs317.Sharp
 			stream.putOpcode(0);
 		}
 
-		protected virtual void HandlePacketRecieveAntiCheatCheck()
+		protected virtual async Task HandlePacketRecieveAntiCheatCheck()
 		{
 			packetReadAnticheat++;
 			if (packetReadAnticheat > 750)
-				dropClient();
+				await dropClient();
 		}
 
-		private void manageTextInput()
+		private async Task manageTextInput()
 		{
 			do
 			{
@@ -9412,7 +9412,7 @@ namespace Rs317.Sharp
 						if(playerRights == ClientPrivilegeType.Administrator)
 						{
 							if(inputString.Equals("::clientdrop"))
-								dropClient();
+								await dropClient();
 							if(inputString.Equals("::lag"))
 								printDebug();
 							if(inputString.Equals("::prefetchmusic"))
