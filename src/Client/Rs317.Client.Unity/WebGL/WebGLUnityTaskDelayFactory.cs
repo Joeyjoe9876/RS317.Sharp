@@ -41,32 +41,50 @@ namespace Rs317.Sharp
 
 		private List<RegisteredDelayTaskSource> DelayTaskList = new List<RegisteredDelayTaskSource>();
 
+		[SerializeField]
+		private int RegisteredTaskDelayListCount = 0;
+
 		private void Update()
 		{
+			RegisteredTaskDelayListCount = DelayTaskList.Count;
 			lock (SyncObj)
 			{
 				if (DelayTaskList.Count == 0)
 					return;
 
-				//You may wonder why I'm doing things so oddly here
-				//There seemed to be some issues with completing the task within the loop.
-				//might actually be incorrect IL being generated??
-				RegisteredDelayTaskSource finished = null;
-
-				foreach (RegisteredDelayTaskSource source in DelayTaskList)
-				{
-					if (source.isCompleted(Time.time))
-					{
-						finished = source;
-						break;
-					}
-				}
-
-				finished?.DelayTaskCompletionSource.SetResult(true);
-
-				//DelayTaskList = DelayTaskList.Where(t => !t.DelayTaskCompletionSource.Task.IsCompleted).ToList();
-				DelayTaskList.RemoveAll(t => t.DelayTaskCompletionSource.Task.IsCompleted);
+				//Poll until they're all complete.
+				while (PollRegisterTaskSourceList()) ;
 			}
+		}
+
+		private bool PollRegisterTaskSourceList()
+		{
+			//You may wonder why I'm doing things so oddly here
+			//There seemed to be some issues with completing the task within the loop.
+			//might actually be incorrect IL being generated??
+			RegisteredDelayTaskSource finished = null;
+
+			bool isTaskFired = false;
+			foreach (RegisteredDelayTaskSource source in DelayTaskList)
+			{
+				if (source.isCompleted(Time.time))
+				{
+					finished = source;
+					isTaskFired = true;
+					break;
+				}
+			}
+
+			if (isTaskFired)
+				finished.DelayTaskCompletionSource.SetResult(true);
+
+			if (isTaskFired)
+				if (DelayTaskList.Count == 0)
+					DelayTaskList.Clear();
+				else
+					DelayTaskList.Remove(finished);
+
+			return isTaskFired;
 		}
 
 		public Task Create(int context)
