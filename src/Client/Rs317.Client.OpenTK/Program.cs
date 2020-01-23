@@ -25,7 +25,7 @@ namespace Rs317.Sharp
 
 		public async Task StartClient(int localWorldId, short portOffset, bool membersWorld)
 		{
-			Task clientRunningAwaitable = signlink.startpriv(IPAddress.Parse("127.0.0.1"));
+			Task clientRunningAwaitable = signlink.startpriv("127.0.0.1");
 			ClientConfiguration configuration = new ClientConfiguration(localWorldId, portOffset, membersWorld);
 
 			OpenTkImageProducerFactory imageProducerFactory = new OpenTkImageProducerFactory();

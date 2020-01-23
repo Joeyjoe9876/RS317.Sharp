@@ -140,23 +140,23 @@ namespace Rs317.Sharp
 				Console.WriteLine($"Error: {s}");
 		}
 
-		public static Task startpriv(IPAddress inetaddress, ICacheStreamLoaderStrategy cacheLoader)
+		public static Task startpriv(string endpointAddress, ICacheStreamLoaderStrategy cacheLoader)
 		{
 			if (cacheLoader == null) throw new ArgumentNullException(nameof(cacheLoader));
 
-			if(IsSignLinkThreadActive)
+			if (IsSignLinkThreadActive)
 				throw new InvalidOperationException($"Cannot call this method when thread is active.");
 
 			savereq = null;
 			urlreq = null;
-			socketip = inetaddress;
+			socketip = endpointAddress;
 
 			return new signlink(cacheLoader).run();
 		}
 
-		public static Task startpriv(IPAddress inetaddress)
+		public static Task startpriv(string endpointAddress)
 		{
-			return startpriv(inetaddress, new FileDirectoryBasedCacheStreamLoader(findcachedir()));
+			return startpriv(endpointAddress, new FileDirectoryBasedCacheStreamLoader(findcachedir()));
 		}
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
@@ -217,7 +217,7 @@ namespace Rs317.Sharp
 		public static Object applet = null;
 		public static bool IsSignLinkThreadActive { get; private set; }
 		private static int threadliveid;
-		public static IPAddress socketip { get; private set; }
+		public static string socketip { get; private set; }
 		private static int socketreq;
 		private static TcpClient socket = null;
 		public static String dns = null;

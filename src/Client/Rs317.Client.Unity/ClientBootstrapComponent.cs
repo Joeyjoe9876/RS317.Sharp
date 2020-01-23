@@ -69,7 +69,7 @@ namespace Rs317.Sharp
 
 			try
 			{
-				await signlink.startpriv(IPAddress.Parse(Endpoint), new Unity3DResourceCacheLoader());
+				await signlink.startpriv(Endpoint, new Unity3DResourceCacheLoader());
 			}
 			catch (Exception e)
 			{

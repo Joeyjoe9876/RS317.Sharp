@@ -27,7 +27,7 @@ namespace Rs317.Sharp
 		{
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			Task clientRunningAwaitable = signlink.startpriv(IPAddress.Parse("127.0.0.1"));
+			Task clientRunningAwaitable = signlink.startpriv("127.0.0.1");
 			ClientConfiguration configuration = new ClientConfiguration(localWorldId, (short) (portOffset + 1), membersWorld);
 
 			RsWinForm windowsFormApplication = new RsWinForm(765, 503);
