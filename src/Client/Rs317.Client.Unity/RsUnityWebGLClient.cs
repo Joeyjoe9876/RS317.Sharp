@@ -233,31 +233,7 @@ namespace Rs317.Sharp
 			for(int id = 0; id < fileRequestCount; id++)
 				onDemandFetcher.request(1, id);
 
-			while(onDemandFetcher.immediateRequestCount() > 0)
-			{
-				int remaining = fileRequestCount - onDemandFetcher.immediateRequestCount();
-				if(remaining > 0)
-					drawLoadingText(65, "Loading animations - " + (remaining * 100) / fileRequestCount + "%");
-
-				try
-				{
-					processOnDemandQueue();
-				}
-				catch(Exception e)
-				{
-					Console.WriteLine($"Failed to process animation demand queue. Reason: {e.Message} \n Stack: {e.StackTrace}");
-					signlink.reporterror($"Failed to process animation demand queue. Reason: {e.Message} \n Stack: {e.StackTrace}");
-					throw;
-				}
-
-				await TaskDelayFactory.Create(1);
-
-				if(onDemandFetcher.failedRequests > 3)
-				{
-					loadError();
-					return;
-				}
-			}
+			if (!await ProcessAnimationsAsync(fileRequestCount)) return;
 
 			drawLoadingText(70, "Requesting models");
 			fileRequestCount = onDemandFetcher.fileCount(0);
@@ -274,7 +250,7 @@ namespace Rs317.Sharp
 				int remaining = fileRequestCount - onDemandFetcher.immediateRequestCount();
 				if(remaining > 0)
 					drawLoadingText(70, "Loading models - " + (remaining * 100) / fileRequestCount + "%");
-				processOnDemandQueue(false);
+				processOnDemandQueue();
 
 				await TaskDelayFactory.Create(1);
 			}
@@ -302,7 +278,7 @@ namespace Rs317.Sharp
 						drawLoadingText(75, "Loading maps - " + (remaining * 100) / fileRequestCount + "%");
 					processOnDemandQueue(false);
 
-					await TaskDelayFactory.Create(100);
+					await TaskDelayFactory.Create(1);
 				}
 			}
 
@@ -332,7 +308,7 @@ namespace Rs317.Sharp
 			}
 
 			//Don't need to even preload.
-			await ((WebGLOnDemandFetcher)onDemandFetcher).preloadRegionsCoroutine(membersWorld);
+			await ((WebGLOnDemandFetcher)onDemandFetcher).preloadRegionsAsync(membersWorld);
 
 			//Remove low memory check.
 			int count = onDemandFetcher.fileCount(2);
@@ -367,46 +343,73 @@ namespace Rs317.Sharp
 			Effect.load(new Default317Buffer(soundData));
 		}
 
-		private int PendingInterfaceUnpackTracker = 0;
-
-		//Returns true when finished.
-		public bool HandlePendingInterfaceUnpackingAsync(Archive archiveInterface, Archive archiveMedia, GameFont[] fonts)
+		private async Task<bool> ProcessAnimationsAsync(int fileRequestCount)
 		{
-			if (PendingInterfaceUnpackTracker == 0)
+			while (onDemandFetcher.immediateRequestCount() > 0)
 			{
-				drawLoadingText(95, "Unpacking interfaces");
-				PendingInterfaceUnpackTracker++;
-				return false;
-			}
-			else if (PendingInterfaceUnpackTracker == 1)
-			{
-				RSInterface.InitializeUnpackFields(archiveInterface);
-				PendingInterfaceUnpackTracker++;
-				return false;
-			}
-			else if (PendingInterfaceUnpackTracker == 2)
-			{
-				long currentMemory = GC.GetTotalMemory(false);
-				//There are so many interfaces that we'd be waiting a minute if we unpacked them 1 per frame.
-				for (int i = 0; i < 60; i++)
+				int remaining = fileRequestCount - onDemandFetcher.immediateRequestCount();
+				if (remaining > 0)
+					drawLoadingText(65, "Loading animations - " + (remaining * 100) / fileRequestCount + "%");
+
+				try
 				{
-					if(!RSInterface.unpack(archiveInterface, fonts, archiveMedia, false))
-						break;
+					processOnDemandQueue();
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine($"Failed to process animation demand queue. Reason: {e.Message} \n Stack: {e.StackTrace}");
+					signlink.reporterror($"Failed to process animation demand queue. Reason: {e.Message} \n Stack: {e.StackTrace}");
+					throw;
+				}
 
-					//If we've doubled the allocated memory, we should early break from this.
-					if (GC.GetTotalMemory(false) > currentMemory * 1.5)
-						return false;
+				//We can't force load more because if we constantly loop thw webgl main thread has no
+				//way to load the resources we're waiting for.
+				await TaskDelayFactory.Create(1);
 
-					if (i == 14)
-						return false;
+				if (onDemandFetcher.failedRequests > 3)
+				{
+					loadError();
+					return false;
 				}
 			}
 
-			isUnpackedInterfaceFinished.SetResult(true);
 			return true;
 		}
 
-		private IEnumerator PostEngineInitializationCoroutine()
+		//Returns true when finished.
+		public async Task HandlePendingInterfaceUnpackingAsync()
+		{
+			Archive archiveInterface = requestArchive(3, "interface", "interface", 0, 35);
+			Archive archiveMedia = requestArchive(4, "2d graphics", "media", 0, 40);
+
+			GameFont fontFancy = new GameFont("q8_full", archiveTitle, true);
+			GameFont[]  fonts = new GameFont[] { fontSmall, fontPlain, fontBold, fontFancy };
+
+			drawLoadingText(95, "Unpacking interfaces");
+
+			RSInterface.InitializeUnpackFields(archiveInterface);
+			await TaskDelayFactory.Create(1);
+
+			long currentMemory = GC.GetTotalMemory(false);
+			//There are so many interfaces that we'd be waiting a minute if we unpacked them 1 per frame.
+			for(int i = 0; i < int.MaxValue; i++)
+			{
+				//This will break us out eventually.
+				if(!RSInterface.unpack(archiveInterface, fonts, archiveMedia, false))
+					break;
+
+				//If we've doubled the allocated memory, we should early break from this.
+				if(GC.GetTotalMemory(false) > currentMemory * 1.5)
+					await TaskDelayFactory.Create(1);
+
+				if (i % 60 == 0)
+					await TaskDelayFactory.Create(1);
+			}
+
+			await TaskDelayFactory.Create(1);
+		}
+
+		private async Task PostLoadEngineInitializationAsync()
 		{
 			drawLoadingText(100, "Preparing game engine");
 			for(int _y = 0; _y < 33; _y++)
@@ -481,273 +484,145 @@ namespace Rs317.Sharp
 			//Censor.load(archiveWord);
 			mouseDetection = new MouseDetection(this);
 			//startRunnable(mouseDetection, 10);
-
-			isUnpackedContentFinished.SetResult(true);
-			yield return null;
 		}
 
-		private int hackTracker = 0;
-		int sharedMediaUnpackIterator = 0;
-
-		internal bool QueueUpAllMediaUnpacking(WebGLMediaLoaderHack loader, Archive archiveMedia, Default317Buffer metadataBuffer)
+		internal async Task LoadMediaContentAsync()
 		{
-			if (hackTracker == 0)
-				inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0, metadataBuffer);
-			else if (hackTracker == 1)
-				chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0, metadataBuffer);
-			else if (hackTracker == 2)
-				minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0, metadataBuffer);
-			else if (hackTracker == 3)
-				backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0, metadataBuffer);
-			else if (hackTracker == 4)
-				backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0, metadataBuffer);
-			else if (hackTracker == 5)
-				backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0, metadataBuffer);
-			else if (hackTracker == 6)
-				for (int icon = 0; icon < 13; icon++)
-					sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon, metadataBuffer);
-			else if (hackTracker == 7)
-				minimapCompassImage = new Sprite(archiveMedia, "compass", 0, metadataBuffer);
-			else if (hackTracker == 8)
-				minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0, metadataBuffer);
-			else if (hackTracker == 9)
-				minimapEdgeImage.trim();
-			else if (hackTracker == 10)
-				try
-				{
-					//We share the tracker and manually step through the iteration
-					//to reduce GC pressure.
-					//for (sharedIterator = 0; sharedIterator < 100; sharedIterator++)
-					mapSceneImage[sharedMediaUnpackIterator] = new IndexedImage(archiveMedia, "mapscene", sharedMediaUnpackIterator, metadataBuffer);
-					sharedMediaUnpackIterator++;
+			Archive archiveMedia = requestArchive(4, "2d graphics", "media", 0, 40);
+			Default317Buffer metadataBuffer = new Default317Buffer(archiveMedia.decompressFile("index.dat"));
 
-					//Hack to prevent exception in WebGL.
-					//Error: Unexpected Exception: Failed to generate IndexedImage for: mapscene id: 72. Reason: Index was outside the bounds of the array.
-					if(sharedMediaUnpackIterator < 72)
-						return false;
-				}
-				catch (Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
-			else if (hackTracker == 11)
-			{
-				//Skip so that WebGL doesn't break.
-				//Error: Unexpected Exception: Failed to generate Sprite for: mapfunction id: 0. Reason: Index was outside the bounds of the array.
-				try
-				{
+			inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0, metadataBuffer);
+			chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0, metadataBuffer);
+			minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0, metadataBuffer);
+			backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0, metadataBuffer);
+			backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0, metadataBuffer);
+			backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0, metadataBuffer);
+			for(int icon = 0; icon < 13; icon++)
+				sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon, metadataBuffer);
 
-					//We share the tracker and manually step through the iteration
-					//to reduce GC pressure.
-					//for(int i = 0; i < 100; i++)
-					mapFunctionImage[sharedMediaUnpackIterator] = new Sprite(archiveMedia, "mapfunction", sharedMediaUnpackIterator, metadataBuffer);
-
-					sharedMediaUnpackIterator++;
-
-					if(sharedMediaUnpackIterator < 100)
-						return false;
-				}
-				catch (Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
-			}
-			else if (hackTracker == 12)
+			minimapCompassImage = new Sprite(archiveMedia, "compass", 0, metadataBuffer);
+			minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0, metadataBuffer);
+			minimapEdgeImage.trim();
+			try
 			{
-				//Error: Unexpected Exception: Failed to generate Sprite for: hitmarks id: 0.Reason: Index was outside the bounds of the array.
-				try
-				{
-					//We share the tracker and manually step through the iteration
-					//to reduce GC pressure.
-					//for(int i = 0; i < 20; i++)
-					hitMarkImage[sharedMediaUnpackIterator] = new Sprite(archiveMedia, "hitmarks", sharedMediaUnpackIterator, metadataBuffer);
-
-					sharedMediaUnpackIterator++;
-					if(sharedMediaUnpackIterator < 20)
-						return false;
-				}
-				catch(Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-				}
-			}
-			else if (hackTracker == 13)
-				try
-				{
-					//We share the tracker and manually step through the iteration
-					//to reduce GC pressure.
-					//for (int i = 0; i < 20; i++)
-					headIcons[sharedMediaUnpackIterator] = new Sprite(archiveMedia, "headicons", sharedMediaUnpackIterator, metadataBuffer);
-
-					sharedMediaUnpackIterator++;
-					if(sharedMediaUnpackIterator < 20)
-						return false;
-				}
-				catch (Exception _ex)
-				{
-					signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
-					throw;
-				}
-			else if (hackTracker == 14)
-				mapFlag = new Sprite(archiveMedia, "mapmarker", 0, metadataBuffer);
-			else if (hackTracker == 15)
-				mapMarker = new Sprite(archiveMedia, "mapmarker", 1, metadataBuffer);
-			else if (hackTracker == 16)
-			{
-				//We share the tracker and manually step through the iteration
-				//to reduce GC pressure.
-				//for(int i = 0; i < 8; i++)
-				crosses[sharedMediaUnpackIterator] = new Sprite(archiveMedia, "cross", sharedMediaUnpackIterator, metadataBuffer);
-
-				sharedMediaUnpackIterator++;
-				if(sharedMediaUnpackIterator < 8)
-					return false;
-			}
-			else if (hackTracker == 17)
-				mapDotItem = new Sprite(archiveMedia, "mapdots", 0, metadataBuffer);
-			else if (hackTracker == 18)
-				mapDotNPC = new Sprite(archiveMedia, "mapdots", 1, metadataBuffer);
-			else if (hackTracker == 19)
-				mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2, metadataBuffer);
-			else if (hackTracker == 20)
-				mapDotFriend = new Sprite(archiveMedia, "mapdots", 3, metadataBuffer);
-			else if (hackTracker == 21)
-				mapDotTeam = new Sprite(archiveMedia, "mapdots", 4, metadataBuffer);
-			else if (hackTracker == 22)
-				scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0, metadataBuffer);
-			else if (hackTracker == 23)
-				scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1, metadataBuffer);
-			else if (hackTracker == 24)
-				redStone1 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
-			else if (hackTracker == 25)
-				redStone2 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
-			else if (hackTracker == 26)
-				redStone3 = new IndexedImage(archiveMedia, "redstone3", 0, metadataBuffer);
-			else if (hackTracker == 27)
-				redStone1_2 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
-			else if (hackTracker == 28)
-				redStone1_2.flipHorizontally();
-			else if (hackTracker == 29)
-				redStone2_2 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
-			else if (hackTracker == 30)
-				redStone2_2.flipHorizontally();
-			else if (hackTracker == 31)
-				redStone1_3 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
-			else if (hackTracker == 32)
-				redStone1_3.flipVertically();
-			else if (hackTracker == 33)
-				redStone2_3 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
-			else if (hackTracker == 34)
-				redStone2_3.flipVertically();
-			else if (hackTracker == 35)
-				redStone3_2 = new IndexedImage(archiveMedia, "redstone3", 0, metadataBuffer);
-			else if (hackTracker == 36)
-				redStone3_2.flipVertically();
-			else if (hackTracker == 37)
-				redStone1_4 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
-			else if (hackTracker == 38)
-				redStone1_4.flipHorizontally();
-			else if (hackTracker == 39)
-				redStone1_4.flipVertically();
-			else if (hackTracker == 40)
-				redStone2_4 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
-			else if (hackTracker == 41)
-				redStone2_4.flipHorizontally();
-			else if (hackTracker == 42)
-				redStone2_4.flipVertically();
-			else if (hackTracker == 43)
-				for (int i = 0; i < 2; i++)
-					modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i, metadataBuffer);
-			else if (hackTracker == 44)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backleft1", 0, metadataBuffer);
-				backLeftIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP1));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 45)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backleft2", 0, metadataBuffer);
-				backLeftIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP2));
-				sprite.drawInverse(0, 0);
-			}
-			else if(hackTracker == 46)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backleft2", 0, metadataBuffer);
-				backLeftIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP2));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 47)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backright1", 0, metadataBuffer);
-				backRightIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP1));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 48)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backright2", 0, metadataBuffer);
-				backRightIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP2));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 49)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backtop1", 0, metadataBuffer);
-				backTopIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backTopIP1));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 50)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backvmid1", 0, metadataBuffer);
-				backVmidIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP1));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 51)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backvmid2", 0, metadataBuffer);
-				backVmidIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 52)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backvmid3", 0, metadataBuffer);
-				backVmidIP3 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP3));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 53)
-			{
-				Sprite sprite = new Sprite(archiveMedia, "backhmid2", 0, metadataBuffer);
-				backVmidIP2_2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2_2));
-				sprite.drawInverse(0, 0);
-			}
-			else if (hackTracker == 54)
-			{
-				int randomRed = (int)(StaticRandomGenerator.Next() * 21D) - 10;
-				int randomGreen = (int)(StaticRandomGenerator.Next() * 21D) - 10;
-				int randomBlue = (int)(StaticRandomGenerator.Next() * 21D) - 10;
-				int randomColour = (int)(StaticRandomGenerator.Next() * 41D) - 20;
 				for(int i = 0; i < 100; i++)
+					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i, metadataBuffer);
+			}
+			catch(Exception _ex)
+			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+			}
+
+			try
+			{
+				for(int i = 0; i < 100; i++)
+					mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i, metadataBuffer);
+			}
+			catch(Exception _ex)
+			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+			}
+
+			try
+			{
+				for(int i = 0; i < 20; i++)
 				{
-					if(mapFunctionImage[i] != null)
-						mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
-							randomBlue + randomColour);
-					if(mapSceneImage[i] != null)
-						mapSceneImage[i].mixPalette(randomRed + randomColour, randomGreen + randomColour,
-							randomBlue + randomColour);
+					hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i, metadataBuffer);
 				}
 			}
-			else if (hackTracker == 55)
+			catch(Exception _ex)
 			{
-				ClientMonoBehaviour.StartCoroutine(PostEngineInitializationCoroutine());
-				return true;
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
 			}
 
-			sharedMediaUnpackIterator = 0;
-			hackTracker++;
-			return false;
+			try
+			{
+				for(int i = 0; i < 20; i++)
+				{
+					headIcons[i] = new Sprite(archiveMedia, "headicons", i, metadataBuffer);
+				}
+			}
+			catch(Exception _ex)
+			{
+				signlink.reporterror($"Unexpected Exception: {_ex.Message} \n\n Stack: {_ex.StackTrace}");
+				throw;
+			}
+
+			mapFlag = new Sprite(archiveMedia, "mapmarker", 0, metadataBuffer);
+			mapMarker = new Sprite(archiveMedia, "mapmarker", 1, metadataBuffer);
+			for(int i = 0; i < 8; i++)
+				crosses[i] = new Sprite(archiveMedia, "cross", i, metadataBuffer);
+
+			mapDotItem = new Sprite(archiveMedia, "mapdots", 0, metadataBuffer);
+			mapDotNPC = new Sprite(archiveMedia, "mapdots", 1, metadataBuffer);
+			mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2, metadataBuffer);
+			mapDotFriend = new Sprite(archiveMedia, "mapdots", 3, metadataBuffer);
+			mapDotTeam = new Sprite(archiveMedia, "mapdots", 4, metadataBuffer);
+			scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0, metadataBuffer);
+			scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1, metadataBuffer);
+			redStone1 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			redStone2 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			redStone3 = new IndexedImage(archiveMedia, "redstone3", 0, metadataBuffer);
+			redStone1_2 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			redStone1_2.flipHorizontally();
+			redStone2_2 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			redStone2_2.flipHorizontally();
+			redStone1_3 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			redStone1_3.flipVertically();
+			redStone2_3 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			redStone2_3.flipVertically();
+			redStone3_2 = new IndexedImage(archiveMedia, "redstone3", 0, metadataBuffer);
+			redStone3_2.flipVertically();
+			redStone1_4 = new IndexedImage(archiveMedia, "redstone1", 0, metadataBuffer);
+			redStone1_4.flipHorizontally();
+			redStone1_4.flipVertically();
+			redStone2_4 = new IndexedImage(archiveMedia, "redstone2", 0, metadataBuffer);
+			redStone2_4.flipHorizontally();
+			redStone2_4.flipVertically();
+			for(int i = 0; i < 2; i++)
+				modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i, metadataBuffer);
+
+			Sprite sprite = new Sprite(archiveMedia, "backleft1", 0, metadataBuffer);
+			backLeftIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP1));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backleft2", 0, metadataBuffer);
+			backLeftIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP2));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backright1", 0, metadataBuffer);
+			backRightIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP1));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backright2", 0, metadataBuffer);
+			backRightIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backRightIP2));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backtop1", 0, metadataBuffer);
+			backTopIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backTopIP1));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backvmid1", 0, metadataBuffer);
+			backVmidIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP1));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backvmid2", 0, metadataBuffer);
+			backVmidIP2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backvmid3", 0, metadataBuffer);
+			backVmidIP3 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP3));
+			sprite.drawInverse(0, 0);
+			sprite = new Sprite(archiveMedia, "backhmid2", 0, metadataBuffer);
+			backVmidIP2_2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2_2));
+			sprite.drawInverse(0, 0);
+			int randomRed = (int)(StaticRandomGenerator.Next() * 21D) - 10;
+			int randomGreen = (int)(StaticRandomGenerator.Next() * 21D) - 10;
+			int randomBlue = (int)(StaticRandomGenerator.Next() * 21D) - 10;
+			int randomColour = (int)(StaticRandomGenerator.Next() * 41D) - 20;
+			for(int i = 0; i < 100; i++)
+			{
+				if(mapFunctionImage[i] != null)
+					mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
+						randomBlue + randomColour);
+				if(mapSceneImage[i] != null)
+					mapSceneImage[i].mixPalette(randomRed + randomColour, randomGreen + randomColour,
+						randomBlue + randomColour);
+			}
 		}
-
-		private TaskCompletionSource<bool> isUnpackedContentFinished = new TaskCompletionSource<bool>();
-
-		private TaskCompletionSource<bool> isUnpackedInterfaceFinished = new TaskCompletionSource<bool>();
 
 		private async Task AppletRunCoroutine()
 		{
@@ -755,16 +630,11 @@ namespace Rs317.Sharp
 			drawLoadingText(0, "Loading...");
 
 			await StartupCoroutine();
+			await LoadMediaContentAsync();
 
-			WebGLMediaLoaderHack loader = new UnityEngine.GameObject("MediaLoader").AddComponent<WebGLMediaLoaderHack>();
-			loader.Client = this;
+			await HandlePendingInterfaceUnpackingAsync();
 
-			await isUnpackedContentFinished.Task;
-
-			WebGLInterfaceUnpackLoaderHack loader2 = new UnityEngine.GameObject("InterfaceLoader").AddComponent<WebGLInterfaceUnpackLoaderHack>();
-			loader2.Client = this;
-
-			await isUnpackedInterfaceFinished.Task;
+			await PostLoadEngineInitializationAsync();
 
 			int opos = 0;
 			int ratio = 256;

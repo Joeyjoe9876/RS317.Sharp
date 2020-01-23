@@ -75,16 +75,17 @@ namespace Rs317.Sharp
 			clientInstance = client;
 		}
 
-		public async Task preloadRegionsCoroutine(bool flag)
+		public async Task preloadRegionsAsync(bool flag)
 		{
 			int j = MapIndices.Count;
 			for(int k = 0; k < j; k++)
 				if(flag || MapIndices[k].isMembers)
 				{
 					setPriority((byte)2, 3, MapIndices[k].ObjectFileId);
-					await TaskDelayFactory.Create(1);
 					setPriority((byte)2, 3, MapIndices[k].TerrainId);
-					await TaskDelayFactory.Create(1);
+
+					if(k % 2 == 0)
+						await TaskDelayFactory.Create(1);
 				}
 		}
 
