@@ -383,7 +383,7 @@ namespace Rs317.Sharp
 			Archive archiveMedia = requestArchive(4, "2d graphics", "media", 0, 40);
 
 			GameFont fontFancy = new GameFont("q8_full", archiveTitle, true);
-			GameFont[]  fonts = new GameFont[] { fontSmall, fontPlain, fontBold, fontFancy };
+			GameFont[] fonts = new GameFont[] { fontSmall, fontPlain, fontBold, fontFancy };
 
 			drawLoadingText(95, "Unpacking interfaces");
 
@@ -402,7 +402,7 @@ namespace Rs317.Sharp
 				if(GC.GetTotalMemory(false) > currentMemory * 1.5)
 					await TaskDelayFactory.Create(1);
 
-				if (i % 60 == 0)
+				if (i % 200 == 0)
 					await TaskDelayFactory.Create(1);
 			}
 
@@ -503,10 +503,14 @@ namespace Rs317.Sharp
 			minimapCompassImage = new Sprite(archiveMedia, "compass", 0, metadataBuffer);
 			minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0, metadataBuffer);
 			minimapEdgeImage.trim();
+
+			await TaskDelayFactory.Create(1);
 			try
 			{
 				for(int i = 0; i < 100; i++)
 					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i, metadataBuffer);
+
+				await TaskDelayFactory.Create(1);
 			}
 			catch(Exception _ex)
 			{
@@ -517,6 +521,8 @@ namespace Rs317.Sharp
 			{
 				for(int i = 0; i < 100; i++)
 					mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i, metadataBuffer);
+
+				await TaskDelayFactory.Create(1);
 			}
 			catch(Exception _ex)
 			{
@@ -526,9 +532,9 @@ namespace Rs317.Sharp
 			try
 			{
 				for(int i = 0; i < 20; i++)
-				{
 					hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i, metadataBuffer);
-				}
+
+				await TaskDelayFactory.Create(1);
 			}
 			catch(Exception _ex)
 			{
@@ -538,9 +544,9 @@ namespace Rs317.Sharp
 			try
 			{
 				for(int i = 0; i < 20; i++)
-				{
 					headIcons[i] = new Sprite(archiveMedia, "headicons", i, metadataBuffer);
-				}
+
+				await TaskDelayFactory.Create(1);
 			}
 			catch(Exception _ex)
 			{
@@ -582,6 +588,8 @@ namespace Rs317.Sharp
 			for(int i = 0; i < 2; i++)
 				modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i, metadataBuffer);
 
+			await TaskDelayFactory.Create(1);
+
 			Sprite sprite = new Sprite(archiveMedia, "backleft1", 0, metadataBuffer);
 			backLeftIP1 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backLeftIP1));
 			sprite.drawInverse(0, 0);
@@ -609,6 +617,9 @@ namespace Rs317.Sharp
 			sprite = new Sprite(archiveMedia, "backhmid2", 0, metadataBuffer);
 			backVmidIP2_2 = CreateNewImageProducer(sprite.width, sprite.height, nameof(backVmidIP2_2));
 			sprite.drawInverse(0, 0);
+
+			await TaskDelayFactory.Create(1);
+
 			int randomRed = (int)(StaticRandomGenerator.Next() * 21D) - 10;
 			int randomGreen = (int)(StaticRandomGenerator.Next() * 21D) - 10;
 			int randomBlue = (int)(StaticRandomGenerator.Next() * 21D) - 10;
