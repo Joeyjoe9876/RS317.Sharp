@@ -106,7 +106,7 @@ namespace Rs317.Sharp
 			Debug.Log($"Starting flames drawing.");
 			shouldDrawFlames = true;
 			currentlyDrawingFlames = true;
-			ClientMonoBehaviour.StartCoroutine(DrawFlamesCoroutine());
+			new UnityEngine.GameObject("Async: Flames").AddComponent<AsyncTaskAwaitableComponent>().SetTask = DrawFlamesAsync();
 		}
 
 		public override async Task run()
@@ -117,9 +117,7 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private WaitForSeconds flamesWaitable = new WaitForSeconds(0.025f);
-
-		private IEnumerator DrawFlamesCoroutine()
+		private async Task DrawFlamesAsync()
 		{
 			Debug.Log($"Starting flame drawing.");
 			drawingFlames = true;
@@ -131,7 +129,7 @@ namespace Rs317.Sharp
 				calcFlamesPosition();
 				doFlamesDrawing();
 
-				yield return flamesWaitable;
+				await TaskDelayFactory.Create(25);
 			}
 
 			drawingFlames = false;
