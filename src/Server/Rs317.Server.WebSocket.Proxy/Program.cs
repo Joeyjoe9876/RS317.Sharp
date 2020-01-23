@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Fleck;
 
@@ -13,10 +17,22 @@ namespace Rs317.Sharp
 		{
 			int mainPort = 43594;
 
+			//https://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
+			ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+			ServicePointManager.CheckCertificateRevocationList = false;
+
+			X509Certificate2 cert = new X509Certificate2(File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "Certs", "ScapeVRMMOOrgTLSCert.pfx")), "test");
+
+			if(!cert.HasPrivateKey)
+				throw new InvalidOperationException($"Cannot use websocket TLS cert without private key.");
+
 			//Connecting to Server: 127.0.0.1:43594
-			WebSocketServer server = new WebSocketServer($"ws://127.0.0.1:{mainPort + 1}");
+			WebSocketServer server = new WebSocketServer($"wss://0.0.0.0:{mainPort + 1}");
 			ConcurrentDictionary<Guid, TcpClient> TcpClientDictionary = new ConcurrentDictionary<Guid, TcpClient>();
 			server.ListenerSocket.NoDelay = true;
+			server.Certificate = cert;
+			server.EnabledSslProtocols = SslProtocols.Tls12;
 			server.Start(socket =>
 			{
 				socket.OnOpen = () =>
@@ -37,6 +53,9 @@ namespace Rs317.Sharp
 
 				socket.OnBinary = (byte[] bytes) => { OnBinaryMessage(bytes, TcpClientDictionary, socket); };
 			});
+
+			if(!server.IsSecure)
+				throw new InvalidOperationException($"Cannot support WS from WebGL browser. Must be a secure WSS server.");
 
 			while (true)
 				await Task.Delay(10000);

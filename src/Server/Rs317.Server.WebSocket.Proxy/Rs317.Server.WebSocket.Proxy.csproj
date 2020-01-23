@@ -9,4 +9,10 @@
     <PackageReference Include="Fleck" Version="1.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Certs\TLSCert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
