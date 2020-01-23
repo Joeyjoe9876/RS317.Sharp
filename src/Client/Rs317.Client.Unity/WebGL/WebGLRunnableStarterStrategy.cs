@@ -8,7 +8,8 @@ namespace Rs317.Sharp
 	{
 		public void StartRunnable(IRunnable runnable, int priority)
 		{
-			throw new InvalidOperationException($"WebGL doesn't support manual startables.");
+			AsyncStartRunnableComponent asyncRunnableComponent = new UnityEngine.GameObject($"Runnable: {runnable.GetType().Name}").AddComponent<AsyncStartRunnableComponent>();
+			asyncRunnableComponent.RunnableObject = runnable;
 		}
 	}
 }
