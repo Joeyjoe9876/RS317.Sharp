@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AOT;
 using JetBrains.Annotations;
 using UnityEngine;
 using Color = UnityEngine.Color;
@@ -14,6 +16,21 @@ namespace Rs317.Sharp
 {
 	public sealed class RsUnityWebGLClient : RsUnityClient
 	{
+		/// <summary>
+		/// Initializes the ability for callbacks to be processed for
+		/// browser page visibility.
+		/// </summary>
+		[DllImport("__Internal")]
+		public static extern void InitializePageVisibilityCallbacks();
+
+		[DllImport("__Internal")]
+		public static extern void SetOnPageVisible(OnVisibilityChangeCallback callback);
+
+		[DllImport("__Internal")]
+		public static extern void SetOnPageInvisible(OnVisibilityChangeCallback callback);
+
+		public delegate void OnVisibilityChangeCallback();
+
 		private ITaskDelayFactory TaskDelayFactory { get; }
 
 		private MonoBehaviour ClientMonoBehaviour { get; }
@@ -34,6 +51,30 @@ namespace Rs317.Sharp
 			//Only need to override this for WebGL.
 			Sprite.ExternalLoadImageHook += ExternalLoadImageHook;
 			TaskDelayFactory = taskDelayFactory;
+
+			//This is a hack to make sure that WebGL doesn't cut off frames in the background
+			//causing disconnections.
+			Time.maximumDeltaTime = 20.0f;
+
+			//Can't do this in the editor.
+			if (!RsUnityPlatform.isInEditor)
+			{
+				SetOnPageVisible(DelegateOnVisibilityChangeVisible);
+				SetOnPageInvisible(DelegateOnVisibilityChangeInvisible);
+				InitializePageVisibilityCallbacks();
+			}
+		}
+
+		[MonoPInvokeCallback(typeof(OnVisibilityChangeCallback))]
+		public static void DelegateOnVisibilityChangeVisible()
+		{
+			Console.WriteLine("Page Visible Called");
+		}
+
+		[MonoPInvokeCallback(typeof(OnVisibilityChangeCallback))]
+		public static void DelegateOnVisibilityChangeInvisible()
+		{
+			Console.WriteLine("Page Invisible Called");
 		}
 
 		private LoadedImagePixels ExternalLoadImageHook(byte[] arg)
