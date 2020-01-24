@@ -1631,11 +1631,12 @@ namespace Rs317.Sharp
 		public static unsafe void drawTexturedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC,
 			int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId)
 		{
-			if (textured)
+			//For now, since it is so damn ugly and has some major problems.
+			/*if (textured)
 			{
 				drawHDTexturedTriangle(yA, yB, yC, xA, xB, xC, zA, zB, zC, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
 				return;
-			}
+			}*/
 			
 			EnsureTextRowIsIniitalized(textureId);
 
