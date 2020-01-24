@@ -15,25 +15,25 @@ namespace Rs317.Sharp
 	{
 		private class RegisteredDelayTaskSource
 		{
-			private float CreationTime { get; }
+			private long CreationTime { get; }
 
-			private float DurationSeconds { get; }
+			private long DurationTicks { get; }
 
 			public TaskCompletionSource<bool> DelayTaskCompletionSource { get; }
 
-			public RegisteredDelayTaskSource(float creationTime, int durationInMilliseconds)
+			public RegisteredDelayTaskSource(long creationTime, long durationInTicks)
 			{
 				CreationTime = creationTime;
-				DurationSeconds = (float)durationInMilliseconds / 1000.0f;
+				DurationTicks = durationInTicks;
 				DelayTaskCompletionSource = new TaskCompletionSource<bool>();
 			}
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public bool isCompleted(float currentTime)
+			public bool isCompleted(long currentTime)
 			{
-				float secondsPassed = currentTime - CreationTime;
+				long ticksPassed = currentTime - CreationTime;
 
-				return secondsPassed >= DurationSeconds;
+				return ticksPassed >= DurationTicks;
 			}
 		}
 
@@ -41,12 +41,8 @@ namespace Rs317.Sharp
 
 		private List<RegisteredDelayTaskSource> DelayTaskList = new List<RegisteredDelayTaskSource>();
 
-		[SerializeField]
-		private int RegisteredTaskDelayListCount = 0;
-
 		private void Update()
 		{
-			RegisteredTaskDelayListCount = DelayTaskList.Count;
 			lock (SyncObj)
 			{
 				if (DelayTaskList.Count == 0)
@@ -65,9 +61,10 @@ namespace Rs317.Sharp
 			RegisteredDelayTaskSource finished = null;
 
 			bool isTaskFired = false;
+			long time = DateTime.UtcNow.Ticks;
 			foreach (RegisteredDelayTaskSource source in DelayTaskList)
 			{
-				if (source.isCompleted(Time.time))
+				if (source.isCompleted(time))
 				{
 					finished = source;
 					isTaskFired = true;
@@ -91,7 +88,7 @@ namespace Rs317.Sharp
 		{
 			lock (SyncObj)
 			{
-				RegisteredDelayTaskSource task = new RegisteredDelayTaskSource(Time.time, context);
+				RegisteredDelayTaskSource task = new RegisteredDelayTaskSource(DateTime.UtcNow.Ticks, context * TimeSpan.TicksPerMillisecond);
 				DelayTaskList.Add(task);
 				return task.DelayTaskCompletionSource.Task;
 			}
