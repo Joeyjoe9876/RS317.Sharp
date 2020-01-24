@@ -78,13 +78,13 @@ namespace Rs317.Sharp
 				mousePressed(this, MouseButton.MiddleMouse);
 
 			//mouseReleased
-			if(Input.GetMouseButtonDown(0)) //left
+			if(Input.GetMouseButtonUp(0)) //left
 				mouseReleased(this, MouseButton.LeftMouse);
 
-			if(Input.GetMouseButtonDown(1)) //right
+			if(Input.GetMouseButtonUp(1)) //right
 				mouseReleased(this, MouseButton.RightMouse);
 
-			if(Input.GetMouseButtonDown(2)) //middle
+			if(Input.GetMouseButtonUp(2)) //middle
 				mouseReleased(this, MouseButton.MiddleMouse);
 
 
