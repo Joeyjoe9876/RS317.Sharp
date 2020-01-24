@@ -68,8 +68,12 @@ namespace Rs317.Sharp
 			//for 10 fucking years.
 
 			//mousePressed
-			if(Input.GetMouseButtonDown(0)) //left
+			bool isLeftMouseDown = false;
+			if (Input.GetMouseButtonDown(0)) //left
+			{
+				isLeftMouseDown = true;
 				mousePressed(this, MouseButton.LeftMouse);
+			}
 
 			if(Input.GetMouseButtonDown(1)) //right
 				mousePressed(this, MouseButton.RightMouse);
@@ -90,8 +94,16 @@ namespace Rs317.Sharp
 
 			//this.MouseMove += new EventHandler<MouseMoveEventArgs>(mouseMoved);
 			//If any axis has input it's moved.
-			if(Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+			if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+			{
 				mouseMoved();
+				
+				//If the mouse has moved and the left button is being held down then we are dragging.
+				if (isLeftMouseDown)
+				{
+					InputSubscribable?.mouseDragged(this, TransformMouseEventCoordinates(MouseButton.LeftMouse));
+				}
+			}
 
 			//TODO: Make sperate input implementations
 			//On mobile right now we handle keyboard input differently.
