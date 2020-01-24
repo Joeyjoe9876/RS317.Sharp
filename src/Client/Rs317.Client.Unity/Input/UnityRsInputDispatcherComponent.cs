@@ -78,9 +78,6 @@ namespace Rs317.Sharp
 			if(Input.GetMouseButtonDown(1)) //right
 				mousePressed(this, MouseButton.RightMouse);
 
-			if(Input.GetMouseButtonDown(2)) //middle
-				mousePressed(this, MouseButton.MiddleMouse);
-
 			//mouseReleased
 			if(Input.GetMouseButtonUp(0)) //left
 				mouseReleased(this, MouseButton.LeftMouse);
@@ -96,13 +93,21 @@ namespace Rs317.Sharp
 			//If any axis has input it's moved.
 			if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
 			{
-				mouseMoved();
-				
 				//If the mouse has moved and the left button is being held down then we are dragging.
 				if (isLeftMouseDown)
 				{
 					InputSubscribable?.mouseDragged(this, TransformMouseEventCoordinates(MouseButton.LeftMouse));
 				}
+
+				//It's important that this is called BEFORE mouseMoved otherwise the mouse position diff
+				//calculated internally will be 0.
+				//Is middle mouse being held down as the mouse moves
+				if (Input.GetMouseButton(2))
+				{
+					InputSubscribable?.mouseWheelDragged(this, TransformMouseEventCoordinates(MouseButton.MiddleMouse));
+				}
+
+				mouseMoved();
 			}
 
 			//TODO: Make sperate input implementations

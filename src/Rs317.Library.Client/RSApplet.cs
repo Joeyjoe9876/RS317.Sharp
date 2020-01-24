@@ -144,6 +144,16 @@ namespace Rs317.Sharp
 			mouseY = j;
 		}
 
+		public void mouseWheelDragged(object sender, RsMousePositionChangeEventArgs e)
+		{
+			int mouseXDiff = mouseX - e.ScreenCoordX;
+			int mouseYDiff = mouseY - e.ScreenCoordY;
+
+			OnMouseWheelDragged(mouseXDiff, mouseYDiff);
+		}
+
+		protected abstract void OnMouseWheelDragged(int mouseXDiff, int mouseYDiff);
+
 		public void mouseMoved(object sender, RsMousePositionChangeEventArgs e)
 		{
 			int i = e.ScreenCoordX;

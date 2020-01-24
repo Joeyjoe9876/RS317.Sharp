@@ -27,5 +27,7 @@ namespace Rs317.Sharp
 		void mouseDragged(object sender, RsMousePositionChangeEventArgs e);
 
 		void mousePressed(object sender, RsMouseInputEventArgs e);
+
+		void mouseWheelDragged(object sender, RsMousePositionChangeEventArgs e);
 	}
 }
