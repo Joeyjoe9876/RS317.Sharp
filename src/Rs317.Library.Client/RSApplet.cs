@@ -152,7 +152,14 @@ namespace Rs317.Sharp
 			OnMouseWheelDragged(mouseXDiff, mouseYDiff);
 		}
 
+		public void mouseWheelScroll(object sender, float scrollDelta)
+		{
+			OnMouseWheelScrolled(scrollDelta);
+		}
+
 		protected abstract void OnMouseWheelDragged(int mouseXDiff, int mouseYDiff);
+
+		protected abstract void OnMouseWheelScrolled(float scrollDelta);
 
 		public void mouseMoved(object sender, RsMousePositionChangeEventArgs e)
 		{

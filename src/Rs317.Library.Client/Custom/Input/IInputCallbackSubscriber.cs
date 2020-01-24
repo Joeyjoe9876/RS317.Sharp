@@ -29,5 +29,7 @@ namespace Rs317.Sharp
 		void mousePressed(object sender, RsMouseInputEventArgs e);
 
 		void mouseWheelDragged(object sender, RsMousePositionChangeEventArgs e);
+
+		void mouseWheelScroll(object sender, float scrollDelta);
 	}
 }

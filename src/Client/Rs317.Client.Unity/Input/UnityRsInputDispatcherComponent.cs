@@ -110,6 +110,12 @@ namespace Rs317.Sharp
 				mouseMoved();
 			}
 
+			//Invert specifically because the Unity3D implementation
+			//gives inverted results as expected for scaling.
+			if(Math.Abs(Input.mouseScrollDelta.y) > float.Epsilon)
+				InputSubscribable?.mouseWheelScroll(this, -Input.mouseScrollDelta.y);
+				
+
 			//TODO: Make sperate input implementations
 			//On mobile right now we handle keyboard input differently.
 			if(!RsUnityPlatform.isAndroidMobileBuild)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -510,6 +511,22 @@ namespace Rs317.Sharp
 		private int currentTrackLoop;
 
 		protected IRsSocketFactory SocketFactory { get; }
+
+		//Based on: https://www.rune-server.ee/runescape-development/rs-503-client-server/snippets/598983-all-revisions-client-zooming.html
+		private float _clientZoom = 600;
+		public float ClientZoom
+		{
+			get => _clientZoom;
+			protected set
+			{
+				if (value < 40)
+					_clientZoom = 40;
+				else if (value > 1200)
+					_clientZoom = 1200;
+				else
+					_clientZoom = value;
+			}
+		}
 
 		static Client()
 		{
@@ -11954,7 +11971,7 @@ namespace Rs317.Sharp
 			int horizontalDifference = 2048 - horizontal & 0x7FF;
 			int offsetX = 0;
 			int offsetZ = 0;
-			int offsetY = 600 + vertical * 3;
+			int offsetY = (int)(ClientZoom + vertical * 3);
 			if(verticalDifference != 0)
 			{
 				int sine = Model.SINE[verticalDifference];
@@ -12095,6 +12112,17 @@ namespace Rs317.Sharp
 					cameraVertical = 383;
 			}
 		}
+
+		//Custom: implementation of mouse wheel scrolling
+		protected override void OnMouseWheelScrolled(float scrollDelta)
+		{
+			//Don't let camera scroll change when an interface is open.
+			if (openInterfaceId < 0)
+			{
+				ClientZoom = ClientZoom + scrollDelta * 50.0f;
+			}
+		}
+
 		private void setStandardCameraPosition()
 		{
 			try
