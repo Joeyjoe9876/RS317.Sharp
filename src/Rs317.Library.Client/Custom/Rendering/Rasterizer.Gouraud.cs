@@ -81,111 +81,112 @@ namespace Rs317.Sharp
 			}
 		}
 
-		private unsafe static void DrawHDGouraudTexturedTriangleWithSpan(int* texturePtr, int y1, int y2, int y3, int x1, int x2, int x3, int l1, int l2, int l3, int tx1, int tx2, int tx3, int ty1, int ty2, int ty3, int tz1, int tz2, int tz3, int textureId)
+																		 //(int* texture, int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId)
+		private unsafe static void DrawHDGouraudTexturedTriangleWithSpan(int* texture, int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId)
 		{
-			l1 = 0x7f - l1 << 1;
-			l2 = 0x7f - l2 << 1;
-			l3 = 0x7f - l3 << 1;
+			zA = 0x7f - zA << 1;
+			zB = 0x7f - zB << 1;
+			zC = 0x7f - zC << 1;
 			opaque = !transparent[textureId];
-			tx2 = tx1 - tx2;
-			ty2 = ty1 - ty2;
-			tz2 = tz1 - tz2;
-			tx3 -= tx1;
-			ty3 -= ty1;
-			tz3 -= tz1;
-			int l4 = tx3 * ty1 - ty3 * tx1 << 14;
-			int i5 = ty3 * tz1 - tz3 * ty1 << 8;
-			int j5 = tz3 * tx1 - tx3 * tz1 << 5;
-			int k5 = tx2 * ty1 - ty2 * tx1 << 14;
-			int l5 = ty2 * tz1 - tz2 * ty1 << 8;
-			int i6 = tz2 * tx1 - tx2 * tz1 << 5;
-			int j6 = ty2 * tx3 - tx2 * ty3 << 14;
-			int k6 = tz2 * ty3 - ty2 * tz3 << 8;
-			int l6 = tx2 * tz3 - tz2 * tx3 << 5;
+			k2 = j2 - k2;
+			j3 = i3 - j3;
+			i4 = l3 - i4;
+			l2 -= j2;
+			k3 -= i3;
+			j4 -= l3;
+			int l4 = l2 * i3 - k3 * j2 << 14;
+			int i5 = k3 * l3 - j4 * i3 << 8;
+			int j5 = j4 * j2 - l2 * l3 << 5;
+			int k5 = k2 * i3 - j3 * j2 << 14;
+			int l5 = j3 * l3 - i4 * i3 << 8;
+			int i6 = i4 * j2 - k2 * l3 << 5;
+			int j6 = j3 * l2 - k2 * k3 << 14;
+			int k6 = i4 * k3 - j3 * j4 << 8;
+			int l6 = k2 * j4 - i4 * l2 << 5;
 			int i7 = 0;
 			int j7 = 0;
-			if (y2 != y1)
+			if (yB != yA)
 			{
-				i7 = (x2 - x1 << 16) / (y2 - y1);
-				j7 = (l2 - l1 << 16) / (y2 - y1);
+				i7 = (xB - xA << 16) / (yB - yA);
+				j7 = (zB - zA << 16) / (yB - yA);
 			}
 
 			int k7 = 0;
 			int l7 = 0;
-			if (y3 != y2)
+			if (yC != yB)
 			{
-				k7 = (x3 - x2 << 16) / (y3 - y2);
-				l7 = (l3 - l2 << 16) / (y3 - y2);
+				k7 = (xC - xB << 16) / (yC - yB);
+				l7 = (zC - zB << 16) / (yC - yB);
 			}
 
 			int i8 = 0;
 			int j8 = 0;
-			if (y3 != y1)
+			if (yC != yA)
 			{
-				i8 = (x1 - x3 << 16) / (y1 - y3);
-				j8 = (l1 - l3 << 16) / (y1 - y3);
+				i8 = (xA - xC << 16) / (yA - yC);
+				j8 = (zA - zC << 16) / (yA - yC);
 			}
 
-			if (y1 <= y2 && y1 <= y3)
+			if (yA <= yB && yA <= yC)
 			{
-				if (y1 >= DrawingArea.bottomY)
+				if (yA >= DrawingArea.bottomY)
 					return;
-				if (y2 > DrawingArea.bottomY)
-					y2 = DrawingArea.bottomY;
-				if (y3 > DrawingArea.bottomY)
-					y3 = DrawingArea.bottomY;
-				if (y2 < y3)
+				if (yB > DrawingArea.bottomY)
+					yB = DrawingArea.bottomY;
+				if (yC > DrawingArea.bottomY)
+					yC = DrawingArea.bottomY;
+				if (yB < yC)
 				{
-					x3 = x1 <<= 16;
-					l3 = l1 <<= 16;
-					if (y1 < 0)
+					xC = xA <<= 16;
+					zC = zA <<= 16;
+					if (yA < 0)
 					{
-						x3 -= i8 * y1;
-						x1 -= i7 * y1;
-						l3 -= j8 * y1;
-						l1 -= j7 * y1;
-						y1 = 0;
+						xC -= i8 * yA;
+						xA -= i7 * yA;
+						zC -= j8 * yA;
+						zA -= j7 * yA;
+						yA = 0;
 					}
 
-					x2 <<= 16;
-					l2 <<= 16;
-					if (y2 < 0)
+					xB <<= 16;
+					zB <<= 16;
+					if (yB < 0)
 					{
-						x2 -= k7 * y2;
-						l2 -= l7 * y2;
-						y2 = 0;
+						xB -= k7 * yB;
+						zB -= l7 * yB;
+						yB = 0;
 					}
 
-					int k8 = y1 - centreY;
+					int k8 = yA - centreY;
 					l4 += j5 * k8;
 					k5 += i6 * k8;
 					j6 += l6 * k8;
-					if (y1 != y2 && i8 < i7 || y1 == y2 && i8 > k7)
+					if (yA != yB && i8 < i7 || yA == yB && i8 > k7)
 					{
-						y3 -= y2;
-						y2 -= y1;
-						y1 = lineOffsets[y1];
-						while (--y2 >= 0)
+						yC -= yB;
+						yB -= yA;
+						yA = lineOffsets[yA];
+						while (--yB >= 0)
 						{
-							drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y1, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
-							x3 += i8;
-							x1 += i7;
-							l3 += j8;
-							l1 += j7;
-							y1 += DrawingArea.width;
+							drawHDTexturedScanline(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC, zA, l4, k5, j6, i5, l5, k6);
+							xC += i8;
+							xA += i7;
+							zC += j8;
+							zA += j7;
+							yA += DrawingArea.width;
 							l4 += j5;
 							k5 += i6;
 							j6 += l6;
 						}
 
-						while (--y3 >= 0)
+						while (--yC >= 0)
 						{
-							drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y1, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
-							x3 += i8;
-							x2 += k7;
-							l3 += j8;
-							l2 += l7;
-							y1 += DrawingArea.width;
+							drawHDTexturedScanline(DrawingArea.pixels, texture, yA, xC >> 16, xB >> 16, zC, zB, l4, k5, j6, i5, l5, k6);
+							xC += i8;
+							xB += k7;
+							zC += j8;
+							zB += l7;
+							yA += DrawingArea.width;
 							l4 += j5;
 							k5 += i6;
 							j6 += l6;
@@ -194,30 +195,30 @@ namespace Rs317.Sharp
 						return;
 					}
 
-					y3 -= y2;
-					y2 -= y1;
-					y1 = lineOffsets[y1];
-					while (--y2 >= 0)
+					yC -= yB;
+					yB -= yA;
+					yA = lineOffsets[yA];
+					while (--yB >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y1, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
-						x3 += i8;
-						x1 += i7;
-						l3 += j8;
-						l1 += j7;
-						y1 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA, zC, l4, k5, j6, i5, l5, k6);
+						xC += i8;
+						xA += i7;
+						zC += j8;
+						zA += j7;
+						yA += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 
-					while (--y3 >= 0)
+					while (--yC >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y1, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
-						x3 += i8;
-						x2 += k7;
-						l3 += j8;
-						l2 += l7;
-						y1 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yA, xB >> 16, xC >> 16, zB, zC, l4, k5, j6, i5, l5, k6);
+						xC += i8;
+						xB += k7;
+						zC += j8;
+						zB += l7;
+						yA += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -226,56 +227,56 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				x2 = x1 <<= 16;
-				l2 = l1 <<= 16;
-				if (y1 < 0)
+				xB = xA <<= 16;
+				zB = zA <<= 16;
+				if (yA < 0)
 				{
-					x2 -= i8 * y1;
-					x1 -= i7 * y1;
-					l2 -= j8 * y1;
-					l1 -= j7 * y1;
-					y1 = 0;
+					xB -= i8 * yA;
+					xA -= i7 * yA;
+					zB -= j8 * yA;
+					zA -= j7 * yA;
+					yA = 0;
 				}
 
-				x3 <<= 16;
-				l3 <<= 16;
-				if (y3 < 0)
+				xC <<= 16;
+				zC <<= 16;
+				if (yC < 0)
 				{
-					x3 -= k7 * y3;
-					l3 -= l7 * y3;
-					y3 = 0;
+					xC -= k7 * yC;
+					zC -= l7 * yC;
+					yC = 0;
 				}
 
-				int l8 = y1 - centreY;
+				int l8 = yA - centreY;
 				l4 += j5 * l8;
 				k5 += i6 * l8;
 				j6 += l6 * l8;
-				if (y1 != y3 && i8 < i7 || y1 == y3 && k7 > i7)
+				if (yA != yC && i8 < i7 || yA == yC && k7 > i7)
 				{
-					y2 -= y3;
-					y3 -= y1;
-					y1 = lineOffsets[y1];
-					while (--y3 >= 0)
+					yB -= yC;
+					yC -= yA;
+					yA = lineOffsets[yA];
+					while (--yC >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y1, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
-						x2 += i8;
-						x1 += i7;
-						l2 += j8;
-						l1 += j7;
-						y1 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yA, xB >> 16, xA >> 16, zB, zA, l4, k5, j6, i5, l5, k6);
+						xB += i8;
+						xA += i7;
+						zB += j8;
+						zA += j7;
+						yA += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 
-					while (--y2 >= 0)
+					while (--yB >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y1, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
-						x3 += k7;
-						x1 += i7;
-						l3 += l7;
-						l1 += j7;
-						y1 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC, zA, l4, k5, j6, i5, l5, k6);
+						xC += k7;
+						xA += i7;
+						zC += l7;
+						zA += j7;
+						yA += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -284,30 +285,30 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				y2 -= y3;
-				y3 -= y1;
-				y1 = lineOffsets[y1];
-				while (--y3 >= 0)
+				yB -= yC;
+				yC -= yA;
+				yA = lineOffsets[yA];
+				while (--yC >= 0)
 				{
-					drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y1, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
-					x2 += i8;
-					x1 += i7;
-					l2 += j8;
-					l1 += j7;
-					y1 += DrawingArea.width;
+					drawHDTexturedScanline(DrawingArea.pixels, texture, yA, xA >> 16, xB >> 16, zA, zB, l4, k5, j6, i5, l5, k6);
+					xB += i8;
+					xA += i7;
+					zB += j8;
+					zA += j7;
+					yA += DrawingArea.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 
-				while (--y2 >= 0)
+				while (--yB >= 0)
 				{
-					drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y1, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
-					x3 += k7;
-					x1 += i7;
-					l3 += l7;
-					l1 += j7;
-					y1 += DrawingArea.width;
+					drawHDTexturedScanline(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA, zC, l4, k5, j6, i5, l5, k6);
+					xC += k7;
+					xA += i7;
+					zC += l7;
+					zA += j7;
+					yA += DrawingArea.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -316,66 +317,66 @@ namespace Rs317.Sharp
 				return;
 			}
 
-			if (y2 <= y3)
+			if (yB <= yC)
 			{
-				if (y2 >= DrawingArea.bottomY)
+				if (yB >= DrawingArea.bottomY)
 					return;
-				if (y3 > DrawingArea.bottomY)
-					y3 = DrawingArea.bottomY;
-				if (y1 > DrawingArea.bottomY)
-					y1 = DrawingArea.bottomY;
-				if (y3 < y1)
+				if (yC > DrawingArea.bottomY)
+					yC = DrawingArea.bottomY;
+				if (yA > DrawingArea.bottomY)
+					yA = DrawingArea.bottomY;
+				if (yC < yA)
 				{
-					x1 = x2 <<= 16;
-					l1 = l2 <<= 16;
-					if (y2 < 0)
+					xA = xB <<= 16;
+					zA = zB <<= 16;
+					if (yB < 0)
 					{
-						x1 -= i7 * y2;
-						x2 -= k7 * y2;
-						l1 -= j7 * y2;
-						l2 -= l7 * y2;
-						y2 = 0;
+						xA -= i7 * yB;
+						xB -= k7 * yB;
+						zA -= j7 * yB;
+						zB -= l7 * yB;
+						yB = 0;
 					}
 
-					x3 <<= 16;
-					l3 <<= 16;
-					if (y3 < 0)
+					xC <<= 16;
+					zC <<= 16;
+					if (yC < 0)
 					{
-						x3 -= i8 * y3;
-						l3 -= j8 * y3;
-						y3 = 0;
+						xC -= i8 * yC;
+						zC -= j8 * yC;
+						yC = 0;
 					}
 
-					int i9 = y2 - centreY;
+					int i9 = yB - centreY;
 					l4 += j5 * i9;
 					k5 += i6 * i9;
 					j6 += l6 * i9;
-					if (y2 != y3 && i7 < k7 || y2 == y3 && i7 > i8)
+					if (yB != yC && i7 < k7 || yB == yC && i7 > i8)
 					{
-						y1 -= y3;
-						y3 -= y2;
-						y2 = lineOffsets[y2];
-						while (--y3 >= 0)
+						yA -= yC;
+						yC -= yB;
+						yB = lineOffsets[yB];
+						while (--yC >= 0)
 						{
-							drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y2, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
-							x1 += i7;
-							x2 += k7;
-							l1 += j7;
-							l2 += l7;
-							y2 += DrawingArea.width;
+							drawHDTexturedScanline(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA, zB, l4, k5, j6, i5, l5, k6);
+							xA += i7;
+							xB += k7;
+							zA += j7;
+							zB += l7;
+							yB += DrawingArea.width;
 							l4 += j5;
 							k5 += i6;
 							j6 += l6;
 						}
 
-						while (--y1 >= 0)
+						while (--yA >= 0)
 						{
-							drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y2, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
-							x1 += i7;
-							x3 += i8;
-							l1 += j7;
-							l3 += j8;
-							y2 += DrawingArea.width;
+							drawHDTexturedScanline(DrawingArea.pixels, texture, yB, xA >> 16, xC >> 16, zA, zC, l4, k5, j6, i5, l5, k6);
+							xA += i7;
+							xC += i8;
+							zA += j7;
+							zC += j8;
+							yB += DrawingArea.width;
 							l4 += j5;
 							k5 += i6;
 							j6 += l6;
@@ -384,30 +385,30 @@ namespace Rs317.Sharp
 						return;
 					}
 
-					y1 -= y3;
-					y3 -= y2;
-					y2 = lineOffsets[y2];
-					while (--y3 >= 0)
+					yA -= yC;
+					yC -= yB;
+					yB = lineOffsets[yB];
+					while (--yC >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y2, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
-						x1 += i7;
-						x2 += k7;
-						l1 += j7;
-						l2 += l7;
-						y2 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB, zA, l4, k5, j6, i5, l5, k6);
+						xA += i7;
+						xB += k7;
+						zA += j7;
+						zB += l7;
+						yB += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 
-					while (--y1 >= 0)
+					while (--yA >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y2, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
-						x1 += i7;
-						x3 += i8;
-						l1 += j7;
-						l3 += j8;
-						y2 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yB, xC >> 16, xA >> 16, zC, zA, l4, k5, j6, i5, l5, k6);
+						xA += i7;
+						xC += i8;
+						zA += j7;
+						zC += j8;
+						yB += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -416,56 +417,56 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				x3 = x2 <<= 16;
-				l3 = l2 <<= 16;
-				if (y2 < 0)
+				xC = xB <<= 16;
+				zC = zB <<= 16;
+				if (yB < 0)
 				{
-					x3 -= i7 * y2;
-					x2 -= k7 * y2;
-					l3 -= j7 * y2;
-					l2 -= l7 * y2;
-					y2 = 0;
+					xC -= i7 * yB;
+					xB -= k7 * yB;
+					zC -= j7 * yB;
+					zB -= l7 * yB;
+					yB = 0;
 				}
 
-				x1 <<= 16;
-				l1 <<= 16;
-				if (y1 < 0)
+				xA <<= 16;
+				zA <<= 16;
+				if (yA < 0)
 				{
-					x1 -= i8 * y1;
-					l1 -= j8 * y1;
-					y1 = 0;
+					xA -= i8 * yA;
+					zA -= j8 * yA;
+					yA = 0;
 				}
 
-				int j9 = y2 - centreY;
+				int j9 = yB - centreY;
 				l4 += j5 * j9;
 				k5 += i6 * j9;
 				j6 += l6 * j9;
 				if (i7 < k7)
 				{
-					y3 -= y1;
-					y1 -= y2;
-					y2 = lineOffsets[y2];
-					while (--y1 >= 0)
+					yC -= yA;
+					yA -= yB;
+					yB = lineOffsets[yB];
+					while (--yA >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y2, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
-						x3 += i7;
-						x2 += k7;
-						l3 += j7;
-						l2 += l7;
-						y2 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yB, xC >> 16, xB >> 16, zC, zB, l4, k5, j6, i5, l5, k6);
+						xC += i7;
+						xB += k7;
+						zC += j7;
+						zB += l7;
+						yB += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 
-					while (--y3 >= 0)
+					while (--yC >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y2, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
-						x1 += i8;
-						x2 += k7;
-						l1 += j8;
-						l2 += l7;
-						y2 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA, zB, l4, k5, j6, i5, l5, k6);
+						xA += i8;
+						xB += k7;
+						zA += j8;
+						zB += l7;
+						yB += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -474,30 +475,30 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				y3 -= y1;
-				y1 -= y2;
-				y2 = lineOffsets[y2];
-				while (--y1 >= 0)
+				yC -= yA;
+				yA -= yB;
+				yB = lineOffsets[yB];
+				while (--yA >= 0)
 				{
-					drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y2, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
-					x3 += i7;
-					x2 += k7;
-					l3 += j7;
-					l2 += l7;
-					y2 += DrawingArea.width;
+					drawHDTexturedScanline(DrawingArea.pixels, texture, yB, xB >> 16, xC >> 16, zB, zC, l4, k5, j6, i5, l5, k6);
+					xC += i7;
+					xB += k7;
+					zC += j7;
+					zB += l7;
+					yB += DrawingArea.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 
-				while (--y3 >= 0)
+				while (--yC >= 0)
 				{
-					drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y2, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
-					x1 += i8;
-					x2 += k7;
-					l1 += j8;
-					l2 += l7;
-					y2 += DrawingArea.width;
+					drawHDTexturedScanline(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB, zA, l4, k5, j6, i5, l5, k6);
+					xA += i8;
+					xB += k7;
+					zA += j8;
+					zB += l7;
+					yB += DrawingArea.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -506,64 +507,64 @@ namespace Rs317.Sharp
 				return;
 			}
 
-			if (y3 >= DrawingArea.bottomY)
+			if (yC >= DrawingArea.bottomY)
 				return;
-			if (y1 > DrawingArea.bottomY)
-				y1 = DrawingArea.bottomY;
-			if (y2 > DrawingArea.bottomY)
-				y2 = DrawingArea.bottomY;
-			if (y1 < y2)
+			if (yA > DrawingArea.bottomY)
+				yA = DrawingArea.bottomY;
+			if (yB > DrawingArea.bottomY)
+				yB = DrawingArea.bottomY;
+			if (yA < yB)
 			{
-				x2 = x3 <<= 16;
-				l2 = l3 <<= 16;
-				if (y3 < 0)
+				xB = xC <<= 16;
+				zB = zC <<= 16;
+				if (yC < 0)
 				{
-					x2 -= k7 * y3;
-					x3 -= i8 * y3;
-					l2 -= l7 * y3;
-					l3 -= j8 * y3;
-					y3 = 0;
+					xB -= k7 * yC;
+					xC -= i8 * yC;
+					zB -= l7 * yC;
+					zC -= j8 * yC;
+					yC = 0;
 				}
 
-				x1 <<= 16;
-				l1 <<= 16;
-				if (y1 < 0)
+				xA <<= 16;
+				zA <<= 16;
+				if (yA < 0)
 				{
-					x1 -= i7 * y1;
-					l1 -= j7 * y1;
-					y1 = 0;
+					xA -= i7 * yA;
+					zA -= j7 * yA;
+					yA = 0;
 				}
 
-				int k9 = y3 - centreY;
+				int k9 = yC - centreY;
 				l4 += j5 * k9;
 				k5 += i6 * k9;
 				j6 += l6 * k9;
 				if (k7 < i8)
 				{
-					y2 -= y1;
-					y1 -= y3;
-					y3 = lineOffsets[y3];
-					while (--y1 >= 0)
+					yB -= yA;
+					yA -= yC;
+					yC = lineOffsets[yC];
+					while (--yA >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y3, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
-						x2 += k7;
-						x3 += i8;
-						l2 += l7;
-						l3 += j8;
-						y3 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB, zC, l4, k5, j6, i5, l5, k6);
+						xB += k7;
+						xC += i8;
+						zB += l7;
+						zC += j8;
+						yC += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
 					}
 
-					while (--y2 >= 0)
+					while (--yB >= 0)
 					{
-						drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y3, x2 >> 16, x1 >> 16, l2, l1, l4, k5, j6, i5, l5, k6);
-						x2 += k7;
-						x1 += i7;
-						l2 += l7;
-						l1 += j7;
-						y3 += DrawingArea.width;
+						drawHDTexturedScanline(DrawingArea.pixels, texture, yC, xB >> 16, xA >> 16, zB, zA, l4, k5, j6, i5, l5, k6);
+						xB += k7;
+						xA += i7;
+						zB += l7;
+						zA += j7;
+						yC += DrawingArea.width;
 						l4 += j5;
 						k5 += i6;
 						j6 += l6;
@@ -572,30 +573,30 @@ namespace Rs317.Sharp
 					return;
 				}
 
-				y2 -= y1;
-				y1 -= y3;
-				y3 = lineOffsets[y3];
-				while (--y1 >= 0)
+				yB -= yA;
+				yA -= yC;
+				yC = lineOffsets[yC];
+				while (--yA >= 0)
 				{
-					drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y3, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
-					x2 += k7;
-					x3 += i8;
-					l2 += l7;
-					l3 += j8;
-					y3 += DrawingArea.width;
+					drawHDTexturedScanline(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC, zB, l4, k5, j6, i5, l5, k6);
+					xB += k7;
+					xC += i8;
+					zB += l7;
+					zC += j8;
+					yC += DrawingArea.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 
-				while (--y2 >= 0)
+				while (--yB >= 0)
 				{
-					drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y3, x1 >> 16, x2 >> 16, l1, l2, l4, k5, j6, i5, l5, k6);
-					x2 += k7;
-					x1 += i7;
-					l2 += l7;
-					l1 += j7;
-					y3 += DrawingArea.width;
+					drawHDTexturedScanline(DrawingArea.pixels, texture, yC, xA >> 16, xB >> 16, zA, zB, l4, k5, j6, i5, l5, k6);
+					xB += k7;
+					xA += i7;
+					zB += l7;
+					zA += j7;
+					yC += DrawingArea.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -604,56 +605,56 @@ namespace Rs317.Sharp
 				return;
 			}
 
-			x1 = x3 <<= 16;
-			l1 = l3 <<= 16;
-			if (y3 < 0)
+			xA = xC <<= 16;
+			zA = zC <<= 16;
+			if (yC < 0)
 			{
-				x1 -= k7 * y3;
-				x3 -= i8 * y3;
-				l1 -= l7 * y3;
-				l3 -= j8 * y3;
-				y3 = 0;
+				xA -= k7 * yC;
+				xC -= i8 * yC;
+				zA -= l7 * yC;
+				zC -= j8 * yC;
+				yC = 0;
 			}
 
-			x2 <<= 16;
-			l2 <<= 16;
-			if (y2 < 0)
+			xB <<= 16;
+			zB <<= 16;
+			if (yB < 0)
 			{
-				x2 -= i7 * y2;
-				l2 -= j7 * y2;
-				y2 = 0;
+				xB -= i7 * yB;
+				zB -= j7 * yB;
+				yB = 0;
 			}
 
-			int l9 = y3 - centreY;
+			int l9 = yC - centreY;
 			l4 += j5 * l9;
 			k5 += i6 * l9;
 			j6 += l6 * l9;
 			if (k7 < i8)
 			{
-				y1 -= y2;
-				y2 -= y3;
-				y3 = lineOffsets[y3];
-				while (--y2 >= 0)
+				yA -= yB;
+				yB -= yC;
+				yC = lineOffsets[yC];
+				while (--yB >= 0)
 				{
-					drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y3, x1 >> 16, x3 >> 16, l1, l3, l4, k5, j6, i5, l5, k6);
-					x1 += k7;
-					x3 += i8;
-					l1 += l7;
-					l3 += j8;
-					y3 += DrawingArea.width;
+					drawHDTexturedScanline(DrawingArea.pixels, texture, yC, xA >> 16, xC >> 16, zA, zC, l4, k5, j6, i5, l5, k6);
+					xA += k7;
+					xC += i8;
+					zA += l7;
+					zC += j8;
+					yC += DrawingArea.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
 				}
 
-				while (--y1 >= 0)
+				while (--yA >= 0)
 				{
-					drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y3, x2 >> 16, x3 >> 16, l2, l3, l4, k5, j6, i5, l5, k6);
-					x2 += i7;
-					x3 += i8;
-					l2 += j7;
-					l3 += j8;
-					y3 += DrawingArea.width;
+					drawHDTexturedScanline(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB, zC, l4, k5, j6, i5, l5, k6);
+					xB += i7;
+					xC += i8;
+					zB += j7;
+					zC += j8;
+					yC += DrawingArea.width;
 					l4 += j5;
 					k5 += i6;
 					j6 += l6;
@@ -662,30 +663,30 @@ namespace Rs317.Sharp
 				return;
 			}
 
-			y1 -= y2;
-			y2 -= y3;
-			y3 = lineOffsets[y3];
-			while (--y2 >= 0)
+			yA -= yB;
+			yB -= yC;
+			yC = lineOffsets[yC];
+			while (--yB >= 0)
 			{
-				drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y3, x3 >> 16, x1 >> 16, l3, l1, l4, k5, j6, i5, l5, k6);
-				x1 += k7;
-				x3 += i8;
-				l1 += l7;
-				l3 += j8;
-				y3 += DrawingArea.width;
+				drawHDTexturedScanline(DrawingArea.pixels, texture, yC, xC >> 16, xA >> 16, zC, zA, l4, k5, j6, i5, l5, k6);
+				xA += k7;
+				xC += i8;
+				zA += l7;
+				zC += j8;
+				yC += DrawingArea.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
 			}
 
-			while (--y1 >= 0)
+			while (--yA >= 0)
 			{
-				drawHDTexturedScanline(DrawingArea.pixels, texturePtr, y3, x3 >> 16, x2 >> 16, l3, l2, l4, k5, j6, i5, l5, k6);
-				x2 += i7;
-				x3 += i8;
-				l2 += j7;
-				l3 += j8;
-				y3 += DrawingArea.width;
+				drawHDTexturedScanline(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC, zB, l4, k5, j6, i5, l5, k6);
+				xB += i7;
+				xC += i8;
+				zB += j7;
+				zC += j8;
+				yC += DrawingArea.width;
 				l4 += j5;
 				k5 += i6;
 				j6 += l6;
