@@ -1068,7 +1068,7 @@ namespace Rs317.Sharp
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static void drawTexturedTriangleWithSpan(ReadOnlySpan<int> texture, int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC,
+		private unsafe static void drawTexturedTriangleWithSpan(int* texture, int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC,
 			int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId)
 		{
 			opaque = !transparent[textureId];
@@ -1641,8 +1641,8 @@ namespace Rs317.Sharp
 
 			fixed (int* texelCachePointer = texelCache)
 			{
-				ReadOnlySpan<int> span = new ReadOnlySpan<int>(textureId * HIGH_MEMORY_TEXEL_WIDTH + texelCachePointer, HIGH_MEMORY_TEXEL_WIDTH);
-				drawTexturedTriangleWithSpan(span, yA, yB, yC, xA, xB, xC, zA, zB, zC, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
+				int* texturePtr = textureId * HIGH_MEMORY_TEXEL_WIDTH + texelCachePointer;
+				drawTexturedTriangleWithSpan(texturePtr, yA, yB, yC, xA, xB, xC, zA, zB, zC, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
 			}
 		}
 
@@ -1889,13 +1889,16 @@ namespace Rs317.Sharp
 
 		}
 
-		private unsafe static void method379(int[] ai, ReadOnlySpan<int> texture, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
+		private unsafe static void method379(int[] ai, int* texturePtr, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
 			int k2, int l2, int i3)
 		{
+			//We use passed pointer to save performance on GetPinnableRefernece in this hot path
+			//That's why the pointer is passed from the caller now instead of fixed within this method.
+
 			//This is a major performance beneficial change that removes the significant burden of Span indexer.
 			//Profiled the indexer was eating 40% of frametime, though deep profiling dramatically impacts this
 			//with 100,000+ calls to the indexer per frame.
-			fixed (int* texturePtr = texture)
+			//fixed (int* texturePtr = texture)
 			{
 				int i = 0; // was parameter
 				int j = 0; // was parameter
