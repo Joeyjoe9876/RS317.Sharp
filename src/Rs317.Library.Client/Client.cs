@@ -12080,6 +12080,21 @@ namespace Rs317.Sharp
 				cameraHorizontalRotation = curveVertical;
 		}
 
+		//Custom: implementation of mouse wheel dragging for camera rotation.
+		protected override void OnMouseWheelDragged(int mouseXDiff, int mouseYDiff)
+		{
+			if (!cutsceneActive)
+			{
+				cameraHorizontal += mouseXDiff * 2;
+				cameraVertical += -mouseYDiff;
+
+				//Safeguard to prevent the verticale from getting too high.
+				if(cameraVertical < 128)
+					cameraVertical = 128;
+				if(cameraVertical > 383)
+					cameraVertical = 383;
+			}
+		}
 		private void setStandardCameraPosition()
 		{
 			try
@@ -12103,12 +12118,14 @@ namespace Rs317.Sharp
 					cameraModificationH += (24 - cameraModificationH) / 2;
 				else
 					cameraModificationH /= 2;
+
 				if(base.keyStatus[3] == 1)
 					cameraModificationV += (12 - cameraModificationV) / 2;
 				else if(base.keyStatus[4] == 1)
 					cameraModificationV += (-12 - cameraModificationV) / 2;
 				else
 					cameraModificationV /= 2;
+
 				cameraHorizontal = cameraHorizontal + cameraModificationH / 2 & 0x7FF;
 				cameraVertical += cameraModificationV / 2;
 				if(cameraVertical < 128)
