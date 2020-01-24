@@ -63,6 +63,9 @@ namespace Rs317.Sharp
 				SetOnPageInvisible(DelegateOnVisibilityChangeInvisible);
 				InitializePageVisibilityCallbacks();
 			}
+
+			//WebGL probably forces vsync already but we should ensure it.
+			QualitySettings.vSyncCount = 1;
 		}
 
 		[MonoPInvokeCallback(typeof(OnVisibilityChangeCallback))]
