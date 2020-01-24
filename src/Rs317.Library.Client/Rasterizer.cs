@@ -5,26 +5,59 @@ using System.Runtime.CompilerServices;
 namespace Rs317.Sharp
 {
 
-	public sealed class Rasterizer : DrawingArea
+	public sealed partial class Rasterizer : DrawingArea
 	{
 		private const int TEXEL_POOL_MAX_SIZE = 20;
 		private const int HIGH_MEMORY_TEXEL_WIDTH = 0x10000;
 		private const int TEXEL_CACHE_LENGTH = 50;
 
 		public static int anInt1459 = -477;
+
+		/// <summary>
+		/// Known as aBoolean1462
+		/// </summary>
 		public static bool restrictEdges;
+
+		/// <summary>
+		/// Known as aBoolean1463
+		/// </summary>
 		private static bool opaque;
+
+		/// <summary>
+		/// Known as aBoolean1464.
+		/// </summary>
 		public static bool textured = true;
+
+		/// <summary>
+		/// Known as anInt1465
+		/// </summary>
 		public static int alpha;
+
+		/// <summary>
+		/// Known as textureInt1.
+		/// </summary>
 		public static int centreX;
+
+		/// <summary>
+		/// Known as textureInt2.
+		/// </summary>
 		public static int centreY;
 		private static int[] anIntArray1468;
 		public static int[] anIntArray1469;
 		public static int[] SINE;
 		public static int[] COSINE;
+
+		/// <summary>
+		/// Known as anIntArray1472.
+		/// </summary>
 		public static int[] lineOffsets;
+
 		private static int loadedTextureCount;
 		public static IndexedImage[] textureImages = new IndexedImage[50];
+
+		/// <summary>
+		/// Known as aBooleanArray1475
+		/// </summary>
 		private static bool[] transparent = new bool[50];
 		private static int[] averageTextureColour = new int[50];
 
@@ -37,9 +70,23 @@ namespace Rs317.Sharp
 		private static int[,] texelCache = new int[TEXEL_CACHE_LENGTH, HIGH_MEMORY_TEXEL_WIDTH]; //the inlined size constant of the 
 		public static int[] textureLastUsed = new int[50];
 		public static int textureGetCount;
+
+		/// <summary>
+		/// Known as anIntArray1482
+		/// </summary>
 		public static int[] HSL_TO_RGB = new int[0x10000];
+
+		/// <summary>
+		/// Known as anIntArrayArray1483
+		/// </summary>
 		private static int[][] texturePalettes = new int[50][];
 
+		/// <summary>
+		/// Known as method373
+		/// </summary>
+		/// <param name="rgb"></param>
+		/// <param name="intensity"></param>
+		/// <returns></returns>
 		private static int adjustBrightness(int rgb, double intensity)
 		{
 			double r = (rgb >> 16) / 256D;
@@ -54,13 +101,17 @@ namespace Rs317.Sharp
 			return (byteR << 16) + (byteG << 8) + byteB;
 		}
 
+		/// <summary>
+		/// Known as method372.
+		/// </summary>
+		/// <param name="brightness"></param>
 		public static void calculatePalette(double brightness)
 		{
 			brightness += StaticRandomGenerator.Next() * 0.029999999999999999D - 0.014999999999999999D;
 			int hsl = 0;
 			for(int k = 0; k < 512; k++)
 			{
-				double d1 = k / 8 / 64D + 0.0078125D;
+				double d1 = ((double)k / 8) / 64D + 0.0078125D;
 				double d2 = (k & 7) / 8D + 0.0625D;
 				for(int k1 = 0; k1 < 128; k1++)
 				{
@@ -525,8 +576,27 @@ namespace Rs317.Sharp
 			}
 		}
 
+		/// <summary>
+		/// Known as: method374
+		/// </summary>
+		/// <param name="yA"></param>
+		/// <param name="yB"></param>
+		/// <param name="yC"></param>
+		/// <param name="xA"></param>
+		/// <param name="xB"></param>
+		/// <param name="xC"></param>
+		/// <param name="zA"></param>
+		/// <param name="zB"></param>
+		/// <param name="zC"></param>
 		public static void drawShadedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC)
 		{
+			if (textured)
+			{
+				//TODO: Clean this up
+				drawHDGouraudTriangle(yA, yB, yC, xA, xB, xC, zA, zB, zC);
+				return;
+			}
+			
 			int j2 = 0;
 			int k2 = 0;
 			if(yB != yA)
@@ -1561,6 +1631,12 @@ namespace Rs317.Sharp
 		public static unsafe void drawTexturedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC,
 			int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId)
 		{
+			if (textured)
+			{
+				drawHDTexturedTriangle(yA, yB, yC, xA, xB, xC, zA, zB, zC, j2, k2, l2, i3, j3, k3, l3, i4, j4, textureId);
+				return;
+			}
+			
 			EnsureTextRowIsIniitalized(textureId);
 
 			fixed (int* texelCachePointer = texelCache)
@@ -2046,6 +2122,10 @@ namespace Rs317.Sharp
 			texturePalettes = null;
 		}
 
+		/// <summary>
+		/// Known as method370
+		/// </summary>
+		/// <param name="textureId"></param>
 		public static void resetTexture(int textureId)
 		{
 			//Just indicate that the cache is not longer valid.
