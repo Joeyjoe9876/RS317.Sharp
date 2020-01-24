@@ -15,6 +15,13 @@ namespace Rs317.Sharp
 	{
 		public IBufferFactory BufferFactory { get; }
 
+		//Mostly exists for WebGL implementation
+		//so it can turn off rendering in the background.
+		/// <summary>
+		/// Indicates if the client should be rendering.
+		/// </summary>
+		public static bool ShouldClientRender { get; protected set; } = true;
+
 		//TODO: Optimize formating
 		private static String formatAmount(int amount)
 		{
@@ -9164,6 +9171,7 @@ namespace Rs317.Sharp
 
 			if(RsNetworkConnectionConstants.SHOULD_CLIENT_DISCONNECT_ON_IDLE && base.idleTime > RsNetworkConnectionConstants.MAX_IDLE_TIME_MILLISECONDS)
 			{
+				Console.WriteLine($"Client network idle timeout.");
 				idleLogout = 250;
 				base.idleTime -= 500;
 				stream.putOpcode(202);
@@ -10313,18 +10321,29 @@ namespace Rs317.Sharp
 
 		public override void processDrawing()
 		{
-			if(rsAlreadyLoaded || loadingError || genericLoadingError)
+			if (rsAlreadyLoaded || loadingError || genericLoadingError)
 			{
 				showErrorScreen();
 				return;
 			}
 
-			drawCycle++;
-			if(!LoggedIn)
-				drawLoginScreen(false);
+			if (ShouldClientRender)
+			{
+				drawCycle++;
+				if (!LoggedIn)
+					drawLoginScreen(false);
+				else
+					drawGameScreen();
+
+				anInt1213 = 0;
+			}
 			else
-				drawGameScreen();
-			anInt1213 = 0;
+			{
+				//Make sure to at least ping to keep the session alive when
+				//not rendering because the game loop is probably not ticking properly
+				if(LoggedIn)
+					SendIdlePing();
+			}
 		}
 
 		public override async Task processGameLoop()

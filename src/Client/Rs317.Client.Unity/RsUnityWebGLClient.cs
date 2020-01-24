@@ -69,12 +69,14 @@ namespace Rs317.Sharp
 		public static void DelegateOnVisibilityChangeVisible()
 		{
 			Console.WriteLine("Page Visible Called");
+			ShouldClientRender = true;
 		}
 
 		[MonoPInvokeCallback(typeof(OnVisibilityChangeCallback))]
 		public static void DelegateOnVisibilityChangeInvisible()
 		{
 			Console.WriteLine("Page Invisible Called");
+			ShouldClientRender = false;
 		}
 
 		private LoadedImagePixels ExternalLoadImageHook(byte[] arg)
@@ -166,9 +168,13 @@ namespace Rs317.Sharp
 			while(currentlyDrawingFlames)
 			{
 				flameCycle++;
-				calcFlamesPosition();
-				calcFlamesPosition();
-				doFlamesDrawing();
+
+				if (ShouldClientRender)
+				{
+					calcFlamesPosition();
+					calcFlamesPosition();
+					doFlamesDrawing();
+				}
 
 				await TaskDelayFactory.Create(25);
 			}

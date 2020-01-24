@@ -98,6 +98,11 @@ namespace Rs317.Sharp
 
 		private void Update()
 		{
+			//Client rendering can be turned off by things such as WebGL background throttling
+			//so we should opt not to draw in those cases.
+			if (!RsUnityClient.ShouldClientRender)
+				return;
+
 			DrawableSize = DrawablesList.Count;
 			InGameDrawableSize = InGameDrawablesList.Count;
 
