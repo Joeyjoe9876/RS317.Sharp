@@ -48,9 +48,8 @@ namespace Rs317.GladMMO
 				.As<IReadonlyZoneDataRepository>();
 
 			builder.RegisterInstance<RsUnityClient>(GladMMOProgram.RootClient)
-				.AsSelf()
-				.As<RsUnityClient>()
 				.AsImplementedInterfaces()
+				.As<RsUnityClient>()
 				.ExternallyOwned();
 		}
 	}

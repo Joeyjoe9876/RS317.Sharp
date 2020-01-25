@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using Autofac;
 using Glader.Essentials;
 using Rs317.GladMMO;
@@ -16,6 +17,8 @@ namespace Rs317.GladMMMO
 		private long LastMilliseconds { get; set; } = -1;
 
 		private ConcurrentQueue<Action> EventQueue { get; } = new ConcurrentQueue<Action>();
+
+		private ConcurrentQueue<Func<Task>> EventQueueAsync { get; } = new ConcurrentQueue<Func<Task>>();
 
 		public static IDisposable LifetimeDependencyScope { get; set; }
 
@@ -69,13 +72,13 @@ namespace Rs317.GladMMMO
 			CurrentGameTickables = container.Resolve<IEnumerable<IGameTickable>>();
 			CurrentGameFixedTickables = container.Resolve<IEnumerable<IGameFixedTickable>>();
 
-			EventQueue.Enqueue(() =>
+			EventQueueAsync.Enqueue(async () =>
 			{
 				foreach (var initializable in gameInitializables)
-					initializable.OnGameInitialized().ConfigureAwait(false).GetAwaiter().GetResult();
+					await initializable.OnGameInitialized();
 
-				foreach(var startable in gameStartables)
-					startable.OnGameStart().ConfigureAwait(false).GetAwaiter().GetResult();
+				foreach (var startable in gameStartables)
+					await startable.OnGameStart();
 			});
 
 			LifetimeDependencyScope = container;
@@ -86,14 +89,19 @@ namespace Rs317.GladMMMO
 			EventQueue.Enqueue(actionEvent);
 		}
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public void Service()
+		public async Task Service()
 		{
 			//Just do one a tick.
 			if (EventQueue.Any())
 			{
 				if (EventQueue.TryDequeue(out var action))
 					action?.Invoke();
+			}
+
+			if (EventQueueAsync.Any())
+			{
+				if (EventQueueAsync.TryDequeue(out var action))
+					await action.Invoke();
 			}
 
 			foreach(var tickable in CurrentGameTickables)

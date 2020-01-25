@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using GladMMO;
+using Rs317.Sharp;
 
 namespace Rs317.GladMMO
 {
 	[SceneTypeCreateGladMMO(GameSceneType.InstanceServerScene)]
 	public sealed class InitializeDefaultLocalSpawnRequirementsEventListener : OnLocalPlayerSpawnedEventListener
 	{
-		private GladMMOUnityClient Client { get; }
+		private RsUnityClient Client { get; }
 
 		private ILocalCharacterDataRepository CharacterDataRepository { get; }
 
 		public InitializeDefaultLocalSpawnRequirementsEventListener(ILocalPlayerSpawnedEventSubscribable subscriptionService,
-			[NotNull] GladMMOUnityClient client,
+			[NotNull] RsUnityClient client,
 			[NotNull] ILocalCharacterDataRepository characterDataRepository) 
 			: base(subscriptionService)
 		{

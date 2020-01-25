@@ -21,22 +21,22 @@ namespace Rs317.GladMMO
 
 		public void OnGameFixedTick()
 		{
-			if (!GladMMOUnityClient.localPlayer.visible)
+			if (!RsUnityClient.localPlayer.visible)
 				return;
 
 			int regionX = (Client.baseX + 52) / 8 + 6;
 			int regionY = (Client.baseY + 52) / 8 + 6;
 
 			//Now compare to current position
-			int currentRegionX = (Client.baseX + GladMMOUnityClient.localPlayer.waypointX[0]) / 8 + 6;
-			int currentRegionY = (Client.baseY + GladMMOUnityClient.localPlayer.waypointY[0]) / 8 + 6;
+			int currentRegionX = (Client.baseX + RsUnityClient.localPlayer.waypointX[0]) / 8 + 6;
+			int currentRegionY = (Client.baseY + RsUnityClient.localPlayer.waypointY[0]) / 8 + 6;
 
 			//If we're more than 2 region chunks away from the current base
 			if (Math.Abs(currentRegionX - regionX) > 2 || Math.Abs(currentRegionY - regionY) > 2)
 			{
 				//Then we should set the new region
-				int newRegionX = (Client.baseX + GladMMOUnityClient.localPlayer.waypointX[0]) / 8;
-				int newRegionY = (Client.baseY + GladMMOUnityClient.localPlayer.waypointY[0]) / 8;
+				int newRegionX = (Client.baseX + RsUnityClient.localPlayer.waypointX[0]) / 8;
+				int newRegionY = (Client.baseY + RsUnityClient.localPlayer.waypointY[0]) / 8;
 
 				Client.InitializePlayerRegion(newRegionX, newRegionY);
 

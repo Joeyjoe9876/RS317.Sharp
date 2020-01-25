@@ -15,11 +15,11 @@ using UnityEngine;
 
 namespace Rs317.GladMMO
 {
-	public sealed class GladMMOUnityClient : RsUnityClient
+	public sealed class GladMMOUnityClient : RsUnityClient, IRSClientLoginButtonPressedEventSubscribable
 	{
 		public GameManager GameManagerService { get; }
 
-		public event EventHandler OnLoginButtonClickedEvent;
+		public event EventHandler OnRunescapeLoginButtonPressed;
 
 		//Injected at connection time.
 		public static IPeerPayloadSendService<GameClientPacketPayload> SendService { get; set; }
@@ -43,7 +43,7 @@ namespace Rs317.GladMMO
 
 		public override async Task processGameLoop()
 		{
-			GameManagerService.Service();
+			await GameManagerService.Service();
 			await base.processGameLoop();
 		}
 
@@ -53,7 +53,7 @@ namespace Rs317.GladMMO
 			loginMessage2 = "Connecting to server...";
 			drawLoginScreen(true);
 
-			OnLoginButtonClickedEvent?.Invoke(this, EventArgs.Empty);
+			OnRunescapeLoginButtonPressed?.Invoke(this, EventArgs.Empty);
 
 			return Task.CompletedTask;
 		}

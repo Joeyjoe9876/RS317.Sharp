@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using GladMMO;
+using Rs317.Sharp;
 
 namespace Rs317.GladMMO
 {
 	[SceneTypeCreateGladMMO(GameSceneType.InstanceServerScene)]
 	public sealed class InitializeClientLoadingPositionEventListener : OnLocalPlayerSpawnedEventListener
 	{
-		private GladMMOUnityClient Client { get; }
+		private RsUnityClient Client { get; }
 
 		private IReadonlyEntityGuidMappable<IMovementData> MovementDataMappable { get; }
 
 		public InitializeClientLoadingPositionEventListener(ILocalPlayerSpawnedEventSubscribable subscriptionService,
-			[NotNull] GladMMOUnityClient client,
+			[NotNull] RsUnityClient client,
 			[NotNull] IReadonlyEntityGuidMappable<IMovementData> movementDataMappable) 
 			: base(subscriptionService)
 		{

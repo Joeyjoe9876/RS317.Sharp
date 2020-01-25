@@ -14,7 +14,7 @@ using Color = UnityEngine.Color;
 
 namespace Rs317.Sharp
 {
-	public sealed class RsUnityWebGLClient : RsUnityClient
+	public class RsUnityWebGLClient : RsUnityClient
 	{
 		/// <summary>
 		/// Initializes the ability for callbacks to be processed for

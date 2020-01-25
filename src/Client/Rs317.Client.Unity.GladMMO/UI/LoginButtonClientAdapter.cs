@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Glader.Essentials;
+using JetBrains.Annotations;
 using Rs317.Sharp;
 
 namespace Rs317.GladMMO
 {
 	public sealed class LoginButtonClientAdapter : IUIButton, IDisposable
 	{
-		private GladMMOUnityClient Client { get; }
+		//Persisted so we can dispose
+		[NotNull]
+		private IRSClientLoginButtonPressedEventSubscribable LoginButtonPressedSubscribable { get; }
 
 		private Action OnClicked;
 
-		public LoginButtonClientAdapter(GladMMOUnityClient client)
+		public LoginButtonClientAdapter([NotNull] IRSClientLoginButtonPressedEventSubscribable loginButtonPressedSubscribable)
 		{
-			Client = client ?? throw new ArgumentNullException(nameof(client));
-			Client.OnLoginButtonClickedEvent += OnLoginButtonClicked;
+			LoginButtonPressedSubscribable = loginButtonPressedSubscribable ?? throw new ArgumentNullException(nameof(loginButtonPressedSubscribable));
+			loginButtonPressedSubscribable.OnRunescapeLoginButtonPressed += OnLoginButtonClicked;
 		}
 
 		private void OnLoginButtonClicked(object sender, EventArgs e)
@@ -43,7 +46,7 @@ namespace Rs317.GladMMO
 
 		public void Dispose()
 		{
-			Client.OnLoginButtonClickedEvent -= OnLoginButtonClicked;
+			LoginButtonPressedSubscribable.OnRunescapeLoginButtonPressed -= OnLoginButtonClicked;
 		}
 	}
 }
