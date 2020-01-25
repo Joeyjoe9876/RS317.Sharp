@@ -27,9 +27,9 @@ namespace Rs317.GladMMO
 	{
 		private ILog Logger { get; }
 
-		private GladMMOUnityClient Client { get; }
+		private RsUnityClient Client { get; }
 
-		public DefaultMovementGeneratorFactory([JetBrains.Annotations.NotNull] ILog logger, [JetBrains.Annotations.NotNull] GladMMOUnityClient client)
+		public DefaultMovementGeneratorFactory([JetBrains.Annotations.NotNull] ILog logger, [JetBrains.Annotations.NotNull] RsUnityClient client)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			Client = client ?? throw new ArgumentNullException(nameof(client));

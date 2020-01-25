@@ -10,9 +10,9 @@ namespace Rs317.GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.TitleScreen)]
 	public sealed class SetClientAuthResultEventListener : BaseSingleEventListenerInitializable<IAuthenticationResultRecievedEventSubscribable, AuthenticationResultEventArgs>
 	{
-		private GladMMOUnityClient Client { get; }
+		private RsUnityClient Client { get; }
 
-		public SetClientAuthResultEventListener(IAuthenticationResultRecievedEventSubscribable subscriptionService, GladMMOUnityClient client) 
+		public SetClientAuthResultEventListener(IAuthenticationResultRecievedEventSubscribable subscriptionService, RsUnityClient client) 
 			: base(subscriptionService)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));

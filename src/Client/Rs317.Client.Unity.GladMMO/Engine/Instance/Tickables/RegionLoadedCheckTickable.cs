@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Glader.Essentials;
 using GladMMO;
+using Rs317.Sharp;
 
 namespace Rs317.GladMMO
 {
@@ -11,9 +12,9 @@ namespace Rs317.GladMMO
 	[SceneTypeCreateGladMMO(GameSceneType.InstanceServerScene)]
 	public sealed class RegionLoadedCheckTickable : IGameFixedTickable
 	{
-		private GladMMOUnityClient Client { get; }
+		private RsUnityClient Client { get; }
 
-		public RegionLoadedCheckTickable([JetBrains.Annotations.NotNull] GladMMOUnityClient client)
+		public RegionLoadedCheckTickable([JetBrains.Annotations.NotNull] RsUnityClient client)
 		{
 			Client = client ?? throw new ArgumentNullException(nameof(client));
 		}

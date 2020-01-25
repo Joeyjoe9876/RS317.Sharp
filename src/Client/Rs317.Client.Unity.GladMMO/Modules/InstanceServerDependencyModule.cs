@@ -28,7 +28,7 @@ namespace Rs317.GladMMO
 				.ExternallyOwned()
 				.SingleInstance();
 
-			builder.RegisterInstance<GladMMOUnityClient>(GladMMOProgram.RootClient)
+			builder.RegisterInstance<RsUnityClient>(GladMMOProgram.RootClient)
 				.AsSelf()
 				.As<RsUnityClient>()
 				.AsImplementedInterfaces()

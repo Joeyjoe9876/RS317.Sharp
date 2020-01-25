@@ -12,7 +12,6 @@ namespace GladMMO
 	{
 		private IPeerPayloadSendService<GameClientPacketPayload> SendService { get; }
 
-
 		public InitializeRsClientPayloadSenderEventListener(INetworkConnectionEstablishedEventSubscribable subscriptionService,
 			[NotNull] IPeerPayloadSendService<GameClientPacketPayload> sendService)
 			: base(subscriptionService)

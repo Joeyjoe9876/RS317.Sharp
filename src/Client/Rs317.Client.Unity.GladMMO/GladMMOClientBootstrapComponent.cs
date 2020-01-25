@@ -12,7 +12,7 @@ namespace Rs317.Sharp
 {
 	public static class GladMMOProgram
 	{
-		public static GladMMOUnityClient RootClient { get; set; }
+		public static RsUnityClient RootClient { get; set; }
 
 		public static GameManager RootGameManager { get; set; } = new GameManager();
 	}
@@ -42,9 +42,23 @@ namespace Rs317.Sharp
 
 		protected override RsUnityClient CreateRsClient(ClientConfiguration configuration)
 		{
-			GladMMOUnityClient client = new GladMMOUnityClient(configuration, GraphicsObject, GladMMOProgram.RootGameManager);
-			GladMMOProgram.RootClient = client;
-			return client;
+			if(RsUnityPlatform.isWebGLBuild)
+			{
+				//Used for Task.Delay in WebGL (Task.Delay doesn't work in WebGL directly)
+				WebGLUnityTaskDelayFactory delayFactory = new UnityEngine.GameObject("Task Delayer").AddComponent<WebGLUnityTaskDelayFactory>();
+
+				if(RsUnityPlatform.isInEditor)
+					GladMMOProgram.RootClient = new GladMMORsUnityWebGLClient(configuration, GraphicsObject, this, new DefaultWebSocketClientFactory(), delayFactory, GladMMOProgram.RootGameManager);
+				else
+					GladMMOProgram.RootClient = new GladMMORsUnityWebGLClient(configuration, GraphicsObject, this, new WebGLWebSocketFactory(delayFactory), delayFactory, GladMMOProgram.RootGameManager);
+			}
+			else
+			{
+				GladMMOUnityClient client = new GladMMOUnityClient(configuration, GraphicsObject, GladMMOProgram.RootGameManager);
+				GladMMOProgram.RootClient = client;
+			}
+
+			return GladMMOProgram.RootClient;
 		}
 	}
 }

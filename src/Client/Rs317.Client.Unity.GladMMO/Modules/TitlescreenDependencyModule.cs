@@ -47,18 +47,7 @@ namespace Rs317.GladMMO
 				.As<IZoneDataRepository>()
 				.As<IReadonlyZoneDataRepository>();
 
-			builder.Register<GladMMOUnityClient>(context =>
-				{
-					//This is done to make sure only 1 is ever created.
-					if(GladMMOProgram.RootClient == null)
-					{
-						GladMMOProgram.RootClient = new GladMMOUnityClient(context.Resolve<ClientConfiguration>(), context.Resolve<UnityRsGraphics>(), GladMMOProgram.RootGameManager);
-
-						return GladMMOProgram.RootClient;
-					}
-					else
-						return GladMMOProgram.RootClient;
-				})
+			builder.RegisterInstance<RsUnityClient>(GladMMOProgram.RootClient)
 				.AsSelf()
 				.As<RsUnityClient>()
 				.AsImplementedInterfaces()
