@@ -66,14 +66,15 @@ namespace Rs317.GladMMO
 		protected override void SendWalkPacket(int clickType, int maxPathSize, int x, int currentIndex, int y)
 		{
 			//TODO: Don't use unit vectors.
-			List<Vector3> pathPoints = new List<Vector3>(currentIndex);
+			Vector3[] pathPoints = new Vector3[currentIndex + 1];
 
-			pathPoints.Add(new Vector3(walkingQueueX[currentIndex] + baseX, 0, walkingQueueY[currentIndex] + baseY));
+			pathPoints[0] = new Vector3(walkingQueueX[currentIndex] + baseX, 0, walkingQueueY[currentIndex] + baseY);
 
-			for(int counter = 1; counter < maxPathSize; counter++)
+			int pathIndex = 1;
+			for(int counter = 1; counter < maxPathSize; counter++, pathIndex++)
 			{
 				currentIndex--;
-				pathPoints.Add(new Vector3(walkingQueueX[currentIndex] + baseX, 0, walkingQueueY[currentIndex] + baseY));
+				pathPoints[pathIndex] = new Vector3(walkingQueueX[currentIndex] + baseX, 0, walkingQueueY[currentIndex] + baseY);
 			}
 
 			SendService.SendMessage(new ClientSetClickToMovePathRequestPayload(new PathBasedMovementData(pathPoints.ToArray(), 100)));
