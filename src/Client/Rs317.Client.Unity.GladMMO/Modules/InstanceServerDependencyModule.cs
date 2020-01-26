@@ -14,7 +14,12 @@ namespace Rs317.GladMMO
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterModule<GameServerNetworkClientAutofacModule>();
+			//Don't use the typical GladMMO networking for WebGL
+			if (!RsUnityPlatform.isWebGLBuild)
+				builder.RegisterModule<GameServerNetworkClientAutofacModule>();
+			else
+				builder.RegisterModule<WebGLNetworkClientModule>();
+
 			builder.RegisterModule(new GameClientMessageHandlerAutofacModule(GameSceneType.InstanceServerScene, this.GetType().Assembly));
 			builder.RegisterModule<GladMMONetworkSerializerAutofacModule>();
 			builder.RegisterModule<RsGameplayDependencyRegisterationAutofacModule>();

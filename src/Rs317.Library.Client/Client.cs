@@ -8732,7 +8732,7 @@ namespace Rs317.Sharp
 			loginMessage2 = "Error connecting to server.";
 		}
 
-		protected async Task<IRsSocket> ConnectToGameServer()
+		public async Task<IRsSocket> ConnectToGameServer()
 		{
 			//Suppress cerificate verification.
 			ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;

@@ -91,7 +91,7 @@ namespace Rs317.GladMMO
 
 						if (jwtModel != null && jwtModel.isTokenValid)
 						{
-							AuthTokenRepository.Update(jwtModel.AccessToken);
+							UpdatedTokenRepository(jwtModel);
 
 							GameQueueable.Enqueue(() =>
 							{
@@ -112,6 +112,11 @@ namespace Rs317.GladMMO
 					}
 				}
 			});
+		}
+
+		public void UpdatedTokenRepository(PlayerAccountJWTModel jwtModel)
+		{
+			AuthTokenRepository.Update(jwtModel.AccessToken);
 		}
 
 		public void DispatchAuthenticationResult(PlayerAccountJWTModel model)

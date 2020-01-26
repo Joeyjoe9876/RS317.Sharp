@@ -49,6 +49,7 @@ namespace Rs317.Sharp
 			drawLoginScreen(true);
 
 			PlayerAccountJWTModel model = await HackySharedClientData.Instance.AuthService.TryAuthenticate(new AuthenticationRequestModel("Admin", "Test69!"));
+			HackySharedClientData.Instance.AuthButtonListener.UpdatedTokenRepository(model);
 			HackySharedClientData.Instance.AuthButtonListener.DispatchAuthenticationResult(model);
 		}
 

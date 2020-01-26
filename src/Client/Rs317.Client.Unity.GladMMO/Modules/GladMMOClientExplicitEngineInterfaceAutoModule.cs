@@ -5,6 +5,7 @@ using Autofac;
 using Glader.Essentials;
 using GladMMO;
 using GladNet;
+using Rs317.Sharp;
 
 namespace Rs317.GladMMO
 {
