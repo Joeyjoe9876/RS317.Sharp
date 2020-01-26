@@ -102,6 +102,7 @@
     <Folder Include="Engine\Instance\EventListeners\Voice\OnNetworkVoiceInitialized\" />
     <Folder Include="Engine\Instance\Tickables\Input\" />
     <Folder Include="Engine\Shared\" />
+    <Folder Include="Engine\Title\AsyncEngineHandlers\" />
     <Folder Include="Entity\" />
   </ItemGroup>
 

@@ -50,7 +50,11 @@ namespace Rs317.GladMMO
 			builder.RegisterInstance<RsUnityClient>(GladMMOProgram.RootClient)
 				.AsImplementedInterfaces()
 				.As<RsUnityClient>()
+				.OnActivated(args => HackySharedClientData.Instance = args.Context.Resolve<HackySharedClientData>())
 				.ExternallyOwned();
+
+			builder.RegisterType<HackySharedClientData>()
+				.AsSelf();
 		}
 	}
 }

@@ -10,6 +10,7 @@ using Refit;
 
 namespace Rs317.GladMMO
 {
+	[AdditionalRegisterationAs(typeof(AuthenticateOnLoginButtonClickEventListener))]
 	[AdditionalRegisterationAs(typeof(IAuthenticationResultRecievedEventSubscribable))]
 	[SceneTypeCreateGladMMO(GameSceneType.TitleScreen)]
 	public sealed class AuthenticateOnLoginButtonClickEventListener : BaseSingleEventListenerInitializable<ILoginButtonClickedEventSubscribable>, IAuthenticationResultRecievedEventSubscribable
@@ -111,6 +112,11 @@ namespace Rs317.GladMMO
 					}
 				}
 			});
+		}
+
+		public void DispatchAuthenticationResult(PlayerAccountJWTModel model)
+		{
+			OnAuthenticationResultRecieved?.Invoke(this, new AuthenticationResultEventArgs(model));
 		}
 	}
 }
