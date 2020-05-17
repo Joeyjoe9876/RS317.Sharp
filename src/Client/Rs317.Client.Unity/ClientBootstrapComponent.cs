@@ -33,11 +33,21 @@ namespace Rs317.Sharp
 		[SerializeField]
 		public short PortOffset = 0;
 
+		[SerializeField]
+		public float ResolutionMultiplier = 1.0f;
+
 		[Preserve] //important to keep in AOT builds.
 		private void AOTSetup()
 		{
 			//ImageSharp doesn't work on WebGL.
 			SixLabors.ImageSharp.Advanced.AotCompilerTools.Seed<Rgba32>();
+		}
+
+		void Awake()
+		{
+			//Using our custom sync context.
+			CustomUnitySynchronizationContext.InitializeSynchronizationContext();
+			gameObject.AddComponent<UnitySyncContextTickable>();
 		}
 
 		//Called on scene start, which starts the underlying client.
@@ -50,7 +60,7 @@ namespace Rs317.Sharp
 			AppDomain.CurrentDomain.UnhandledException += (sender, args) => Debug.LogError($"Unhandled Exception: {args.ExceptionObject.ToString()}");
 
 			//765, 503 default size.
-			Screen.SetResolution(765, 503, Screen.fullScreenMode);
+			Screen.SetResolution((int) (765 * ResolutionMultiplier), (int) (503 * ResolutionMultiplier), Screen.fullScreenMode);
 
 			try
 			{
@@ -90,7 +100,7 @@ namespace Rs317.Sharp
 			RsUnityClient client1 = CreateRsClient(configuration);
 			InputObject.InputSubscribable = client1;
 			GraphicsObject.GameStateHookable = client1;
-			client1.createClientFrame(765, 503);
+			client1.createClientFrame((int) (765 * ResolutionMultiplier), (int) (503 * ResolutionMultiplier));
 
 			Debug.Log($"Client frame created.");
 		}

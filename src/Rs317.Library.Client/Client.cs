@@ -400,7 +400,7 @@ namespace Rs317.Sharp
 		private BaseRsImageProducer<TGraphicsType> gameScreenImageProducer;
 		private BaseRsImageProducer<TGraphicsType> chatboxImageProducer;
 		private int daysSinceRecoveryChange;
-		protected IRsSocket socket { get; private set; }
+		public IRsSocket socket { get; private set; }
 		private int privateMessagePointer;
 		private int minimapZoom;
 		private int randomisationMinimapZoom;
@@ -521,8 +521,8 @@ namespace Rs317.Sharp
 			{
 				if (value < 40)
 					_clientZoom = 40;
-				else if (value > 1200)
-					_clientZoom = 1200;
+				else if (value > 3000)
+					_clientZoom = 3000;
 				else
 					_clientZoom = value;
 			}
@@ -5780,7 +5780,7 @@ namespace Rs317.Sharp
 			return worldDrawPlane;
 		}
 
-		private async Task<bool> handleIncomingData()
+		protected async Task<bool> handleIncomingData()
 		{
 			if(socket == null)
 				return false;
@@ -8900,9 +8900,7 @@ namespace Rs317.Sharp
 			if(idleLogout > 0)
 				idleLogout--;
 
-			for(int j = 0; j < 5; j++)
-				if(!await handleIncomingData())
-					break;
+			await HandleIncomingPacketsAsync();
 
 			if(!LoggedIn)
 				return;
@@ -9241,20 +9239,33 @@ namespace Rs317.Sharp
 			idleCounter++;
 			if(idleCounter > 50)
 				SendIdlePing();
+
+			await SendPendingPacketBufferAsync();
+		}
+
+		protected virtual async Task HandleIncomingPacketsAsync()
+		{
+			for (int j = 0; j < 5; j++)
+				if (!await handleIncomingData())
+					break;
+		}
+
+		protected virtual async Task SendPendingPacketBufferAsync()
+		{
 			try
 			{
-				if(socket != null && stream.position > 0)
+				if (socket != null && stream.position > 0)
 				{
 					await socket.write(stream.position, stream.buffer);
 					stream.position = 0;
 					idleCounter = 0;
 				}
 			}
-			catch(IOException _ex)
+			catch (IOException _ex)
 			{
 				await dropClient();
 			}
-			catch(Exception exception)
+			catch (Exception exception)
 			{
 				logout();
 			}
