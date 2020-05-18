@@ -521,8 +521,13 @@ namespace Rs317.Sharp
 			{
 				if (value < 40)
 					_clientZoom = 40;
-				else if (value > 3000)
-					_clientZoom = 3000;
+				//else if (value > 1200)
+				else if (value > 3000)//If units are over 3000 units
+					//_clientZoom = 1200;
+					_clientZoom = 3000;//Zoom = 3000, stops from zooming too far out
+									   //NOTE: Background culling is attached to the main camera, zoom out too far and you will not see your character
+									   //TODO: Decouple background culling from the camera, cull in set areas around player instead or remove culling entirely
+									   //if it is stable
 				else
 					_clientZoom = value;
 			}
