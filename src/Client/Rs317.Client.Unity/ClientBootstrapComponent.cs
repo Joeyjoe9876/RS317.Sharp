@@ -36,12 +36,17 @@ namespace Rs317.Sharp
 		[SerializeField]
 		public float ResolutionMultiplier = 1.0f;
 
+		[SerializeField]
+		public CollisionMap[] exposedCollisionMap = Rs317.Sharp.Client<RsUnityClient>.exposedCollisionMap;
+
 		[Preserve] //important to keep in AOT builds.
 		private void AOTSetup()
 		{
 			//ImageSharp doesn't work on WebGL.
 			SixLabors.ImageSharp.Advanced.AotCompilerTools.Seed<Rgba32>();
 		}
+
+
 
 		void Awake()
 		{

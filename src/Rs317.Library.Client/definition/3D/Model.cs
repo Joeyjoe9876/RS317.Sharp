@@ -5,6 +5,8 @@ namespace Rs317.Sharp
 {
 	public sealed class Model : Animable
 	{
+
+		public static int log_view_dist = 9;
 		public static Model getModel(int model)
 		{
 			if(modelHeaders == null)
@@ -1374,16 +1376,16 @@ namespace Rs317.Sharp
 				if(movedZ >= 50)
 				{
 					int k5 = (50 - movedX) * modelIntArray4[movedZ - movedX];
-					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[z] - movedX2) * k5 >> 16) << 9) / 50;
-					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[z] - movedY2) * k5 >> 16) << 9) / 50;
+					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[z] - movedX2) * k5 >> 16) << log_view_dist) / 50;
+					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[z] - movedY2) * k5 >> 16) << log_view_dist) / 50;
 					zPosition[counter++] = colour + ((triangleHSLC[triangle] - colour) * k5 >> 16);
 				}
 
 				if(movedY >= 50)
 				{
 					int l5 = (50 - movedX) * modelIntArray4[movedY - movedX];
-					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[y] - movedX2) * l5 >> 16) << 9) / 50;
-					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[y] - movedY2) * l5 >> 16) << 9) / 50;
+					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[y] - movedX2) * l5 >> 16) << log_view_dist) / 50;
+					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[y] - movedY2) * l5 >> 16) << log_view_dist) / 50;
 					zPosition[counter++] = colour + ((triangleHSLB[triangle] - colour) * l5 >> 16);
 				}
 			}
@@ -1402,7 +1404,7 @@ namespace Rs317.Sharp
 				if(movedX >= 50)
 				{
 					int i6 = (50 - movedY) * modelIntArray4[movedX - movedY];
-					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[x] - movedX2) * i6 >> 16) << 9) / 50;
+					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[x] - movedX2) * i6 >> 16) << log_view_dist) / 50;
 					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[x] - movedY2) * i6 >> 16) << 9) / 50;
 					zPosition[counter++] = colour + ((triangleHSLA[triangle] - colour) * i6 >> 16);
 				}
@@ -1410,8 +1412,8 @@ namespace Rs317.Sharp
 				if(movedZ >= 50)
 				{
 					int j6 = (50 - movedY) * modelIntArray4[movedZ - movedY];
-					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[z] - movedX2) * j6 >> 16) << 9) / 50;
-					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[z] - movedY2) * j6 >> 16) << 9) / 50;
+					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[z] - movedX2) * j6 >> 16) << log_view_dist) / 50;
+					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[z] - movedY2) * j6 >> 16) << log_view_dist) / 50;
 					zPosition[counter++] = colour + ((triangleHSLC[triangle] - colour) * j6 >> 16);
 				}
 			}
@@ -1430,16 +1432,16 @@ namespace Rs317.Sharp
 				if(movedY >= 50)
 				{
 					int k6 = (50 - movedZ) * modelIntArray4[movedY - movedZ];
-					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[y] - movedX2) * k6 >> 16) << 9) / 50;
-					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[y] - movedY2) * k6 >> 16) << 9) / 50;
+					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[y] - movedX2) * k6 >> 16) << log_view_dist) / 50;
+					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[y] - movedY2) * k6 >> 16) << log_view_dist) / 50;
 					zPosition[counter++] = colour + ((triangleHSLB[triangle] - colour) * k6 >> 16);
 				}
 
 				if(movedX >= 50)
 				{
 					int l6 = (50 - movedZ) * modelIntArray4[movedX - movedZ];
-					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[x] - movedX2) * l6 >> 16) << 9) / 50;
-					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[x] - movedY2) * l6 >> 16) << 9) / 50;
+					xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[x] - movedX2) * l6 >> 16) << log_view_dist) / 50;
+					yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[x] - movedY2) * l6 >> 16) << log_view_dist) / 50;
 					zPosition[counter++] = colour + ((triangleHSLA[triangle] - colour) * l6 >> 16);
 				}
 			}
@@ -1716,6 +1718,7 @@ namespace Rs317.Sharp
 
 		}
 
+
 		public override void renderAtPoint(int i, int yCameraSine, int yCameraCosine, int xCameraSine, int xCameraCosine, int x,
 			int y, int z, int i2)
 		{
@@ -1728,19 +1731,19 @@ namespace Rs317.Sharp
 				if(i3 <= 50 || k2 >= 30000)
 					return;
 				int j3 = z * xCameraSine + x * xCameraCosine >> 16;
-				int k3 = j3 - diagonal2DAboveOrigin << 9;
+				int k3 = j3 - diagonal2DAboveOrigin << log_view_dist;
 				if(k3 / i3 >= DrawingArea.viewportCentreX)
 					return;
-				int l3 = j3 + diagonal2DAboveOrigin << 9;
+				int l3 = j3 + diagonal2DAboveOrigin << log_view_dist;
 				if(l3 / i3 <= -DrawingArea.viewportCentreX)
 					return;
 				int i4 = y * yCameraCosine - j2 * yCameraSine >> 16;
 				int j4 = diagonal2DAboveOrigin * yCameraSine >> 16;
-				int k4 = i4 + j4 << 9;
+				int k4 = i4 + j4 << log_view_dist;
 				if(k4 / i3 <= -DrawingArea.viewportCentreY)
 					return;
 				int l4 = j4 + (base.modelHeight * yCameraCosine >> 16);
-				int i5 = i4 - l4 << 9;
+				int i5 = i4 - l4 << log_view_dist;
 				if(i5 / i3 >= DrawingArea.viewportCentreY)
 					return;
 				int j5 = l2 + (base.modelHeight * yCameraSine >> 16);
@@ -1819,8 +1822,8 @@ namespace Rs317.Sharp
 					vertexScreenZ[vertex] = z2 - k2;
 					if(z2 >= 50)
 					{
-						vertexScreenX[vertex] = centreX + (x2 << 9) / z2;
-						vertexScreenY[vertex] = centreY + (y2 << 9) / z2;
+						vertexScreenX[vertex] = centreX + (x2 << log_view_dist) / z2;
+						vertexScreenY[vertex] = centreY + (y2 << log_view_dist) / z2;
 					}
 					else
 					{

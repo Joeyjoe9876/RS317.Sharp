@@ -23,6 +23,8 @@ namespace Rs317.Sharp
 		/// </summary>
 		public static bool ShouldClientRender { get; protected set; } = true;
 
+		public static int log_view_dist = 9;
+
 		//TODO: Optimize formating
 		private static String formatAmount(int amount)
 		{
@@ -455,7 +457,8 @@ namespace Rs317.Sharp
 		protected int nextSong;
 		protected bool songChanging;
 		protected int[] minimapLineWidth;
-		protected CollisionMap[] currentCollisionMap;
+		protected static CollisionMap[] currentCollisionMap;
+		public static CollisionMap[] exposedCollisionMap = currentCollisionMap;
 		private bool updateChatSettings;
 		private int[] mapCoordinates;
 		private int[] terrainDataIds;
@@ -1979,6 +1982,8 @@ namespace Rs317.Sharp
 			// spriteDrawY;
 		}
 
+
+
 		private void calculateScreenPosition(int x, int height, int y)
 		{
 			if(x < 128 || y < 128 || x > 13056 || y > 13056)
@@ -2004,8 +2009,8 @@ namespace Rs317.Sharp
 			z = temp;
 			if(y >= 50)
 			{
-				spriteDrawX = Rasterizer.centreX + (x << 9) / y;
-				spriteDrawY = Rasterizer.centreY + (z << 9) / y;
+				spriteDrawX = Rasterizer.centreX + (x << log_view_dist) / y;
+				spriteDrawY = Rasterizer.centreY + (z << log_view_dist) / y;
 			}
 			else
 			{
@@ -12657,7 +12662,8 @@ namespace Rs317.Sharp
 					ai[i8] = l8 * i9 >> 16;
 				}
 
-				WorldController.setupViewport(500, 800, 512, 334, ai);
+				//WorldController.setupViewport(500, 800, 512, 334, ai);
+				WorldController.setupViewport(500, 800, 2048, 1336, ai);
 
 				GameObject.clientInstance = this;
 				EntityDefinition.clientInstance = this;

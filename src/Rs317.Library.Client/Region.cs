@@ -466,7 +466,8 @@ namespace Rs317.Sharp
 			overlayFloorIds = new byte[4, regionSizeX, regionSizeY];
 			overlayClippingPaths = new byte[4, regionSizeX, regionSizeY];
 			overlayOrientations = new byte[4, regionSizeX, regionSizeY];
-			tileCullingBitsets = new int[4, regionSizeX + 1, regionSizeY + 1];
+			//tileCullingBitsets = new int[4, regionSizeX + 1, regionSizeY + 1];
+			tileCullingBitsets = new int[4, 300 + 1, 300 + 1];
 			tileShadowIntensity = CollectionUtilities.Create3DJaggedArray<byte>(4, regionSizeX + 1, regionSizeY + 1);
 			tileLightIntensity = new int[regionSizeX + 1, regionSizeY + 1];
 			blendedHue = new int[regionSizeY];
@@ -684,7 +685,7 @@ namespace Rs317.Sharp
 										if(hideUnderlay && vertexHeightSW == vertexHeightSE
 												&& vertexHeightSW == vertexHeightNE && vertexHeightSW == vertexHeightNW)
 										{
-											tileCullingBitsets[_plane, x, y] |= 0x924;
+											//tileCullingBitsets[_plane, x, y] |= 0x924;
 										}
 									}
 									int underlayMinimapColour = 0;
@@ -747,8 +748,10 @@ namespace Rs317.Sharp
 					}
 				}
 
-				for(int y = 1; y < regionSizeY - 1; y++)
+				//regionSizeY = 300;//outside of array
+				for (int y = 1; y < regionSizeY - 1; y++)
 				{
+					//regionSizeX = 300;//outside of array
 					for(int x = 1; x < regionSizeX - 1; x++)
 					{
 						worldController.setTileLogicHeight(x, y, _plane, getVisibilityPlane(y, _plane, x));
@@ -831,18 +834,18 @@ namespace Rs317.Sharp
 										* ((highestOcclusionY - lowestOcclusionY) + 1);
 								if(occlusionSurface >= 8)
 								{
-									int highestOcclusionVertexHeightOffset = 240;
-									int highestOcclusionVertexHeight = this.vertexHeights[highestOcclusionPlane][x][lowestOcclusionY]
-											- highestOcclusionVertexHeightOffset;
-									int lowestOcclusionVertexHeight = this.vertexHeights[lowestOcclusionPlane][x][lowestOcclusionY];
-									WorldController.createCullingCluster(plane, x * 128, x * 128,
+									//int highestOcclusionVertexHeightOffset = 240;
+									//int highestOcclusionVertexHeight = this.vertexHeights[highestOcclusionPlane][x][lowestOcclusionY]
+											//- highestOcclusionVertexHeightOffset;
+									//int lowestOcclusionVertexHeight = this.vertexHeights[lowestOcclusionPlane][x][lowestOcclusionY];
+									/*WorldController.createCullingCluster(plane, x * 128, x * 128,
 											highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
-											highestOcclusionVertexHeight, lowestOcclusionVertexHeight, 1);
+											highestOcclusionVertexHeight, lowestOcclusionVertexHeight, 1);*/
 									for(int occludedPlane = lowestOcclusionPlane; occludedPlane <= highestOcclusionPlane; occludedPlane++)
 									{
 										for(int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++)
 										{
-											this.tileCullingBitsets[occludedPlane, x, occludedY] &= ~renderRule1;
+											//this.tileCullingBitsets[occludedPlane, x, occludedY] &= ~renderRule1;
 										}
 
 									}
@@ -895,18 +898,18 @@ namespace Rs317.Sharp
 										* ((highestOcclusionX - lowestOcclusionX) + 1);
 								if(occlusionSurface >= 8)
 								{
-									int highestOcclusionVertexHeightOffset = 240;
-									int highestOcclusionVertexHeight = this.vertexHeights[highestocclusionPlane][lowestOcclusionX][y]
-											- highestOcclusionVertexHeightOffset;
-									int lowestOcclusionVertexHeight = this.vertexHeights[lowestocclusionPlane][lowestOcclusionX][y];
-									WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
+									//int highestOcclusionVertexHeightOffset = 240;
+									//int highestOcclusionVertexHeight = this.vertexHeights[highestocclusionPlane][lowestOcclusionX][y]
+											//- highestOcclusionVertexHeightOffset;
+									//int lowestOcclusionVertexHeight = this.vertexHeights[lowestocclusionPlane][lowestOcclusionX][y];
+									/*WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
 											lowestOcclusionX * 128, y * 128, y * 128, highestOcclusionVertexHeight,
-											lowestOcclusionVertexHeight, 2);
+											lowestOcclusionVertexHeight, 2);*/
 									for(int occludedPlane = lowestocclusionPlane; occludedPlane <= highestocclusionPlane; occludedPlane++)
 									{
 										for(int occludedX = lowestOcclusionX; occludedX <= highestOcclusionX; occludedX++)
 										{
-											this.tileCullingBitsets[occludedPlane, occludedX, y] &= ~renderRule2;
+											//this.tileCullingBitsets[occludedPlane, occludedX, y] &= ~renderRule2;
 										}
 
 									}
@@ -958,15 +961,15 @@ namespace Rs317.Sharp
 								if(((highestOcclusionX - lowestOcclusionX) + 1)
 										* ((highestOcclusionY - lowestOcclusionY) + 1) >= 4)
 								{
-									int lowestOcclusionVertexHeight = this.vertexHeights[plane][lowestOcclusionX][lowestOcclusionY];
-									WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
+									//int lowestOcclusionVertexHeight = this.vertexHeights[plane][lowestOcclusionX][lowestOcclusionY];
+									/*WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
 											lowestOcclusionX * 128, highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
-											lowestOcclusionVertexHeight, lowestOcclusionVertexHeight, 4);
+											lowestOcclusionVertexHeight, lowestOcclusionVertexHeight, 4);*/
 									for(int occludedX = lowestOcclusionX; occludedX <= highestOcclusionX; occludedX++)
 									{
 										for(int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++)
 										{
-											this.tileCullingBitsets[plane, occludedX, occludedY] &= ~renderRule3;
+											//this.tileCullingBitsets[plane, occludedX, occludedY] &= ~renderRule3;
 										}
 
 									}

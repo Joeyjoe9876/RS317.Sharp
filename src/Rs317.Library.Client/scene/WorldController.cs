@@ -7,7 +7,7 @@ namespace Rs317.Sharp
 	public sealed class WorldController
 	{
 		public float RenderDistance = 35000;//Added new variable to set render distance
-		public static int TILE_DRAW_DISTANCE = 25;//added new variable for the Tile Draw Distance, changing from 25 crashes upon login in most instances from what it seems
+		public static int TILE_DRAW_DISTANCE = 50;//added new variable for the Tile Draw Distance, changing from 25 crashes upon login in most instances from what it seems
 												  //TODO: Fix crashes upon login, value needs become 100+ for resizeable and extending culling
 		public static void createCullingCluster(int z, int highestX, int lowestX, int highestY, int lowestY, int highestZ,
 			int lowestZ, int searchMask)
@@ -27,6 +27,7 @@ namespace Rs317.Sharp
 			cullingClusters[z][cullingClusterPointer[z]++] = cullingCluster;
 		}
 
+		public static int log_view_dist = 9;
 
 		public static void nullLoader()
 		{
@@ -85,7 +86,7 @@ namespace Rs317.Sharp
 								break;
 							}
 
-							tileOnScreen[anglePointerY][anglePointerX][x + 25 + 1][y + 25 + 1] = visible;//Changed 25 to TILE_DRAW_DISTANCE
+							tileOnScreen[anglePointerY][anglePointerX][x + TILE_DRAW_DISTANCE + 1][y + TILE_DRAW_DISTANCE + 1] = visible;//Changed 25 to TILE_DRAW_DISTANCE
 						}
 
 					}
@@ -261,7 +262,7 @@ namespace Rs317.Sharp
 
 		private int[][] tileShapeIndices;
 
-		private static bool[][][][] TILE_VISIBILITY_MAPS = CollectionUtilities.Create4DJaggedArray<bool>(8, 32, 51, 51);
+		private static bool[][][][] TILE_VISIBILITY_MAPS = CollectionUtilities.Create4DJaggedArray<bool>(8, 32, 500, 500);
 
 
 		private static bool[][] TILE_VISIBILITY_MAP;
@@ -786,9 +787,9 @@ namespace Rs317.Sharp
 			for(int l = 0; l < anInt472; l++)
 			{
 				for(int j1 = 0; j1 < cullingClusterPointer[l]; j1++)
-					cullingClusters[l][j1] = null;
+					//cullingClusters[l][j1] = null;
 
-				cullingClusterPointer[l] = 0;
+			cullingClusterPointer[l] = 0;
 			}
 
 			for(int k1 = 0; k1 < interactiveObjectCacheCurrentPos; k1++)
@@ -1202,12 +1203,12 @@ namespace Rs317.Sharp
 					int i1 = cluster.worldStartX - x;
 					if(i1 > 0)
 					{
-						int j2 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * i1 >> 8);
-						int k3 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * i1 >> 8);
-						int l4 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * i1 >> 8);
-						int i6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * i1 >> 8);
-						if(y >= j2 && y <= k3 && z >= l4 && z <= i6)
-							return true;
+						//int j2 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * i1 >> 8);
+						//int k3 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * i1 >> 8);
+						//int l4 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * i1 >> 8);
+						//int i6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * i1 >> 8);
+						/*if(y >= j2 && y <= k3 && z >= l4 && z <= i6)
+							return false;//true*/
 					}
 				}
 				else if(cluster.tileDistanceEnum == 2)
@@ -1215,51 +1216,51 @@ namespace Rs317.Sharp
 					int j1 = x - cluster.worldStartX;
 					if(j1 > 0)
 					{
-						int k2 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * j1 >> 8);
-						int l3 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * j1 >> 8);
-						int i5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * j1 >> 8);
-						int j6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * j1 >> 8);
-						if(y >= k2 && y <= l3 && z >= i5 && z <= j6)
-							return true;
+							//int k2 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * j1 >> 8);
+							//int l3 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * j1 >> 8);
+							//int i5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * j1 >> 8);
+							//int j6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * j1 >> 8);
+							/*if(y >= k2 && y <= l3 && z >= i5 && z <= j6)
+								return false;//true*/
+						}
 					}
-				}
 				else if(cluster.tileDistanceEnum == 3)
 				{
 					int k1 = cluster.worldStartY - y;
 					if(k1 > 0)
 					{
-						int l2 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * k1 >> 8);
-						int i4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * k1 >> 8);
-						int j5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * k1 >> 8);
-						int k6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * k1 >> 8);
-						if(x >= l2 && x <= i4 && z >= j5 && z <= k6)
-							return true;
-					}
-				}
+								//int l2 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * k1 >> 8);
+								//int i4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * k1 >> 8);
+								//int j5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * k1 >> 8);
+								//int k6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * k1 >> 8);
+								/*if(x >= l2 && x <= i4 && z >= j5 && z <= k6)
+									return false;//true*/
+							}
+						}
 				else if(cluster.tileDistanceEnum == 4)
 				{
 					int l1 = y - cluster.worldStartY;
 					if(l1 > 0)
 					{
-						int i3 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * l1 >> 8);
-						int j4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * l1 >> 8);
-						int k5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * l1 >> 8);
-						int l6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * l1 >> 8);
-						if(x >= i3 && x <= j4 && z >= k5 && z <= l6)
-							return true;
-					}
-				}
+									//int i3 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * l1 >> 8);
+									//int j4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * l1 >> 8);
+									//int k5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * l1 >> 8);
+									//int l6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * l1 >> 8);
+									/*if(x >= i3 && x <= j4 && z >= k5 && z <= l6)
+										return false;//true*/
+								}
+							}
 				else if(cluster.tileDistanceEnum == 5)
 				{
 					int i2 = z - cluster.worldEndZ;
 					if(i2 > 0)
 					{
-						int j3 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * i2 >> 8);
-						int k4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * i2 >> 8);
-						int l5 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * i2 >> 8);
-						int i7 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * i2 >> 8);
-						if(x >= j3 && x <= k4 && y >= l5 && y <= i7)
-							return true;
+						//int j3 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * i2 >> 8);
+						//int k4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * i2 >> 8);
+						//int l5 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * i2 >> 8);
+						//int i7 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * i2 >> 8);
+						/*if(x >= j3 && x <= k4 && y >= l5 && y <= i7)
+							return false;//true*/
 					}
 				}
 			}
@@ -1553,7 +1554,7 @@ namespace Rs317.Sharp
 				if (mapBoundsY > mapSizeY)
 					mapBoundsY = mapSizeY;
 				//processCulling();
-				//anInt446 = 0;
+				anInt446 = 0;
 				for(int z = currentPositionZ; z < mapSizeZ; z++)
 				{
 					Tile[][] tiles = groundArray[z];
@@ -1643,7 +1644,7 @@ namespace Rs317.Sharp
 
 				}
 
-				for(int z = currentPositionZ; z < mapSizeZ; z++)
+				/*for(int z = currentPositionZ; z < mapSizeZ; z++)
 				{
 					Tile[][] tiles = groundArray[z];
 					for(int offsetX = -TILE_DRAW_DISTANCE; offsetX <= 0; offsetX++)//Changed 25 to TILE_DRAW_DISTANCE
@@ -1700,9 +1701,9 @@ namespace Rs317.Sharp
 						}
 					}
 
-				}
+				}*/
 
-				clicked = false;
+				//clicked = false;
 			}
 		}
 
@@ -1753,14 +1754,23 @@ namespace Rs317.Sharp
 			zD = temp;
 			if(yC < 50)
 				return;
-			int screenXA = Rasterizer.centreX + (xA << 9) / yA;
+			/*int screenXA = Rasterizer.centreX + (xA << 9) / yA;
 			int screenYA = Rasterizer.centreY + (zA << 9) / yA;
 			int screenXB = Rasterizer.centreX + (xB << 9) / yB;
 			int screenYB = Rasterizer.centreY + (zB << 9) / yB;
 			int screenXD = Rasterizer.centreX + (xD << 9) / yD;
 			int screenYD = Rasterizer.centreY + (zC << 9) / yD;
 			int screenXC = Rasterizer.centreX + (xC << 9) / yC;
-			int screenYC = Rasterizer.centreY + (zD << 9) / yC;
+			int screenYC = Rasterizer.centreY + (zD << 9) / yC;*/
+
+			int screenXA = Rasterizer.centreX + (xA << log_view_dist) / yA;
+			int screenYA = Rasterizer.centreY + (zA << log_view_dist) / yA;
+			int screenXB = Rasterizer.centreX + (xB << log_view_dist) / yB;
+			int screenYB = Rasterizer.centreY + (zB << log_view_dist) / yB;
+			int screenXD = Rasterizer.centreX + (xD << log_view_dist) / yD;
+			int screenYD = Rasterizer.centreY + (zC << log_view_dist) / yD;
+			int screenXC = Rasterizer.centreX + (xC << log_view_dist) / yC;
+			int screenYC = Rasterizer.centreY + (zD << log_view_dist) / yC;
 			Rasterizer.alpha = 0;
 			if((screenXD - screenXC) * (screenYB - screenYC) - (screenYD - screenYC) * (screenXB - screenXC) > 0)
 			{
@@ -1860,8 +1870,8 @@ namespace Rs317.Sharp
 					ShapedTile.viewspaceZ[triangle] = viewspaceZ;
 				}
 
-				ShapedTile.screenX[triangle] = Rasterizer.centreX + (viewspaceX << 9) / viewspaceZ;
-				ShapedTile.screenY[triangle] = Rasterizer.centreY + (viewspaceY << 9) / viewspaceZ;
+				ShapedTile.screenX[triangle] = Rasterizer.centreX + (viewspaceX << log_view_dist) / viewspaceZ;
+				ShapedTile.screenY[triangle] = Rasterizer.centreY + (viewspaceY << log_view_dist) / viewspaceZ;
 			}
 
 			Rasterizer.alpha = 0;
